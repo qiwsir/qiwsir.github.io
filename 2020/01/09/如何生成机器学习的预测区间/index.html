@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      如何生成机器学习的预测区间 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>如何生成机器学习的预测区间</h2>
+    <p class="post-date">2020-01-09</p>
+    <section class="markdown-content"><p>——使用梯度上升回归来显示机器学习模型评估的不确定性</p>
+<p>原文：<a href="https://towardsdatascience.com/how-to-generate-prediction-intervals-with-scikit-learn-and-python-ab3899f992ed" target="_blank" rel="noopener">https://towardsdatascience.com/how-to-generate-prediction-intervals-with-scikit-learn-and-python-ab3899f992ed</a></p>
+<p>作者：Will Koehrsen</p>
+<p>翻译：老齐</p>
+<hr>
+<blockquote>
+<p>“所有的模型都是错误的，有的却很有用” —— George Box。</p>
+</blockquote>
+<p>我们用机器学习进行预测时，要记住这句至理名言。所有的机器学习模型都有局限性：对结果有影响的特征并没有在数据中，或者模型所做的假设是与现实不相符的。当我们给出一个精确的预测数字——房子将价值450300.01美元——这给人的印象是我们确信模型源于现实。</p>
+<p>要诚实地反映模型的预测性能，必须通过一系列的评估手段，对于预测结果，或许有一个最佳值，但实际上更可能是一个很宽的区间。在数据科学课程中，这并不是老生常谈，但至关重要的是，我们要在预测中把不确定性找出来，不要过度宣传机器学习的能力。虽然人们渴望确定性，但我认为，与其给出一个远离现实的精确值，不如给出一个包含真实值的宽泛预测区间。</p>
+<p>在本文中，我们将介绍一种在Scikit-Learn中生成不确定区间的方法。生成预测区间是数据科学工具箱中的另一个工具，对于赢得非数据科学家的信任至关重要。</p>
+<blockquote>
+<p>本文完整代码已经发布在本公众号的在线平台“机器学习案例”课程中，请关注公众号：老齐教室（扫描文末二维码），并回复“姓名+手机号+‘案例’”，即可申请加入。详细请参阅本公众号的菜单：“课程-开放课程”的详细介绍。</p>
+</blockquote>
+<p><img src="./images/post/rh01.png" alt=""></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在文中的案例，我们将使用来自DrivenData(<a href="https://drivendata.org/)的机器学习竞赛的数据，这个数据是关于能源问题的真实数据。此数据集有8个特征，其中的样本是每隔15分钟测量一次所得（**译者注：" target="_blank" rel="noopener">https://drivendata.org/)的机器学习竞赛的数据，这个数据是关于能源问题的真实数据。此数据集有8个特征，其中的样本是每隔15分钟测量一次所得（**译者注：</a>** 此数据集已经上传到在线平台，并且经过适当的数据清洗，便于读者学习使用）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="./images/post/rh02.png" alt=""></p>
+<p>本项目的目的是要预测能源消耗情况，这是我们在Cortex Building Intel每天都要做的一项实际任务。毫无疑问，从数据集中没有发现影响能源消耗的隐藏特征（潜在变量），因此，我们希望通过预测能源使用的上限和下限来显示模型评估中的不确定性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Use plotly + cufflinks for interactive plotting</span><br><span class="line">import cufflinks as cf</span><br><span class="line"></span><br><span class="line">data.resample(&#39;12 H&#39;).mean().iplot()</span><br></pre></td></tr></table></figure>
+
+<p><img src="./images/post/rh03.png" alt=""></p>
+<blockquote>
+<p>在本文中，作者使用的可视化工具是plotly，关于这个工具，译者有专门课程介绍，请参阅：<a href="https://gitbook.cn/gitchat/column/5c6cd09e7fa9074fde9c8909" target="_blank" rel="noopener">《案例上手Python数据可视化》</a></p>
+</blockquote>
+<h2 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h2><p>为了在Scikit-Learn中生成预测区间，我们将使用梯度上升回归算法，基本思路如下：</p>
+<ol>
+<li>预测下限，使用<code>GradientBoostingRegressor(loss=
+&quot;quantile&quot;, alpha=lower_quantile)</code>。其中，<code>lower_quantile</code>代表下限。比如说，第10个百分位数是0.1。</li>
+<li>预测上限，使用<code>GradientBoostingRegressor(loss=
+&quot;quantile&quot;, alpha=upper_quantile)</code>。其中，<code>upper_quantile</code>代表上限。比如，第90个百分位数是0.9。</li>
+<li>预测中间值，使用<code>GradientBoostingRegressor(loss=&quot;quantile&quot;, alpha=0.5)</code>，或者使用预测均值的默认<code>loss=&quot;ls&quot;</code>（用于最小二乘法）。官方文档的示例使用后一种方法，我们也这么做。</li>
+</ol>
+<p><code>GradientBoostingRegressor</code>中的参数<code>loss</code>的值是优化模型的函数。如果<code>loss=&quot;quantile&quot;</code>，并将<code>alpha</code>的值也设置为百分位（类似上面预测上下限那样），就能够得到以百分位表示的预测区间。</p>
+<p>在将数据分解成训练集和测试集之后，建立模型。实际上，我们必须使用3个单独的梯度上升回归模型，因为每个模型都有一个不同的优化函数，必须单独训练。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.ensemble import GradientBoostingRegressor</span><br><span class="line"></span><br><span class="line"># Set lower and upper quantile</span><br><span class="line">LOWER_ALPHA &#x3D; 0.1</span><br><span class="line">UPPER_ALPHA &#x3D; 0.9</span><br><span class="line"></span><br><span class="line"># Each model has to be separate</span><br><span class="line">lower_model &#x3D; GradientBoostingRegressor(loss&#x3D;&quot;quantile&quot;, alpha&#x3D;LOWER_ALPHA)</span><br><span class="line"></span><br><span class="line"># The mid model will use the default loss</span><br><span class="line">mid_model &#x3D; GradientBoostingRegressor(loss&#x3D;&quot;ls&quot;)</span><br><span class="line">upper_model &#x3D; GradientBoostingRegressor(loss&#x3D;&quot;quantile&quot;, alpha&#x3D;UPPER_ALPHA)</span><br></pre></td></tr></table></figure>
+
+<p>Training and predicting uses the familiar Scikit-Learn syntax:</p>
+<p>在训练和预测中使用熟悉的Scikit-Learn语法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Fit models</span><br><span class="line">lower_model.fit(X_train, y_train)</span><br><span class="line">mid_model.fit(X_train, y_train)</span><br><span class="line">upper_model.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line"># Record actual values on test set</span><br><span class="line">predictions &#x3D; pd.DataFrame(y_test)</span><br><span class="line"></span><br><span class="line"># Predict</span><br><span class="line">predictions[&#39;lower&#39;] &#x3D; lower_model.predict(X_test)</span><br><span class="line">predictions[&#39;mid&#39;] &#x3D; mid_model.predict(X_test)</span><br><span class="line">predictions[&#39;upper&#39;] &#x3D; upper_model.predict(X_test)</span><br></pre></td></tr></table></figure>
+
+<p>就是这样，我们得到了预测区间!</p>
+<p><img src="./images/post/rh04.png" alt=""></p>
+<p><img src="./images/post/rh05.png" alt=""></p>
+<p>只要有一点Plotly技能，我们就可以创造出一个很好的互动图形。</p>
+<blockquote>
+<p>译者注：Plotly擅长制作交互式的可视化图像，具体请参阅：<a href="https://gitbook.cn/gitchat/column/5c6cd09e7fa9074fde9c8909" target="_blank" rel="noopener">《案例上手Python数据可视化》</a></p>
+</blockquote>
+<p><img src="./images/post/rh06.gif" alt=""></p>
+<h2 id="计算预测误差"><a href="#计算预测误差" class="headerlink" title="计算预测误差"></a>计算预测误差</h2><p>与任何机器学习模型一样，我们希望以量化的方式得到针对测试集的预测误差（我们有实际答案）。评价预测区间的误差要比评估某个具体预测值的误差复杂复杂一些。我们可以计算实际值占预测区间时间上的百分比，但如果让预测区间变大，就很容易被认为预测很好，因此，我们还需要一个度量标准来用于预测值与真实值之间的差距，例如绝对误差。</p>
+<p>在源码中，我提供了一个函数，计算上限、下限和中间值的绝对误差，预测区间的上限为所有上限绝对误差的平均值，下限为所有下限绝对误差的平均值，再绘制下图所示箱线图。</p>
+<p><img src="./images/post/872016fbd77b7460fc16189ae2571651.png" alt=""></p>
+<p>有趣的是，对于这个模型，下限预测的中值绝对误差实际上小于预测的中间值的绝对误差。该模型精度不高，可以通过调整优化函数提高。真实值在上下限之间，刚好超过时间的一半。我们可以通过降低下四分位和提高上四分位数来增加度量范围，但这样做会让精度降低。</p>
+<p>可能有更好的评估标准，但我选择这些标准是因为它们计算简单、易于解释。你使用的实际评估标准应该取决于你试图解决的问题和你的目标。</p>
+<h2 id="预测区间模型"><a href="#预测区间模型" class="headerlink" title="预测区间模型"></a>预测区间模型</h2><p>用3个独立的模型进行训练和预测有些繁琐，因此我们可以编写一个模型，将梯度上升回归算法包装成一个类。它来自Scikit-Learn，因此我们使用相同的语法进行训练或预测，但现在只需要调用一次：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Instantiate the class</span><br><span class="line">model &#x3D; GradientBoostingPredictionIntervals(lower_alpha&#x3D;0.1, upper_alpha&#x3D;0.9)</span><br><span class="line"></span><br><span class="line"># Fit and make predictions</span><br><span class="line">_ &#x3D; model.fit(X_train, y_train)</span><br><span class="line">predictions &#x3D; model.predict(X_test, y_test)</span><br></pre></td></tr></table></figure>
+
+<p>该模型还带有一些绘图工具:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fig &#x3D; model.plot_intervals(mid&#x3D;True, start&#x3D;&#39;2017-05-26&#39;, stop&#x3D;&#39;2017-06-01&#39;)</span><br><span class="line">iplot(fig)</span><br></pre></td></tr></table></figure>
+
+<p><img src="./images/post/70991fe34e665a9d7a7a9ff9b93086f6.png" alt=""></p>
+<p>请使用和调整模型直到你认为合适！这只是进行不确定性预测的一种方法，但我认为它很有用，因为它使用了Scikit-Learn（意味着一个平滑的学习曲线），我们可以根据需要对其进行扩展。一般来说，这是解决数据科学问题的好方法：从简单的解决方案开始，只根据需要增加复杂性！</p>
+<h2 id="背景：分位数损失与梯度上升回归"><a href="#背景：分位数损失与梯度上升回归" class="headerlink" title="背景：分位数损失与梯度上升回归"></a>背景：分位数损失与梯度上升回归</h2><p>梯度上升回归算法是一个集成模型，由决策树回归树组成。对于该模型的最初解释，参见Friedman于1999年发表的论文：《Greedy Function Approximation: A Gradient Boosting Machine》（<a href="https://statweb.stanford.edu/~jhf/ftp/trebst.pdf）。与随机森林的并行训练不同，梯度提升算法按照次序进行训练，每棵树都从当前集合的错误（残差）中学习。树对于模型的贡献是通过最小化损失函数和训练集中的实际目标来确定的。" target="_blank" rel="noopener">https://statweb.stanford.edu/~jhf/ftp/trebst.pdf）。与随机森林的并行训练不同，梯度提升算法按照次序进行训练，每棵树都从当前集合的错误（残差）中学习。树对于模型的贡献是通过最小化损失函数和训练集中的实际目标来确定的。</a></p>
+<p><img src="./images/post/a23c3ba93c15cbb78a93f2c43aae6f32.png" alt=""></p>
+<p>使用默认损失函数——最小二乘法——梯度上升回归模型预测平均值。要理解的关键点是，最小二乘法中对低误差和高误差的惩罚是一样的：</p>
+<p><img src="./images/post/e9fd5ab23c892bf0d2364ffe3b9ca040.png" alt=""></p>
+<p>相比之下，分位数损失根据分位数和误差的正(实际&gt;预测)负(实际&lt;预测)惩罚误差，这使得梯度上升模型优化不是针对平均值，而是针对百分位数。分位数损失为:</p>
+<p><img src="./images/post/8fec8409686220126dc155c717b53e6b.png" alt=""></p>
+<p>其中α是分位数。让我们快速浏览一个示例，例子中使用实际值10以及分位数0.1和0.9:</p>
+<ol>
+<li>如果α = 0.1，预测 = 15，那么损失 = (0.1–1)* (10–15)= 4.5</li>
+<li>如果α = 0.1，预测 = 5，那么损失 = 0.1 *(10–5)= 0.5</li>
+<li>如果α = 0.9，预测 = 15，那么损失 = (0.9–1)* (10–15)= 0.5</li>
+<li>如果α = 0.9，预测 = 5，那么损失 = 0.9 *(10–5)= 4.5</li>
+</ol>
+<p>对于&lt; 0.5的分位数，如果预测值大于实际值(情况1)，则损失将大于距实际值相同距离的预测值。对于&gt; 0.5分位数，如果预测值小于实际值(情况4)，则损失将大于实际值相同距离的预测值。分位数== 0.5时，高于和低于实际值的预测值将导致相同的误差，模型将对中值进行优化。（对于中间状态，我们可以使用<code>loss=“quantile”</code>，<code>alpha=0.5</code>作为中值，或者使用<code>loss=“ls”</code>作为平均值）。</p>
+<p>下图中说明了分位数损失和误差的关系：</p>
+<p><img src="./images/post/dfd3302754899451da2d950a99d387ce.png" alt=""></p>
+<p>分位数&lt;0.5使预测低于中值，分位数&gt;0.5使预测高于中值。这是一个很棒的提醒，机器学习中的损失函数决定了你要优化的内容！</p>
+<p>根据我们想要的输出，可以优化平均值（最小二乘法）、中值（α == 0.5的分位数损失）或任何百分位数（α == 百分位数/ 100 的分位数损失）。这是分位数损失的一个相对简单的解释，但它足以让你开始使用模型训练生成预测区间。要获取更多信息，请阅读本文并查看源代码（<strong>译者注：</strong> 已经发布到本公众号“老齐教室”的在线实验平台）。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>用机器学习模型预测，如果只得到一个精确的数字，会给人一种错觉：我们对这个模型信心百倍。然而，一定要牢记，任何模型所得的都是一个近似值，所以，我们在评估时非常有必要表达不确定性，常用的一种方法就是用Scikit-Learn中的梯度上升回归生成预测区间。这只是预测范围（参见线性回归的置信区间）的一种方法，但它相对简单，可以根据需要进行调整。在本文中，我们看到了一个完整的实现，并学习了分位数损失函数背后的一些理论。</p>
+<p>解决数据科学问题需要在工具箱中有许多可以按需使用的工具。生成预测区间是一种有用的技术，我建议你练习执行本文的代码，并用它处理你的问题。（学习任何技巧的最佳方法都是在实践中学！）我们知道机器学习可以做一些非常不可思议的事情，但它并不完美，我们也不应该把它描绘成完美的。为了获得决策者的信任，我们通常不需要给出一个数字作为评估结果，而是需要一个预测范围来表示所有模型固有的不确定性。</p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#机器学习 预测区间" >
+    <span class="tag-code">机器学习 预测区间</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/01/09/%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/">
+        <span class="nav-arrow">← </span>
+        
+          第一篇文章
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#问题"><span class="toc-nav-text">问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实施"><span class="toc-nav-text">实施</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#计算预测误差"><span class="toc-nav-text">计算预测误差</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预测区间模型"><span class="toc-nav-text">预测区间模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景：分位数损失与梯度上升回归"><span class="toc-nav-text">背景：分位数损失与梯度上升回归</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/01/09/如何生成机器学习的预测区间/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
