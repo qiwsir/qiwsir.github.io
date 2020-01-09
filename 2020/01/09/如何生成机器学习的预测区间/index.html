@@ -150,8 +150,8 @@
   <article class="post-article">
     <h2>如何生成机器学习的预测区间</h2>
     <p class="post-date">2020-01-09</p>
-    <section class="markdown-content"><p>——使用梯度上升回归来显示机器学习模型评估的不确定性</p>
-<p>原文：<a href="https://towardsdatascience.com/how-to-generate-prediction-intervals-with-scikit-learn-and-python-ab3899f992ed" target="_blank" rel="noopener">https://towardsdatascience.com/how-to-generate-prediction-intervals-with-scikit-learn-and-python-ab3899f992ed</a></p>
+    <section class="markdown-content"><h1 id="如何生成机器学习的预测区间"><a href="#如何生成机器学习的预测区间" class="headerlink" title="如何生成机器学习的预测区间"></a>如何生成机器学习的预测区间</h1><p>——使用梯度上升回归来显示机器学习模型评估的不确定性</p>
+<p><a href="https://towardsdatascience.com/how-to-generate-prediction-intervals-with-scikit-learn-and-python-ab3899f992ed" target="_blank" rel="noopener">https://towardsdatascience.com/how-to-generate-prediction-intervals-with-scikit-learn-and-python-ab3899f992ed</a></p>
 <p>作者：Will Koehrsen</p>
 <p>翻译：老齐</p>
 <hr>
@@ -162,17 +162,17 @@
 <p>要诚实地反映模型的预测性能，必须通过一系列的评估手段，对于预测结果，或许有一个最佳值，但实际上更可能是一个很宽的区间。在数据科学课程中，这并不是老生常谈，但至关重要的是，我们要在预测中把不确定性找出来，不要过度宣传机器学习的能力。虽然人们渴望确定性，但我认为，与其给出一个远离现实的精确值，不如给出一个包含真实值的宽泛预测区间。</p>
 <p>在本文中，我们将介绍一种在Scikit-Learn中生成不确定区间的方法。生成预测区间是数据科学工具箱中的另一个工具，对于赢得非数据科学家的信任至关重要。</p>
 <blockquote>
-<p>本文完整代码已经发布在本公众号的在线平台“机器学习案例”课程中，请关注公众号：老齐教室（扫描文末二维码），并回复“姓名+手机号+‘案例’”，即可申请加入。详细请参阅本公众号的菜单：“课程-开放课程”的详细介绍。</p>
+<p>本文完整代码已经发布在本公众号的在线平台“机器学习案例”课程中，请关注公众号，并回复“姓名+手机号+‘案例’”，即可申请加入。详细请参阅本公众号的菜单：“课程-开放课程”的详细介绍。</p>
 </blockquote>
-<p><img src="./images/post/rh01.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/fad8db6cff1693bb835575961b106642.png" alt=""></p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在文中的案例，我们将使用来自DrivenData(<a href="https://drivendata.org/)的机器学习竞赛的数据，这个数据是关于能源问题的真实数据。此数据集有8个特征，其中的样本是每隔15分钟测量一次所得（**译者注：" target="_blank" rel="noopener">https://drivendata.org/)的机器学习竞赛的数据，这个数据是关于能源问题的真实数据。此数据集有8个特征，其中的样本是每隔15分钟测量一次所得（**译者注：</a>** 此数据集已经上传到在线平台，并且经过适当的数据清洗，便于读者学习使用）。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.head()</span><br></pre></td></tr></table></figure>
 
-<p><img src="./images/post/rh02.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/f3ed6e80df7a2e5aaa2b9976610cb6b8.png" alt=""></p>
 <p>本项目的目的是要预测能源消耗情况，这是我们在Cortex Building Intel每天都要做的一项实际任务。毫无疑问，从数据集中没有发现影响能源消耗的隐藏特征（潜在变量），因此，我们希望通过预测能源使用的上限和下限来显示模型评估中的不确定性。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Use plotly + cufflinks for interactive plotting</span><br><span class="line">import cufflinks as cf</span><br><span class="line"></span><br><span class="line">data.resample(&#39;12 H&#39;).mean().iplot()</span><br></pre></td></tr></table></figure>
 
-<p><img src="./images/post/rh03.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/9eef94b857554c4d7694d3a37723f80d.png" alt=""></p>
 <blockquote>
 <p>在本文中，作者使用的可视化工具是plotly，关于这个工具，译者有专门课程介绍，请参阅：<a href="https://gitbook.cn/gitchat/column/5c6cd09e7fa9074fde9c8909" target="_blank" rel="noopener">《案例上手Python数据可视化》</a></p>
 </blockquote>
@@ -193,16 +193,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Fit models</span><br><span class="line">lower_model.fit(X_train, y_train)</span><br><span class="line">mid_model.fit(X_train, y_train)</span><br><span class="line">upper_model.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line"># Record actual values on test set</span><br><span class="line">predictions &#x3D; pd.DataFrame(y_test)</span><br><span class="line"></span><br><span class="line"># Predict</span><br><span class="line">predictions[&#39;lower&#39;] &#x3D; lower_model.predict(X_test)</span><br><span class="line">predictions[&#39;mid&#39;] &#x3D; mid_model.predict(X_test)</span><br><span class="line">predictions[&#39;upper&#39;] &#x3D; upper_model.predict(X_test)</span><br></pre></td></tr></table></figure>
 
 <p>就是这样，我们得到了预测区间!</p>
-<p><img src="./images/post/rh04.png" alt=""></p>
-<p><img src="./images/post/rh05.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/6bec2fa7f37ebf59bf28b1bc66081efd.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/ddb450017c411ec10cf0bf61073b84a9.png" alt=""></p>
 <p>只要有一点Plotly技能，我们就可以创造出一个很好的互动图形。</p>
 <blockquote>
 <p>译者注：Plotly擅长制作交互式的可视化图像，具体请参阅：<a href="https://gitbook.cn/gitchat/column/5c6cd09e7fa9074fde9c8909" target="_blank" rel="noopener">《案例上手Python数据可视化》</a></p>
 </blockquote>
-<p><img src="./images/post/rh06.gif" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/18dc7738312c4dc5485e3dfb4e65cc73.gif" alt=""></p>
 <h2 id="计算预测误差"><a href="#计算预测误差" class="headerlink" title="计算预测误差"></a>计算预测误差</h2><p>与任何机器学习模型一样，我们希望以量化的方式得到针对测试集的预测误差（我们有实际答案）。评价预测区间的误差要比评估某个具体预测值的误差复杂复杂一些。我们可以计算实际值占预测区间时间上的百分比，但如果让预测区间变大，就很容易被认为预测很好，因此，我们还需要一个度量标准来用于预测值与真实值之间的差距，例如绝对误差。</p>
 <p>在源码中，我提供了一个函数，计算上限、下限和中间值的绝对误差，预测区间的上限为所有上限绝对误差的平均值，下限为所有下限绝对误差的平均值，再绘制下图所示箱线图。</p>
-<p><img src="./images/post/872016fbd77b7460fc16189ae2571651.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/872016fbd77b7460fc16189ae2571651.png" alt=""></p>
 <p>有趣的是，对于这个模型，下限预测的中值绝对误差实际上小于预测的中间值的绝对误差。该模型精度不高，可以通过调整优化函数提高。真实值在上下限之间，刚好超过时间的一半。我们可以通过降低下四分位和提高上四分位数来增加度量范围，但这样做会让精度降低。</p>
 <p>可能有更好的评估标准，但我选择这些标准是因为它们计算简单、易于解释。你使用的实际评估标准应该取决于你试图解决的问题和你的目标。</p>
 <h2 id="预测区间模型"><a href="#预测区间模型" class="headerlink" title="预测区间模型"></a>预测区间模型</h2><p>用3个独立的模型进行训练和预测有些繁琐，因此我们可以编写一个模型，将梯度上升回归算法包装成一个类。它来自Scikit-Learn，因此我们使用相同的语法进行训练或预测，但现在只需要调用一次：</p>
@@ -211,14 +211,14 @@
 <p>该模型还带有一些绘图工具:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fig &#x3D; model.plot_intervals(mid&#x3D;True, start&#x3D;&#39;2017-05-26&#39;, stop&#x3D;&#39;2017-06-01&#39;)</span><br><span class="line">iplot(fig)</span><br></pre></td></tr></table></figure>
 
-<p><img src="./images/post/70991fe34e665a9d7a7a9ff9b93086f6.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/70991fe34e665a9d7a7a9ff9b93086f6.png" alt=""></p>
 <p>请使用和调整模型直到你认为合适！这只是进行不确定性预测的一种方法，但我认为它很有用，因为它使用了Scikit-Learn（意味着一个平滑的学习曲线），我们可以根据需要对其进行扩展。一般来说，这是解决数据科学问题的好方法：从简单的解决方案开始，只根据需要增加复杂性！</p>
 <h2 id="背景：分位数损失与梯度上升回归"><a href="#背景：分位数损失与梯度上升回归" class="headerlink" title="背景：分位数损失与梯度上升回归"></a>背景：分位数损失与梯度上升回归</h2><p>梯度上升回归算法是一个集成模型，由决策树回归树组成。对于该模型的最初解释，参见Friedman于1999年发表的论文：《Greedy Function Approximation: A Gradient Boosting Machine》（<a href="https://statweb.stanford.edu/~jhf/ftp/trebst.pdf）。与随机森林的并行训练不同，梯度提升算法按照次序进行训练，每棵树都从当前集合的错误（残差）中学习。树对于模型的贡献是通过最小化损失函数和训练集中的实际目标来确定的。" target="_blank" rel="noopener">https://statweb.stanford.edu/~jhf/ftp/trebst.pdf）。与随机森林的并行训练不同，梯度提升算法按照次序进行训练，每棵树都从当前集合的错误（残差）中学习。树对于模型的贡献是通过最小化损失函数和训练集中的实际目标来确定的。</a></p>
-<p><img src="./images/post/a23c3ba93c15cbb78a93f2c43aae6f32.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/a23c3ba93c15cbb78a93f2c43aae6f32.png" alt=""></p>
 <p>使用默认损失函数——最小二乘法——梯度上升回归模型预测平均值。要理解的关键点是，最小二乘法中对低误差和高误差的惩罚是一样的：</p>
-<p><img src="./images/post/e9fd5ab23c892bf0d2364ffe3b9ca040.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/e9fd5ab23c892bf0d2364ffe3b9ca040.png" alt=""></p>
 <p>相比之下，分位数损失根据分位数和误差的正(实际&gt;预测)负(实际&lt;预测)惩罚误差，这使得梯度上升模型优化不是针对平均值，而是针对百分位数。分位数损失为:</p>
-<p><img src="./images/post/8fec8409686220126dc155c717b53e6b.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/8fec8409686220126dc155c717b53e6b.png" alt=""></p>
 <p>其中α是分位数。让我们快速浏览一个示例，例子中使用实际值10以及分位数0.1和0.9:</p>
 <ol>
 <li>如果α = 0.1，预测 = 15，那么损失 = (0.1–1)* (10–15)= 4.5</li>
@@ -228,7 +228,7 @@
 </ol>
 <p>对于&lt; 0.5的分位数，如果预测值大于实际值(情况1)，则损失将大于距实际值相同距离的预测值。对于&gt; 0.5分位数，如果预测值小于实际值(情况4)，则损失将大于实际值相同距离的预测值。分位数== 0.5时，高于和低于实际值的预测值将导致相同的误差，模型将对中值进行优化。（对于中间状态，我们可以使用<code>loss=“quantile”</code>，<code>alpha=0.5</code>作为中值，或者使用<code>loss=“ls”</code>作为平均值）。</p>
 <p>下图中说明了分位数损失和误差的关系：</p>
-<p><img src="./images/post/dfd3302754899451da2d950a99d387ce.png" alt=""></p>
+<p><img src="https://qiniu.mdnice.com/dfd3302754899451da2d950a99d387ce.png" alt=""></p>
 <p>分位数&lt;0.5使预测低于中值，分位数&gt;0.5使预测高于中值。这是一个很棒的提醒，机器学习中的损失函数决定了你要优化的内容！</p>
 <p>根据我们想要的输出，可以优化平均值（最小二乘法）、中值（α == 0.5的分位数损失）或任何百分位数（α == 百分位数/ 100 的分位数损失）。这是分位数损失的一个相对简单的解释，但它足以让你开始使用模型训练生成预测区间。要获取更多信息，请阅读本文并查看源代码（<strong>译者注：</strong> 已经发布到本公众号“老齐教室”的在线实验平台）。</p>
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>用机器学习模型预测，如果只得到一个精确的数字，会给人一种错觉：我们对这个模型信心百倍。然而，一定要牢记，任何模型所得的都是一个近似值，所以，我们在评估时非常有必要表达不确定性，常用的一种方法就是用Scikit-Learn中的梯度上升回归生成预测区间。这只是预测范围（参见线性回归的置信区间）的一种方法，但它相对简单，可以根据需要进行调整。在本文中，我们看到了一个完整的实现，并学习了分位数损失函数背后的一些理论。</p>
@@ -238,15 +238,6 @@
 </blockquote>
 </section>
     <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#机器学习 预测区间" >
-    <span class="tag-code">机器学习 预测区间</span>
-  </a>
-
-      </div>
     
     <!-- Tags END -->
     <!-- NAV START -->
@@ -305,7 +296,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#问题"><span class="toc-nav-text">问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实施"><span class="toc-nav-text">实施</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#计算预测误差"><span class="toc-nav-text">计算预测误差</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预测区间模型"><span class="toc-nav-text">预测区间模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景：分位数损失与梯度上升回归"><span class="toc-nav-text">背景：分位数损失与梯度上升回归</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#如何生成机器学习的预测区间"><span class="toc-nav-text">如何生成机器学习的预测区间</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#问题"><span class="toc-nav-text">问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实施"><span class="toc-nav-text">实施</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#计算预测误差"><span class="toc-nav-text">计算预测误差</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预测区间模型"><span class="toc-nav-text">预测区间模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景：分位数损失与梯度上升回归"><span class="toc-nav-text">背景：分位数损失与梯度上升回归</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol></li></ol>
     
   </div>
 </aside>
