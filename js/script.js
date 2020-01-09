@@ -2,7 +2,8 @@
   console.log('© Theme-Vexo | https://github.com/yanm1ng/hexo-theme-vexo')
   var app = $('.app-body')
   var header = $('.header')
-  var banner = document.getElementById('article-banner') || false
+  //var banner = document.getElementById('article-banner') || false
+  var banner = false
   var about = document.getElementById('about-banner') || false
   var top = $('.scroll-top')
   var catalog = $('.catalog-container .toc-main')

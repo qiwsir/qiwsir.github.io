@@ -140,15 +140,16 @@
 </header>
 
     <div id="article-banner">
-  <h2>第一篇文章</h2>
-  <p class="post-date">2020-01-09</p>
-  <div class="arrow-down">
+  
+  <!-- <div class="arrow-down">
     <a href="javascript:;"></a>
-  </div>
+  </div> -->
 </div>
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
+    <h2>第一篇文章</h2>
+    <p class="post-date">2020-01-09</p>
     <section class="markdown-content"><h1 id="这是第一篇文章"><a href="#这是第一篇文章" class="headerlink" title="这是第一篇文章"></a>这是第一篇文章</h1><p>测试文章</p>
 </section>
     <!-- Tags START -->
@@ -222,14 +223,14 @@
   (function () {
     var url = 'https://qiwsir.github.io/2020/01/09/第一篇文章/';
     var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
         'background-image': 'url(' + banner + ')'
       })
     } else {
       $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
+    }*/
+    //$('.header').removeClass('fixed-header')
 
     // error image
     $(".markdown-content img").on('error', function() {

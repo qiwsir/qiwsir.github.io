@@ -140,15 +140,16 @@
 </header>
 
     <div id="article-banner">
-  <h2>Hello World</h2>
-  <p class="post-date">2020-01-08</p>
-  <div class="arrow-down">
+  
+  <!-- <div class="arrow-down">
     <a href="javascript:;"></a>
-  </div>
+  </div> -->
 </div>
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
+    <h2>Hello World</h2>
+    <p class="post-date">2020-01-08</p>
     <section class="markdown-content"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 
@@ -234,14 +235,14 @@
   (function () {
     var url = 'https://qiwsir.github.io/2020/01/08/hello-world/';
     var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
         'background-image': 'url(' + banner + ')'
       })
     } else {
       $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
+    }*/
+    //$('.header').removeClass('fixed-header')
 
     // error image
     $(".markdown-content img").on('error', function() {
