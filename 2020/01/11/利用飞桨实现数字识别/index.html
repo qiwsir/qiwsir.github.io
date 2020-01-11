@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      利用飞桨实现数字识别 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>利用飞桨实现数字识别</h2>
+    <p class="post-date">2020-01-11</p>
+    <section class="markdown-content"><p>作者：燕清</p>
+<p>数字识别，是机器学习和深度学习的经典案例。为此，此时用飞桨深度学习平台，也实现此案例。在本例中所用的数据集来自MNIST。</p>
+<p align="center"><img width="450px" src="https://githubraw.cdn.bcebos.com/PaddlePaddle/book/develop/02.recognize_digits/image/mnist_example_image.png?raw=true"><br>图1.MNIST图片示例</p>
+本文中，我们从简单的Softmax回归模型开始，带大家了解手写字符识别，并向大家介绍如何改进模型，利用多层感知机（MLP）和卷积神经网络（CNN）优化识别效果。
+
+<blockquote>
+<p><strong>提示：</strong> 本文代码已经发布到在线实验平台，请关注本文微信公众号（扫描文末二维码），并回复：姓名+手机号+‘案例’，即可获得。</p>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>首先，理解本文所使用的如下定义：</p>
+<ul>
+<li>X，代表输入：MNIST图片是28×28 的二维图像，为了进行计算，我们将其转化为784维向量，即X=($x_0,x_1,…,x_{783}$)。</li>
+<li>Y，代表分类器预测的输出：分类器的输出是10类数字（0-9），即Y=($y_0,y_1,…,y_9$)，每一维$y_i$代表图片分类为第i类数字的概率。</li>
+<li>Labe，代表数字图片的真实标签：Label=($l_0,l_1,…,l_9$)，也是10维，但只有一个特征为1，其他都为0，即用稀疏矩阵表示数字。例如某张图片上的数字为2，则它对应的样本为(0,0,1,0,…,0)</li>
+</ul>
+<h3 id="Softmax回归-Softmax-Regression"><a href="#Softmax回归-Softmax-Regression" class="headerlink" title="Softmax回归(Softmax Regression)"></a>Softmax回归(Softmax Regression)</h3><p>最简单的Softmax回归模型是先将输入层经过一个全连接层得到特征，然后直接通过<code>softmax</code>函数计算多个类别的概率并输出。</p>
+<p>X传到输出层，在激活操作之前，会乘以相应的权重 W ，并加上偏置变量 b ，如下式所示：</p>
+<p>$$y_i = softmax(\sum_jW_{i,j}x_j + b_i)$$</p>
+<p>其中</p>
+<p>$$softmax(x_i) = \frac{e^{x_i}}{\sum_je^{x_j}}$$</p>
+<p>对于有 N 个类别的多分类问题，指定 N 个输出节点，N 维向量经过softmax将区间化为 N 个[0,1]范围内的实数值，分别表示该样本属于这 N 个类别的概率。此处的 $y_i$ 即对应该图片为数字 i 的预测概率。</p>
+<p>在分类问题中，我们一般采用交叉熵损失函数（cross entropy loss），公式如下：</p>
+<p>$$L_{cross-entropy}(label, y) = -\sum_i label_i log(y_i)$$</p>
+<h3 id="多层感知机-Multilayer-Perceptron-MLP"><a href="#多层感知机-Multilayer-Perceptron-MLP" class="headerlink" title="多层感知机(Multilayer Perceptron, MLP)"></a>多层感知机(Multilayer Perceptron, MLP)</h3><p>Softmax回归模型采用了最简单的两层神经网络，即只有输入层和输出层，因此其拟合能力有限。为了达到更好的识别效果，我们考虑在输入层和输出层中间加上若干个隐藏层。</p>
+<ol>
+<li>经过第一个隐藏层，可以得到 $H_1=ϕ(W_1X+b_1)$，其中ϕ代表激活函数，常见的有sigmoid、tanh或ReLU等函数。</li>
+<li>经过第二个隐藏层，可以得到 $H_2=ϕ(W_2H_1+b_2)$。</li>
+<li>最后，再经过输出层，得到的$Y=softmax(W_3H_2+b_3)$，即为最后的分类结果。</li>
+</ol>
+<h3 id="卷积神经网络-Convolutional-Neural-Network-CNN"><a href="#卷积神经网络-Convolutional-Neural-Network-CNN" class="headerlink" title="卷积神经网络(Convolutional Neural Network, CNN)"></a>卷积神经网络(Convolutional Neural Network, CNN)</h3><p>在多层感知器模型中，将图像展开成一维向量输入到网络中，忽略了图像的位置和结构信息，而卷积神经网络能够更好的利用图像的结构信息。LeNet-5是一个较简单的卷积神经网络，图2显示了其结构：输入的二维图像，先经过两次卷积层到池化层，再经过全连接层，最后使用softmax分类作为输出层。</p>
+<p align="center"><img width="850px" src="https://githubraw.cdn.bcebos.com/PaddlePaddle/book/develop/02.recognize_digits/image/cnn.png?raw=true"><br>图2. LeNet-5卷积神经网络结构</p>
+
+
+<h2 id="操作过程"><a href="#操作过程" class="headerlink" title="操作过程"></a>操作过程</h2><p>PaddlePaddle在API中提供了自动加载MNIST数据的模块<code>paddle.dataset.mnist</code>。加载后的数据位于<code>/home/username/.cache/paddle/dataset/mnist</code>下：</p>
+<table>
+<thead>
+<tr>
+<th>文件名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>train-images-idx3-ubyte</td>
+<td>训练数据图片，60,000条数据</td>
+</tr>
+<tr>
+<td>train-labels-idx1-ubyte</td>
+<td>训练数据标签，60,000条数据</td>
+</tr>
+<tr>
+<td>t10k-images-idx3-ubyte</td>
+<td>测试数据图片，10,000条数据</td>
+</tr>
+<tr>
+<td>t10k-labels-idx1-ubyte</td>
+<td>测试数据标签，10,000条数据</td>
+</tr>
+</tbody></table>
+<h3 id="Fluid-API-概述"><a href="#Fluid-API-概述" class="headerlink" title="Fluid API 概述"></a>Fluid API 概述</h3><p>Fluid API是最新的 PaddlePaddle API，它在不牺牲性能的情况下简化了模型配置，建议使用。</p>
+<p>下面是 Fluid API 中几个重要概念的概述：</p>
+<ol>
+<li><code>inference_program</code>：指定如何从数据输入中获得预测的函数， 这是指定网络流的地方。</li>
+<li><code>train_program</code>：指定如何从 <code>inference_program</code> 和标签值中获取 <code>loss</code> 的函数， 这是指定损失计算的地方。</li>
+<li><code>optimizer_func</code>: 指定优化器配置的函数，优化器负责减少损失并驱动训练，Paddle 支持多种不同的优化器。</li>
+</ol>
+<p>加载 PaddlePaddle 的 Fluid API 包。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image <span class="comment"># 导入图像处理模块</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"><span class="keyword">import</span> paddle <span class="comment"># 导入paddle模块</span></span><br><span class="line"><span class="keyword">import</span> paddle.fluid <span class="keyword">as</span> fluid</span><br></pre></td></tr></table></figure>
+
+<h4 id="Program-Functions-配置"><a href="#Program-Functions-配置" class="headerlink" title="Program Functions 配置"></a><strong>Program Functions 配置</strong></h4><p>我们需要设置 <code>inference_program</code> 函数。下面演示三个不同的分类器，每个分类器都定义为 Python 函数。 我们需要将图像数据输入到分类器中。Paddle 为读取数据提供了一个特殊的层 <code>fluid.data</code> 层。 让我们创建一个数据层来读取图像并将其连接到分类网络。</p>
+<ul>
+<li>Softmax回归：只通过一层简单的以softmax为激活函数的全连接层，就可以得到分类的结果。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">softmax_regression</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    定义softmax分类器：</span></span><br><span class="line"><span class="string">        一个以softmax为激活函数的全连接层</span></span><br><span class="line"><span class="string">    Return:</span></span><br><span class="line"><span class="string">        predict_image -- 分类的结果</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 输入的原始图像数据，大小为28*28*1</span></span><br><span class="line">    img = fluid.data(name=<span class="string">'img'</span>, shape=[<span class="literal">None</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">    <span class="comment"># 以softmax为激活函数的全连接层，输出层的大小必须为数字的个数10</span></span><br><span class="line">    predict = fluid.layers.fc(</span><br><span class="line">        input=img, size=<span class="number">10</span>, act=<span class="string">'softmax'</span>)</span><br><span class="line">    <span class="keyword">return</span> predict</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>多层感知器：下面代码实现了一个含有两个隐藏层（即全连接层）的多层感知器。其中两个隐藏层的激活函数均采用ReLU，输出层的激活函数用Softmax。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multilayer_perceptron</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    定义多层感知机分类器：</span></span><br><span class="line"><span class="string">        含有两个隐藏层（全连接层）的多层感知器</span></span><br><span class="line"><span class="string">        其中前两个隐藏层的激活函数采用 ReLU，输出层的激活函数用 Softmax</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Return:</span></span><br><span class="line"><span class="string">        predict_image -- 分类的结果</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 输入的原始图像数据，大小为28*28*1</span></span><br><span class="line">    img = fluid.data(name=<span class="string">'img'</span>, shape=[<span class="literal">None</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">    <span class="comment"># 第一个全连接层，激活函数为ReLU</span></span><br><span class="line">    hidden = fluid.layers.fc(input=img, size=<span class="number">200</span>, act=<span class="string">'relu'</span>)</span><br><span class="line">    <span class="comment"># 第二个全连接层，激活函数为ReLU</span></span><br><span class="line">    hidden = fluid.layers.fc(input=hidden, size=<span class="number">200</span>, act=<span class="string">'relu'</span>)</span><br><span class="line">    <span class="comment"># 以softmax为激活函数的全连接输出层，输出层的大小必须为数字的个数10</span></span><br><span class="line">    prediction = fluid.layers.fc(input=hidden, size=<span class="number">10</span>, act=<span class="string">'softmax'</span>)</span><br><span class="line">    <span class="keyword">return</span> prediction</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>卷积神经网络LeNet-5: 输入的二维图像，首先经过两次卷积层到池化层，再经过全连接层，最后使用以softmax为激活函数的全连接层作为输出层。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convolutional_neural_network</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    定义卷积神经网络分类器：</span></span><br><span class="line"><span class="string">        输入的二维图像，经过两个卷积-池化层，使用以softmax为激活函数的全连接层作为输出层</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Return:</span></span><br><span class="line"><span class="string">        predict -- 分类的结果</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 输入的原始图像数据，大小为28*28*1</span></span><br><span class="line">    img = fluid.data(name=<span class="string">'img'</span>, shape=[<span class="literal">None</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">    <span class="comment"># 第一个卷积-池化层</span></span><br><span class="line">    <span class="comment"># 使用20个5*5的滤波器，池化大小为2，池化步长为2，激活函数为Relu</span></span><br><span class="line">    conv_pool_1 = fluid.nets.simple_img_conv_pool(</span><br><span class="line">        input=img,</span><br><span class="line">        filter_size=<span class="number">5</span>,</span><br><span class="line">        num_filters=<span class="number">20</span>,</span><br><span class="line">        pool_size=<span class="number">2</span>,</span><br><span class="line">        pool_stride=<span class="number">2</span>,</span><br><span class="line">        act=<span class="string">"relu"</span>)</span><br><span class="line">    conv_pool_1 = fluid.layers.batch_norm(conv_pool_1)</span><br><span class="line">    <span class="comment"># 第二个卷积-池化层</span></span><br><span class="line">    <span class="comment"># 使用50个5*5的滤波器，池化大小为2，池化步长为2，激活函数为Relu</span></span><br><span class="line">    conv_pool_2 = fluid.nets.simple_img_conv_pool(</span><br><span class="line">        input=conv_pool_1,</span><br><span class="line">        filter_size=<span class="number">5</span>,</span><br><span class="line">        num_filters=<span class="number">50</span>,</span><br><span class="line">        pool_size=<span class="number">2</span>,</span><br><span class="line">        pool_stride=<span class="number">2</span>,</span><br><span class="line">        act=<span class="string">"relu"</span>)</span><br><span class="line">    <span class="comment"># 以softmax为激活函数的全连接输出层，输出层的大小必须为数字的个数10</span></span><br><span class="line">    prediction = fluid.layers.fc(input=conv_pool_2, size=<span class="number">10</span>, act=<span class="string">'softmax'</span>)</span><br><span class="line">    <span class="keyword">return</span> prediction</span><br></pre></td></tr></table></figure>
+
+<h4 id="Train-Program-配置"><a href="#Train-Program-配置" class="headerlink" title="Train Program 配置"></a><strong>Train Program 配置</strong></h4><p>然后我们需要设置训练程序 <code>train_program</code>。它首先从分类器中进行预测。 在训练期间，它将从预测中计算 <code>avg_cost</code>。</p>
+<p>注意: 训练程序应该返回一个数组，第一个返回参数必须是 <code>avg_cost</code>。训练器使用它来计算梯度。</p>
+<p>请随意修改代码，测试 Softmax 回归 <code>softmax_regression</code>, <code>MLP</code> 和 卷积神经网络 <code>convolutional neural network</code> 分类器之间的不同结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_program</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    配置train_program</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Return:</span></span><br><span class="line"><span class="string">        predict -- 分类的结果</span></span><br><span class="line"><span class="string">        avg_cost -- 平均损失</span></span><br><span class="line"><span class="string">        acc -- 分类的准确率</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 标签层，名称为label,对应输入图片的类别标签</span></span><br><span class="line">    label = fluid.data(name=<span class="string">'label'</span>, shape=[<span class="literal">None</span>, <span class="number">1</span>], dtype=<span class="string">'int64'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># predict = softmax_regression() # 取消注释将使用 Softmax回归</span></span><br><span class="line">    <span class="comment"># predict = multilayer_perceptron() # 取消注释将使用 多层感知器</span></span><br><span class="line">    predict = convolutional_neural_network() <span class="comment"># 取消注释将使用 LeNet5卷积神经网络</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用类交叉熵函数计算predict和label之间的损失函数</span></span><br><span class="line">    cost = fluid.layers.cross_entropy(input=predict, label=label)</span><br><span class="line">    <span class="comment"># 计算平均损失</span></span><br><span class="line">    avg_cost = fluid.layers.mean(cost)</span><br><span class="line">    <span class="comment"># 计算分类准确率</span></span><br><span class="line">    acc = fluid.layers.accuracy(input=predict, label=label)</span><br><span class="line">    <span class="keyword">return</span> predict, [avg_cost, acc]</span><br></pre></td></tr></table></figure>
+
+<h4 id="Optimizer-Function-配置"><a href="#Optimizer-Function-配置" class="headerlink" title="Optimizer Function 配置"></a><strong>Optimizer Function 配置</strong></h4><p>在下面的 <code>Adam optimizer</code>，<code>learning_rate</code> 是学习率，它的大小与网络的训练收敛速度有关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">optimizer_program</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> fluid.optimizer.Adam(learning_rate=<span class="number">0.001</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据集-Feeders-配置"><a href="#数据集-Feeders-配置" class="headerlink" title="数据集 Feeders 配置"></a><strong>数据集 Feeders 配置</strong></h4><p>下一步，我们开始训练过程。<code>paddle.dataset.mnist.train()</code>和<code>paddle.dataset.mnist.test()</code>分别做训练和测试数据集。这两个函数各自返回一个reader——PaddlePaddle中的reader是一个Python函数，每次调用的时候返回一个Python yield generator。</p>
+<p>下面shuffle是一个reader decorator，它接受一个reader A，返回另一个reader B。reader B 每次读入<code>buffer_size</code>条训练数据到一个buffer里，然后随机打乱其顺序，并且逐条输出。</p>
+<p>batch是一个特殊的decorator，它的输入是一个reader，输出是一个batched reader。在PaddlePaddle里，一个reader每次yield一条训练数据，而一个batched reader每次yield一个minibatch。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一个minibatch中有64个数据</span></span><br><span class="line">BATCH_SIZE = <span class="number">64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 每次读取训练集中的500个数据并随机打乱，传入batched reader中，batched reader 每次 yield 64个数据</span></span><br><span class="line">train_reader = paddle.batch(</span><br><span class="line">        paddle.reader.shuffle(</span><br><span class="line">            paddle.dataset.mnist.train(), buf_size=<span class="number">500</span>),</span><br><span class="line">        batch_size=BATCH_SIZE)</span><br><span class="line"><span class="comment"># 读取测试集的数据，每次 yield 64个数据</span></span><br><span class="line">test_reader = paddle.batch(</span><br><span class="line">            paddle.dataset.mnist.test(), batch_size=BATCH_SIZE)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="构建训练过程"><a href="#构建训练过程" class="headerlink" title="构建训练过程"></a>构建训练过程</h4><p>现在，我们需要构建一个训练过程。将使用到前面定义的训练程序 train_program, place 和优化器 optimizer,并包含训练迭代、检查训练期间测试误差以及保存所需要用来预测的模型参数。</p>
+<h5 id="Event-Handler-配置"><a href="#Event-Handler-配置" class="headerlink" title="Event Handler 配置"></a><strong>Event Handler 配置</strong></h5><p>我们可以在训练期间通过调用一个handler函数来监控训练进度。 我们将在这里演示两个 event_handler 程序。请随意修改 Jupyter Notebook ，看看有什么不同。</p>
+<p>event_handler 用来在训练过程中输出训练结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">event_handler</span><span class="params">(pass_id, batch_id, cost)</span>:</span></span><br><span class="line">    <span class="comment"># 打印训练的中间结果，训练轮次，batch数，损失函数</span></span><br><span class="line">    print(<span class="string">"Pass %d, Batch %d, Cost %f"</span> % (pass_id,batch_id, cost))</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> paddle.utils.plot <span class="keyword">import</span> Ploter</span><br><span class="line"></span><br><span class="line">train_prompt = <span class="string">"Train cost"</span></span><br><span class="line">test_prompt = <span class="string">"Test cost"</span></span><br><span class="line">cost_ploter = Ploter(train_prompt, test_prompt)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将训练过程绘图表示</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">event_handler_plot</span><span class="params">(ploter_title, step, cost)</span>:</span></span><br><span class="line">    cost_ploter.append(ploter_title, step, cost)</span><br><span class="line">    cost_ploter.plot()</span><br></pre></td></tr></table></figure>
+
+<p><code>event_handler_plot</code> 可以用来在训练过程中画图如下：</p>
+<p><img src="https://paddlepaddle.org.cn/documentation/docs/zh/_images/train_and_test.png" alt=""></p>
+<h5 id="开始训练"><a href="#开始训练" class="headerlink" title="开始训练"></a><strong>开始训练</strong></h5><p>可以加入我们设置的 <code>event_handler</code> 和 <code>data reader</code>，然后就可以开始训练模型了。 设置一些运行需要的参数，配置数据描述 <code>feed_order</code> 用于将数据目录映射到 <code>train_program</code> 创建一个反馈训练过程中误差的<code>train_test</code></p>
+<p>定义网络结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 该模型运行在单个CPU上</span></span><br><span class="line">use_cuda = <span class="literal">True</span> <span class="comment"># 如想使用GPU，请设置为 True</span></span><br><span class="line">place = fluid.CUDAPlace(<span class="number">0</span>) <span class="keyword">if</span> use_cuda <span class="keyword">else</span> fluid.CPUPlace()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用train_program 获取预测值，损失值，</span></span><br><span class="line">prediction, [avg_loss, acc] = train_program()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输入的原始图像数据，名称为img，大小为28*28*1</span></span><br><span class="line"><span class="comment"># 标签层，名称为label,对应输入图片的类别标签</span></span><br><span class="line"><span class="comment"># 告知网络传入的数据分为两部分，第一部分是img值，第二部分是label值</span></span><br><span class="line">feeder = fluid.DataFeeder(feed_list=[<span class="string">'img'</span>, <span class="string">'label'</span>], place=place)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择Adam优化器</span></span><br><span class="line">optimizer = optimizer_program()</span><br><span class="line">optimizer.minimize(avg_loss)</span><br></pre></td></tr></table></figure>
+
+<p>设置训练过程的超参：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PASS_NUM = <span class="number">5</span> <span class="comment">#训练5轮</span></span><br><span class="line">epochs = [epoch_id <span class="keyword">for</span> epoch_id <span class="keyword">in</span> range(PASS_NUM)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将模型参数存储在名为 save_dirname 的文件中</span></span><br><span class="line">save_dirname = <span class="string">"recognize_digits.inference.model"</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_test</span><span class="params">(train_test_program,</span></span></span><br><span class="line"><span class="function"><span class="params">                   train_test_feed, train_test_reader)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将分类准确率存储在acc_set中</span></span><br><span class="line">    acc_set = []</span><br><span class="line">    <span class="comment"># 将平均损失存储在avg_loss_set中</span></span><br><span class="line">    avg_loss_set = []</span><br><span class="line">    <span class="comment"># 将测试 reader yield 出的每一个数据传入网络中进行训练</span></span><br><span class="line">    <span class="keyword">for</span> test_data <span class="keyword">in</span> train_test_reader():</span><br><span class="line">        acc_np, avg_loss_np = exe.run(</span><br><span class="line">            program=train_test_program,</span><br><span class="line">            feed=train_test_feed.feed(test_data),</span><br><span class="line">            fetch_list=[acc, avg_loss])</span><br><span class="line">        acc_set.append(float(acc_np))</span><br><span class="line">        avg_loss_set.append(float(avg_loss_np))</span><br><span class="line">    <span class="comment"># 获得测试数据上的准确率和损失值</span></span><br><span class="line">    acc_val_mean = numpy.array(acc_set).mean()</span><br><span class="line">    avg_loss_val_mean = numpy.array(avg_loss_set).mean()</span><br><span class="line">    <span class="comment"># 返回平均损失值，平均准确率</span></span><br><span class="line">    <span class="keyword">return</span> avg_loss_val_mean, acc_val_mean</span><br></pre></td></tr></table></figure>
+
+<p>创建执行器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exe = fluid.Executor(place)</span><br><span class="line">exe.run(fluid.default_startup_program())</span><br></pre></td></tr></table></figure>
+
+<p>设置 main_program 和 test_program ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">main_program = fluid.default_main_program()</span><br><span class="line">test_program = fluid.default_main_program().clone(for_test=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>开始训练：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">lists = []</span><br><span class="line">step = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch_id <span class="keyword">in</span> epochs:</span><br><span class="line">    <span class="keyword">for</span> step_id, data <span class="keyword">in</span> enumerate(train_reader()):</span><br><span class="line">        metrics = exe.run(main_program,</span><br><span class="line">                          feed=feeder.feed(data),</span><br><span class="line">                          fetch_list=[avg_loss, acc])</span><br><span class="line">        <span class="keyword">if</span> step % <span class="number">10</span> == <span class="number">0</span>: <span class="comment">#每训练100次 打印一次log</span></span><br><span class="line">            event_handler_plot(train_prompt, step, metrics[<span class="number">0</span>])</span><br><span class="line">        step += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试每个epoch的分类效果</span></span><br><span class="line">    avg_loss_val, acc_val = train_test(train_test_program=test_program,</span><br><span class="line">                                      train_test_reader=test_reader,</span><br><span class="line">                                      train_test_feed=feeder)</span><br><span class="line"></span><br><span class="line">    event_handler_plot(test_prompt, step, metrics[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">    lists.append((epoch_id, avg_loss_val, acc_val))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存训练好的模型参数用于预测</span></span><br><span class="line">    <span class="keyword">if</span> save_dirname <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        fluid.io.save_inference_model(save_dirname,</span><br><span class="line">                                      [<span class="string">"img"</span>], [prediction], exe,</span><br><span class="line">                                      model_filename=<span class="literal">None</span>,</span><br><span class="line">                                      params_filename=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_28_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 选择效果最好的pass</span></span><br><span class="line">best = sorted(lists, key=<span class="keyword">lambda</span> list: float(list[<span class="number">1</span>]))[<span class="number">0</span>]</span><br><span class="line">print(<span class="string">'Best pass is %s, testing Avgcost is %s'</span> % (best[<span class="number">0</span>], best[<span class="number">1</span>]))</span><br><span class="line">print(<span class="string">'The classification accuracy is %.2f%%'</span> % (float(best[<span class="number">2</span>]) * <span class="number">100</span>))</span><br></pre></td></tr></table></figure>
+
+<p>训练之后，检查模型的预测准确度。用 MNIST 训练的时候，一般 softmax回归模型的分类准确率约为 92.34%，多层感知器为97.66%，卷积神经网络可以达到 99.20%。</p>
+<p><strong>注：在aistudio中ploter和print存在原生bug，取消print后ploter方可使用</strong></p>
+<h3 id="应用模型"><a href="#应用模型" class="headerlink" title="应用模型"></a>应用模型</h3><p>可以使用训练好的模型对手写体数字图片进行分类，下面程序展示了如何使用训练好的模型进行推断。</p>
+<h4 id="生成预测输入数据"><a href="#生成预测输入数据" class="headerlink" title="生成预测输入数据"></a>生成预测输入数据</h4><p><code>infer_3.png</code> 是数字 3 的一个示例图像。把它变成一个 numpy 数组以匹配数据feed格式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_image</span><span class="params">(file)</span>:</span></span><br><span class="line">    <span class="comment"># 读取图片文件，并将它转成灰度图</span></span><br><span class="line">    im = Image.open(file).convert(<span class="string">'L'</span>)</span><br><span class="line">    <span class="comment"># 将输入图片调整为 28*28 的高质量图</span></span><br><span class="line">    im = im.resize((<span class="number">28</span>, <span class="number">28</span>), Image.ANTIALIAS)</span><br><span class="line">    <span class="comment"># 将图片转换为numpy</span></span><br><span class="line">    im = numpy.array(im).reshape(<span class="number">1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>).astype(numpy.float32)</span><br><span class="line">    <span class="comment"># 对数据作归一化处理</span></span><br><span class="line">    im = im / <span class="number">255.0</span> * <span class="number">2.0</span> - <span class="number">1.0</span></span><br><span class="line">    <span class="keyword">return</span> im</span><br><span class="line"></span><br><span class="line">tensor_img = load_image(<span class="string">'work/infer_3.png'</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Inference-创建及预测"><a href="#Inference-创建及预测" class="headerlink" title="Inference 创建及预测"></a>Inference 创建及预测</h4><p>通过<code>load_inference_model</code>来设置网络和经过训练的参数。我们可以简单地插入在此之前定义的分类器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">inference_scope = fluid.core.Scope()</span><br><span class="line"><span class="keyword">with</span> fluid.scope_guard(inference_scope):</span><br><span class="line">    <span class="comment"># 使用 fluid.io.load_inference_model 获取 inference program desc,</span></span><br><span class="line">    <span class="comment"># feed_target_names 用于指定需要传入网络的变量名</span></span><br><span class="line">    <span class="comment"># fetch_targets 指定希望从网络中fetch出的变量名</span></span><br><span class="line">    [inference_program, feed_target_names,</span><br><span class="line">     fetch_targets] = fluid.io.load_inference_model(</span><br><span class="line">     save_dirname, exe, <span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将feed构建成字典 &#123;feed_target_name: feed_target_data&#125;</span></span><br><span class="line">    <span class="comment"># 结果将包含一个与fetch_targets对应的数据列表</span></span><br><span class="line">    results = exe.run(inference_program,</span><br><span class="line">                            feed=&#123;feed_target_names[<span class="number">0</span>]: tensor_img&#125;,</span><br><span class="line">                            fetch_list=fetch_targets)</span><br><span class="line">    lab = numpy.argsort(results)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 打印 infer_3.png 这张图片的预测结果</span></span><br><span class="line">    img=Image.open(<span class="string">'work/infer_3.png'</span>)</span><br><span class="line">    plt.imshow(img)</span><br><span class="line">    print(<span class="string">"Inference result of work/infer_3.png is: %d"</span> % lab[<span class="number">0</span>][<span class="number">0</span>][<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#飞桨 深度学习 神经网络" >
+    <span class="tag-code">飞桨 深度学习 神经网络</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/01/09/Python%E5%85%A8%E6%A0%88%E5%B7%A5%E7%A8%8B%E5%B8%88/">
+        <span class="nav-arrow">← </span>
+        
+          Python全栈工程师
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#概述"><span class="toc-nav-text">概述</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Softmax回归-Softmax-Regression"><span class="toc-nav-text">Softmax回归(Softmax Regression)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多层感知机-Multilayer-Perceptron-MLP"><span class="toc-nav-text">多层感知机(Multilayer Perceptron, MLP)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#卷积神经网络-Convolutional-Neural-Network-CNN"><span class="toc-nav-text">卷积神经网络(Convolutional Neural Network, CNN)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#操作过程"><span class="toc-nav-text">操作过程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Fluid-API-概述"><span class="toc-nav-text">Fluid API 概述</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Program-Functions-配置"><span class="toc-nav-text">Program Functions 配置</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Train-Program-配置"><span class="toc-nav-text">Train Program 配置</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Optimizer-Function-配置"><span class="toc-nav-text">Optimizer Function 配置</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#数据集-Feeders-配置"><span class="toc-nav-text">数据集 Feeders 配置</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#构建训练过程"><span class="toc-nav-text">构建训练过程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Event-Handler-配置"><span class="toc-nav-text">Event Handler 配置</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#开始训练"><span class="toc-nav-text">开始训练</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用模型"><span class="toc-nav-text">应用模型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#生成预测输入数据"><span class="toc-nav-text">生成预测输入数据</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Inference-创建及预测"><span class="toc-nav-text">Inference 创建及预测</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/01/11/利用飞桨实现数字识别/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
