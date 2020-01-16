@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的堆排序 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的堆排序</h2>
+    <p class="post-date">2020-01-16</p>
+    <section class="markdown-content"><p>来源：<a href="https://stackabuse.com/heap-sort-in-python/" target="_blank" rel="noopener">https://stackabuse.com/heap-sort-in-python/</a></p>
+<p>作者：Olivera Popović </p>
+<p>翻译：老齐</p>
+<hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>堆排序是高效排序算法的另一个例子，它的主要优点是，无论输入数据如何，它的最坏情况运行时间都是O(n*logn)。</p>
+<p>顾名思义，堆排序在很大程度上依赖于堆数据结构——优先级队列的常见实现。</p>
+<p>毫无疑问，堆排序是一种简单的排序算法，而且与其他简单实现相比，堆排序是更有效，也很常见。</p>
+<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><p>堆排序的工作原理是从堆逐个“移除”元素并将它们添加到已排序的数组里，在进一步解释和重新访问堆数据结构之前，我们应该了解堆排序本身的一些属性。</p>
+<p>它是一种原地算法（<strong>译者注</strong>：in-place algorithm，多数翻译为“原地算法”，少数也翻译为“就地算法”。这种算法是使用小的、固定数量的额外内存空间来转换资料的算法。），意味着它需要恒定数量的内存，即所需内存不取决于初始数组本身的大小，而取决于存储该数组所需的内存。</p>
+<p>例如，不需要原始数组的副本，也不需要递归和递归调用堆栈。最简单的堆排序实现通常使用第二个数组来存储排序后的值。我们将使用这种方法，因为它在代码中更直观、更易于实现，但它也是百分百的原地算法。</p>
+<p>堆排序不稳定，意思是相等的值，并不会在同样的相对位次上。对于整数、字符串等这些基本类型，不会出现这类问题，但当我们对复杂类型的对象排序时，可能会遇到。</p>
+<p>例如，假设我们有一个自定义类<code>Person</code>带有<code>age</code>和<code>name</code>属性，在一个数组中几个此类的实例对象，比如按顺序出现19岁的名叫“Mike”的人和一个19岁的名叫“David”的人。</p>
+<p>如果我们决定按年龄对这些人进行排序，就不能在排序数组中保证“Mike”会出现在“David”之前，即使他们在初始数组中是按这个顺序出现的。“Mike”有可能出现在“David”之前，但不能保证百分之百如此。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<h2 id="堆数据结构"><a href="#堆数据结构" class="headerlink" title="堆数据结构"></a>堆数据结构</h2><p>堆是计算机科学中最流行和最常用的一种数据结构——<strong>更不用说在软件工程面试中非常流行了</strong>。</p>
+<p>我们将讨论跟踪最小元素（最小堆）的堆，但它们也可以很容易地实现对最大元素（最大堆）的跟踪。</p>
+<p>简单地说，最小堆是一种基于树的数据结构，其中每个节点比其所有子节点都小。通常使用二叉树。堆有三个基本操作——<code>delete_minimum()</code>、<code>get_minimum()</code>和<code>add()</code>。</p>
+<p>每次，你只能删除堆中的第一个元素，然后对其进行“重新排序”。在添加或删除元素后，堆对自己会“重新排序”，以便最小的元素始终处于第一个位置。</p>
+<p>注意：这绝不意味着堆是排序的数组。每个节点都小于其子节点这一事实不足以保证整个堆是按升序排列的。</p>
+<p>我们来看一个关于堆的例子：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/heap-sort-in-python-1_20200111093942.png" alt=""></p>
+<p>正如我们看到的，上面的例子确实符合堆的描述，但是没有排序。我们不会详细讨论堆实现，因为这不是本文的重点。当在堆排序中使用堆数据结构时，我们所利用的堆数据结构的关键优势是：下一个最小的元素始终是堆中的第一个元素。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="数组排序"><a href="#数组排序" class="headerlink" title="数组排序"></a>数组排序</h3><p><strong>译者注：</strong> 作者在本文中并没有严格区分Python中的列表和数组，而是将列表看做了数组，这对于列表中的元素是同一种类型的元素而言，无可厚非。对于排序，只有是同一种类型的元素，才有意义。</p>
+<p>Python提供了创建和使用堆的方法，所以我们不必自己单独为了实现它们去写代码了:</p>
+<ul>
+<li><code>heappush(list, item)</code>：向堆中添加一个元素，然后对其重新排序，使其保持堆状态。可用于空列表。</li>
+<li><code>heappop(list)</code>：删除第一个（最小的）元素并返回该元素。此操作之后，堆仍然是一个堆，因此我们不必调用<code>heapify()</code>。</li>
+<li><code>heapify(list)</code>：将给定的列表变成一个堆。</li>
+</ul>
+<p>现在我们知道了这些，堆排序的实现就相当简单了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from heapq import heappop, heappush</span><br><span class="line"></span><br><span class="line">def heap_sort(array):</span><br><span class="line">    heap &#x3D; []</span><br><span class="line">    for element in array:</span><br><span class="line">        heappush(heap, element)</span><br><span class="line"></span><br><span class="line">    ordered &#x3D; []</span><br><span class="line"></span><br><span class="line">    # While we have elements left in the heap</span><br><span class="line">    while heap:</span><br><span class="line">        ordered.append(heappop(heap))</span><br><span class="line"></span><br><span class="line">    return ordered</span><br><span class="line"></span><br><span class="line">array &#x3D; [13, 21, 15, 5, 26, 4, 17, 18, 24, 2]</span><br><span class="line">print(heap_sort(array))</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2, 4, 5, 13, 15, 17, 18, 21, 24, 26]</span><br></pre></td></tr></table></figure>
+
+<p>如我们所见，堆数据结构的繁重工作已经完成，我们所要做的只是添加所需的所有元素并逐个删除它们。它就像一台硬币计数机，根据输入的硬币的价值对它们进行分类，然后我们可以取出它们。</p>
+<h3 id="自定义对象排序"><a href="#自定义对象排序" class="headerlink" title="自定义对象排序"></a>自定义对象排序</h3><p>当使用自定义类时，事情会变得更加复杂。通常，为了使用我们的排序算法，建议不要重写类中的比较运算符，而是建议重写该算法，以便使用lambda函数比较。</p>
+<p>但是，由于我们的实现依赖于内置堆方法，因此不能在这里这样做。</p>
+<p>Python确实提供了以下方法：</p>
+<ul>
+<li><code>heapq.nlargest(*n*, *iterable*, *key=None*)</code>：返回一个列表，其中包含由<code>iterable</code>定义的数据集中的n个最大元素。</li>
+<li><code>heapq.nsmallest(*n*, *iterable*, *key=None*)</code>：返回一个列表，其中包含由<code>iterable</code>定义的数据集中的n个最小元素。</li>
+</ul>
+<p>我们可以使用它来简单地获取<code>n = len(array)</code>最大/最小元素，但是方法本身不使用堆排序，本质上等同于只调用<code>sorted()</code>方法。</p>
+<p>我们留给自定义类的唯一解决方案是实际重写比较运算符。遗憾的是，这使我们局限于对每个类只能进行一种比较。在我们的示例中，我们被局限于按年份对<code>Movie</code>对象进行排序。</p>
+<p>但是，它确实让我们演示了在自定义类上使用堆排序。我们来定义<code>Movie</code>类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from heapq import heappop, heappush</span><br><span class="line"></span><br><span class="line">class Movie:</span><br><span class="line">    def __init__(self, title, year):</span><br><span class="line">        self.title &#x3D; title</span><br><span class="line">        self.year &#x3D; year</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return str.format(&quot;Title: &#123;&#125;, Year: &#123;&#125;&quot;, self.title, self.year)</span><br><span class="line"></span><br><span class="line">    def __lt__(self, other):</span><br><span class="line">        return self.year &lt; other.year</span><br><span class="line"></span><br><span class="line">    def __gt__(self, other):</span><br><span class="line">        return other.__lt__(self)</span><br><span class="line"></span><br><span class="line">    def __eq__(self, other):</span><br><span class="line">        return self.year &#x3D;&#x3D; other.year</span><br><span class="line"></span><br><span class="line">    def __ne__(self, other):</span><br><span class="line">        return not self.__eq__(other)</span><br></pre></td></tr></table></figure>
+
+<p>现在，让我们稍微修改一下<code>heap_sort()</code>函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def heap_sort(array):</span><br><span class="line">    heap &#x3D; []</span><br><span class="line">    for element in array:</span><br><span class="line">        heappush(heap, element)</span><br><span class="line"></span><br><span class="line">    ordered &#x3D; []</span><br><span class="line"></span><br><span class="line">    while heap:</span><br><span class="line">        ordered.append(heappop(heap))</span><br><span class="line"></span><br><span class="line">    return ordered</span><br></pre></td></tr></table></figure>
+
+<p>最后，让我们实例化一些电影，将它们放入一个数组中，然后对它们进行排序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">movie1 &#x3D; Movie(&quot;Citizen Kane&quot;, 1941)</span><br><span class="line">movie2 &#x3D; Movie(&quot;Back to the Future&quot;, 1985)</span><br><span class="line">movie3 &#x3D; Movie(&quot;Forrest Gump&quot;, 1994)</span><br><span class="line">movie4 &#x3D; Movie(&quot;The Silence of the Lambs&quot;, 1991);</span><br><span class="line">movie5 &#x3D; Movie(&quot;Gia&quot;, 1998)</span><br><span class="line"></span><br><span class="line">array &#x3D; [movie1, movie2, movie3, movie4, movie5]</span><br><span class="line"></span><br><span class="line">for movie in heap_sort(array):</span><br><span class="line">    print(movie)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Title: Citizen Kane, Year: 1941</span><br><span class="line">Title: Back to the Future, Year: 1985</span><br><span class="line">Title: The Silence of the Lambs, Year: 1991</span><br><span class="line">Title: Forrest Gump, Year: 1994</span><br><span class="line">Title: Gia, Year: 1998</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<h2 id="与其他排序算法的比较"><a href="#与其他排序算法的比较" class="headerlink" title="与其他排序算法的比较"></a>与其他排序算法的比较</h2><p>堆排序被广泛使用，主要原因是它的可靠性，尽管它经常被运行良好的“快速排序”法所超越（<strong>译者注：</strong> 本文的微信公众号“老齐教室”以系列文章，介绍各种排序算法，并且用Python语言实现，敬请关注）。</p>
+<p>堆排序的主要优点是时间复杂度上的O(n*logn)上限以及安全性。Linux内核开发人员给出了使用堆排序而不是快速排序的以下理由：</p>
+<p>堆排序的平均排序时间和最坏排序时间均为<code>O(n*logn)</code>，虽然qsort的平均速度快了20%，但不得不容忍<code>O(n*n)</code>的最坏可能情形和额外的内存支出，这使它不太适合在操作系统内核中使用。</p>
+<p>此外，快速排序算法法在可预测的情况下表现不佳。并且，如果对内部实现有足够的了解，你可能会意识到它造成的安全风险（主要是DDoS攻击），因为不良的<code>O(n^2)</code>行为很容易被触发。</p>
+<p>经常被用来与堆排序比较的另一种算法是归并排序算法（<strong>译者注：</strong> 本微信公众号也会刊发相关文章给予介绍，敬请关注），它们具有相同的时间复杂度。</p>
+<p>归并排序的优点是稳定、可并行运算，而堆排序两者都做不到。</p>
+<p>另一个注意事项是：即使复杂度相同，堆排序在大多数情况下也比归并排序慢，因为堆排序具有较大的常数因子。</p>
+<p>然而，堆排序比归并排序更容易实现，因此当内存比速度更重要时，它是首选。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>正如我们所看到的，堆排序不像其他高效的通用算法那么流行，但是它的可预测行为（而不是不稳定的行为）使它成为一个很好的算法，适用于内存和安全性比稍快的运行速度更重要的场合。</p>
+<p>实现和利用Python提供的内置功能是非常直观的，我们实际上要做的就是将元素放在一个堆中并取出它们，就像对待硬币计数器一样。</p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Python 堆 排序" >
+    <span class="tag-code">Python 堆 排序</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/01/14/%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E5%8F%98%E9%87%8F/">
+        <span class="nav-arrow">← </span>
+        
+          数据准备过程中如何创建虚拟变量
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#介绍"><span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#堆排序"><span class="toc-nav-text">堆排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#堆数据结构"><span class="toc-nav-text">堆数据结构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实现"><span class="toc-nav-text">实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数组排序"><span class="toc-nav-text">数组排序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#自定义对象排序"><span class="toc-nav-text">自定义对象排序</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#与其他排序算法的比较"><span class="toc-nav-text">与其他排序算法的比较</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/01/16/堆排序/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
