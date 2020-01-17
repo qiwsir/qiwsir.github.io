@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      让Python程序跑得更快 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>让Python程序跑得更快</h2>
+    <p class="post-date">2020-01-17</p>
+    <section class="markdown-content"><p>来源：<a href="https://martinheinz.dev/blog/13" target="_blank" rel="noopener">https://martinheinz.dev/blog/13</a></p>
+<p>作者：Martin</p>
+<p>翻译：老齐</p>
+<hr>
+<p>讨厌Python的人总是说，他们不想使用Python的原因之一是它的速度太慢。这是一种非常愚蠢的观点。不管使用哪种编程语言，具体的程序是快还是慢，在很大程度上取决于写代码的人的技术能力，而非语言本身。</p>
+<p>所以，让我们来证明一些人是错的，看看如何提高Python程序的性能，让它们变得非常快！</p>
+<h2 id="计时和剖析"><a href="#计时和剖析" class="headerlink" title="计时和剖析"></a>计时和剖析</h2><p>在开始优化任何东西之前，我们首先需要找出代码的哪些部分实际上会减慢整个程序的速度。有时，程序的瓶颈可能很明显，但如果你不知道它在哪里，下面演示一种找到它的方法：</p>
+<p>注意：这是我将要用于演示的程序，它计算自然常数e的X次幂（参考了Python文档）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># slow_program.py</span><br><span class="line">from decimal import *</span><br><span class="line"></span><br><span class="line">def exp(x):</span><br><span class="line">    getcontext().prec +&#x3D; 2</span><br><span class="line">    i, lasts, s, fact, num &#x3D; 0, 0, 1, 1, 1</span><br><span class="line">    while s !&#x3D; lasts:</span><br><span class="line">        lasts &#x3D; s</span><br><span class="line">        i +&#x3D; 1</span><br><span class="line">        fact *&#x3D; i</span><br><span class="line">        num *&#x3D; x</span><br><span class="line">        s +&#x3D; num &#x2F; fact</span><br><span class="line">    getcontext().prec -&#x3D; 2</span><br><span class="line">    return +s</span><br><span class="line"></span><br><span class="line">exp(Decimal(150))</span><br><span class="line">exp(Decimal(400))</span><br><span class="line">exp(Decimal(3000))</span><br></pre></td></tr></table></figure>
+
+<h3 id="最懒的做法"><a href="#最懒的做法" class="headerlink" title="最懒的做法"></a>最懒的做法</h3><p>首先，最简单、最懒的解决方案，使用Unix的time命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~ $ time python3 slow_program.py</span><br><span class="line"></span><br><span class="line">real 0m11,058s</span><br><span class="line">user 0m11,050s</span><br><span class="line">sys  0m0,008s</span><br></pre></td></tr></table></figure>
+
+<p>如果你只想给整个程序计时，这样做是可行的。但仅仅计时通常是不够的…</p>
+<h3 id="深入分析"><a href="#深入分析" class="headerlink" title="深入分析"></a>深入分析</h3><p>使用cProfile，它会给你提供很多信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">~ $ python3 -m cProfile -s time slow_program.py</span><br><span class="line">         1297 function calls (1272 primitive calls) in 11.081 seconds</span><br><span class="line"></span><br><span class="line">   Ordered by: internal time</span><br><span class="line"></span><br><span class="line">   ncalls  tottime  percall  cumtime  percall filename:lineno(function)</span><br><span class="line">        3   11.079    3.693   11.079    3.693 slow_program.py:4(exp)</span><br><span class="line">        1    0.000    0.000    0.002    0.002 &#123;built-in method _imp.create_dynamic&#125;</span><br><span class="line">      4&#x2F;1    0.000    0.000   11.081   11.081 &#123;built-in method builtins.exec&#125;</span><br><span class="line">        6    0.000    0.000    0.000    0.000 &#123;built-in method __new__ of type object at 0x9d12c0&#125;</span><br><span class="line">        6    0.000    0.000    0.000    0.000 abc.py:132(__new__)</span><br><span class="line">       23    0.000    0.000    0.000    0.000 _weakrefset.py:36(__init__)</span><br><span class="line">      245    0.000    0.000    0.000    0.000 &#123;built-in method builtins.getattr&#125;</span><br><span class="line">        2    0.000    0.000    0.000    0.000 &#123;built-in method marshal.loads&#125;</span><br><span class="line">       10    0.000    0.000    0.000    0.000 &lt;frozen importlib._bootstrap_external&gt;:1233(find_spec)</span><br><span class="line">      8&#x2F;4    0.000    0.000    0.000    0.000 abc.py:196(__subclasscheck__)</span><br><span class="line">       15    0.000    0.000    0.000    0.000 &#123;built-in method posix.stat&#125;</span><br><span class="line">        6    0.000    0.000    0.000    0.000 &#123;built-in method builtins.__build_class__&#125;</span><br><span class="line">        1    0.000    0.000    0.000    0.000 __init__.py:357(namedtuple)</span><br><span class="line">       48    0.000    0.000    0.000    0.000 &lt;frozen importlib._bootstrap_external&gt;:57(_path_join)</span><br><span class="line">       48    0.000    0.000    0.000    0.000 &lt;frozen importlib._bootstrap_external&gt;:59(&lt;listcomp&gt;)</span><br><span class="line">        1    0.000    0.000   11.081   11.081 slow_program.py:1(&lt;module&gt;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们使用cProfile模块和time参数运行测试脚本，以便按cumtime对行进行排序。这给了我们很多信息，你可以看到上面的行大约是实际输出的10%。由此我们可以看出exp函数是罪魁祸首（惊奇吧！）。现在我们可以更具体地计时和剖析…</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" style="zoom:67%;" />
+
+<h3 id="给特定函数计时"><a href="#给特定函数计时" class="headerlink" title="给特定函数计时"></a>给特定函数计时</h3><p>既然我们知道该将注意力集中在哪里，就可能希望对执行慢的函数计时，而不对代码的其余部分计时。为此，我们可以使用简单的装饰器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def timeit_wrapper(func):</span><br><span class="line">    @wraps(func)</span><br><span class="line">    def wrapper(*args, **kwargs):</span><br><span class="line">        start &#x3D; time.perf_counter()  # Alternatively, you can use time.process_time()</span><br><span class="line">        func_return_val &#x3D; func(*args, **kwargs)</span><br><span class="line">        end &#x3D; time.perf_counter()</span><br><span class="line">        print(&#39;&#123;0:&lt;10&#125;.&#123;1:&lt;8&#125; : &#123;2:&lt;8&#125;&#39;.format(func.__module__, func.__name__, end - start))</span><br><span class="line">        return func_return_val</span><br><span class="line">    return wrapper</span><br></pre></td></tr></table></figure>
+
+<p>这个装饰器可以应用于将要执行的函数，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@timeit_wrapper</span><br><span class="line">def exp(x):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">print(&#39;&#123;0:&lt;10&#125; &#123;1:&lt;8&#125; &#123;2:^8&#125;&#39;.format(&#39;module&#39;, &#39;function&#39;, &#39;time&#39;))</span><br><span class="line">exp(Decimal(150))</span><br><span class="line">exp(Decimal(400))</span><br><span class="line">exp(Decimal(3000))</span><br></pre></td></tr></table></figure>
+
+<p>这会带来如下的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~ $ python3.8 slow_program.py</span><br><span class="line">module     function   time</span><br><span class="line">__main__  .exp      : 0.003267502994276583</span><br><span class="line">__main__  .exp      : 0.038535295985639095</span><br><span class="line">__main__  .exp      : 11.728486061969306</span><br></pre></td></tr></table></figure>
+
+<p>我们要考虑的一件事是实际（想要）测量的是什么样的时间。标准库中的time模块有<code>time.perf_counter</code>和<code>time.process_time</code>，区别是<code>perf_counter</code>返回绝对值，其中包括Python程序进程未运行的时间，因此它可能会受到机器负载的影响。另一方面，<code>process_time</code>只返回用户时间（不包括系统时间），这只是过程的时间。</p>
+<h2 id="加速程序的方法"><a href="#加速程序的方法" class="headerlink" title="加速程序的方法"></a>加速程序的方法</h2><p>现在到了有趣的部分：让你的Python程序运行得更快。我（基本上）不会向你展示一些能够神奇地解决性能问题的黑客技巧和代码片段。这里更多的是常规的想法和策略，它们在使用中可以对性能产生巨大的影响，在某些情况下可以提高30%的速度。</p>
+<h3 id="使用内置数据类型"><a href="#使用内置数据类型" class="headerlink" title="使用内置数据类型"></a>使用内置数据类型</h3><p>这一点很明显，内置数据类型非常快，特别是与我们的自定义类型（如树或链表）相比。这主要是因为内置代码是用C实现的，用Python编写代码时，我们在速度上无法真正与之匹配。</p>
+<h3 id="使用lru-cache的缓存机制"><a href="#使用lru-cache的缓存机制" class="headerlink" title="使用lru_cache的缓存机制"></a>使用lru_cache的缓存机制</h3><p>所谓lru_cache，其含义为： LRU (least recently used) cache，最近最少缓存应用。下面用一个简单的例子来说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import functools</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line"># caching up to 12 different results</span><br><span class="line">@functools.lru_cache(maxsize&#x3D;12)</span><br><span class="line">def slow_func(x):</span><br><span class="line">    time.sleep(2)  # Simulate long computation</span><br><span class="line">    return x</span><br><span class="line"></span><br><span class="line">slow_func(1)  # ... waiting for 2 sec before getting result</span><br><span class="line">slow_func(1)  # already cached - result returned instantaneously!</span><br><span class="line"></span><br><span class="line">slow_func(3)  # ... waiting for 2 sec before getting result</span><br></pre></td></tr></table></figure>
+
+<p>上面的函数使用<code>time.sleep</code>模拟繁重的计算。当使用参数<code>1</code>第一次调用时，它等待2秒，然后才返回结果。再次调用时，结果已被缓存，因此它跳过函数体并立即返回结果。</p>
+<h3 id="使用局部变量"><a href="#使用局部变量" class="headerlink" title="使用局部变量"></a>使用局部变量</h3><p>这与在每个范围内查找变量的速度有关。编写代码的时候，要将变量控制在局部的作用域内，作用域不仅仅关系到使用局部变量还是全局变量。实际上，即使是在函数(最快)中的局部变量、类级属性(如self.name——较慢)和全局变量(如 time.time（最慢）这样的导入函数)之间，查找速度也存在差异。</p>
+<p>你可以通过执行看起来不必要的（没有直接用处的）任务来提高性能，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#  Example #1</span><br><span class="line">class FastClass:</span><br><span class="line"></span><br><span class="line">    def do_stuff(self):</span><br><span class="line">        temp &#x3D; self.value  # this speeds up lookup in loop</span><br><span class="line">        for i in range(10000):</span><br><span class="line">            ...  # Do something with &#96;temp&#96; here</span><br><span class="line"></span><br><span class="line">#  Example #2</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line">def fast_function():</span><br><span class="line">    r &#x3D; random.random</span><br><span class="line">    for i in range(10000):</span><br><span class="line">        print(r())  # calling &#96;r()&#96; here, is faster than global random.random()</span><br></pre></td></tr></table></figure>
+
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" style="zoom:67%;" />
+
+<h3 id="使用函数"><a href="#使用函数" class="headerlink" title="使用函数"></a>使用函数</h3><p>这似乎有悖常理，因为调用函数会把更多的东西放到堆栈中，并从函数返回中造成额外负担，但这与前面的观点有关。如果只将整个代码放在一个文件中而不将其放在函数中，则会因为全局变量而慢得多。因此，只需将整个代码包装在main函数中并调用一次，就可以加快代码的速度，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def main():</span><br><span class="line">    ...  # All your previously global code</span><br><span class="line"></span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+
+<h3 id="不访问属性"><a href="#不访问属性" class="headerlink" title="不访问属性"></a>不访问属性</h3><p>另一个可能会减慢程序运行速度的因素是访问对象属性时使用的点运算符（<code>.</code>）。此运算符实际通过<code>__getattribute__</code>触发字典查找，这会在代码中产生额外的负担。那么，我们如何才能真正避免（限制）使用它呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#  Slow:</span><br><span class="line">import re</span><br><span class="line"></span><br><span class="line">def slow_func():</span><br><span class="line">    for i in range(10000):</span><br><span class="line">        re.findall(regex, line)  # Slow!</span><br><span class="line"></span><br><span class="line">#  Fast:</span><br><span class="line">from re import findall</span><br><span class="line"></span><br><span class="line">def fast_func():</span><br><span class="line">    for i in range(10000):</span><br><span class="line">        findall(regex, line)  # Faster!</span><br></pre></td></tr></table></figure>
+
+<h3 id="当心字符串"><a href="#当心字符串" class="headerlink" title="当心字符串"></a>当心字符串</h3><p>使用诸如<code>modulus(%s)</code>或<code>.format()</code>之类的方法在循环中运行时，对字符串的操作可能会变得非常慢。我们还有什么更好的选择？根据Raymond Hettinger最近的推文，唯一应该使用的是f-string，它是最可读、最简洁、最快的方法。因此，根据这条推文，这是你可以使用的方法——下面所列为各种方法从最快到最慢：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f&#39;&#123;s&#125; &#123;t&#125;&#39;  # Fast!</span><br><span class="line">s + &#39;  &#39; + t</span><br><span class="line">&#39; &#39;.join((s, t))</span><br><span class="line">&#39;%s %s&#39; % (s, t)</span><br><span class="line">&#39;&#123;&#125; &#123;&#125;&#39;.format(s, t)</span><br><span class="line">Template(&#39;$s $t&#39;).substitute(s&#x3D;s, t&#x3D;t)  # Slow!</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成器可以很快"><a href="#生成器可以很快" class="headerlink" title="生成器可以很快"></a>生成器可以很快</h3><p>生成器本身并不能变快，因为它们是为允许惰性计算而设计的，这样可以节省内存而不是时间。但是，节省的内存可能会使程序实际上运行得更快。怎样会这样？好吧，如果你有大型数据集，并且不使用生成器（迭代器），那么数据可能会导致CUP溢出，这将大大减慢在内存中查找值的速度。</p>
+<p>在性能方面，CPU可以尽可能地保存它正在处理的所有数据，这一点非常重要，这些数据都在缓存中。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>优化的第一条规则是不要这样做。但是，如果你真的需要的话，我希望这几条建议能帮到你。如果你想阅读更多的Python文章，请关注“<strong>老齐教室</strong>”微信公众号，会不断推出这方面的文章。</p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Python 缓存 程序 速度" >
+    <span class="tag-code">Python 缓存 程序 速度</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/01/16/%E5%A0%86%E6%8E%92%E5%BA%8F/">
+        <span class="nav-arrow">← </span>
+        
+          Python中的堆排序
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#计时和剖析"><span class="toc-nav-text">计时和剖析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最懒的做法"><span class="toc-nav-text">最懒的做法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#深入分析"><span class="toc-nav-text">深入分析</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#给特定函数计时"><span class="toc-nav-text">给特定函数计时</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#加速程序的方法"><span class="toc-nav-text">加速程序的方法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用内置数据类型"><span class="toc-nav-text">使用内置数据类型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用lru-cache的缓存机制"><span class="toc-nav-text">使用lru_cache的缓存机制</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用局部变量"><span class="toc-nav-text">使用局部变量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用函数"><span class="toc-nav-text">使用函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#不访问属性"><span class="toc-nav-text">不访问属性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#当心字符串"><span class="toc-nav-text">当心字符串</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#生成器可以很快"><span class="toc-nav-text">生成器可以很快</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/01/17/跑得更快/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
