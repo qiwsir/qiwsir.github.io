@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用Python读写海量图片的方法 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用Python读写海量图片的方法</h2>
+    <p class="post-date">2020-01-22</p>
+    <section class="markdown-content"><p>翻译：老齐</p>
+<hr>
+<p>为什么必须要了解更多用Python存储和访问图像的方法？如果你的业务只用到少量图片，比如根据图像的色彩分类，，或者用OpenCV实现人脸识别，这时完全不用担心这个问题了。即使借助Python的PIL，也能轻松处理几百张照片，把图像以<code>.png</code>或<code>.jpg</code>文件的形式存储在磁盘上，简单方便又恰当。</p>
+<p>然而，现实的任务不都如此，比如卷积神经网络(CNN)等算法可以处理包含大量图像的数据集，还可以从中学习。如果你对此感兴趣，可以申请加入本文的微信公众号“老齐教室”提供的在线《机器学习案例》，在真实的案例项目中去体验。</p>
+<blockquote>
+<p>注：关注微信公众号：老齐教室，回复“姓名+手机号+’案例’”，申请获得《机器学习案例集》，本文的代码和数据，都已经收集到此案例集。</p>
+</blockquote>
+<img src="https://user-gold-cdn.xitu.io/2020/1/20/16fc108faace75a8?w=748&amp;h=776&amp;f=jpeg&amp;s=51001" alt="WechatIMG6" style="zoom:67%;" />
+
+<p>ImageNet是一个著名的公共图像数据库，可以用于对象分类、识别等任务的模型训练，它包含超过1400万张图像。</p>
+<p>想一想要花多长时间才能把它们分批地、成百上千次地装入内存中进行训练。如果你用常规方法来读取这些图片，应该在开始读取之后，离开电脑去做点别的事情，回来后还不一定完成。但是，如果你希望去谷歌或英伟达工作，就不能这样玩。</p>
+<p>在本文中，你将了解：</p>
+<ul>
+<li>将图像作为.png文件存储在磁盘上</li>
+<li>将图像存储到LMDB（lightning memory-mapped databases，闪电般的内存映射数据库）</li>
+<li>将图像存储到HDF5格式的文件中</li>
+</ul>
+<p>我们还将探索以下内容：</p>
+<ul>
+<li>为什么替代存储方法值得考虑</li>
+<li>当你读、写单个图像时，这三种方法的性能有什么不同</li>
+<li>当你读、写多个图像时，这三种方法的性能有什么不同</li>
+<li>这三种方法在磁盘使用方面的比较</li>
+</ul>
+<p>如果没有一种存储方法听起来耳熟，不要担心：对于这篇文章，你所需要的只是一些基本的Python语言知识以及对图像（它们实际上是由多维数组组成的）、内存的基本理解，比如10MB和10GB之间的差异。</p>
+<p>我们开始吧！</p>
+<h2 id="安装程序"><a href="#安装程序" class="headerlink" title="安装程序"></a>安装程序</h2><p>下面的项目中，需要一个图像数据集，以及一些Python包。本文的微信公众号“老齐教室”对下述所有代码均提供了在线实验平台，请按照前面提示申请使用《机器学习案例集》</p>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>案例中的数据集来自众所周知的CIFAR-10，它由60000个32x32像素的彩色图像组成，这些图像属于不同的对象类别，如狗、猫和飞机。相对而言，CIFAR不是一个很大的数据集，但是如果我们使用完整的TinyImages数据集，就需要大约400GB的可用磁盘空间，对于学习而言，这太奢侈了。</p>
+<p>此数据集已经上传到本文的微信公众号“老齐教室”的《机器学习案例集》，可以按照前述方式申请获得。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcb9eb781614b2?w=964&h=738&f=png&s=647630" alt=""></p>
+<p>以下代码将从数据集文件中读取图像数据，并加载到NumPy数组中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import pickle</span><br><span class="line">from pathlib import Path</span><br><span class="line"></span><br><span class="line"># Path to the unzipped CIFAR data</span><br><span class="line">data_dir &#x3D; Path(&quot;data&#x2F;cifar-10-batches-py&#x2F;&quot;)</span><br><span class="line"></span><br><span class="line"># Unpickle function provided by the CIFAR hosts</span><br><span class="line">def unpickle(file):</span><br><span class="line">    with open(file, &quot;rb&quot;) as fo:</span><br><span class="line">        dict &#x3D; pickle.load(fo, encoding&#x3D;&quot;bytes&quot;)</span><br><span class="line">    return dict</span><br><span class="line"></span><br><span class="line">images, labels &#x3D; [], []</span><br><span class="line">for batch in data_dir.glob(&quot;data_batch_*&quot;):</span><br><span class="line">    batch_data &#x3D; unpickle(batch)</span><br><span class="line">    for i, flat_im in enumerate(batch_data[b&quot;data&quot;]):</span><br><span class="line">        im_channels &#x3D; []</span><br><span class="line">        # Each image is flattened, with channels in order of R, G, B</span><br><span class="line">        for j in range(3):</span><br><span class="line">            im_channels.append(</span><br><span class="line">                flat_im[j * 1024 : (j + 1) * 1024].reshape((32, 32))</span><br><span class="line">            )</span><br><span class="line">        # Reconstruct the original image</span><br><span class="line">        images.append(np.dstack((im_channels)))</span><br><span class="line">        # Save the label</span><br><span class="line">        labels.append(batch_data[b&quot;labels&quot;][i])</span><br><span class="line"></span><br><span class="line">print(&quot;Loaded CIFAR-10 training set:&quot;)</span><br><span class="line">print(f&quot; - np.shape(images)     &#123;np.shape(images)&#125;&quot;)</span><br><span class="line">print(f&quot; - np.shape(labels)     &#123;np.shape(labels)&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>所有的图像用<code>images</code>变量引用，对应的元数据保存在<code>labels</code>中。接下来，你可以安装以下的三个Python包。</p>
+<h3 id="在磁盘上存储图像"><a href="#在磁盘上存储图像" class="headerlink" title="在磁盘上存储图像"></a>在磁盘上存储图像</h3><p>你需要为从磁盘上保存和读取这些图像的默认方法设置环境。本文假设你的系统上安装了Python 3.x，并将使用<code>Pillow</code>进行图像处理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install Pillow</span><br></pre></td></tr></table></figure>
+
+<p>或者，如果你愿意，可以使用Anaconda安装它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ conda install -c conda-forge pillow</span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>PIL</code>是Pillow的原始版本，目前它已经不再维护，并且与Python 3.x不兼容。如果你先前安装了<code>PIL</code>，请在安装<code>Pillow</code>之前卸载它，因为它们彼此。</p>
+<p>现在你可以存储和读取磁盘上的图像了。</p>
+<h3 id="LMDB入门"><a href="#LMDB入门" class="headerlink" title="LMDB入门"></a>LMDB入门</h3><p>LMDB，有时被称为“闪电数据库”，意味着像闪电般那么快的内存映射数据库，由此可见，它速度快，并且使用内存映射文件。它以键值对存储，不是关系数据库。</p>
+<p>在实现方面，LMDB是一个B+树，这基本上意味着它是存储在内存中的树状图结构，其中每个键值对都是一个节点，节点可以有许多子节点。同一级别的节点相互链接以进行快速遍历。</p>
+<p>关键在于，B+树的关键组件被设置为与主机操作系统的文件相对应。当访问数据库中的任何键值对时，实现效率最大化。由于LMDB的高性能在很大程度上依赖于这一点，LMDB的效率已经被证明依赖于底层文件系统及其实现。</p>
+<p>LMDB效率的另一个关键原因是：它是内存映射的。这意味着它返回指向键和值的内存地址的直接指针，而不需要像大多数其他数据库那样复制内存中的任何内容。</p>
+<p>如果你对B+树不感兴趣，别担心。后面的操作中，我们不需要为了使用LMDB，你不需要了解它们的内部实现。我们将使用Python的LMDB  C，用pip安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install lmdb</span><br></pre></td></tr></table></figure>
+
+<p>你还可以选择通过Anaconda安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ conda install -c conda-forge python-lmdb</span><br></pre></td></tr></table></figure>
+
+<p>然后在Python交互模式中，用<code>import lmdb</code>检查，不报错，就OK了。</p>
+<h3 id="HDF5入门"><a href="#HDF5入门" class="headerlink" title="HDF5入门"></a>HDF5入门</h3><p>HDF5代表分层数据格式，这种文件格式被称为HDF4或HDF5。我们不需要担心HDF4，因为HDF5是当前维护的版本。</p>
+<p>有趣的是，HDF起源于（美国）国家超级计算应用中心，是一种便携式、紧凑的科学数据格式。如果你想知道它是否被广泛使用，请查看美国宇航局的地球数据项目中关于HDF5的简介。</p>
+<p>HDF文件由两种类型的对象组成：</p>
+<ul>
+<li>数据集</li>
+<li>群组</li>
+</ul>
+<p>数据集是多维数组，群组由数据集或其他组组成。任何大小和类型的多维数组都可以存储为数据集，但数据集中的维度和类型必须统一。每个数据集必须包含一个同构的N维数组。也就是说，因为组和数据集可能是嵌套的，所以你仍然可以获得可能需要的异构性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install h5py</span><br></pre></td></tr></table></figure>
+
+<p>与其他库一样，你可以通过Anaconda安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ conda install -c conda-forge h5py</span><br></pre></td></tr></table></figure>
+
+<p>如果你<code>import h5py</code>不报错，那也说明一切都将正确设置。</p>
+<img src="https://user-gold-cdn.xitu.io/2020/1/16/16faccba9b79da94?w=592&amp;h=842&amp;f=png&amp;s=330355" style="zoom:67%;" />
+
+<h2 id="存储单个图像"><a href="#存储单个图像" class="headerlink" title="存储单个图像"></a>存储单个图像</h2><p>现在，你已经对这些方法有了一个大致的了解，让我们直接进入主题：读、写文件各需要多长时间，以及将占用多少内存。通过这些示例，也可以了解每种方法的基本工作原理。</p>
+<p>当我提到文件时，通常指的是很多文件。但是，由于有些方法可能针对不同的操作和文件数量进行了优化，因此进行区分是很重要的。</p>
+<p>为了便于实验，我们可以比较读取不同数量的文件的性能，把图片的数量按10的倍数从1张增至10万张。由于我们的五批CIFAR-10总共有50000个图像，因此可以每个图像可以用两次，总共获得100000个图像。</p>
+<p>为了准备实验，你需要为每个方法创建一个文件夹，其中包含所有数据库文件或图像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from pathlib import Path</span><br><span class="line"></span><br><span class="line">disk_dir &#x3D; Path(&quot;data&#x2F;disk&#x2F;&quot;)</span><br><span class="line">lmdb_dir &#x3D; Path(&quot;data&#x2F;lmdb&#x2F;&quot;)</span><br><span class="line">hdf5_dir &#x3D; Path(&quot;data&#x2F;hdf5&#x2F;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><code>Path</code>不会自动为你创建文件夹，除非你明确地要求它这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">disk_dir.mkdir(parents&#x3D;True, exist_ok&#x3D;True)</span><br><span class="line">lmdb_dir.mkdir(parents&#x3D;True, exist_ok&#x3D;True)</span><br><span class="line">hdf5_dir.mkdir(parents&#x3D;True, exist_ok&#x3D;True)</span><br></pre></td></tr></table></figure>
+
+<p>在接下来的代码中，可以使用Python标准库中<code>timeit</code>模块来对程序计时。</p>
+<h3 id="存储到磁盘"><a href="#存储到磁盘" class="headerlink" title="存储到磁盘"></a>存储到磁盘</h3><p>下面的实验中，输入是一个单独的图像<code>image</code>，当前作为NumPy数组存储在内存中。首先要将其作为<code>.png</code>图像保存到磁盘上，并使用唯一的图像ID <code>image_id</code>对其命名。这个步骤可以使用之前安装的<code>Pillow</code>完成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">from PIL import Image</span><br><span class="line">import csv</span><br><span class="line"></span><br><span class="line">def store_single_disk(image, image_id, label):</span><br><span class="line">    &quot;&quot;&quot; Stores a single image as a .png file on disk.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        image       image array, (32, 32, 3) to be stored</span><br><span class="line">        image_id    integer unique ID for image</span><br><span class="line">        label       image label</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Image.fromarray(image).save(disk_dir &#x2F; f&quot;&#123;image_id&#125;.png&quot;)</span><br><span class="line"></span><br><span class="line">    with open(disk_dir &#x2F; f&quot;&#123;image_id&#125;.csv&quot;, &quot;wt&quot;) as csvfile:</span><br><span class="line">        writer &#x3D; csv.writer(</span><br><span class="line">            csvfile, delimiter&#x3D;&quot; &quot;, quotechar&#x3D;&quot;|&quot;, quoting&#x3D;csv.QUOTE_MINIMAL</span><br><span class="line">        )</span><br><span class="line">        writer.writerow([label])</span><br></pre></td></tr></table></figure>
+
+<p>这样可以保存图像。在所有实际的应用程序中，你还要关心附加到图像的元数据。在我们的示例数据集中，元数据是图像标签。将图像存储到磁盘时，有几中不同的保存元数据的方式。</p>
+<p>一种是将标签编码为图像名称。这样做的好处是不需要任何额外的文件。</p>
+<p>但是，它也有一个很大的缺点，即：无论何时处理标签，都会强迫你处理所有文件。将标签存储在一个单独的文件中可以允许你单独处理标签，而不必加载图像。在上面的代码中，我已经为这个实验将标签存储在一个单独的<code>.csv</code>文件中。</p>
+<p>现在让我们继续使用LMDB执行完全相同的任务。</p>
+<h3 id="存储到LMDB"><a href="#存储到LMDB" class="headerlink" title="存储到LMDB"></a>存储到LMDB</h3><p>首先，LMDB是一个键值存储系统，其中每个条目都保存为一个字节数组。因此在我们的例子中，键将是每个图像的唯一标识符，值将是图像本身。键和值都应该是字符串，此通常的用法是将值序列化为字符串，然后在读取时反序列化。</p>
+<p>你可以使用<code>pickle</code>进行序列化。任何Python对象都可以序列化，因此你也可以在数据库中包含图像元数据。这就避免了从磁盘加载数据集时将元数据附加回图像数据的麻烦。</p>
+<p>你可以为图像及其元数据创建一个基本的Python类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class CIFAR_Image:</span><br><span class="line">    def __init__(self, image, label):</span><br><span class="line">        # Dimensions of image for reconstruction - not really necessary </span><br><span class="line">        # for this dataset, but some datasets may include images of </span><br><span class="line">        # varying sizes</span><br><span class="line">        self.channels &#x3D; image.shape[2]</span><br><span class="line">        self.size &#x3D; image.shape[:2]</span><br><span class="line"></span><br><span class="line">        self.image &#x3D; image.tobytes()</span><br><span class="line">        self.label &#x3D; label</span><br><span class="line"></span><br><span class="line">    def get_image(self):</span><br><span class="line">        &quot;&quot;&quot; Returns the image as a numpy array. &quot;&quot;&quot;</span><br><span class="line">        image &#x3D; np.frombuffer(self.image, dtype&#x3D;np.uint8)</span><br><span class="line">        return image.reshape(*self.size, self.channels)</span><br></pre></td></tr></table></figure>
+
+<p>其次，因为LMDB是内存映射的，所以新的数据库需要知道它们将消耗多少内存。这在我们这里相对简单，但在其他的案例中可能是一个巨大的麻烦。LMDB以<code>map_size</code>表示与内存相关的参数。</p>
+<p>最后，在<code>transactions</code>中用LMDB执行读写操作。你可以把它们看作类似于传统数据库，由数据库上的一组操作组成。这看起来可能已经比磁盘版本复杂得多，但是请坚持读下去！</p>
+<p>考虑到这三点，让我们看看将单个图像保存到LMDB的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import lmdb</span><br><span class="line">import pickle</span><br><span class="line"></span><br><span class="line">def store_single_lmdb(image, image_id, label):</span><br><span class="line">    &quot;&quot;&quot; Stores a single image to a LMDB.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        image       image array, (32, 32, 3) to be stored</span><br><span class="line">        image_id    integer unique ID for image</span><br><span class="line">        label       image label</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    map_size &#x3D; image.nbytes * 10</span><br><span class="line"></span><br><span class="line">    # Create a new LMDB environment</span><br><span class="line">    env &#x3D; lmdb.open(str(lmdb_dir &#x2F; f&quot;single_lmdb&quot;), map_size&#x3D;map_size)</span><br><span class="line"></span><br><span class="line">    # Start a new write transaction</span><br><span class="line">    with env.begin(write&#x3D;True) as txn:</span><br><span class="line">        # All key-value pairs need to be strings</span><br><span class="line">        value &#x3D; CIFAR_Image(image, label)</span><br><span class="line">        key &#x3D; f&quot;&#123;image_id:08&#125;&quot;</span><br><span class="line">        txn.put(key.encode(&quot;ascii&quot;), pickle.dumps(value))</span><br><span class="line">    env.close()</span><br></pre></td></tr></table></figure>
+
+<p>现在可以将图像保存到LMDB。最后，让我们看看最后一种方法：HDF5。</p>
+<h2 id="存储到HDF5"><a href="#存储到HDF5" class="headerlink" title="存储到HDF5"></a>存储到HDF5</h2><p>记住，HDF5文件可以包含多个数据集。在这种情况下，你可以创建两个数据集，一个用于图像，一个用于图像的元数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import h5py</span><br><span class="line"></span><br><span class="line">def store_single_hdf5(image, image_id, label):</span><br><span class="line">    &quot;&quot;&quot; Stores a single image to an HDF5 file.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        image       image array, (32, 32, 3) to be stored</span><br><span class="line">        image_id    integer unique ID for image</span><br><span class="line">        label       image label</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # Create a new HDF5 file</span><br><span class="line">    file &#x3D; h5py.File(hdf5_dir &#x2F; f&quot;&#123;image_id&#125;.h5&quot;, &quot;w&quot;)</span><br><span class="line"></span><br><span class="line">    # Create a dataset in the file</span><br><span class="line">    dataset &#x3D; file.create_dataset(</span><br><span class="line">        &quot;image&quot;, np.shape(image), h5py.h5t.STD_U8BE, data&#x3D;image</span><br><span class="line">    )</span><br><span class="line">    meta_set &#x3D; file.create_dataset(</span><br><span class="line">        &quot;meta&quot;, np.shape(label), h5py.h5t.STD_U8BE, data&#x3D;label</span><br><span class="line">    )</span><br><span class="line">    file.close()</span><br></pre></td></tr></table></figure>
+
+<p><code>h5py.h5t.STD_U8BE</code>指定将要存储在数据集中的数据类型，在本例中是无符号8位整数。</p>
+<p>注意：数据类型的选择将强烈影响HDF5的运行时间和存储要求，因此最好选择最低要求。</p>
+<p>现在，我们已经回顾了保存单个图像的三种方法。让我们进入下一个步骤。</p>
+<h3 id="存储单个图像的实验"><a href="#存储单个图像的实验" class="headerlink" title="存储单个图像的实验"></a>存储单个图像的实验</h3><p>你可以把用于保存单个图像的所有三个函数放入字典中，该字典可以在稍后的计时代码中使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_store_single_funcs &#x3D; dict(</span><br><span class="line">    disk&#x3D;store_single_disk, lmdb&#x3D;store_single_lmdb, hdf5&#x3D;store_single_hdf5</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>万事俱备只欠东风。让我们尝试保存CIFAR中的第一个图像及其相应的标签，并以三种不同的方式存储它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from timeit import timeit</span><br><span class="line"></span><br><span class="line">store_single_timings &#x3D; dict()</span><br><span class="line"></span><br><span class="line">for method in (&quot;disk&quot;, &quot;lmdb&quot;, &quot;hdf5&quot;):</span><br><span class="line">    t &#x3D; timeit(</span><br><span class="line">        &quot;_store_single_funcs[method](image, 0, label)&quot;,</span><br><span class="line">        setup&#x3D;&quot;image&#x3D;images[0]; label&#x3D;labels[0]&quot;,</span><br><span class="line">        number&#x3D;1,</span><br><span class="line">        globals&#x3D;globals(),</span><br><span class="line">    )</span><br><span class="line">    store_single_timings[method] &#x3D; t</span><br><span class="line">    print(f&quot;Method: &#123;method&#125;, Time usage: &#123;t&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>注意：在使用LMDB时，可能会看到<code>MapFullError: mdb_txn_commit: MDB_MAP_FULL: Environment mapsize limit reached</code>错误。LMDB不重写预先存在的值，即使它们具有相同的键。这有助于加快写入时间，但也意味着：如果针对同一个LMDB文件进行写入，则会增加映射数量。如果执行上述函数，请务必先删除任何预先存在的LMDB文件。</p>
+<p>请记住，我们对运行时间（以毫秒为单位显示）以及内存使用情况感兴趣：</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Save Single Image + Meta</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Disk</td>
+<td>1.915 ms</td>
+<td>8 K</td>
+</tr>
+<tr>
+<td>LMDB</td>
+<td>1.203 ms</td>
+<td>32 K</td>
+</tr>
+<tr>
+<td>HDF5</td>
+<td>8.243 ms</td>
+<td>8 K</td>
+</tr>
+</tbody></table>
+<p>这里有两个要点：</p>
+<ul>
+<li>所有的方法都非常快速。</li>
+<li>在磁盘使用方面，LMDB占用更多。</li>
+</ul>
+<p>显然，尽管LMDB在性能上略有领先，但我们并没有说服任何人为什么不将图像存储在磁盘上。毕竟，这是一种人类可读的格式，你可以从任何文件系统浏览器打开和查看它们！好吧，是时候看看更多的图片了…</p>
+<img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcb9e95c3392a8?w=800&amp;h=884&amp;f=png&amp;s=267395" style="zoom:67%;" />
+
+<h2 id="存储多个图像"><a href="#存储多个图像" class="headerlink" title="存储多个图像"></a>存储多个图像</h2><p>前面已经演示了使用几种存储单个图像的方法，现在要继续调整代码，以保存多个图像，然后运行计时实验。</p>
+<h3 id="调整代码以用于多个图像"><a href="#调整代码以用于多个图像" class="headerlink" title="调整代码以用于多个图像"></a>调整代码以用于多个图像</h3><p>将多个图像保存为<code>.png</code>文件，就像多次调用<code>store_single_method()</code>一样简单。但对于LMDB或HDF5，情况并非如此，因为你不希望每个图像都有不同的数据库文件。相反，你希望将所有图像放入一个或多个文件中。</p>
+<p>你需要稍微修改代码并创建三个接受多个图像的新函数：<code>store_many_disk()</code>、<code>store_many_lmdb()</code>和<code>store_many_hdf5</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"> def store_many_disk(images, labels):</span><br><span class="line">    &quot;&quot;&quot; Stores an array of images to disk</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        images       images array, (N, 32, 32, 3) to be stored</span><br><span class="line">        labels       labels array, (N, 1) to be stored</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    num_images &#x3D; len(images)</span><br><span class="line"></span><br><span class="line">    # Save all the images one by one</span><br><span class="line">    for i, image in enumerate(images):</span><br><span class="line">        Image.fromarray(image).save(disk_dir &#x2F; f&quot;&#123;i&#125;.png&quot;)</span><br><span class="line"></span><br><span class="line">    # Save all the labels to the csv file</span><br><span class="line">    with open(disk_dir &#x2F; f&quot;&#123;num_images&#125;.csv&quot;, &quot;w&quot;) as csvfile:</span><br><span class="line">        writer &#x3D; csv.writer(</span><br><span class="line">            csvfile, delimiter&#x3D;&quot; &quot;, quotechar&#x3D;&quot;|&quot;, quoting&#x3D;csv.QUOTE_MINIMAL</span><br><span class="line">        )</span><br><span class="line">        for label in labels:</span><br><span class="line">            # This typically would be more than just one value per row</span><br><span class="line">            writer.writerow([label])</span><br><span class="line"></span><br><span class="line">def store_many_lmdb(images, labels):</span><br><span class="line">    &quot;&quot;&quot; Stores an array of images to LMDB.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        images       images array, (N, 32, 32, 3) to be stored</span><br><span class="line">        labels       labels array, (N, 1) to be stored</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    num_images &#x3D; len(images)</span><br><span class="line"></span><br><span class="line">    map_size &#x3D; num_images * images[0].nbytes * 10</span><br><span class="line"></span><br><span class="line">    # Create a new LMDB DB for all the images</span><br><span class="line">    env &#x3D; lmdb.open(str(lmdb_dir &#x2F; f&quot;&#123;num_images&#125;_lmdb&quot;), map_size&#x3D;map_size)</span><br><span class="line"></span><br><span class="line">    # Same as before — but let&#39;s write all the images in a single transaction</span><br><span class="line">    with env.begin(write&#x3D;True) as txn:</span><br><span class="line">        for i in range(num_images):</span><br><span class="line">            # All key-value pairs need to be Strings</span><br><span class="line">            value &#x3D; CIFAR_Image(images[i], labels[i])</span><br><span class="line">            key &#x3D; f&quot;&#123;i:08&#125;&quot;</span><br><span class="line">            txn.put(key.encode(&quot;ascii&quot;), pickle.dumps(value))</span><br><span class="line">    env.close()</span><br><span class="line"></span><br><span class="line">def store_many_hdf5(images, labels):</span><br><span class="line">    &quot;&quot;&quot; Stores an array of images to HDF5.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        images       images array, (N, 32, 32, 3) to be stored</span><br><span class="line">        labels       labels array, (N, 1) to be stored</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    num_images &#x3D; len(images)</span><br><span class="line"></span><br><span class="line">    # Create a new HDF5 file</span><br><span class="line">    file &#x3D; h5py.File(hdf5_dir &#x2F; f&quot;&#123;num_images&#125;_many.h5&quot;, &quot;w&quot;)</span><br><span class="line"></span><br><span class="line">    # Create a dataset in the file</span><br><span class="line">    dataset &#x3D; file.create_dataset(</span><br><span class="line">        &quot;images&quot;, np.shape(images), h5py.h5t.STD_U8BE, data&#x3D;images</span><br><span class="line">    )</span><br><span class="line">    meta_set &#x3D; file.create_dataset(</span><br><span class="line">        &quot;meta&quot;, np.shape(labels), h5py.h5t.STD_U8BE, data&#x3D;labels</span><br><span class="line">    )</span><br><span class="line">    file.close()</span><br></pre></td></tr></table></figure>
+
+<p>用上面的修改之后的代码，就可以将多个文件存储到磁盘，在这个代码中，可以遍历列表中的每个图像。对于LMDB，还需要通过循环，将每个图像及其元数据加载到一个CIFAR_Image对象中。</p>
+<p>修改幅度最小是用HDF5方法，其实，几乎没有任何调整！除了外部限制或数据集大小外，HFD5文件对文件大小没有限制，因此所有图像都像以前一样被填充到一个数据集中，最终存储为一个文件。</p>
+<p>接下来，你需要通过增大数据集来为实验准备数据集。</p>
+<h3 id="准备数据集"><a href="#准备数据集" class="headerlink" title="准备数据集"></a>准备数据集</h3><p>再次运行这些实验之前，让我们首先将数据集大小增加一倍，这样我们就可以使用多达100000个图像进行测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cutoffs &#x3D; [10, 100, 1000, 10000, 100000]</span><br><span class="line"></span><br><span class="line"># Let&#39;s double our images so that we have 100,000</span><br><span class="line">images &#x3D; np.concatenate((images, images), axis&#x3D;0)</span><br><span class="line">labels &#x3D; np.concatenate((labels, labels), axis&#x3D;0)</span><br><span class="line"></span><br><span class="line"># Make sure you actually have 100,000 images and labels</span><br><span class="line">print(np.shape(images))</span><br><span class="line">print(np.shape(labels))</span><br></pre></td></tr></table></figure>
+
+<p>既然有了足够的图像，现在是实验的时候了。</p>
+<h3 id="测试存储多个图像的程序"><a href="#测试存储多个图像的程序" class="headerlink" title="测试存储多个图像的程序"></a>测试存储多个图像的程序</h3><p>正如前面那样，可以创建一个字典来处理带有<code>store_many_</code>的所有函数并运行实验：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">_store_many_funcs &#x3D; dict(</span><br><span class="line">    disk&#x3D;store_many_disk, lmdb&#x3D;store_many_lmdb, hdf5&#x3D;store_many_hdf5</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">from timeit import timeit</span><br><span class="line"></span><br><span class="line">store_many_timings &#x3D; &#123;&quot;disk&quot;: [], &quot;lmdb&quot;: [], &quot;hdf5&quot;: []&#125;</span><br><span class="line"></span><br><span class="line">for cutoff in cutoffs:</span><br><span class="line">    for method in (&quot;disk&quot;, &quot;lmdb&quot;, &quot;hdf5&quot;):</span><br><span class="line">        t &#x3D; timeit(</span><br><span class="line">            &quot;_store_many_funcs[method](images_, labels_)&quot;,</span><br><span class="line">            setup&#x3D;&quot;images_&#x3D;images[:cutoff]; labels_&#x3D;labels[:cutoff]&quot;,</span><br><span class="line">            number&#x3D;1,</span><br><span class="line">            globals&#x3D;globals(),</span><br><span class="line">        )</span><br><span class="line">        store_many_timings[method].append(t)</span><br><span class="line"></span><br><span class="line">        # Print out the method, cutoff, and elapsed time</span><br><span class="line">        print(f&quot;Method: &#123;method&#125;, Time usage: &#123;t&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>运行代码，需要你在悬念中静坐片刻，等待111,110个图像以三种不同的格式分别存储到磁盘上三次，当然，你还需要消耗大约2GB的磁盘空间。</p>
+<p>现在是见证奇迹的时刻了！所有这些储存需要多长时间？一幅图表胜过千言万语：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcb9ebae2020bf?w=629&h=464&f=png&s=30566" alt=""></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcb9eb47c3a0e8?w=638&h=474&f=png&s=32375" alt=""></p>
+<p>第一个图显示程序所得到的存储时间未经变换的比较，从图中可知，存储到“.png”文件和LMDB或HDF5之间的耗时差异较大。</p>
+<p>第二张图对存储时间进行了对数变换，从图中可知，HDF5的在开始阶段速度比LMDB慢，但是，随着图像数量的增加，它的速度略微领先。</p>
+<p>准确的测试结果可能会因机器而异，这就是为什么LMDB和HDF5值得考虑的原因。下面是生成上述图形的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">import matplotlib.pyplot as plt</span><br><span class="line"></span><br><span class="line">def plot_with_legend(</span><br><span class="line">    x_range, y_data, legend_labels, x_label, y_label, title, log&#x3D;False</span><br><span class="line">):</span><br><span class="line">    &quot;&quot;&quot; Displays a single plot with multiple datasets and matching legends.</span><br><span class="line">        Parameters:</span><br><span class="line">        --------------</span><br><span class="line">        x_range         list of lists containing x data</span><br><span class="line">        y_data          list of lists containing y values</span><br><span class="line">        legend_labels   list of string legend labels</span><br><span class="line">        x_label         x axis label</span><br><span class="line">        y_label         y axis label</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    plt.style.use(&quot;seaborn-whitegrid&quot;)</span><br><span class="line">    plt.figure(figsize&#x3D;(10, 7))</span><br><span class="line"></span><br><span class="line">    if len(y_data) !&#x3D; len(legend_labels):</span><br><span class="line">        raise TypeError(</span><br><span class="line">            &quot;Error: number of data sets does not match number of labels.&quot;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    all_plots &#x3D; []</span><br><span class="line">    for data, label in zip(y_data, legend_labels):</span><br><span class="line">        if log:</span><br><span class="line">            temp, &#x3D; plt.loglog(x_range, data, label&#x3D;label)</span><br><span class="line">        else:</span><br><span class="line">            temp, &#x3D; plt.plot(x_range, data, label&#x3D;label)</span><br><span class="line">        all_plots.append(temp)</span><br><span class="line"></span><br><span class="line">    plt.title(title)</span><br><span class="line">    plt.xlabel(x_label)</span><br><span class="line">    plt.ylabel(y_label)</span><br><span class="line">    plt.legend(handles&#x3D;all_plots)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"># Getting the store timings data to display</span><br><span class="line">disk_x &#x3D; store_many_timings[&quot;disk&quot;]</span><br><span class="line">lmdb_x &#x3D; store_many_timings[&quot;lmdb&quot;]</span><br><span class="line">hdf5_x &#x3D; store_many_timings[&quot;hdf5&quot;]</span><br><span class="line"></span><br><span class="line">plot_with_legend(</span><br><span class="line">    cutoffs,</span><br><span class="line">    [disk_x, lmdb_x, hdf5_x],</span><br><span class="line">    [&quot;PNG files&quot;, &quot;LMDB&quot;, &quot;HDF5&quot;],</span><br><span class="line">    &quot;Number of images&quot;,</span><br><span class="line">    &quot;Seconds to store&quot;,</span><br><span class="line">    &quot;Storage time&quot;,</span><br><span class="line">    log&#x3D;False,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">plot_with_legend(</span><br><span class="line">    cutoffs,</span><br><span class="line">    [disk_x, lmdb_x, hdf5_x],</span><br><span class="line">    [&quot;PNG files&quot;, &quot;LMDB&quot;, &quot;HDF5&quot;],</span><br><span class="line">    &quot;Number of images&quot;,</span><br><span class="line">    &quot;Seconds to store&quot;,</span><br><span class="line">    &quot;Log storage time&quot;,</span><br><span class="line">    log&#x3D;True,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>下面，再演示读取图片。</p>
+<img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcba3ca9ea60cb?w=800&amp;h=800&amp;f=png&amp;s=266659" style="zoom:67%;" />
+
+<h2 id="读取单个图像"><a href="#读取单个图像" class="headerlink" title="读取单个图像"></a>读取单个图像</h2><p>首先，让我们考虑读入单个图像的三种方法。</p>
+<h3 id="从磁盘读取"><a href="#从磁盘读取" class="headerlink" title="从磁盘读取"></a>从磁盘读取</h3><p>在这三种方法中，由于序列化的原因，当从内存中读取图像文件时，LMDB需要的工作量最大。让我们浏览一下这些函数，它们分别为三种存储格式读取单个图像。</p>
+<p>首先，从<code>.png</code>和<code>.csv</code>文件中读取单个图像及其元数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">def read_single_disk(image_id):</span><br><span class="line">    &quot;&quot;&quot; Stores a single image to disk.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        image_id    integer unique ID for image</span><br><span class="line">        Returns:</span><br><span class="line">        ----------</span><br><span class="line">        image       image array, (32, 32, 3) to be stored</span><br><span class="line">        label       associated meta data, int label</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    image &#x3D; np.array(Image.open(disk_dir &#x2F; f&quot;&#123;image_id&#125;.png&quot;))</span><br><span class="line"></span><br><span class="line">    with open(disk_dir &#x2F; f&quot;&#123;image_id&#125;.csv&quot;, &quot;r&quot;) as csvfile:</span><br><span class="line">        reader &#x3D; csv.reader(</span><br><span class="line">            csvfile, delimiter&#x3D;&quot; &quot;, quotechar&#x3D;&quot;|&quot;, quoting&#x3D;csv.QUOTE_MINIMAL</span><br><span class="line">        )</span><br><span class="line">        label &#x3D; int(next(reader)[0])</span><br><span class="line"></span><br><span class="line">    return image, label</span><br></pre></td></tr></table></figure>
+
+<h3 id="从LMDB读取"><a href="#从LMDB读取" class="headerlink" title="从LMDB读取"></a>从LMDB读取</h3><p>接下来，演示从LMDB读取图像的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">def read_single_lmdb(image_id):</span><br><span class="line"></span><br><span class="line">    &quot;&quot;&quot; Stores a single image to LMDB.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        image_id    integer unique ID for image</span><br><span class="line">        Returns:</span><br><span class="line">        ----------</span><br><span class="line">        image       image array, (32, 32, 3) to be stored</span><br><span class="line">        label       associated meta data, int label</span><br><span class="line"></span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    # Open the LMDB environment</span><br><span class="line"></span><br><span class="line">    env &#x3D; lmdb.open(str(lmdb_dir &#x2F; f&quot;single_lmdb&quot;), readonly&#x3D;True)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # Start a new read transaction</span><br><span class="line"></span><br><span class="line">    with env.begin() as txn:</span><br><span class="line"></span><br><span class="line">        # Encode the key the same way as we stored it</span><br><span class="line"></span><br><span class="line">        data &#x3D; txn.get(f&quot;&#123;image_id:08&#125;&quot;.encode(&quot;ascii&quot;))</span><br><span class="line"></span><br><span class="line">        # Remember it&#39;s a CIFAR_Image object that is loaded</span><br><span class="line"></span><br><span class="line">        cifar_image &#x3D; pickle.loads(data)</span><br><span class="line"></span><br><span class="line">        # Retrieve the relevant bits</span><br><span class="line"></span><br><span class="line">        image &#x3D; cifar_image.get_image()</span><br><span class="line"></span><br><span class="line">        label &#x3D; cifar_image.label</span><br><span class="line"></span><br><span class="line">    env.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    return image, label</span><br></pre></td></tr></table></figure>
+
+<p>注意这两行：</p>
+<ul>
+<li><code>env = lmdb.open(str(lmdb_dir / f&quot;single_lmdb&quot;), readonly=True)</code>，其中<code>readonly=True</code>是指在事务完成之前，不允许对LMDB文件进行写操作。在数据库术语中，它相当于获取一个读锁。</li>
+<li><code>image = cifar_image.get_image()</code>中的<code>get_image()</code>用处是返回<code>CIFAR_Image</code>对象，这也是反序列化的过程。</li>
+</ul>
+<p>这就结束了从LMDB读取图像的过程。最后，你还需要对HDF5执行相同的操作。</p>
+<h3 id="从HDF5读取"><a href="#从HDF5读取" class="headerlink" title="从HDF5读取"></a>从HDF5读取</h3><p>从HDF5读取图像与写入过程非常相似。下面是打开和读取HDF5文件并解析相同图像和元数据的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def read_single_hdf5(image_id):</span><br><span class="line">    &quot;&quot;&quot; Stores a single image to HDF5.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        image_id    integer unique ID for image</span><br><span class="line"></span><br><span class="line">        Returns:</span><br><span class="line">        ----------</span><br><span class="line">        image       image array, (32, 32, 3) to be stored</span><br><span class="line">        label       associated meta data, int label</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # Open the HDF5 file</span><br><span class="line">    file &#x3D; h5py.File(hdf5_dir &#x2F; f&quot;&#123;image_id&#125;.h5&quot;, &quot;r+&quot;)</span><br><span class="line"></span><br><span class="line">    image &#x3D; np.array(file[&quot;&#x2F;image&quot;]).astype(&quot;uint8&quot;)</span><br><span class="line">    label &#x3D; int(np.array(file[&quot;&#x2F;meta&quot;]).astype(&quot;uint8&quot;))</span><br><span class="line"></span><br><span class="line">    return image, label</span><br></pre></td></tr></table></figure>
+
+<p>注意，在文件目录后用<code>/</code>，后面是表示图片文件名的变量，这样可以访问文件中的各种数据集。与以前一样，你可以创建一个包含所有读取函数的字典：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_read_single_funcs &#x3D; dict(</span><br><span class="line">    disk&#x3D;read_single_disk, lmdb&#x3D;read_single_lmdb, hdf5&#x3D;read_single_hdf5</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>准备好，就可以开始实验了。</p>
+<h3 id="读取单个图像的实验"><a href="#读取单个图像的实验" class="headerlink" title="读取单个图像的实验"></a>读取单个图像的实验</h3><p>你可能会认为：读取单个图像的的时间肯定会很短，下面是实验代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from timeit import timeit</span><br><span class="line"></span><br><span class="line">read_single_timings &#x3D; dict()</span><br><span class="line"></span><br><span class="line">for method in (&quot;disk&quot;, &quot;lmdb&quot;, &quot;hdf5&quot;):</span><br><span class="line">    t &#x3D; timeit(</span><br><span class="line">        &quot;_read_single_funcs[method](0)&quot;,</span><br><span class="line">        setup&#x3D;&quot;image&#x3D;images[0]; label&#x3D;labels[0]&quot;,</span><br><span class="line">        number&#x3D;1,</span><br><span class="line">        globals&#x3D;globals(),</span><br><span class="line">    )</span><br><span class="line">    read_single_timings[method] &#x3D; t</span><br><span class="line">    print(f&quot;Method: &#123;method&#125;, Time usage: &#123;t&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>下面是读取单个图像的实验结果：</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Read Single Image + Meta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Disk</td>
+<td>1.61970 ms</td>
+</tr>
+<tr>
+<td>LMDB</td>
+<td>4.52063 ms</td>
+</tr>
+<tr>
+<td>HDF5</td>
+<td>1.98036 ms</td>
+</tr>
+</tbody></table>
+<p>直接从磁盘读取<code>.png</code>和<code>.csv</code>文件稍微快一点，但这三种方法执行起来都很快。我们接下来要做的实验更有趣。</p>
+<img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcba5848bd6ee8?w=670&amp;h=938&amp;f=png&amp;s=265927" style="zoom:67%;" />
+
+<h2 id="读取多个图像"><a href="#读取多个图像" class="headerlink" title="读取多个图像"></a>读取多个图像</h2><p>继续修改代码，实现读取多个图像的功能，当然，性能很重要。</p>
+<h3 id="修改代码以用于读取多个图像"><a href="#修改代码以用于读取多个图像" class="headerlink" title="修改代码以用于读取多个图像"></a>修改代码以用于读取多个图像</h3><p>修改前面的函数（<strong>注：</strong> 详见本系列<a href="https://mp.weixin.qq.com/s/fDHC60N4rrpGYBlMHEE19g" target="_blank" rel="noopener">第二部分</a>），你可以使用<code>read_many_</code>作为前缀命名函数，然后将它们用于随后的实验。与之前一样，在读取不同数量的图像时，比较性能是很有趣的。这些图像在下面的代码中重复，以供参考：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">def read_many_disk(num_images):</span><br><span class="line">    &quot;&quot;&quot; Reads image from disk.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        num_images   number of images to read</span><br><span class="line"></span><br><span class="line">        Returns:</span><br><span class="line">        ----------</span><br><span class="line">        images      images array, (N, 32, 32, 3) to be stored</span><br><span class="line">        labels      associated meta data, int label (N, 1)</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    images, labels &#x3D; [], []</span><br><span class="line"></span><br><span class="line">    # Loop over all IDs and read each image in one by one</span><br><span class="line">    </span><br><span class="line">    for image_id in range(num_images):</span><br><span class="line">        images.append(np.array(Image.open(disk_dir &#x2F; f&quot;&#123;image_id&#125;.png&quot;)))</span><br><span class="line"></span><br><span class="line">    with open(disk_dir &#x2F; f&quot;&#123;num_images&#125;.csv&quot;, &quot;r&quot;) as csvfile:</span><br><span class="line">        reader &#x3D; csv.reader(</span><br><span class="line">            csvfile, delimiter&#x3D;&quot; &quot;, quotechar&#x3D;&quot;|&quot;, quoting&#x3D;csv.QUOTE_MINIMAL</span><br><span class="line">        )</span><br><span class="line">        for row in reader:</span><br><span class="line">            labels.append(int(row[0]))</span><br><span class="line">    return images, labels</span><br><span class="line"></span><br><span class="line">def read_many_lmdb(num_images):</span><br><span class="line">    &quot;&quot;&quot; Reads image from LMDB.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        num_images   number of images to read</span><br><span class="line"></span><br><span class="line">        Returns:</span><br><span class="line">        ----------</span><br><span class="line">        images      images array, (N, 32, 32, 3) to be stored</span><br><span class="line">        labels      associated meta data, int label (N, 1)</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    images, labels &#x3D; [], []</span><br><span class="line">    env &#x3D; lmdb.open(str(lmdb_dir &#x2F; f&quot;&#123;num_images&#125;_lmdb&quot;), readonly&#x3D;True)</span><br><span class="line"></span><br><span class="line">    # Start a new read transaction</span><br><span class="line">    </span><br><span class="line">    with env.begin() as txn:</span><br><span class="line">        # Read all images in one single transaction, with one lock</span><br><span class="line">        # We could split this up into multiple transactions if needed</span><br><span class="line">        for image_id in range(num_images):</span><br><span class="line">            data &#x3D; txn.get(f&quot;&#123;image_id:08&#125;&quot;.encode(&quot;ascii&quot;))</span><br><span class="line">            # Remember that it&#39;s a CIFAR_Image object </span><br><span class="line">            # that is stored as the value</span><br><span class="line">            cifar_image &#x3D; pickle.loads(data)</span><br><span class="line">            # Retrieve the relevant bits</span><br><span class="line">            images.append(cifar_image.get_image())</span><br><span class="line">            labels.append(cifar_image.label)</span><br><span class="line">    env.close()</span><br><span class="line">    return images, labels</span><br><span class="line"></span><br><span class="line">def read_many_hdf5(num_images):</span><br><span class="line">    &quot;&quot;&quot; Reads image from HDF5.</span><br><span class="line">        Parameters:</span><br><span class="line">        ---------------</span><br><span class="line">        num_images   number of images to read</span><br><span class="line"></span><br><span class="line">        Returns:</span><br><span class="line">        ----------</span><br><span class="line">        images      images array, (N, 32, 32, 3) to be stored</span><br><span class="line">        labels      associated meta data, int label (N, 1)</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    images, labels &#x3D; [], []</span><br><span class="line"></span><br><span class="line">    # Open the HDF5 file</span><br><span class="line">    </span><br><span class="line">    file &#x3D; h5py.File(hdf5_dir &#x2F; f&quot;&#123;num_images&#125;_many.h5&quot;, &quot;r+&quot;)</span><br><span class="line"></span><br><span class="line">    images &#x3D; np.array(file[&quot;&#x2F;images&quot;]).astype(&quot;uint8&quot;)</span><br><span class="line">    labels &#x3D; np.array(file[&quot;&#x2F;meta&quot;]).astype(&quot;uint8&quot;)</span><br><span class="line"></span><br><span class="line">    return images, labels</span><br><span class="line"></span><br><span class="line">_read_many_funcs &#x3D; dict(</span><br><span class="line">    disk&#x3D;read_many_disk, lmdb&#x3D;read_many_lmdb, hdf5&#x3D;read_many_hdf5</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>把读函数和写函数一起放在字典中，就可以进行实验了。</p>
+<h3 id="读取多个图像的实验"><a href="#读取多个图像的实验" class="headerlink" title="读取多个图像的实验"></a>读取多个图像的实验</h3><p>现在可以运行程序来读取多个图像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from timeit import timeit</span><br><span class="line"></span><br><span class="line">read_many_timings &#x3D; &#123;&quot;disk&quot;: [], &quot;lmdb&quot;: [], &quot;hdf5&quot;: []&#125;</span><br><span class="line"></span><br><span class="line">for cutoff in cutoffs:</span><br><span class="line">    for method in (&quot;disk&quot;, &quot;lmdb&quot;, &quot;hdf5&quot;):</span><br><span class="line">        t &#x3D; timeit(</span><br><span class="line">            &quot;_read_many_funcs[method](num_images)&quot;,</span><br><span class="line">            setup&#x3D;&quot;num_images&#x3D;cutoff&quot;,</span><br><span class="line">            number&#x3D;1,</span><br><span class="line">            globals&#x3D;globals(),</span><br><span class="line">        )</span><br><span class="line">        read_many_timings[method].append(t)</span><br><span class="line"></span><br><span class="line">        # Print out the method, cutoff, and elapsed time</span><br><span class="line">        print(f&quot;Method: &#123;method&#125;, No. images: &#123;cutoff&#125;, Time usage: &#123;t&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>如前所述，你可以将读取的实验结果绘制成图表：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcb9ecedc379cc?w=629&h=464&f=png&s=28756" alt=""></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcb9ebeb1e5fb1?w=638&h=474&f=png&s=30970" alt=""></p>
+<p>上面的图表显示了正常的、未经调整的读取时间，由图示可知，从<code>.png</code>文件读取图像的时间与从LMDB或HDF5读取之间存在巨大差异。</p>
+<p>相反，下面的图形是对时间进行对数变换之后的显示，突显了它们之间的相对差异。</p>
+<p>在实践中，写入时间通常比读取时间更不重要。想象一下，你正在开发一个关于图像的深层神经网络，而整个图像数据集只有一半可以同时放入内存。神经网络训练的每个阶段都需要整个数据集，而模型需要几百个阶段才能收敛。实际上，每个阶段都会将数据集的一半读入内存。</p>
+<p>此时，人们会使用一些技巧，比如训练pseudo-epochs，使其稍微好一点。</p>
+<p>现在，再次看一看上面的图，40秒和4秒之间的差距突然就成了6个小时和40分钟的区别！</p>
+<p>如果我们在同一张图表上查看读写时间，有以下图示：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcb9ec04cf0e8a?w=629&h=464&f=png&s=44032" alt=""></p>
+<p>当你将图像存储为<code>.png</code>文件时，写入时间和读取时间有很大的区别。然而，对于LMDB和HDF5，这种差别就不那么明显了。总的来说，即使读取时间比写入时间更重要，使用LMDB或HDF5存储图像也有充分的理由。</p>
+<p>既然你已经看到了LMDB和HDF5的性能优势，那么让我们来看看另一个重要的指标：磁盘使用率。</p>
+<h2 id="磁盘使用情况"><a href="#磁盘使用情况" class="headerlink" title="磁盘使用情况"></a>磁盘使用情况</h2><p>速度并不是你唯一感兴趣的性能指标。我们已经在处理非常大的数据集，所以磁盘空间也是一个非常有效和相关的问题。</p>
+<p>假设你有一个3TB的图像数据集。与我们的CIFAR示例不同，你可能已经将它们放在磁盘上的某个位置，因此通过使用另一种存储方法，你实际上是在备份，而这些备份也必须存储。这样做，将在你使用图像时，为你带来巨大的性能优势，但你需要确保有足够的磁盘空间。</p>
+<p>各种存储方法使用多少磁盘空间？以下是每种方法用于每一数量的图像所占的磁盘空间：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/22/16fcb9ec22b29623?w=554&h=604&f=png&s=10149" alt=""></p>
+<p>HDF5和LMDB都比使用普通的<code>.png</code>图像存储占用更多的磁盘空间。需要注意的是，LMDB和HDF5对磁盘的使用和性能在很大程度上取决于各种因素，包括操作系统。更重要的是，存储数据的大小。</p>
+<p>LMDB通过缓存来提高效率，你不需要了解它的内部工作原理，但请注意：对于较大的图像，LMDB使用的磁盘空间会明显增加，因为图像不适合以LMDB的分支形式存储，会有许多溢出。上面图表中的LMDB柱就要从图表中冒出了。</p>
+<p>与你可能使用的普通图像相比，32x32x3像素图像相对较小，并且它们允许最佳的LMDB性能。</p>
+<p>虽然我们不会在这里进行实验性的探索，但根据我自己对256x256x3或512x512x3像素图像的体验，HDF5在磁盘使用方面通常比LMDB稍微高效一些。这是进入最后一节的一个很好的过渡，在最后一节里定性讨论各方法之间的差异。</p>
+<h2 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h2><p>LMDB和HDF5还有其他值得了解的显著特性，简要讨论对这两种方法的一些评论也是很重要的。</p>
+<h3 id="并行存取"><a href="#并行存取" class="headerlink" title="并行存取"></a>并行存取</h3><p>在上面的实验中，我们没有测试的一个关键比较是并行读和写。通常，对于如此大的数据集，你可能希望通过并行化来加快操作速度。</p>
+<p>在大多数情况下，你不会对同时读取同一图像的部分内容感兴趣，但你会希望同时读取多个图像。有了这个并行定义，将<code>.png</code>文件存储到磁盘实际上允许并发。只要图像名称不同，没有什么可以阻止你从不同的线程一次读取多个图像，或者一次写入多个文件。</p>
+<p>LMDB怎么样？在一个LMDB环境中可以同时有多个读取器，但是只有一个写入器，并且写入器不会阻塞读取器。你可以在LMDB技术网站上看到更多关于这方面的信息。</p>
+<p>多个应用程序可以同时访问同一个LMDB数据库，同一进程的多个线程也可以同时访问LMDB进行读取。这使读取过程变得更快：如果将所有CIFAR划分为10个集合，那么可以为一个集合中的每个读取设置10个进程，相当于把加载时间除以10。</p>
+<p>HDF5还提供并行I/O，允许并行读写。但是，在实现中，除非你有一个并行文件系统，否则会保持写锁，并且访问是按顺序的。</p>
+<p>如果你正在处理这样一个系统，有两个主要选项。在本文中，关于并行IO的HDF组将更深入地讨论这两个主要选项。它可能变得相当复杂，最简单的选择是智能地将数据集拆分为多个HDF5文件，这样每个进程可以独立处理一个<code>.h5</code>文件。</p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p>如果你用谷歌搜索<code>lmdb</code>，至少在英国，第三个搜索结果是IMDb（互联网电影数据库）。那不是你要找的！</p>
+<p>实际上，LMDB的Python包甚至还没有达到0.94以上的版本，但它被广泛使用并被认为是稳定的。</p>
+<p>至于LMDB技术本身，LMDB技术网站上有更详细的文档。除非你从他们的入门页面开始，否则这种感觉有点像在二年级学习微积分。</p>
+<p>对于HDF5，在h5py文档站点上有非常清晰的文档，还有Christopher Lovell的一篇有用的博客文章，这篇文章非常全面地介绍了如何使用h5py包。O’Reilly book、Python和HDF5也是一个很好的入门途径。</p>
+<p>虽然不像初学者所希望的那样有文档记录，但LMDB和HDF5都有很大的用户社区，因此更深入的Google搜索通常会产生有用的结果。</p>
+<h3 id="更具批判性地看待实现"><a href="#更具批判性地看待实现" class="headerlink" title="更具批判性地看待实现"></a>更具批判性地看待实现</h3><p>在存储系统中没有乌托邦，LMDB和HDF5都有各自的陷阱。</p>
+<p>理解LMDB的一个关键点是：在不覆盖或移动现有数据的情况下写入新数据。这是一个设计决策，它允许你非常快速地读取，就像在我们的实验中所看到的那样，并且还保证数据的完整性和可靠性，而无需保存事务日志。</p>
+<p>不过，请记住，在写入新数据库之前，需要定义用于内存分配的<code>map_size</code>参数。这就是LMDB的麻烦所在。假设你已经创建了一个LMDB数据库，并且一切都很好。你耐心地等待着你的庞大数据集被打包到LMDB中。</p>
+<p>然后，接下来，你会记住你需要添加新的数据。即使你在<code>map_size</code>中指定了缓冲区，也可能很容易看到<code>lmdb.MapFullError</code>。除非你想用更新后的<code>map_size</code>重新编写整个数据库，否则你必须将新数据存储在单独的LMDB文件中。即使一个事务可以跨越多个LMDB文件，但拥有多个文件仍然是一件麻烦的事。</p>
+<p>此外，有些系统对一次可以占用多少内存有限制。以我自己的经验，在使用HPC系统时，就遇到了令人非常沮丧的事，这让我不得不使用HDF5而不是LMDB。</p>
+<p>对于LMDB和HDF5，一次只能将请求的项读入内存。使用LMDB，键值对被逐个读入内存，而用HDF5，可以像访问Python数组那样访问<code>dataset</code>对象，索引为<code>dataset[i]</code>，切片为<code>dataset[i:j]</code>和<code>dataset[i:j:interval]</code>。</p>
+<p>因为系统是优化的，而且取决于你的操作系统，对于数据的访问顺序可能会影响性能。</p>
+<p>根据我的经验，通常情况下，对于LMDB，按照键的顺序（键值对按照键的字母数字顺序保存在内存中）访问时可能会获得更好的性能；而对于HDF5，访问大范围将比使用以下方法逐个读取数据集的每个元素执行得更好：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># Slightly slower</span><br><span class="line"></span><br><span class="line">for i in range(len(dataset)):</span><br><span class="line">    # Read the ith value in the dataset, one at a time</span><br><span class="line">   </span><br><span class="line">读取数据集中的第i个值，一次一个</span><br><span class="line">   </span><br><span class="line">    do_something_with(dataset[i])</span><br><span class="line"></span><br><span class="line"># This is better</span><br><span class="line"></span><br><span class="line">data &#x3D; dataset[:]</span><br><span class="line">for d in data:</span><br><span class="line">    do_something_with(d)</span><br></pre></td></tr></table></figure>
+
+<h3 id="与其他库的集成"><a href="#与其他库的集成" class="headerlink" title="与其他库的集成"></a>与其他库的集成</h3><p>如果你处理的是非常大的数据集，你很可能会对它们做一些重要的事情。值得考虑的是深度学习库以及它与LMDB和HDF5的集成类型。</p>
+<p>首先，只要将图像转换为预期格式的NumPy数组，所有的库都支持从磁盘读取的<code>.png</code>文件。这对所有方法都适用，而且我们在上面已经看到，将图像作为数组读取相对简单。</p>
+<p>以下是几个最受欢迎的深度学习库及其LMDB和HDF5集成：</p>
+<ul>
+<li>Caffe有一个稳定的、支持良好的LMDB集成，并且它透明地处理读取步骤。LMDB层也可以很容易地替换为HDF5数据库。</li>
+<li>Keras使用HDF5格式保存和恢复模型。这意味着TensorFlow也可以。</li>
+<li>TensorFlow有一个内置的类LMDBDataset，它提供了一个接口，用于从LMDB文件中读取输入数据，并且可以批量生成迭代器和张量。TensorFlow没有针对HDF5的内置类，但是可以编写继承Dataset的类。我个人使用了一个自定义的类，它是根据我构造HDF5文件的方式为优化读取访问而设计的。</li>
+<li>Theano不支持任何特定的文件格式或数据库，但如前所述，只要它作为N维数组被读入，就可以使用任何内容。</li>
+</ul>
+<p>虽然这远远不够全面，但希望通过一些关键的深度学习库，让你对LMDB/HDF5的集成有所了解。</p>
+<h2 id="关于用Python存储图像的一些个人见解"><a href="#关于用Python存储图像的一些个人见解" class="headerlink" title="关于用Python存储图像的一些个人见解"></a>关于用Python存储图像的一些个人见解</h2><p>在我自己的日常工作中，分析万亿字节的医学图像时，我同时使用了LMDB和HDF5，并且了解到，对于任何存储方法，事前筹划都是至关重要的。</p>
+<p>通常，模型需要使用k-fold交叉验证进行训练，这涉及到将整个数据集拆分为k个集（k通常为10）和正在训练的k个模型，每个模型使用不同的k个集作为测试集。这可以确保模型不会过度拟合数据集，或者，换句话说，无法对未看到的数据进行良好的预测。</p>
+<p>上述的数据集，要保存到单独的HDF5数据集里，才能以最大限度地提高效率。有时，单个数据集不能一次加载到内存中，因此即使数据集里的数据排序也需要预先考虑。</p>
+<p>对于LMDB，在创建数据库之前，我同样谨慎地提前计划。在保存图像之前，有几个好问题值得问：</p>
+<ul>
+<li>如何保存图像，以便让大多数读取都是连续的？</li>
+<li>什么是好的键？</li>
+<li>如何计算适合的<code>map_size</code>，预测数据集中未来的潜在变化？</li>
+<li>单个事务可以有多大，应该如何细分事务？</li>
+</ul>
+<p>不管是哪种存储方法，在处理大型图像数据集时，一个小的规划就能大有帮助。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>你成功了！你现在对一个大问题有了高屋建瓴的了解。</p>
+<p>在本文中，我们向你介绍了用Python存储和访问大量图像的三种方法，也许你有机会使用其中的一些方法。本文的所有代码都在发布到本文公众号的在线《机器学习案例集》中，欢迎加入这个案例集，里面还有其他有关机器学习的项目。</p>
+<p>你已经看到了各种存储方法如何显著地影响读写时间的证据，以及本文中考虑的三种方法的一些优缺点。虽然将图像存储为<code>.png</code>文件可能是最直观的，但是HDF5或LMDB等方法也有很大的性能优势。</p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+<p>原文链接：<a href="https://realpython.com/storing-images-in-python/" target="_blank" rel="noopener">https://realpython.com/storing-images-in-python/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/01/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6/">
+        <span class="nav-arrow">← </span>
+        
+          最适合你学习的深度学习框架
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装程序"><span class="toc-nav-text">安装程序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据集"><span class="toc-nav-text">数据集</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#在磁盘上存储图像"><span class="toc-nav-text">在磁盘上存储图像</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#LMDB入门"><span class="toc-nav-text">LMDB入门</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HDF5入门"><span class="toc-nav-text">HDF5入门</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#存储单个图像"><span class="toc-nav-text">存储单个图像</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#存储到磁盘"><span class="toc-nav-text">存储到磁盘</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#存储到LMDB"><span class="toc-nav-text">存储到LMDB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#存储到HDF5"><span class="toc-nav-text">存储到HDF5</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#存储单个图像的实验"><span class="toc-nav-text">存储单个图像的实验</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#存储多个图像"><span class="toc-nav-text">存储多个图像</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#调整代码以用于多个图像"><span class="toc-nav-text">调整代码以用于多个图像</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#准备数据集"><span class="toc-nav-text">准备数据集</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测试存储多个图像的程序"><span class="toc-nav-text">测试存储多个图像的程序</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#读取单个图像"><span class="toc-nav-text">读取单个图像</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#从磁盘读取"><span class="toc-nav-text">从磁盘读取</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#从LMDB读取"><span class="toc-nav-text">从LMDB读取</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#从HDF5读取"><span class="toc-nav-text">从HDF5读取</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#读取单个图像的实验"><span class="toc-nav-text">读取单个图像的实验</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#读取多个图像"><span class="toc-nav-text">读取多个图像</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#修改代码以用于读取多个图像"><span class="toc-nav-text">修改代码以用于读取多个图像</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#读取多个图像的实验"><span class="toc-nav-text">读取多个图像的实验</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#磁盘使用情况"><span class="toc-nav-text">磁盘使用情况</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#讨论"><span class="toc-nav-text">讨论</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#并行存取"><span class="toc-nav-text">并行存取</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#文档"><span class="toc-nav-text">文档</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#更具批判性地看待实现"><span class="toc-nav-text">更具批判性地看待实现</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#与其他库的集成"><span class="toc-nav-text">与其他库的集成</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#关于用Python存储图像的一些个人见解"><span class="toc-nav-text">关于用Python存储图像的一些个人见解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/01/22/读写图片/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
