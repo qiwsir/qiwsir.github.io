@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通俗易懂的HTTPS | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通俗易懂的HTTPS</h2>
+    <p class="post-date">2020-01-28</p>
+    <section class="markdown-content"><p>翻译：老齐</p>
+<p>你有没有想过为什么你可以通过互联网发送你的信用卡信息？你可能已经注意到了浏览器地址栏中的https:// ，但它是什么？它如何保证你的信息安全？或者你可能想要创建一个Python HTTPS应用程序，但你并不完全确定这意味着什么。如何确保你的web应用是安全的？</p>
+<p>你可能会惊讶地发现，不用成为安全专家，也能能回答这些问题！在本文中，你就能得到相关的知识，这些知识组合在一起，可确保网络通信安全。你将看到一些具体示例，这些示例展示了Python HTTPS如何保证信息安全。</p>
+<p>在本文中，你将学到：</p>
+<ul>
+<li>监视和分析网络流量</li>
+<li>应用加密技术保证数据安全</li>
+<li>描述公钥（PKI）的核心概念</li>
+<li>创建你自己的证书颁发机构</li>
+<li>构建Python HTTPS应用程序</li>
+<li>识别常见的Python HTTPS警告和错误</li>
+</ul>
+<h2 id="什么是HTTP？"><a href="#什么是HTTP？" class="headerlink" title="什么是HTTP？"></a>什么是HTTP？</h2><p>在深入了解HTTPS及其在Python中的使用之前，了解它的上一代HTTP是很重要的。HTTP是HyperText Transfer Protocol（超文本传输协议）的缩写，它支持浏览网站时的通信。更具体地说，HTTP是用户端（如web浏览器）与web服务器（如itdiffer.com）通信的方式。下面是HTTP通信的简化图：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/simple_http_flow_20200124085327.png" alt=""></p>
+<p>这个图表显示了计算机与服务器通信的流程，下面对每一步给予分解说明：</p>
+<ol>
+<li>告诉浏览器访问<a href="http://qiwsir.github.io/。">http://qiwsir.github.io/。</a></li>
+<li>你的设备和服务器建立了TCP连接。</li>
+<li>浏览器向服务器发送HTTP请求。</li>
+<li>服务器接收HTTP请求并对其进行解析。</li>
+<li>服务器借助HTTP响应产生反应。</li>
+<li>计算机接收、解析并显示响应。</li>
+</ol>
+<p>这个分解说明包含了HTTP的基本知识，向服务器发出请求，服务器返回响应。虽然HTTP不需要TCP，但它确实需要可靠的低级协议。在实践中，几乎总是基于IP实现TCP(尽管谷歌试图创建一个替代品)。</p>
+<p>就协议而言，HTTP是最简单的协议之一。它的设计目的是通过互联网发送内容，如HTML、视频、图像等，这都是通过HTTP请求和响应完成的。HTTP请求包含以下元素：</p>
+<ul>
+<li>请求方法：描述客户端要执行操作的方法，静态内容的方法通常是GET，此外还有其他可用的方法，如POST、HEAD和DELETE。</li>
+<li>路径：向服务器指示要请求的网页。例如，此页面的路径是/python-https。</li>
+<li>版本：HTTP的版本，如1.0、1.1或2.0。最常见的可能是1.1。</li>
+<li>headers：描述服务器的其他信息。</li>
+<li>body：向服务器提供来自客户端的信息。虽然这个字段不是必需的，但是某些方法要求有提交的内容，比如POST。</li>
+</ul>
+<p>这些是浏览器用于与服务器通信的内容，服务器借助HTTP响应产生反应，并返回如下信息：</p>
+<ul>
+<li>HTTP版本，该版本通常与请求的版本相同。</li>
+<li>状态代码：指示是否已成功完成了请求。状态代码有很多。</li>
+<li>状态消息：提供有助于描述状态代码的可读消息。</li>
+<li>headers：允许服务器使用关于请求的附加元数据进行响应。</li>
+<li>body：承载着内容。从技术上讲，这是可选的，但它通常包含一个有用的资源。</li>
+</ul>
+<p>这些是HTTP的组成。</p>
+<h2 id="什么是HTTPS？"><a href="#什么是HTTPS？" class="headerlink" title="什么是HTTPS？"></a>什么是HTTPS？</h2><p>现在你对HTTP有了详细了解，那么，什么是HTTPS？好消息是，你已经知道了！HTTPS，即Hyper Text Transfer Protocol over SecureSocket Layer，超文本传输安全协议。从根本上说，HTTPS与HTTP是相同的协议，但它也意味着通信是安全的。</p>
+<p>HTTPS不会重写它所构建的任何HTTP基础，相反，HTTPS由通过加密连接发送的常规HTTP组成。通常，这种加密连接由TLS或SSL提供，它们是在信息通过网络发送之前对其进行加密的协议。</p>
+<p>注意：TLS和SSL是非常相似的协议，尽管SSL正在退出，TLS将取代它。这些协议中的差异不在本文的范围内。只要知道TLS是SSL的更新、更好的版本就足够了。</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" style="zoom:67%;" />
+
+<p>那么，为什么要有HTTP和HTTPS两种呢？为什么不把加密引入HTTP协议本身呢？答案是可移植性。保护通信安全是一个重要而困难的问题，但HTTP只是许多需要安全性的协议之一。在网络上，除了网页访问之外，还有其他的许多应用：</p>
+<ul>
+<li>E-mail</li>
+<li>即时通讯</li>
+<li>VoIP</li>
+</ul>
+<p>每项应用都有专门的协议，如果每个协议都必须创建自己的安全机制，那么这个世界就会变得更加不安全，也会更加混乱。TLS是上述协议中常用的一种安全通信方法。</p>
+<p>在下文中，你将学习到的几乎所有内容都不仅仅适用于Python HTTPS应用，此外，还将学习安全通信的基础知识，以及它如何具体应用于HTTPS。</p>
+<h2 id="为什么HTTPS很重要？"><a href="#为什么HTTPS很重要？" class="headerlink" title="为什么HTTPS很重要？"></a>为什么HTTPS很重要？</h2><p>通信安全对于提供安全的在线环境至关重要。随着包括银行和医疗站点在内的越来越多的网络应用，对于开发人员来说，创建Python HTTPS应用变得越来越重要。同样，HTTPS只是TLS或SSL上的HTTP，TLS的设计是为了保护隐私不被窃听，它还可以提供客户端和服务器的身份验证。</p>
+<p>在本文中，你将通过执行以下操作深入探讨这些概念：</p>
+<ul>
+<li>创建Python HTTPS服务器</li>
+<li>与Python HTTPS服务器通信</li>
+<li>捕获这些通信</li>
+<li>分析这些消息</li>
+</ul>
+<p>我们开始吧！</p>
+<h3 id="创建示例"><a href="#创建示例" class="headerlink" title="创建示例"></a>创建示例</h3><p>假设你是一个叫做秘密松鼠的酷Python俱乐部的领导，松鼠，作为机密，需要以加密信息的方式发布给会议。作为领导，你要选择发布的加密信息，每次会议都会更改这个信息。不过，有时候，你很难在会前和所有会员见面，告诉他们此信息！你决定设置一个秘密服务器，成员可以在其中只能看到发给他们的加密信息。</p>
+<p>你已经学习了一些关于真正Python的知识（<strong>如果还没有学习，推荐《Python大学实用教程》（电子工业出版社）</strong>），并安装如下模块：</p>
+<ul>
+<li>用于构建web应用程序的Flask</li>
+<li>作为生产服务器的uWSGI</li>
+<li>向服务器发起请求的requests</li>
+</ul>
+<p>要安装所有这些，可以使用<code>pip</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install flask uwsgi requests</span><br></pre></td></tr></table></figure>
+
+<p>安装后，就可以开始编写应用程序了。创建名为<code>server.py</code>的文件，并在其中编写Flask应用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># server.py</span><br><span class="line">from flask import Flask</span><br><span class="line"></span><br><span class="line">SECRET_MESSAGE &#x3D; &quot;fluffy tail&quot;</span><br><span class="line">app &#x3D; Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(&quot;&#x2F;&quot;)</span><br><span class="line">def get_secret_message():</span><br><span class="line">    return SECRET_MESSAGE</span><br></pre></td></tr></table></figure>
+
+<p>每当有人访问服务器的<code>/</code>路径时，这个Flask应用程序将显示<code>SECRET_MESSAGE</code>的内容。这样一来，就可以在秘密服务器上部署应用程序并运行它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uwsgi --http-socket 127.0.0.1:5683 --mount &#x2F;&#x3D;server:app</span><br></pre></td></tr></table></figure>
+
+<p>此命令旨在启动的服务器上使用上面的Flask应用，所使用的端口有点奇怪（5683），因为你不希望别人能找到它，为自己的“鬼鬼祟祟”感到庆幸！可以通过访问浏览器访问<code>http://localhost:5683</code>来确认它是否正常工作。</p>
+<p>因为秘密松鼠俱乐部中的每个人都认识Python，所以你决定帮助他们编写一个名为client.py的脚本，以便让他们获取加密信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># client.py</span><br><span class="line">import os</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">def get_secret_message():</span><br><span class="line">    url &#x3D; os.environ[&quot;SECRET_URL&quot;]</span><br><span class="line">    response &#x3D; requests.get(url)</span><br><span class="line">    print(f&quot;The secret message is: &#123;response.text&#125;&quot;)</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    get_secret_message()</span><br></pre></td></tr></table></figure>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-home_20200124092707.png" alt=""></p>
+<p>只要设置了<code>SECRET_URL</code>环境变量，此代码就会打印出秘密消息。在本例中，<code>SECRET_URL</code>是<code>127.0.0.1:5683</code>。所以，你的计划是给每个俱乐部成员一个秘密的网址，告诉他们要保密和安全。</p>
+<p>虽然这可能看起来不错，但这样做还不够！事实上，即使你在这个网站上输入用户名和密码，它仍然是不安全的。甚至你的团队设法保证了URL的安全，你的秘密消息也还不安全。为了说明为什么你需要了解一些有关监视网络流量的信息，你需要使用一个名为Wireshark的工具。</p>
+<h3 id="设置Wireshark"><a href="#设置Wireshark" class="headerlink" title="设置Wireshark"></a>设置Wireshark</h3><p>Wireshark是一个应用广泛的网络和协议分析工具，这它可以帮助你了解网络连接上发生的事情。安装和设置Wireshark对于本文是可选的，但是如果你想继续学习，请安装和使用它。下载页提供了几个安装程序：</p>
+<ul>
+<li>macOS 10.12及更高版本</li>
+<li>64位Windows安装程序</li>
+<li>32位Windows安装程序</li>
+</ul>
+<p>如果你使用的是Windows或Mac，应该能够下载适当的安装程序并按照提示进行操作。最后，你应该有一个正在运行的Wireshark。</p>
+<p>如果你是在一个基于Debian的Linux环境中，安装就会有点困难，但仍然是可能的。可以使用以下命令安装Wireshark：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo add-apt-repository ppa:wireshark-dev&#x2F;stable</span><br><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install wireshark</span><br><span class="line">$ sudo wireshark</span><br></pre></td></tr></table></figure>
+
+<p>启动Wireshark之后，可以看到如下界面：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-home_20200124092838.png" alt=""></p>
+<p>随着Wireshark的运行，是时候分析一些流量了！</p>
+<h3 id="看呀，你的数据多么不安全"><a href="#看呀，你的数据多么不安全" class="headerlink" title="看呀，你的数据多么不安全"></a>看呀，你的数据多么不安全</h3><p>当前客户端和服务器的运行方式是非常不安全的。HTTP发送的所有东西，任何人都可以清楚地看到。这意味着，即使某人没有你的<code>SECRET_URL</code>，他仍然可以看到你所做的一切，只要他可以监视你和服务器之间的任何设备上的流量。</p>
+<p>这对你来说应该比较可怕。毕竟，你不想别人出现在你的秘密松鼠会议上！下面证明这种情况是真实发生的。首先，如果服务器尚未运行，请启动它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uwsgi --http-socket 127.0.0.1:5683 --mount &#x2F;&#x3D;server:app</span><br></pre></td></tr></table></figure>
+
+<p>这将在端口5683上启动Flask应用。接下来，你将在Wireshark中开始数据包捕获。此数据包捕获将帮助你查看进出服务器的所有流量。首先在Wireshark上选择Loopback:lo接口：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-loopback-click_20200124092931.png" alt=""></p>
+<p>你可以看到Loopback:lo部分突出显示，这指示Wireshark监视此端口的流量。你可以做得更好，并指定要捕获的端口和协议，可以在捕获筛选器中键入<code>port 5683</code>，在显示筛选器中键入<code>http</code>：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-port-5683-filter_20200124093109.png" alt=""></p>
+<p>绿色框表示Wireshark对你键入的筛选器感到满意。现在你可以单击左上角的按钮开始捕获：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wirehshark-click_20200124093218.png" alt=""></p>
+<p>单击此按钮将在Wireshark中生成一个新窗口：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-active-capture_20200124093340.png" alt=""></p>
+<p>这个新窗口相当简单，但底部的消息显示<code>&lt;live capture in progress&gt;</code>，这表明它正在工作。别担心什么都没显示出来，这很正常。为了让Wireshark报告任何事情，服务器上必须有一些活动。要获取一些数据，请尝试运行客户端：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ SECRET_URL&#x3D;&quot;http:&#x2F;&#x2F;127.0.0.1:5683&quot; python client.py</span><br><span class="line">The secret message is: fluffy tail</span><br></pre></td></tr></table></figure>
+
+<p>在执行上面的<code>client.py</code>代码之后，你现在应该可以在Wireshark中看到一些条目。如果一切顺利，那么你将看到两个类似于以下内容的条目：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-http-two-entries_20200124093640.png" alt=""></p>
+<p>这两个记录表示发生通信的两个部分。第一个是客户机对服务器的请求。当你单击第一个条目时，你将看到大量信息：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-http-request-1_20200124093501.png" alt=""></p>
+<p>很多信息！在顶部，仍然有HTTP请求和响应。选择其中一个条目后，你将看到中间和底部的行填充了信息。</p>
+<p>中间一行提供了协议的详细信息，Wireshark能够为所选的请求标识这些信息。这个详细信息允许你探索HTTP请求中实际发生的事情。Wireshark在中间一行从上到下描述了一些信息，下面是这些信息的快速摘要：</p>
+<ul>
+<li>物理层：描述用于发送请求的物理接口。</li>
+<li>以太网信息：向用户显示的第2层协议，其中包括源和目标MAC地址。</li>
+<li>IPv4：显示源和目标IP地址（127.0.0.1）。</li>
+<li>TCP：包括所需的TCP握手，以便创建可靠的数据管道。</li>
+<li>HTTP：显示关于HTTP请求本身的信息。</li>
+</ul>
+<p>当你展开超文本传输协议层时，可以看到构成HTTP请求的所有信息：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-http-request-expanded_20200124093829.png" alt=""></p>
+<p>此图显示脚本的HTTP请求：</p>
+<ul>
+<li>Method: GET</li>
+<li>Path: /</li>
+<li>Version: 1.1</li>
+<li>Headers: Host: 127.0.0.1:5683, Connection: keep-alive, and others</li>
+<li>Body: No body</li>
+</ul>
+<p>你看到的最后一行是十六进制的数据转储。在这个十六进制转储中，你可能会注意到：你实际上可以看到HTTP请求的各个部分。那是因为你的HTTP请求是公开发送的。但是回复呢？如果单击HTTP响应，则会看到一个类似的视图：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wireshark-http-response-expanded2_20200124094025.png" alt=""></p>
+<p>同样，也有那三个部分。如果你仔细看这个十六进制转储文件，会看到明文的秘密消息！这对秘密松鼠来说是个大问题。这意味着，如果有兴趣的话，任何有专门技术知识的人都可以很容易地看到这个数据流。那么，你怎么解决这个问题呢？答案是密码学。</p>
+<h2 id="密码学有什么帮助？"><a href="#密码学有什么帮助？" class="headerlink" title="密码学有什么帮助？"></a>密码学有什么帮助？</h2><p>在本节中，你将学习一种保护数据安全的方法，即创建自己的加密密钥并在服务器和客户机上使用它们。虽然这不是你的最后一步，但它将帮助你为学会构建Python HTTPS应用程序奠定坚实的基础。</p>
+<h3 id="了解密码学基础知识"><a href="#了解密码学基础知识" class="headerlink" title="了解密码学基础知识"></a>了解密码学基础知识</h3><p>密码学是一种保护通信免受窃听或攻击的方法。另一种说法是，你获取正常的信息（称为明文），然后把它转换成加密的文本（称为密文）。</p>
+<p>密码学一开始可能很吓人，但基本概念是很容易理解的。事实上，你以前可能已经练习过密码学。如果你曾经和你的朋友有过一种秘密语言，并在课堂上用它来传递笔记，那么你就已经练习过密码学。（如果你还没做到，别担心，你即将做到。）</p>
+<p>不管什么理由，现在你需要把字符串<code>fluffy tail</code>转换成一些难以理解的东西。一种方法是将某些字符映射到不同的字符上，还有一种有效的方法是将字母向后移动一个位置，这种做法看起来是这样的：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/alpha_20200126212257.png" alt=""></p>
+<p>此图显示如何从原始字母表转换为新字母表并返回。所以，如果你的信息是<code>ABC</code>，那么实际上发送的信息将会是<code>ZAB</code>。如果把这个应用到<code>fluffy tail</code>上，且长度不变，就得到<code>ekteex szhk</code>，虽然并不完美，但任何人看到都会觉得它是胡言乱语。</p>
+<p>祝贺你！你已经创建了在密码学中称为密码的东西，它描述了如何将明文转换为密文并返回。在这种情况下，你的密码是用英语描述的。这种特殊类型的密码称为替换密码。基本上，这与Enigma机器（<a href="https://en.wikipedia.org/wiki/Enigma_Machine）中使用的密码类型相同，只是简单得多。" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Enigma_Machine）中使用的密码类型相同，只是简单得多。</a></p>
+<p>现在，如果你想把信息传给秘密松鼠，那么你首先需要告诉它们要移动多少个字母，然后把编码的信息发给它们。在Python中，这可能类似于以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CIPHER &#x3D; &#123;&quot;a&quot;: &quot;z&quot;, &quot;A&quot;: &quot;Z&quot;, &quot;b&quot;: &quot;a&quot;&#125; # And so on</span><br><span class="line"></span><br><span class="line">def encrypt(plaintext: str):</span><br><span class="line">    return &quot;&quot;.join(CIPHER.get(letter, letter) for letter in plaintext)</span><br></pre></td></tr></table></figure>
+
+<p>在这里，你创建了一个名为<code>encrypt()</code>的函数，它将获取明文并将其转换为密文。想象一下，你有一本字典<code>CIPHER</code>，它把所有的字符都标出来了。类似地，你可以创建一个<code>decrypt()</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DECIPHER &#x3D; &#123;v: k for k, v in CIPHER.items()&#125;</span><br><span class="line"></span><br><span class="line">def decrypt(ciphertext: str):</span><br><span class="line">    return &quot;&quot;.join(DECIPHER.get(letter, letter) for letter in ciphertext)</span><br></pre></td></tr></table></figure>
+
+<p>此函数与<code>encrypt()</code>相反，它将接受密文并将其转换为明文。在这种形式的密码中，你有一个特殊的密钥，用户需要知道该密钥才能对消息进行加密和解密。对于上面的示例，该密钥是<code>1</code>。也就是说，密码指示你应该将每个字母移回一个字符。密钥对于保密非常重要，因为任何拥有密钥的人都可以轻松地解密你的信息。</p>
+<p>注意：虽然你可以用它来加密，但这仍然不是很安全。这个密码使用频率分析很容易破解，并且对秘密松鼠来说太原始了。</p>
+<p>在现代社会，密码学要先进得多，它依赖于复杂的数学理论和计算机科学来保证安全。虽然这些密码背后的数学不在本文的讨论范围内，但基本概念是相同的。你有一个密码，它描述了如何获取明文并将其转换为密文。</p>
+<p>你的替换密码和现代密码的唯一真正区别是：现代密码在数学上被证明是无法被窃听者破解的。现在，让我们看看如何使用你的新密码。</p>
+<h3 id="在Python-HTTPS应用中使用密码学"><a href="#在Python-HTTPS应用中使用密码学" class="headerlink" title="在Python HTTPS应用中使用密码学"></a>在Python HTTPS应用中使用密码学</h3><p>幸运的是，你不必成为数学或计算机科学的专家就可以使用密码学。Python有一个secrets模块，可以帮助你生成密码安全的随机数据。在本文中，你将了解一个名为<code>cryptography</code>的Python库，可以用<code>pip</code>安装它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install cryptography</span><br></pre></td></tr></table></figure>
+
+<p>安装了<code>cryptography</code>之后，你现在可以使用<code>Fernet</code>方法以数学上安全的方式加密和解密。</p>
+<p>记得你密码里的密钥是1。同样，你需要创建一个密钥，以便让<code>Fernet</code>正常运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from cryptography.fernet import Fernet</span><br><span class="line">&gt;&gt;&gt; key &#x3D; Fernet.generate_key()</span><br><span class="line">&gt;&gt;&gt; key</span><br><span class="line">b&#39;8jtTR9QcD-k3RO9Pcd5ePgmTu_itJQt9WKQPzqjrcoM&#x3D;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中，导入了<code>Fernet</code>并生成了一个密钥。密钥只是一个bytes对象，但是保持密钥的机密性和安全性是非常重要的。就像上面的替换示例一样，任何具有此密钥的人都可以轻松地解密你的信息。</p>
+<p>注意：在现实生活中，你会把这个密钥保管得很安全。在这些例子中，查看密钥是有帮助的。但这是一个糟糕的做法，特别是如果你在公共网站上发布它！换言之，不要使用你在上面看到的确切的密钥来获得你想要的安全性。</p>
+<p>这个密钥的运行方式与前面的密钥很相似，用它可以将明文转换为密文，并且能够解密返回明文。现在是有趣的部分了！你可以加密如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; my_cipher &#x3D; Fernet(key)</span><br><span class="line">&gt;&gt;&gt; ciphertext &#x3D; my_cipher.encrypt(b&quot;fluffy tail&quot;)</span><br><span class="line">&gt;&gt;&gt; ciphertext</span><br><span class="line">b&#39;gAAAAABdlW033LxsrnmA2P0WzaS-wk1UKXA1IdyDpmHcV6yrE7H_ApmSK8KpCW-6jaODFaeTeDRKJMMsa_526koApx1suJ4_dQ&#x3D;&#x3D;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中，创建了一个名为<code>my_cipher</code>的Fernet对象，然后可以使用它来加密信息。注意，你的秘密信息<code>fluffy tail</code>必须是bytes对象才能对其进行加密。加密后，可以看到“密文”是一个长字节流。</p>
+<p>多亏了Fernet，这个密文没有密钥就不能被操作或阅读！这种加密要求服务器和客户端都有权访问密钥。当双方都需要相同的密钥时，这称为对称加密。在下一节中，你将看到如何使用这种对称加密来保证数据的安全。</p>
+<h3 id="确保数据安全"><a href="#确保数据安全" class="headerlink" title="确保数据安全"></a>确保数据安全</h3><p>现在，你已经了解了Python中密码学的一些基础知识，可以将这些知识应用到你的服务器上。创建名为<code>symmetric_server.py</code>的新文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># symmetric_server.py</span><br><span class="line">import os</span><br><span class="line">from flask import Flask</span><br><span class="line">from cryptography.fernet import Fernet</span><br><span class="line"></span><br><span class="line">SECRET_KEY &#x3D; os.environb[b&quot;SECRET_KEY&quot;]</span><br><span class="line">SECRET_MESSAGE &#x3D; b&quot;fluffy tail&quot;</span><br><span class="line">app &#x3D; Flask(__name__)</span><br><span class="line"></span><br><span class="line">my_cipher &#x3D; Fernet(SECRET_KEY)</span><br><span class="line"></span><br><span class="line">@app.route(&quot;&#x2F;&quot;)</span><br><span class="line">def get_secret_message():</span><br><span class="line">    return my_cipher.encrypt(SECRET_MESSAGE)</span><br></pre></td></tr></table></figure>
+
+<p>此代码将原始服务器代码与上一节中使用的<code>Fernet</code>对象组合在一起。现在使用<code>os.environb</code>将密钥作为bytes对象从环境变量中读取。扫清了服务器方面的障碍之后，你现在可以专注于客户端。将以下内容粘贴到<code>symmetric_client.py</code>中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># symmetric_client.py</span><br><span class="line">import os</span><br><span class="line">import requests</span><br><span class="line">from cryptography.fernet import Fernet</span><br><span class="line"></span><br><span class="line">SECRET_KEY &#x3D; os.environb[b&quot;SECRET_KEY&quot;]</span><br><span class="line">my_cipher &#x3D; Fernet(SECRET_KEY)</span><br><span class="line"></span><br><span class="line">def get_secret_message():</span><br><span class="line">    response &#x3D; requests.get(&quot;http:&#x2F;&#x2F;127.0.0.1:5683&quot;)</span><br><span class="line"></span><br><span class="line">    decrypted_message &#x3D; my_cipher.decrypt(response.content)</span><br><span class="line">    print(f&quot;The codeword is: &#123;decrypted_message&#125;&quot;)</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    get_secret_message()</span><br></pre></td></tr></table></figure>
+
+<p>这是修改后的代码，用于把你的早期客户端与<code>Fernet</code>加密机制相结合。<code>get_secret_message()</code>执行以下操作：</p>
+<ul>
+<li>向服务器发出请求。</li>
+<li>从响应中获取原始字节。</li>
+<li>尝试解密原始字节。</li>
+<li>打印解密的信息。</li>
+</ul>
+<p>如果同时运行服务器和客户端，你将看到正在成功地加密和解密你的秘密信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ uwsgi --http-socket 127.0.0.1:5683 \</span><br><span class="line">    --env SECRET_KEY&#x3D;&quot;8jtTR9QcD-k3RO9Pcd5ePgmTu_itJQt9WKQPzqjrcoM&#x3D;&quot; \</span><br><span class="line">    --mount &#x2F;&#x3D;symmetric_server:app</span><br></pre></td></tr></table></figure>
+
+<p>在此调试中，你将再次在端口5683上启动服务器。这一次，传入的SECRET_KEY 必须至少是长度为32的base64编码字符串。重新启动服务器后，你现在可以查询它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ SECRET_KEY&#x3D;&quot;8jtTR9QcD-k3RO9Pcd5ePgmTu_itJQt9WKQPzqjrcoM&#x3D;&quot; python symmetric_client.py</span><br><span class="line">The secret message is: b&#39;fluffy tail&#39;</span><br></pre></td></tr></table></figure>
+
+<p>哇！你已经实现加密和解密了。如果尝试使用无效的SECRET_KEY运行此操作，则会出现错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ SECRET_KEY&#x3D;&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&#x3D;&quot; python symmetric_client.py</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;...&#x2F;cryptography&#x2F;fernet.py&quot;, line 104, in _verify_signature</span><br><span class="line">    h.verify(data[-32:])</span><br><span class="line">  File &quot;...&#x2F;cryptography&#x2F;hazmat&#x2F;primitives&#x2F;hmac.py&quot;, line 66, in verify</span><br><span class="line">    ctx.verify(signature)</span><br><span class="line">  File &quot;...&#x2F;cryptography&#x2F;hazmat&#x2F;backends&#x2F;openssl&#x2F;hmac.py&quot;, line 74, in verify</span><br><span class="line">    raise InvalidSignature(&quot;Signature did not match digest.&quot;)</span><br><span class="line">cryptography.exceptions.InvalidSignature: Signature did not match digest.</span><br><span class="line"></span><br><span class="line">During handling of the above exception, another exception occurred:</span><br><span class="line"></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;symmetric_client.py&quot;, line 16, in &lt;module&gt;</span><br><span class="line">    get_secret_message()</span><br><span class="line">  File &quot;symmetric_client.py&quot;, line 11, in get_secret_message</span><br><span class="line">    decrypted_message &#x3D; my_cipher.decrypt(response.content)</span><br><span class="line">  File &quot;...&#x2F;cryptography&#x2F;fernet.py&quot;, line 75, in decrypt</span><br><span class="line">    return self._decrypt_data(data, timestamp, ttl)</span><br><span class="line">  File &quot;...&#x2F;cryptography&#x2F;fernet.py&quot;, line 117, in _decrypt_data</span><br><span class="line">    self._verify_signature(data)</span><br><span class="line">  File &quot;...&#x2F;cryptography&#x2F;fernet.py&quot;, line 106, in _verify_signature</span><br><span class="line">    raise InvalidToken</span><br><span class="line">cryptography.fernet.InvalidToken</span><br></pre></td></tr></table></figure>
+
+<p>所以，你知道加密和解密是有效的。但它安全吗？是的。为了证明这一点，你可以回到Wireshark，使用与以前相同的过滤器开始新的捕获。完成捕获设置后，再次运行客户端代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ SECRET_KEY&#x3D;&quot;8jtTR9QcD-k3RO9Pcd5ePgmTu_itJQt9WKQPzqjrcoM&#x3D;&quot; python symmetric_client.py</span><br><span class="line">The secret message is: b&#39;fluffy tail&#39;</span><br></pre></td></tr></table></figure>
+
+<p>你已经成功地发出了另一个HTTP请求和响应，并且再次在Wireshark中看到这些信息。由于加密信息只在响应中传输，你可以单击该信息查看数据：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/response_20200126212741.png" alt=""></p>
+<p>在图片的中间一行，可以看到实际传输的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gAAAAABdlXSesekh9LYGDpZE4jkxm4Ai6rZQg2iHaxyDXkPWz1O74AB37V_a4vabF13fEr4kwmCe98Wlr8Zo1XNm-WjAVtSgFQ&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>棒极了！这意味着数据是加密的，窃听者不知道信息内容实际上是什么。不仅如此，这也意味着他们可能会花费大量的时间试图暴力破解这些数据，而且他们几乎永远不会成功。</p>
+<p>你的数据是安全的！但是等一下——以前使用Python HTTPS应用时，不需要知道任何关于钥匙的事情。这是因为HTTPS不专门使用对称加密。事实证明，分享秘密是个难题。</p>
+<p>要证明这个概念，请在浏览器中输入<code>http://127.0.0.1:5683</code>，你将看到加密的响应文本。这是因为你的浏览器对你的密钥一无所知。那么Python HTTPS应用程序到底是如何工作的呢？这就是非对称加密发挥作用的地方。</p>
+<h3 id="如何共享密钥？"><a href="#如何共享密钥？" class="headerlink" title="如何共享密钥？"></a>如何共享密钥？</h3><p>在上一节中，你了解了如何使用对称加密来保证数据在Internet上的安全。尽管对称加密是安全的，但它并不是Python HTTPS应用用来保证数据安全的唯一加密技术。对称加密引入了一些不易解决的基本问题。</p>
+<p>注意：记住，对称加密要求在客户端和服务器之间有一个共享密钥。不幸的是，安全性的工作强度取决于最弱的链接，而在对称加密中，弱链接尤其具有灾难性。一旦一个人泄露了密钥，那么每个密钥都会泄露。可以肯定的是，任何安全系统在某个时候都会受到损害。</p>
+<p>那么，你怎么改变密钥？如果你只有一个服务器和一个客户端，这可能是一个快速的任务。然而，随着客户端和服务器的增多，为了有效地更改密钥和保护信息，需要进行越来越多的协调。</p>
+<p>而且，你每次都要选择一个新的加密方式。在上面的示例中，你看到一个随机生成的密钥，几乎不可能试着让人们记住那个密钥。随着客户端和服务器数量的增长，可能会使用更容易记住和猜测的密钥。</p>
+<p>如果处理好了更改密钥的问题，那么还有一个问题要解决，如何分享你的初始密钥？在秘密松鼠示例中，你通过对每个成员进行物理访问来解决了这个问题，可以亲自把密钥告诉每个成员，让他们保守秘密，但要记住，有人会是最薄弱的环节。</p>
+<p>现在，假设你从另一个物理位置向秘密松鼠会添加一个成员，如何与这个会员分享这个秘密？每次更改密钥时，你都让他们搭飞机去找你吗？如果你能把密钥放在你的服务器上并自动共享，那就太好了。不幸的是，这会挫败加密的全部目的，因为任何人都可以得到密钥！</p>
+<p>当然，你可以给每个人一个初始的主密钥来获取秘密信息，但现在你遇到的问题是以前的两倍。如果你为之头痛，别担心！你不是唯一一个。</p>
+<p>你需要的是两个从未交流过的人有一个共同的秘密。听起来不可能，对吧？幸运的是，有三个人：拉尔夫·梅克尔、惠特菲尔德·迪菲和马丁·赫尔曼，他们支持你，他们证明了公钥加密（也就是所谓的非对称加密）是可能的。</p>
+<p>注：虽然惠特菲尔德·迪菲和马丁·赫尔曼被广泛认为是第一个发现这一计划的人，但据1997年的披露，在GCHQ工作的三人：詹姆斯·H·埃利斯、克利福德·考克斯和马尔科姆·J·威廉森早在七年前就展示了这种功能！</p>
+<p>非对称加密允许两个从未有过通信的用户共享一个共同的秘密。理解基本原理的最简单方法之一是使用颜色类比。假设你有以下场景：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/dh-initial_20200126212941.png" alt=""></p>
+<p>在这个图表中，你试图与一个你从未见过的“秘密松鼠”成员交流，但间谍可以看到你发送的所有信息。你知道对称加密并且想使用它，但是首先需要共享一个密钥。幸运的是，你们俩都有私钥。不幸的是，你不能发送你的私钥，因为间谍会看到它。那你怎么办？</p>
+<p>你需要做的第一件事就是同意使用你的伙伴的颜色，比如黄色：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/dh-2_20200126213039.png" alt=""></p>
+<p>注意这里间谍可以看到共享的颜色，你和秘密松鼠也可以。共享颜色实际上是公开的。现在，你和秘密松鼠将你的私钥与共享颜色结合起来：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/dh-3_20200126213150.png" alt=""></p>
+<p>你的颜色组合成绿色，而秘密松鼠的颜色组合成橙色。你们两个都使用了共享颜色，现在你们需要彼此共享组合的颜色：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/dh-4_20200126213244.png" alt=""></p>
+<p>你现在有了你的私钥和秘密松鼠的颜色组合。同样地，秘密松鼠有他们的私钥和你的组合颜色。你和秘密松鼠很快就把你们的颜色组合起来了。</p>
+<p>然而，间谍只有这两种颜色。要想弄清楚你的原色是非常困难的，即使给定了最初的共享颜色。间谍得去商店买很多不同的蓝颜料来试试。即使这样，也很难知道他们在组合后是否看到了具有正确深浅度的绿色！简而言之，你的私钥仍然是私钥。</p>
+<p>但是你和那个“秘密松鼠”成员呢？你们仍然没有一个共同的秘密！这是你的私钥重新派上用场的地方。如果你把你的私钥和你从秘密松鼠那里得到的颜色组合在一起，那么你俩最终会得到相同的颜色：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/dh-5_20200126213353.png" alt=""></p>
+<p>现在，你和这个“秘密松鼠”成员有着相同的秘密颜色。你现在已经成功地和一个完全陌生的人分享了一个安全的秘密。这对于公钥密码的工作方式来说是惊人的精确。这个事件序列还有另一个通用名称：Diffie-Hellman密钥交换。密钥交换由以下部分组成：</p>
+<ul>
+<li>私钥是示例中的私用颜色。</li>
+<li>公钥是你共享的组合颜色。</li>
+</ul>
+<p>私钥是你始终保持私有的东西，而公钥可以与任何人共享。这些概念直接映射到Python HTTPS应用程序的现实世界。既然服务器和客户端有了一个共享的秘密，你可以使用你的“老伙计”对称加密来对所有信息进行加密！</p>
+<p>注意：公钥密码术也依赖于一些数学知识来进行颜色混合。Diffie-Hellman密钥交换的维基百科词条有很好的解释，但是深入的解释不在本文的范围之内。</p>
+<p>当你通过安全网站（如本网站）进行通信时，你的浏览器和服务器使用这些相同的原则设置安全通信：</p>
+<ul>
+<li>浏览器从服务器请求信息。</li>
+<li>浏览器和服务器交换公钥。</li>
+<li>浏览器和服务器生成共享私钥。</li>
+<li>浏览器和服务器使用此共享密钥通过对称加密对消息进行加密和解密。</li>
+</ul>
+<p>幸运的是，你不需要实现这些细节。有许多内置库和第三方库可以帮助你保持客户端和服务器通信的安全。</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" style="zoom:67%;" />
+
+<h2 id="真实的HTTPS"><a href="#真实的HTTPS" class="headerlink" title="真实的HTTPS"></a>真实的HTTPS</h2><p>考虑到所有这些关于加密的信息，让我们把范围缩小一点，讨论一下Python HTTPS应用在真实的项目中的实际方式，加密只是事情的一半，访问安全网站时，需要两个主要组件：</p>
+<ul>
+<li>加密：将明文转换为密文并返回。</li>
+<li>身份认证：验证某人或事物是否名副其实。</li>
+</ul>
+<p>你已经了解了关于加密的工作原理，但是如何身份认证？要了解真实项目中的身份认证，需要了解公钥基础结构（PKI）。PKI在安全生态系统中引入了另一个重要概念：证书。</p>
+<p>证书就是互联网上的护照，和计算机世界中的大多数东西一样，它们只是含有数据的文件中。一般来说，证书包括以下信息：</p>
+<ul>
+<li>颁发给：标识证书的所有者</li>
+<li>颁发者：标识颁发证书的人</li>
+<li>有效期：标识证书有效的时间范围</li>
+</ul>
+<p>就像护照一样，证书只有在由权威机构生成和认可的情况下才真正有用。你的浏览器不可能知道你在互联网上访问的每个站点的每个证书，相反，PKI依赖于一个称为证书颁发机构（CA）的概念。</p>
+<p>证书颁发机构负责颁发证书。在PKI中，它们被认为是可信的第三方（TTP）。本质上，这些实体充当证书的有效权限。假设你想去另一个国家，你有一本护照，上面有你所有的信息。在外国的移民官员怎么知道你的护照上包含有效的信息？</p>
+<p>如果你要自己填写所有信息并签字，那么你想访问的每个国家的每个移民官都需要亲自了解你，并且能够证明那里的信息确实正确。</p>
+<p>处理此问题的另一种方法是将所有信息发送到可信的第三方（TTP）。TTP会对你提供的资料进行彻底调查，核实你的要求，然后签署你的护照。事实证明，这更为实际，因为移民局官员只需要了解可信的第三方。</p>
+<p>TTP是如何在实践中处理证书的？过程如下：</p>
+<ul>
+<li>创建证书签名请求（CSR）：这就像填写签证信息一样。</li>
+<li>将CSR发送给可信的第三方（TTP）：这就像将你的信息发送到签证申请办公室。</li>
+<li>验证你的信息：不管怎样，TTP需要验证你提供的信息。作为一个例子，请看Amazon如何验证所有权。</li>
+<li>生成一个公钥：TTP签署你的CSR。这相当于TTP签署你的签证。</li>
+<li>签发已验证的公钥：这相当于你在邮件中收到签证。</li>
+</ul>
+<p>请注意，CSR以加密方式绑定到你的私钥。因此，信息公钥、私钥和证书颁发机构的所有三个部分都以某种方式相关。这将创建所谓的信任链，因此你现在拥有一个有效的证书，可以用来核实你的身份。</p>
+<p>大多数情况下，这是网站所有者的责任，网站所有者将遵循所有这些步骤。在这个过程结束时，他们的证书上写着：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据Y，从时间A和时间B期间，我是X</span><br></pre></td></tr></table></figure>
+
+<p>这句话就是证书真正告诉你的。变量的填写方法如下：</p>
+<ul>
+<li>A是有效的开始日期和时间。</li>
+<li>B是有效的结束日期和时间。</li>
+<li>X是服务器的名称。</li>
+<li>Y是证书颁发机构的名称。</li>
+</ul>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" style="zoom:67%;" />
+
+<p>基本上，这都是证书描述的。换句话说，有证书并不一定意味着你就是你所说的那个人，只是你让Y同意 你就是你所说的那个人。这就是可信的第三方的“可信”部分。</p>
+<p>TTP需要在客户端和服务器之间共享，以便每个人都对HTTPS握手感到满意。你的浏览器会自动安装许多证书，要查看它们，请执行以下步骤：</p>
+<ul>
+<li>Chrome：进入设置&gt;高级&gt;隐私和安全&gt;管理证书&gt;权限。</li>
+<li>Firefox：进入设置&gt;首选项&gt;隐私和安全&gt;查看证书&gt;权限。</li>
+</ul>
+<p>这涵盖了在真实项目中创建Python HTTPS应用所需的基础知识，接下来，把这些概念应用到自己的代码中，调试一个常见的示例，并成为你自己的秘密松鼠证书颁发机构！</p>
+<h2 id="Python-HTTPS应用"><a href="#Python-HTTPS应用" class="headerlink" title="Python HTTPS应用"></a>Python HTTPS应用</h2><p>你已经了解了制作Python HTTPS应用所需的基本知识，现在是将所有知识逐一绑定到你的应用的时候了，这将让服务器和客户端之间的通信更安全。</p>
+<p>可以在自己的机器上设置整个PKI基础设施，这正是本节中要做的。没有听起来那么难，所以别担心！成为一个真正的证书颁发机构要比采取以下步骤困难得多，但你将要读到的大体上是你运行自己的CA（证书颁发机构）所需的全部内容。</p>
+<h3 id="成为证书颁发机构"><a href="#成为证书颁发机构" class="headerlink" title="成为证书颁发机构"></a>成为证书颁发机构</h3><p>证书颁发机构只不过是一对非常重要的公钥和私钥。要成为CA（证书颁发机构），只需要生成一个公钥和私钥对。</p>
+<p>注意：成为公众使用的CA是一个非常艰难的过程，尽管有很多公司遵循了这个过程。但是，到本文时，你也不会是这些公司中的一员！</p>
+<p>你的初始公钥和私钥对将是自签名证书。如果你真的要成为一个CA（证书颁发机构），那么这个私钥的安全是非常重要的。如果有人可以访问CA的公钥和私钥对，他也可以生成一个完全有效的证书，并且除了停止信任你的CA之外，你无法检测该问题。</p>
+<p>解除警告后，你可以立即生成证书。首先，生成一个私钥。将以下内容粘贴到名为<code>pki_helpers.py</code>的文件中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># pki_helpers.py</span><br><span class="line"></span><br><span class="line">from cryptography.hazmat.backends import default_backend</span><br><span class="line">from cryptography.hazmat.primitives import serialization</span><br><span class="line">from cryptography.hazmat.primitives.asymmetric import rsa</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def generate_private_key(filename: str, passphrase: str):</span><br><span class="line">    private_key &#x3D; rsa.generate_private_key(</span><br><span class="line">        public_exponent&#x3D;65537, key_size&#x3D;2048, backend&#x3D;default_backend()</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    utf8_pass &#x3D; passphrase.encode(&quot;utf-8&quot;)</span><br><span class="line">    algorithm &#x3D; serialization.BestAvailableEncryption(utf8_pass)</span><br><span class="line"></span><br><span class="line">    with open(filename, &quot;wb&quot;) as keyfile:</span><br><span class="line">        keyfile.write(</span><br><span class="line">            private_key.private_bytes(</span><br><span class="line">                encoding&#x3D;serialization.Encoding.PEM,</span><br><span class="line">                format&#x3D;serialization.PrivateFormat.TraditionalOpenSSL,</span><br><span class="line">                encryption_algorithm&#x3D;algorithm,</span><br><span class="line">            )</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    return private_key</span><br></pre></td></tr></table></figure>
+
+<p><code>generate_private_key()</code>使用RSA生成私钥。下面是代码的分解：</p>
+<ul>
+<li>第2行到第4行导入运行该函数所需的库。</li>
+<li>第7行到第9行使用RSA生成私钥。神奇的数字65537和2048只是两个可能的值。你可以阅读更多关于这些数字有用的原因，或只是简单相信这些数字是有用的。</li>
+<li>第11到12行设置用于私钥的加密算法。</li>
+<li>第14至21行按指定的文件名将私钥写入磁盘。此文件使用提供的密码来加密。</li>
+</ul>
+<p>成为你自己的CA的下一步是生成自签名公钥。你可以绕过证书签名请求（CSR）并立即生成公钥。将以下内容粘贴到<code>pki_helpers.py</code>中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"># pki_helpers.py</span><br><span class="line"></span><br><span class="line">from datetime import datetime, timedelta</span><br><span class="line">from cryptography import x509</span><br><span class="line">from cryptography.x509.oid import NameOID</span><br><span class="line">from cryptography.hazmat.primitives import hashes</span><br><span class="line"></span><br><span class="line">def generate_public_key(private_key, filename, **kwargs):</span><br><span class="line">    subject &#x3D; x509.Name(</span><br><span class="line">        [</span><br><span class="line">            x509.NameAttribute(NameOID.COUNTRY_NAME, kwargs[&quot;country&quot;]),</span><br><span class="line">            x509.NameAttribute(</span><br><span class="line">                NameOID.STATE_OR_PROVINCE_NAME, kwargs[&quot;state&quot;]</span><br><span class="line">            ),</span><br><span class="line">            x509.NameAttribute(NameOID.LOCALITY_NAME, kwargs[&quot;locality&quot;]),</span><br><span class="line">            x509.NameAttribute(NameOID.ORGANIZATION_NAME, kwargs[&quot;org&quot;]),</span><br><span class="line">            x509.NameAttribute(NameOID.COMMON_NAME, kwargs[&quot;hostname&quot;]),</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    # Because this is self signed, the issuer is always the subject</span><br><span class="line">    issuer &#x3D; subject</span><br><span class="line"></span><br><span class="line">    # This certificate is valid from now until 30 days</span><br><span class="line">    valid_from &#x3D; datetime.utcnow()</span><br><span class="line">    valid_to &#x3D; valid_from + timedelta(days&#x3D;30)</span><br><span class="line"></span><br><span class="line">    # Used to build the certificate</span><br><span class="line">    builder &#x3D; (</span><br><span class="line">        x509.CertificateBuilder()</span><br><span class="line">        .subject_name(subject)</span><br><span class="line">        .issuer_name(issuer)</span><br><span class="line">        .public_key(private_key.public_key())</span><br><span class="line">        .serial_number(x509.random_serial_number())</span><br><span class="line">        .not_valid_before(valid_from)</span><br><span class="line">        .not_valid_after(valid_to)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    # Sign the certificate with the private key</span><br><span class="line">    public_key &#x3D; builder.sign(</span><br><span class="line">        private_key, hashes.SHA256(), default_backend()</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    with open(filename, &quot;wb&quot;) as certfile:</span><br><span class="line">        certfile.write(public_key.public_bytes(serialization.Encoding.PEM))</span><br><span class="line"></span><br><span class="line">    return public_key</span><br></pre></td></tr></table></figure>
+
+<p>tu</p>
+<p>这里有一个新的函数<code>generate_public_key()</code>，它将生成一个自签名的公钥。下面是这段代码的工作原理：</p>
+<ul>
+<li>第2行到第5行是运行该函数所需的导入。</li>
+<li>第8行到第18行建立了有关证书主题的信息。</li>
+<li>第21行使用相同的颁发者和使用者，因为这是自签名证书。</li>
+<li>第24至25行指示此公钥有效的时间范围。在这个示例中，有效期是30天。</li>
+<li>第28到36行将所有必需的信息添加到公钥生成器对象中，该对象需要进行签名。</li>
+<li>第38至41行用私钥签署公钥。</li>
+<li>第43到44行将公钥写入文件名。</li>
+</ul>
+<p>使用这两个函数，你可以在Python中快速生成私钥和公钥对：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from pki_helpers import generate_private_key, generate_public_key</span><br><span class="line">&gt;&gt;&gt; private_key &#x3D; generate_private_key(&quot;ca-private-key.pem&quot;, &quot;secret_password&quot;)</span><br><span class="line">&gt;&gt;&gt; private_key</span><br><span class="line">&lt;cryptography.hazmat.backends.openssl.rsa._RSAPrivateKey object at 0x7ffbb292bf90&gt;</span><br><span class="line">&gt;&gt;&gt; generate_public_key(</span><br><span class="line">...   private_key,</span><br><span class="line">...   filename&#x3D;&quot;ca-public-key.pem&quot;,</span><br><span class="line">...   country&#x3D;&quot;US&quot;,</span><br><span class="line">...   state&#x3D;&quot;Maryland&quot;,</span><br><span class="line">...   locality&#x3D;&quot;Baltimore&quot;,</span><br><span class="line">...   org&#x3D;&quot;My CA Company&quot;,</span><br><span class="line">...   hostname&#x3D;&quot;my-ca.com&quot;,</span><br><span class="line">... )</span><br><span class="line">&lt;Certificate(subject&#x3D;&lt;Name(C&#x3D;US,ST&#x3D;Maryland,L&#x3D;Baltimore,O&#x3D;My CA Company,CN&#x3D;logan-ca.com)&gt;, ...)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>从<code>pki_helpers</code>导入函数后，首先生成私钥并将其保存到文件<code>ca-private-key.pem</code>。然后将该私钥传递到<code>generate_public_key()</code>以生成公钥。在你的目录中，现在应该有两个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls ca*</span><br><span class="line">ca-private-key.pem ca-public-key.pem</span><br></pre></td></tr></table></figure>
+
+<p>祝贺你！你现在有能力成为证书颁发机构了。</p>
+<h3 id="信任你的服务器"><a href="#信任你的服务器" class="headerlink" title="信任你的服务器"></a>信任你的服务器</h3><p>要使服务器变得可信，第一步是生成证书签名请求（CSR）。在现实世界中，CSR将被发送到实际的证书颁发机构，如Verisign或Let’s Encrypt。在本例中，你将使用刚刚创建的CA。</p>
+<p>将生成CSR的代码从上面粘贴到<code>pki_helpers.py</code>文件中:：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># pki_helpers.py</span><br><span class="line"></span><br><span class="line">def generate_csr(private_key, filename, **kwargs):</span><br><span class="line">    subject &#x3D; x509.Name(</span><br><span class="line">        [</span><br><span class="line">            x509.NameAttribute(NameOID.COUNTRY_NAME, kwargs[&quot;country&quot;]),</span><br><span class="line">            x509.NameAttribute(</span><br><span class="line">                NameOID.STATE_OR_PROVINCE_NAME, kwargs[&quot;state&quot;]</span><br><span class="line">            ),</span><br><span class="line">            x509.NameAttribute(NameOID.LOCALITY_NAME, kwargs[&quot;locality&quot;]),</span><br><span class="line">            x509.NameAttribute(NameOID.ORGANIZATION_NAME, kwargs[&quot;org&quot;]),</span><br><span class="line">            x509.NameAttribute(NameOID.COMMON_NAME, kwargs[&quot;hostname&quot;]),</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    # Generate any alternative dns names</span><br><span class="line">    alt_names &#x3D; []</span><br><span class="line">    for name in kwargs.get(&quot;alt_names&quot;, []):</span><br><span class="line">        alt_names.append(x509.DNSName(name))</span><br><span class="line">    san &#x3D; x509.SubjectAlternativeName(alt_names)</span><br><span class="line"></span><br><span class="line">    builder &#x3D; (</span><br><span class="line">        x509.CertificateSigningRequestBuilder()</span><br><span class="line">        .subject_name(subject)</span><br><span class="line">        .add_extension(san, critical&#x3D;False)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    csr &#x3D; builder.sign(private_key, hashes.SHA256(), default_backend())</span><br><span class="line">    with open(filename, &quot;wb&quot;) as csrfile:</span><br><span class="line">        csrfile.write(csr.public_bytes(serialization.Encoding.PEM))</span><br><span class="line"></span><br><span class="line">    return csr</span><br></pre></td></tr></table></figure>
+
+<p>在大多数情况下，此代码与生成原始公钥的方式相同。主要区别概述如下：</p>
+<ul>
+<li>第16至19行设置备用DNS名称，该名称对你的证书有效。</li>
+<li>第21行到第25行生成不同的生成器对象，但同样的基本原则与以前一样适用。你正在为CSR构建所有必需的属性。</li>
+<li>第27行用私钥签署CSR。</li>
+<li>第29至30行将CSR以PEM格式写入磁盘。</li>
+</ul>
+<p>你会注意到，为了创建CSR，首先需要一个私钥。幸运的是，你可以在创建CA的私钥时使用相同的<code>generate_private_key()</code> 。使用上面的函数和前面定义的方法，可以执行以下操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from pki_helpers import generate_csr, generate_private_key</span><br><span class="line">&gt;&gt;&gt; server_private_key &#x3D; generate_private_key(</span><br><span class="line">...   &quot;server-private-key.pem&quot;, &quot;serverpassword&quot;</span><br><span class="line">... )</span><br><span class="line">&gt;&gt;&gt; server_private_key</span><br><span class="line">&lt;cryptography.hazmat.backends.openssl.rsa._RSAPrivateKey object at 0x7f6adafa3050&gt;</span><br><span class="line">&gt;&gt;&gt; generate_csr(</span><br><span class="line">...   server_private_key,</span><br><span class="line">...   filename&#x3D;&quot;server-csr.pem&quot;,</span><br><span class="line">...   country&#x3D;&quot;US&quot;,</span><br><span class="line">...   state&#x3D;&quot;Maryland&quot;,</span><br><span class="line">...   locality&#x3D;&quot;Baltimore&quot;,</span><br><span class="line">...   org&#x3D;&quot;My Company&quot;,</span><br><span class="line">...   alt_names&#x3D;[&quot;localhost&quot;],</span><br><span class="line">...   hostname&#x3D;&quot;my-site.com&quot;,</span><br><span class="line">... )</span><br><span class="line">&lt;cryptography.hazmat.backends.openssl.x509._CertificateSigningRequest object at 0x7f6ad5372210&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在控制台中运行这些步骤后，你应该得到两个新文件：</p>
+<ul>
+<li>server-private-key.pem：服务器的私钥</li>
+<li>server-csr.pem：服务器的CSR</li>
+</ul>
+<p>你可以从控制台查看新的CSR和私钥：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls server*.pem</span><br><span class="line">server-csr.pem  server-private-key.pem</span><br></pre></td></tr></table></figure>
+
+<p>有了这两个文档，现在可以开始对密钥进行签名。通常，在这一步中会进行大量的验证。在实际项目中，CA会确保你拥有my-site.com，并要求你以各种方式证明它。</p>
+<p>既然你是本例中的CA，就可以避免这些麻烦的证明，创建你自己的已验证的公钥。为此，你将在<code>pki_helpers.py</code>文件中添加另一个函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># pki_helpers.py</span><br><span class="line">def sign_csr(csr, ca_public_key, ca_private_key, new_filename):</span><br><span class="line">    valid_from &#x3D; datetime.utcnow()</span><br><span class="line">    valid_until &#x3D; valid_from + timedelta(days&#x3D;30)</span><br><span class="line"></span><br><span class="line">    builder &#x3D; (</span><br><span class="line">        x509.CertificateBuilder()</span><br><span class="line">        .subject_name(csr.subject)</span><br><span class="line">        .issuer_name(ca_public_key.subject)</span><br><span class="line">        .public_key(csr.public_key())</span><br><span class="line">        .serial_number(x509.random_serial_number())</span><br><span class="line">        .not_valid_before(valid_from)</span><br><span class="line">        .not_valid_after(valid_until)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    for extension in csr.extensions:</span><br><span class="line">        builder &#x3D; builder.add_extension(extension.value, extension.critical)</span><br><span class="line"></span><br><span class="line">    public_key &#x3D; builder.sign(</span><br><span class="line">        private_key&#x3D;ca_private_key,</span><br><span class="line">        algorithm&#x3D;hashes.SHA256(),</span><br><span class="line">        backend&#x3D;default_backend(),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    with open(new_filename, &quot;wb&quot;) as keyfile:</span><br><span class="line">        keyfile.write(public_key.public_bytes(serialization.Encoding.PEM))</span><br></pre></td></tr></table></figure>
+
+<p>这段代码看起来非常类似于<code>generate_ca.py</code>文件中的<code>generate_public_key()</code>。事实上，它们几乎是一样的。主要区别如下：</p>
+<ul>
+<li>第8行到第9行将使用者名称基于CSR，而颁发者基于证书颁发机构（CA）。</li>
+<li>第10行这次从CSR获取公钥。</li>
+<li>第16至17行复制CSR上设置的所有扩展名。</li>
+<li>第20行用CA的私钥签署公钥。</li>
+</ul>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" style="zoom:67%;" />
+
+<p>下一步是启动Python交互模式，并使用<code>sign_csr()</code>，需要加载CSR和CA的私钥和公钥，从加载CSR开始：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from cryptography import x509</span><br><span class="line">&gt;&gt;&gt; from cryptography.hazmat.backends import default_backend</span><br><span class="line">&gt;&gt;&gt; csr_file &#x3D; open(&quot;server-csr.pem&quot;, &quot;rb&quot;)</span><br><span class="line">&gt;&gt;&gt; csr &#x3D; x509.load_pem_x509_csr(csr_file.read(), default_backend())</span><br><span class="line">&gt;&gt;&gt; csr</span><br><span class="line">&lt;cryptography.hazmat.backends.openssl.x509._CertificateSigningRequest object at 0x7f68ae289150&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在本节代码中，你将打开server-csr.pem文件，并使用<code>x509.load_pem_x509_csr()</code>创建csr对象。接下来，你需要加载CA的公钥：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; ca_public_key_file &#x3D; open(&quot;ca-public-key.pem&quot;, &quot;rb&quot;)</span><br><span class="line">&gt;&gt;&gt; ca_public_key &#x3D; x509.load_pem_x509_certificate(</span><br><span class="line">...   ca_public_key_file.read(), default_backend()</span><br><span class="line">... )</span><br><span class="line">&gt;&gt;&gt; ca_public_key</span><br><span class="line">&lt;Certificate(subject&#x3D;&lt;Name(C&#x3D;US,ST&#x3D;Maryland,L&#x3D;Baltimore,O&#x3D;My CA Company,CN&#x3D;logan-ca.com)&gt;, ...)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>再次，你创建了一个<code>ca_public_key</code>对象，它可以被<code>sign_csr()</code>使用。x509模块有一个便利的<code>load-pem-x509-u certificate()</code>来帮助你。最后一步是加载CA的私钥：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from getpass import getpass</span><br><span class="line">&gt;&gt;&gt; from cryptography.hazmat.primitives import serialization</span><br><span class="line">&gt;&gt;&gt; ca_private_key_file &#x3D; open(&quot;ca-private-key.pem&quot;, &quot;rb&quot;)</span><br><span class="line">&gt;&gt;&gt; ca_private_key &#x3D; serialization.load_pem_private_key(</span><br><span class="line">...   ca_private_key_file.read(),</span><br><span class="line">...   getpass().encode(&quot;utf-8&quot;),</span><br><span class="line">...   default_backend(),</span><br><span class="line">... )</span><br><span class="line">Password:</span><br><span class="line">&gt;&gt;&gt; private_key</span><br><span class="line">&lt;cryptography.hazmat.backends.openssl.rsa._RSAPrivateKey object at 0x7f68a85ade50&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此代码将加载你的私钥。回想一下，你的私钥是使用你指定的密码加密的。使用这三个组件，你现在可以签署CSR并生成已验证的公钥：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from pki_helpers import sign_csr</span><br><span class="line">&gt;&gt;&gt; sign_csr(csr, ca_public_key, ca_private_key, &quot;server-public-key.pem&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>运行此命令后，目录中应该有三个服务器密钥文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls server*.pem</span><br><span class="line">server-csr.pem  server-private-key.pem  server-public-key.pem</span><br></pre></td></tr></table></figure>
+
+<p>这里的工作量相当大。好消息是，既然有了私钥和公钥对，你不必更改任何服务器代码就可以开始使用它了。</p>
+<p>使用以前的server.py文件，运行以下命令启动全新的Python HTTPS应用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ uwsgi \</span><br><span class="line">    --master \</span><br><span class="line">    --https localhost:5683,\</span><br><span class="line">            logan-site.com-public-key.pem,\</span><br><span class="line">            logan-site.com-private-key.pem \</span><br><span class="line">    --mount &#x2F;&#x3D;server:app</span><br></pre></td></tr></table></figure>
+
+<p>祝贺！你现在有了一个支持Python HTTPS的服务器，它运行着你自己的私钥-公钥对，私钥-公钥对是由你自己的证书颁发机构签署的!</p>
+<p>现在，剩下要做的就是查询服务器。首先，需要对<code>client.py</code>代码进行一些更改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># client.py</span><br><span class="line">import os</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">def get_secret_message():</span><br><span class="line">    response &#x3D; requests.get(&quot;https:&#x2F;&#x2F;localhost:5683&quot;)</span><br><span class="line">    print(f&quot;The secret message is &#123;response.text&#125;&quot;)</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    get_secret_message()</span><br></pre></td></tr></table></figure>
+
+<p>与前面的代码相比，惟一的变化是从http改为https。如果尝试运行此代码，则会遇到错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ python client.py</span><br><span class="line">...</span><br><span class="line">requests.exceptions.SSLError: \</span><br><span class="line">    HTTPSConnectionPool(host&#x3D;&#39;localhost&#39;, port&#x3D;5683): \</span><br><span class="line">    Max retries exceeded with url: &#x2F; (Caused by \</span><br><span class="line">    SSLError(SSLCertVerificationError(1, \</span><br><span class="line">    &#39;[SSL: CERTIFICATE_VERIFY_FAILED] \</span><br><span class="line">    certificate verify failed: unable to get local issuer \</span><br><span class="line">    certificate (_ssl.c:1076)&#39;)))</span><br></pre></td></tr></table></figure>
+
+<p>这是一个非常糟糕的错误信息！这里的重要部分是信息证书验证失败：无法获取本地颁发者。你现在应该更熟悉这些词了。从本质上讲，它是这样说的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#96;localhost:5683&#96; gave me a certificate. I checked the issuer of the certificate it gave me, and according to all the Certificate Authorities I know about, that issuer is not one of them.</span><br></pre></td></tr></table></figure>
+
+<p>如果尝试使用浏览器打开你的网站，则会收到类似信息：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/unsafe-chrome_20200127155458.png" alt=""></p>
+<p>如果要避免此信息，你必须返回有关你的证书颁发机构！只需将请求指向你先前生成的<code>ca-public-key.pem</code>文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># client.py</span><br><span class="line">def get_secret_message():</span><br><span class="line">    response &#x3D; requests.get(&quot;http:&#x2F;&#x2F;localhost:5683&quot;, verify&#x3D;&quot;ca-public-key.pem&quot;)</span><br><span class="line">    print(f&quot;The secret message is &#123;response.text&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>完成此操作后，你应该能够成功运行以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python client.py</span><br><span class="line">The secret message is fluffy tail</span><br></pre></td></tr></table></figure>
+
+<p>很好！已经创建了一个功能完善的Python HTTPS服务器并成功实现了查询功能。现在，你和秘密松鼠之间可以愉快和安全地交换信息！</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在本问中，你学习了当前Internet上安全通信的一些核心基础，现在已经了解了这些构建模块，你将成为一个更好、更安全的开发人员。</p>
+<p>如果你对这些信息感兴趣，那你就走运了！你仅仅蜻蜓点水式地触及了每一层中所有的细微差别。安全世界不断发展，新的技术和漏洞也不断被发现。</p>
+<p>原文链接：<a href="https://realpython.com/python-https/" target="_blank" rel="noopener">https://realpython.com/python-https/</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#HTTPS Python Flusk" >
+    <span class="tag-code">HTTPS Python Flusk</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/01/24/python30%E4%BE%8B/">
+        <span class="nav-arrow">← </span>
+        
+          python绝技30例
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是HTTP？"><span class="toc-nav-text">什么是HTTP？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是HTTPS？"><span class="toc-nav-text">什么是HTTPS？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么HTTPS很重要？"><span class="toc-nav-text">为什么HTTPS很重要？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#创建示例"><span class="toc-nav-text">创建示例</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#设置Wireshark"><span class="toc-nav-text">设置Wireshark</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#看呀，你的数据多么不安全"><span class="toc-nav-text">看呀，你的数据多么不安全</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#密码学有什么帮助？"><span class="toc-nav-text">密码学有什么帮助？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#了解密码学基础知识"><span class="toc-nav-text">了解密码学基础知识</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#在Python-HTTPS应用中使用密码学"><span class="toc-nav-text">在Python HTTPS应用中使用密码学</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#确保数据安全"><span class="toc-nav-text">确保数据安全</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#如何共享密钥？"><span class="toc-nav-text">如何共享密钥？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#真实的HTTPS"><span class="toc-nav-text">真实的HTTPS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python-HTTPS应用"><span class="toc-nav-text">Python HTTPS应用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#成为证书颁发机构"><span class="toc-nav-text">成为证书颁发机构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#信任你的服务器"><span class="toc-nav-text">信任你的服务器</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/01/28/https/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
