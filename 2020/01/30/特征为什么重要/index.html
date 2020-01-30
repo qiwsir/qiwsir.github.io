@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      特征为什么那么重要 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>特征为什么那么重要</h2>
+    <p class="post-date">2020-01-30</p>
+    <section class="markdown-content"><p>作者： Vinko Kodžoman </p>
+<p>翻译：老齐</p>
+<p>一个月以来，我一直在Kaggle研究Quora问答的机器学习竞赛，我注意到大家反复讨论的一个话题，现在想谈谈它，机器学习模型似乎有一个无法逾越的界限，虽然有的方法通常能够得到很好的结果，但是因为受限于数据的特征，导致它的上限无法突破。所以，我要强调，特征是非常重要的。</p>
+<blockquote>
+<p>说明：2020年3月，电子工业出版社出版《数据准备和特征工程》，书中有专门章节讲解如何进行特征选择，也包括本文所介绍的依据特征重要度进行选择的方法。</p>
+</blockquote>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" style="zoom:67%;" />
+
+<h2 id="数据探索"><a href="#数据探索" class="headerlink" title="数据探索"></a>数据探索</h2><p>下面，我将使用Quora问答的数据集，此数据集中共有404290个问答，其中37%的问题在语义上相同的（“重复”），我们的目标是把它们找出来。</p>
+<blockquote>
+<p>注：在《机器学习案例》中收录了本文项目，以及另外一个相关项目：识别重复问题，也是利用Quora问答数据完成。</p>
+</blockquote>
+<p>开始，应该加载数据集，并对它进行探索：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Load the dataset</span><br><span class="line">train &#x3D; pd.read_csv(&#39;train.csv&#39;, dtype&#x3D;&#123;&#39;question1&#39;: str, &#39;question2&#39;: str&#125;)</span><br><span class="line">print(&#39;Training dataset row number:&#39;, len(train))  # 404290</span><br><span class="line">print(&#39;Duplicate question pairs ratio: %.2f&#39; % train.is_duplicate.mean())  # 0.37</span><br></pre></td></tr></table></figure>
+
+<p>重复和非重复问题对的示例如下所示。</p>
+<table>
+<thead>
+<tr>
+<th>问题1</th>
+<th>问题2</th>
+<th>是否重复</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>What is the step by step guide to invest in share market in india?</td>
+<td>What is the step by step guide to invest in share market?</td>
+<td>0</td>
+</tr>
+<tr>
+<td>How can I be a good geologist?</td>
+<td>What should I do to be a great geologist?</td>
+<td>1</td>
+</tr>
+<tr>
+<td>How can I increase the speed of my internet connection while using a VPN?</td>
+<td>How can Internet speed be increased by hacking through DNS?</td>
+<td>0</td>
+</tr>
+<tr>
+<td>How do I read and find my YouTube comments?</td>
+<td>How do I read and find my YouTube comments?</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p>用词云来表示数据探索的结果，显示哪些词出现频率最高。词云是基于问答中的单词来创建的，如你所见，流行的词汇是正如你所预料，（如“best way”、“lose weight”、“difference”、“make money”等）。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/word_cloud_20200129152919.jpg" alt=""></p>
+<blockquote>
+<p>此词云结果，参见《机器学习案例》中的项目“识别重复问题”。</p>
+</blockquote>
+<p>现在我们对数据集的样子有了一些概念。</p>
+<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><p>我创建了24个特征，其中一些特征如下所示。所有代码都是借助机器学习库（pandas、sklearn、numpy）用Python编写的。</p>
+<blockquote>
+<p>本文的代码已经收录到在线公开课程《机器学习案例》之中，关注本文的公众号，并回复：姓名+手机号+‘案例’，即可申请加入此课程。</p>
+</blockquote>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/anli_20200129153321.png" alt=""></p>
+<ul>
+<li>q1_word_num：问题1中的单词数</li>
+<li>q2_length：问题2中的字符数</li>
+<li>word_share：问题之间共享单词的比率</li>
+<li>same_first_word：如果两个问题的第一个单词相同，则为1，否则为0</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def word_share(row):</span><br><span class="line">    q1_words &#x3D; set(word_tokenize(row[&#39;question1&#39;]))</span><br><span class="line">    q2_words &#x3D; set(word_tokenize(row[&#39;question2&#39;]))</span><br><span class="line">           </span><br><span class="line">    return len(q1_words.intersection(q2_words)) &#x2F; (len(q1_words.union(q2_words)))</span><br><span class="line"></span><br><span class="line">def same_first_word(row):</span><br><span class="line">    q1_words &#x3D; word_tokenize(row[&#39;question1&#39;])</span><br><span class="line">    q2_words &#x3D; word_tokenize(row[&#39;question2&#39;])</span><br><span class="line">        </span><br><span class="line">    return float(q1_words[0].lower() &#x3D;&#x3D; q2_words[0].lower())</span><br><span class="line"></span><br><span class="line"># A sample of the features</span><br><span class="line">train[&#39;word_share&#39;] &#x3D; train.apply(word_share, axis&#x3D;1)</span><br><span class="line">train[&#39;q1_word_num&#39;] &#x3D; train.question1.apply(lambda x: len(word_tokenize(x)))</span><br><span class="line">train[&#39;q2_word_num&#39;] &#x3D; train.question2.apply(lambda x: len(word_tokenize(x)))</span><br><span class="line">train[&#39;word_num_difference&#39;] &#x3D; abs(train.q1_word_num - train.q2_word_num)</span><br><span class="line">train[&#39;q1_length&#39;] &#x3D; train.question1.apply(lambda x: len(x))</span><br><span class="line">train[&#39;q2_length&#39;] &#x3D; train.question2.apply(lambda x: len(x))</span><br><span class="line">train[&#39;length_difference&#39;] &#x3D; abs(train.q1_length - train.q2_length)</span><br><span class="line">train[&#39;q1_has_fullstop&#39;] &#x3D; train.question1.apply(lambda x: int(&#39;.&#39; in x))</span><br><span class="line">train[&#39;q2_has_fullstop&#39;] &#x3D; train.question2.apply(lambda x: int(&#39;.&#39; in x))</span><br><span class="line">train[&#39;q1_has_math_expression&#39;] &#x3D; train.question1.apply(lambda x: int(&#39;[math]&#39; in x))</span><br><span class="line">train[&#39;q2_has_math_expression&#39;] &#x3D; train.question2.apply(lambda x: int(&#39;[math]&#39; in x)) </span><br><span class="line">train[&#39;same_first_word&#39;] &#x3D; train.apply(same_first_word, axis&#x3D;1)</span><br></pre></td></tr></table></figure>
+
+<h2 id="模型性能"><a href="#模型性能" class="headerlink" title="模型性能"></a>模型性能</h2><p>为了评估模型性能，我们首先将数据集划分为训练集和测试集，测试集含有总数据量的20%样本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_train, X_test, y_train, y_test &#x3D; train_test_split(X, y, test_size&#x3D;0.2)</span><br></pre></td></tr></table></figure>
+
+<p>利用logloss函数对模型进行了评估，这是Kaggle中使用的同一度量标准。</p>
+<p>$$logloss = \frac{1}{N} \displaystyle\sum_{i=1}^{N} \displaystyle\sum_{j=1}^{M} y_{i,j} * log(p_{i,j})$$</p>
+<p>为了测试模型的所有特征，我们使用随机森林分类模型，它是一个强大的“开箱即用”集成分类器。不用进行超参数优化——它们可以保持不变，因为我们正在针对不同的特征集合测试模型的性能。一个简单的模型给出的logloss得分为0.62923，在我写这篇文章时，这个分数在总共1692个团队中排名第1371位。现在我们来看看做特征选择是否能帮助我们降低logloss。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">model &#x3D; RandomForestClassifier(50, n_jobs&#x3D;8)</span><br><span class="line">model.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">predictions_proba &#x3D; model.predict_proba(X_test)</span><br><span class="line">predictions &#x3D; model.predict(X_test)</span><br><span class="line"></span><br><span class="line">log_loss_score &#x3D; log_loss(y_test, predictions_proba)</span><br><span class="line">acc &#x3D; accuracy_score(y_test, predictions)</span><br><span class="line">f1 &#x3D; f1_score(y_test, predictions)</span><br><span class="line"></span><br><span class="line">print(&#39;Log loss: %.5f&#39; % log_loss_score)  # 0.62923</span><br><span class="line">print(&#39;Acc: %.5f&#39; % acc)  # 0.70952</span><br><span class="line">print(&#39;F1: %.5f&#39; % f1)  # 0.59173</span><br></pre></td></tr></table></figure>
+
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" style="zoom:67%;" />
+
+<h2 id="特征的重要性"><a href="#特征的重要性" class="headerlink" title="特征的重要性"></a>特征的重要性</h2><p>为了获取特征的重要度，我们将使用一个默认进行特征选择的算法——XGBoost，它是Kaggle竞赛之王。如果你不使用神经网络，XGBoost可能是你的必须选择。XGBoost使用梯度上升来优化集成决策树算法，每棵树都包含若干节点，每个节点就是一个独立的特征。XGBoost决策树节点中的特征数与其对模型整体性能的影响成正比。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">model &#x3D; XGBClassifier(n_estimators&#x3D;500)</span><br><span class="line">model.fit(X, y)</span><br><span class="line">    </span><br><span class="line">feature_importance &#x3D; model.feature_importances_</span><br><span class="line">    </span><br><span class="line">plt.figure(figsize&#x3D;(16, 6))</span><br><span class="line">plt.yscale(&#39;log&#39;, nonposy&#x3D;&#39;clip&#39;)</span><br><span class="line"></span><br><span class="line">plt.bar(range(len(feature_importance)), feature_importance, align&#x3D;&#39;center&#39;)</span><br><span class="line">plt.xticks(range(len(feature_importance)), features, rotation&#x3D;&#39;vertical&#39;)</span><br><span class="line">plt.title(&#39;Feature importance&#39;)</span><br><span class="line">plt.ylabel(&#39;Importance&#39;)</span><br><span class="line">plt.xlabel(&#39;Features&#39;)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>如下图，我们看到一些特征根本没有用，而一些特性（如“word_share”）对性能影响很大。我们可以通过根据特征重要度生成特征子集，从而实现降维。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/feature_importance-2_20200129153439.jpg" alt=""></p>
+<p>利用特征重要度实现降维，新修剪的特征包含所有重要度大于某个数字的特征。在我们的例子中，降维后的特征集合中，最小的重要度分数是0.05。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def extract_pruned_features(feature_importances, min_score&#x3D;0.05):</span><br><span class="line">    column_slice &#x3D; feature_importances[feature_importances[&#39;weights&#39;] &gt; min_score]</span><br><span class="line">    return column_slice.index.values</span><br><span class="line"></span><br><span class="line">pruned_featurse &#x3D; extract_pruned_features(feature_importances, min_score&#x3D;0.01)</span><br><span class="line">X_train_reduced &#x3D; X_train[pruned_featurse]</span><br><span class="line">X_test_reduced &#x3D; X_test[pruned_featurse]</span><br><span class="line"></span><br><span class="line">def fit_and_print_metrics(X_train, y_train, X_test, y_test, model):</span><br><span class="line">    model.fit(X_train, y_train)</span><br><span class="line">    predictions_proba &#x3D; model.predict_proba(X_test)</span><br><span class="line">    </span><br><span class="line">    log_loss_score &#x3D; log_loss(y_test, predictions_proba)</span><br><span class="line">    print(&#39;Log loss: %.5f&#39; % log_loss_score)</span><br></pre></td></tr></table></figure>
+
+<h2 id="基于特征重要度分析的模型性能"><a href="#基于特征重要度分析的模型性能" class="headerlink" title="基于特征重要度分析的模型性能"></a>基于特征重要度分析的模型性能</h2><p>由于使用了修剪过的特征，随机森林模型的评估得分变得更高了，该算法不费吹灰之力将损失减小，而且由于特征集减少，训练速度更快，占用内存更少。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model &#x3D; RandomForestClassifier(50, n_jobs&#x3D;8)</span><br><span class="line"># LogLoss 0.59251</span><br><span class="line">fit_and_print_metrics(X_train_reduced, y_train, X_test_reduced, y_test, model) </span><br><span class="line">    </span><br><span class="line"># LogLoss 0.63376</span><br><span class="line">fit_and_print_metrics(X_train, y_train, X_test, y_test, model)</span><br></pre></td></tr></table></figure>
+
+<p>深入考虑一下特征重要度评分（为修剪过的特征的某一子集绘制分类器的logloss），我们可以更大程度地降低损失。在这种特殊的情况下，随机森林实际上只使用一个特征就可以达到最佳效果！仅使用特征“<code>word_share</code>”就可以在logloss评估中获得0.5544的分数。</p>
+<blockquote>
+<p>在《机器学习案例集》的代码中，你可以详细了解这个步骤是如何实现的。</p>
+</blockquote>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>正如我所展示的，对特征重要度进行分析，能够提高模型的性能。虽然像XGBoost这样的一些模型为我们选择了特征，但是了解某个特征对模型性能的影响仍然很重要，因为它使我们能够更好地控制要完成的任务。“没有免费的午餐”定理(没有适合所有问题的最佳方案)告诉我们，尽管XGBoost通常比其他模型表现更好，但我们仍需要判断它是否真的是最佳解决方案。使用XGBoost获得重要特征的子集，允许我们在不选择特征的情况下，通过将该特征子集提供给模型来提高模型的性能。使用基于特征重要度的特征选择可以大大提高模型的性能。</p>
+<p>原文链接：<a href="https://datawhatnow.com/feature-importance/" target="_blank" rel="noopener">https://datawhatnow.com/feature-importance/</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#特征 重要度 梯度上升" >
+    <span class="tag-code">特征 重要度 梯度上升</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/01/28/https/">
+        <span class="nav-arrow">← </span>
+        
+          通俗易懂的HTTPS
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据探索"><span class="toc-nav-text">数据探索</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#特征工程"><span class="toc-nav-text">特征工程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#模型性能"><span class="toc-nav-text">模型性能</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#特征的重要性"><span class="toc-nav-text">特征的重要性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基于特征重要度分析的模型性能"><span class="toc-nav-text">基于特征重要度分析的模型性能</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/01/30/特征为什么重要/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
