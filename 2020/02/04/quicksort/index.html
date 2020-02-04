@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通俗易懂讲算法：快速排序 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通俗易懂讲算法：快速排序</h2>
+    <p class="post-date">2020-02-04</p>
+    <section class="markdown-content"><p>作者：Marcus Sanatan </p>
+<p>翻译：老齐</p>
+<hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>快速排序是一种流行的排序算法，经常与归并排序一起使用。快速排序是一个高效的排序算法，平均复杂度为O(nlogn)。它受欢迎的部分原因还在于易于实施。</p>
+<p>在本文中，我们将先使用整数集合演示快速排序算法，然后会用自定义对象深入探讨这种算法的实现方式。</p>
+<p>在分治法、原地排序和非稳定排序中，都有快速排序算法。</p>
+<ul>
+<li>在分治法中，对大数组使用递归进行排序之前，使用快速排序算法将数组拆分为更小的数组，直到最后得到一个空数组或只有一个元素的数组。</li>
+<li>在原地排序中，快速排序不创建数组的任何副本，它在内存中完成所有的操作。</li>
+<li>稳定排序指相同的值在数组中的顺序也是相同的，非稳定的排序算法不能保证这一点，只能说这样的顺序当然有可能出现，但不能保证。这在针对对象排序而不是对基本类型排序时变得很重要。例如，假设有几个自定义的<code>Person</code>类实例具有相同的<code>age</code>，即21岁的Dave和21岁的Mike。如果要对包含Dave和Mike的集合使用快速排序法按年龄排序，则无法保证每次运行算法时Dave都会出现在Mike之前，反之亦然。</li>
+</ul>
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><p>快速排序算法的执行流程如下：</p>
+<ul>
+<li>将集合分成两个（大致）相等的部分，取一个伪随机元素并将其用作主元（<strong>注：</strong> “主元”，原文中pivot，在多数介绍快速排序算法的中文资料中，并不对齐单独命名，只简单说成是“分割点”，即划分集合的元素，但本文作者使用了pivot这个词来表示“分割点”，译者认为很便于理解和表述，并将其翻译为“主元”）。</li>
+<li>小于主元的元素将移动到其左侧，大于主元的元素将移动到其的右侧。</li>
+<li>分别对于主元左侧和右侧的元素，重复此上述，直到对整个数组完成排序。</li>
+</ul>
+<p>当我们将某个元素描述为比另一个元素“大”或“小”时，并不一定意味着这些元素是整数，我们可以自定义对象，并根据选择的任何属性进行排序。</p>
+<p>假设有一个自定义类<code>Person</code>，每个实例都有<code>name</code>和<code>age</code>属性，我们可以按姓名（词典顺序）或按年龄（升序或降序）进行排序。</p>
+<p>轻松入门<br><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" style="zoom:67%;" align="middle"/></p>
+<h2 id="快速排序算法的原理"><a href="#快速排序算法的原理" class="headerlink" title="快速排序算法的原理"></a>快速排序算法的原理</h2><p>对于快速排序算法，很多时候，数组是不能等分的，这是因为整个过程取决于如何选择主元。我们需要选择一个主元，使其比一半的元素大，比另一半的元素小。尽管这个过程看起来很直观，但很难做到。</p>
+<p>想一想：如何为数组选择合适的主元？关于这个问题的解决方法，在快速排序算法的发展史上有过好多种。如果随机选择，是行不通的，因为这不能保障主元是合适的，随机选择的代价会非常“昂贵”。此外，还曾经有人提出从中间选择一个元元素，或者选择第一个、或者后半部分中间的，设置用更复杂的递归公式选择，等等。</p>
+<p>最直接的最简单的方法是选择第一个（或最后一个）元素作为主元，具有讽刺意味的是，这会导致快速排序法对已经排序（或几乎排序了）的数组执行效果非常糟糕。</p>
+<p>但是，大多数人还是用这种方法来实现快速排序算法，因为它很简单，而且这种选择主元的方式是一种非常有效的操作（我们需要重复执行），这也正是我们下面要做的。</p>
+<p>既然我们选择了一个主元，接下来该用它做些什么？同样，有几种方法可以处理各个分区。我们要设置三个指针，有一个指向主元，另外两个分别指向“较小”元素和“较大”元素。</p>
+<p>然后移动元素，使所有小于主元的元素都在左侧，而所有较大的元素都在右侧。更小或更大的元素不一定会被排序，我们只希望它们位于主元的适当的一侧。然后，用递归方法遍历主元的左侧和右侧。</p>
+<p>一步一步来看看我们计划要做的事情，从而理解以上所说的快速排序算法的执行过程。使用下面显示的数组，我们选择了第一个元素作为主元（29），low表示指向较小元素的指针，最右边的high表示指向较大元素的指针。</p>
+<ul>
+<li>29是第一主元，low指向99，high指向44</li>
+</ul>
+<p>29 | 99 (low),27,41,66,28,44,78,87,19,31,76,58,88,83,97,12,21,44 (high)</p>
+<ul>
+<li>high从右向左移动，直到找到一个小于主元的值</li>
+</ul>
+<p>29 | 99 (low),27,41,66,28,44,78,87,19,31,76,58,88,83,97,12,21 (high),44</p>
+<ul>
+<li><p>现在high指向了21，它是一个比主元小的元素，我们想在数组的开头附近找到一个值，使之可以用于与21交换。用一个比主元还小的值交换是没有意义的，所以如果low指向一个更小的元素，我们试着找到一个更大的元素。</p>
+</li>
+<li><p>将low变量向右移动，直到找到一个大于主元的元素。幸运的是，low已经定位在99，它就比主元大</p>
+</li>
+<li><p>交换high和low指向的元素：</p>
+</li>
+</ul>
+<p>29 | 21 (low),27,41,66,28,44,78,87,19,31,76,58,88,83,97,12,99 (high),44</p>
+<ul>
+<li><p>在我们这样做之后，就将high继续向左移动，将low向右边移动（21和99现在所处的位置是正确的）。</p>
+</li>
+<li><p>再次，将high向左移动，下一个数字就是小于主元的12。</p>
+</li>
+<li><p>现在我们通过将low向右移动来找一个大于主元的值，就是41了，它是第一个这样的值</p>
+</li>
+</ul>
+<p>不断重复上述过程，直到low指针和high指针最终在某个元素相遇：</p>
+<p>29 | 21,27,12,19,28 (low/high),44,78,87,66,31,76,58,88,83,97,41,99,44</p>
+<ul>
+<li>不再使用29作为主元了，所以剩下唯一要做的就是交换主元和high所指元素28，然后我们就完成了这个递归步骤：</li>
+</ul>
+<p>28,21,27,12,19,29,44,78,87,66,31,76,58,88,83,97,41,99,44</p>
+<p>如你所见，我们已经让小于29的所有值现在都在29的左侧，大于29的所有值都在右侧。</p>
+<p>然后，算法对28、21、27、12、19（左侧）集合和44、78、87、66、31、76、58、88、83、97、41、99、44（右侧）集合执行相同的操作。</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" style="zoom:67%;" />
+
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="对数组排序"><a href="#对数组排序" class="headerlink" title="对数组排序"></a>对数组排序</h3><p>快速排序是一种自然递归算法，将输入数组分成较小的数组，将元素移动到主元的适当一侧，然后重复。</p>
+<p>让我们来看看几个递归调用：</p>
+<ul>
+<li>当第一次调用算法时，我们考虑所有的元素——从索引0到n-1，其中n是数组中的元素数量。</li>
+<li>如果主元最终位于位置k，那么我们将对从0到k-1和从k+1到n-1的元素重复该过程。</li>
+<li>在将元素从k+1排到n-1时，当前主元将在某个位置p结束。然后我们将元素从k+1序到p-1，从p+1排序到n-1，依此类推。</li>
+</ul>
+<p>也就是说，我们将使用两个函数： <code>partition()</code>和<code>quick_sort()</code>。<code>quick_sort()</code>函数将首先用<code>partition()</code>函数对集合分组，然后在每组上递归调用自己。</p>
+<p>下面从<code>partition()</code>函数开始：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">def partition(array, start, end):</span><br><span class="line">    pivot &#x3D; array[start]</span><br><span class="line">    low &#x3D; start + 1</span><br><span class="line">    high &#x3D; end</span><br><span class="line"></span><br><span class="line">    while True:</span><br><span class="line">        # If the current value we&#39;re looking at is larger than the pivot</span><br><span class="line">        # it&#39;s in the right place (right side of pivot) and we can move left,</span><br><span class="line">        # to the next element.</span><br><span class="line">        # We also need to make sure we haven&#39;t surpassed the low pointer, since that</span><br><span class="line">        # indicates we have already moved all the elements to their correct side of the pivot</span><br><span class="line">        while low &lt;&#x3D; high and array[high] &gt;&#x3D; pivot:</span><br><span class="line">            high &#x3D; high - 1</span><br><span class="line"></span><br><span class="line">        # Opposite process of the one above</span><br><span class="line">        while low &lt;&#x3D; high and array[low] &lt;&#x3D; pivot:</span><br><span class="line">            low &#x3D; low + 1</span><br><span class="line"></span><br><span class="line">        # We either found a value for both high and low that is out of order</span><br><span class="line">        # or low is higher than high, in which case we exit the loop</span><br><span class="line">        if low &lt;&#x3D; high:</span><br><span class="line">            array[low], array[high] &#x3D; array[high], array[low]</span><br><span class="line">            # The loop continues</span><br><span class="line">        else:</span><br><span class="line">            # We exit out of the loop</span><br><span class="line">            break</span><br><span class="line"></span><br><span class="line">    array[start], array[high] &#x3D; array[high], array[start]</span><br><span class="line"></span><br><span class="line">    return high</span><br></pre></td></tr></table></figure>
+
+<p>最后，让我们实现<code>quick_sort()</code>函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(array, start, end):</span><br><span class="line">    if start &gt;&#x3D; end:</span><br><span class="line">        return</span><br><span class="line"></span><br><span class="line">    p &#x3D; partition(array, start, end)</span><br><span class="line">    quick_sort(array, start, p-1)</span><br><span class="line">    quick_sort(array, p+1, end)</span><br></pre></td></tr></table></figure>
+
+<p>有了这两个函数，就可以对一个简单的数组执行<code>quick_sort()</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">array &#x3D; [29,99,27,41,66,28,44,78,87,19,31,76,58,88,83,97,12,21,44]</span><br><span class="line"></span><br><span class="line">quick_sort(array, 0, len(array) - 1)</span><br><span class="line">print(array)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[12, 19, 21, 27, 28, 29, 31, 41, 44, 44, 58, 66, 76, 78, 83, 87, 88, 97, 99]</span><br></pre></td></tr></table></figure>
+
+<p>由于此算法是非稳定的，所以不能保证这两个44的顺序总是这样的，也许会交换 —— 虽然这在整数数组中意义不大。</p>
+<h3 id="对自定义对象进行排序"><a href="#对自定义对象进行排序" class="headerlink" title="对自定义对象进行排序"></a>对自定义对象进行排序</h3><p>有几种方法可以重写此算法，以便在Python中对自定义对象进行排序。一种非常典型的Python方法是实现给定类的比较运算符，这意味着我们实际上不需要更改算法实现，因为<code>&gt;</code>、<code>=</code>、<code>&lt;=</code>等也可以应用于类对象。</p>
+<p>另一个选择是以参数的方式给函数传入一个比较函数，用这个方法来执行对象的实际比较。用这种方式重写算法函数以用于自定义对象是相当简单的。但是请记住，算法并不稳定。</p>
+<p>让我们从<code>Person</code>类开始：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Person:</span><br><span class="line">    def __init__(self, name, age):</span><br><span class="line">        self.name &#x3D; name</span><br><span class="line">        self.age &#x3D; age</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return self.name</span><br></pre></td></tr></table></figure>
+
+<p>这是一个非常基本的类，只有两个属性，<code>name</code>和<code>age</code>。我们希望使用<code>age</code>作为排序键，这将通过为排序算法提供自定义lambda函数来实现。</p>
+<p>但首先，让我们看看如何在函数中实现算法。我们没有直接使用<code>&lt;=</code>或<code>&gt;=</code>运算符进行比较，而是在函数中来判断哪个<code>Person</code>实例的年龄更高：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">def partition(array, start, end, compare_func):</span><br><span class="line">    pivot &#x3D; array[start]</span><br><span class="line">    low &#x3D; start + 1</span><br><span class="line">    high &#x3D; end</span><br><span class="line"></span><br><span class="line">    while True:</span><br><span class="line">        while low &lt;&#x3D; high and compare_fun(array[high], pivot):</span><br><span class="line">            high &#x3D; high - 1</span><br><span class="line"></span><br><span class="line">        while low &lt;&#x3D; high and not compare_fun(array[low], pivot):</span><br><span class="line">            low &#x3D; low + 1</span><br><span class="line"></span><br><span class="line">        if low &lt;&#x3D; high:</span><br><span class="line">            array[low], array[high] &#x3D; array[high], array[low]</span><br><span class="line">        else:</span><br><span class="line">            break</span><br><span class="line"></span><br><span class="line">    array[start], array[high] &#x3D; array[high], array[start]</span><br><span class="line"></span><br><span class="line">    return high</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def quick_sort(array, start, end, compare_func):</span><br><span class="line">    if start &gt;&#x3D; end:</span><br><span class="line">        return</span><br><span class="line"></span><br><span class="line">    p &#x3D; partition(array, start, end, compare_func)</span><br><span class="line">    quick_sort(array, start, p-1, compare_func)</span><br><span class="line">    quick_sort(array, p+1, end, compare_func)</span><br></pre></td></tr></table></figure>
+
+<p>现在，让我们对这些实例对象的集合进行排序。你可以看到，在<code>quick_sort</code>函数的参数中，有lambda函数，它会对<code>age</code>属性的值进行实际的比较:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">p1 &#x3D; Person(&quot;Dave&quot;, 21)</span><br><span class="line">p2 &#x3D; Person(&quot;Jane&quot;, 58)</span><br><span class="line">p3 &#x3D; Person(&quot;Matthew&quot;, 43)</span><br><span class="line">p4 &#x3D; Person(&quot;Mike&quot;, 21)</span><br><span class="line">p5 &#x3D; Person(&quot;Tim&quot;, 10)</span><br><span class="line"></span><br><span class="line">array &#x3D; [p1,p2,p3,p4,p5]</span><br><span class="line"></span><br><span class="line">quick_sort(array, 0, len(array) - 1, lambda x, y: x.age &lt; y.age)</span><br><span class="line">for person in array:</span><br><span class="line">    print(person)</span><br></pre></td></tr></table></figure>
+
+<p>输出是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Tim</span><br><span class="line">Dave</span><br><span class="line">Mike</span><br><span class="line">Matthew</span><br><span class="line">Jane</span><br></pre></td></tr></table></figure>
+
+<p>通过这种方式实现算法，只要提供适当的比较函数，它就可以用于我们选择的任何自定义对象。</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" style="zoom:67%;" />
+
+<h2 id="优化快速排序算法"><a href="#优化快速排序算法" class="headerlink" title="优化快速排序算法"></a>优化快速排序算法</h2><p>考虑到快速排序独立地对给定数组的“一半”进行排序，那么它就非常便于实现并行计算。我们可以用一个单独的线程对数组的每个“一半”进行排序，理想情况下，可以将排序所需的时间减半。</p>
+<p>但是，如果我们在选择主元时特别不走运，快速排序法可能会递归太深，此时即使用并行计算，其效率也不如归并排序。</p>
+<p>对小数组进行排序时，建议使用非递归算法。即使是像插入排序这样的简单操作，在小数组上也比快速排序更有效。因此，理想情况下，我们可以检查排序对象是否只有少量元素（大多数建议是10个或更少），如果是这样，就用插入排序代替。</p>
+<p>快速排序的一个流行变体是多主元快速排序，它使用n-1个主元将原始数组分解为n个较小的数组。然而，大多数情况下只使用两个主元，而不是更多。</p>
+<p>有趣的事实：Java 7的排序实现中使用了双主元快速排序，针对较小数组的则是插入排序。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>正如我们前面提到的，快速排序的效率很大程度上取决于主元的选择——它可以成就或突破算法时间（和堆栈空间）的复杂度。在使用自定义对象时，算法的非稳定性也是一个潜在的问题。</p>
+<p>然而，尽管如此，快速排序的平均时间复杂度O(nlogn)和相对低的内存使用、简单的实现方法，使它成为一种非常有效和流行的算法。</p>
+<p>如果你想了解更多信息，请参阅微信公众号“老齐教室”发布相关排序算法的系列文章。</p>
+<p>原文链接：<a href="https://stackabuse.com/quicksort-in-python/" target="_blank" rel="noopener">https://stackabuse.com/quicksort-in-python/</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#算法 快速排序 QuickSort 排序" >
+    <span class="tag-code">算法 快速排序 QuickSort 排序</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/01/%E5%B0%8F%E8%8D%B7%E6%89%8D%E9%9C%B2%E5%B0%96%E5%B0%96%E8%A7%92/">
+        <span class="nav-arrow">← </span>
+        
+          小荷才露尖尖角
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#介绍"><span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#快速排序"><span class="toc-nav-text">快速排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#快速排序算法的原理"><span class="toc-nav-text">快速排序算法的原理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实现"><span class="toc-nav-text">实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#对数组排序"><span class="toc-nav-text">对数组排序</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#对自定义对象进行排序"><span class="toc-nav-text">对自定义对象进行排序</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#优化快速排序算法"><span class="toc-nav-text">优化快速排序算法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/02/04/quicksort/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
