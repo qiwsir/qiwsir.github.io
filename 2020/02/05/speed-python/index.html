@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      让Python程序轻松加速的方法 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>让Python程序轻松加速的方法</h2>
+    <p class="post-date">2020-02-05</p>
+    <section class="markdown-content"><p>作者：Cameron MacLeod </p>
+<p>翻译：老齐</p>
+<hr>
+<p>最近，我读了一篇有趣的文章，文中介绍了一些未充分使用的Python特性的。在文章中，作者提到，从Python 3.2开始，标准库附带了一个内置的装饰器<code>functools.lru_cache</code>。我发现这个装饰器很令人兴奋，有了它，我们有可能轻松地为许多应用程序加速。</p>
+<p>你可能在想，这很好，但这个装饰器究竟是什么？它提供对已构建的缓存的访问，该缓存使用LRU（<strong>译者注：</strong> Least Recently Used的缩写，即最近最少使用，是一种常用的页面置换算法，选择最近最久未使用的页面予以淘汰。）的置换策略，因此被命名为<code>lru_cache</code>。当然，这句话听起来可能有点令人胆怯，所以让我们把它分解一下。</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" style="zoom:67%;" />
+
+<h2 id="什么是缓存？"><a href="#什么是缓存？" class="headerlink" title="什么是缓存？"></a>什么是缓存？</h2><p>缓存是一个可以快速访问的地方，可以在它里面存储访问速度较慢的内容。为了演示这一点，让我们以你的web浏览器为例。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/browser_cache_20200204105130.png" alt=""></p>
+<p>从网络上读取网页可能需要几秒钟，即使是快速的网络连接也如此。在计算机时代，这个问题是永恒的。为了解决这个问题，浏览器将你已经访问过的网页存储在计算机的缓存中，这样访问速度会加快数千倍。</p>
+<p>使用缓存下载网页的步骤如下：</p>
+<ol>
+<li>检查页面的本地缓存。如果页面在那里，返回该页面。</li>
+<li>在因网上找到网页并从那里下载。</li>
+<li>将该网页存储在缓存中，以便将来更快地访问。</li>
+</ol>
+<p>虽然缓存并不会让你第一次访问网页的速度加快，但通常你是要屡次访问某一个网站页面的（想想Facebook——<strong>注：对多数国人来讲，可能不是这个网站</strong>，或者你的电子邮件），有了缓存之后，以后每次访问都会更快。</p>
+<p>浏览器并不是唯一使用缓存的，从服务器到CPU和硬盘或SSD之间的计算机硬件，它们无处不在。从缓存中可以很快地获取数据，因此当你不止一次获取数据时，它可以大大加快程序的速度。</p>
+<h2 id="LRU是什么意思？"><a href="#LRU是什么意思？" class="headerlink" title="LRU是什么意思？"></a>LRU是什么意思？</h2><p>缓存只能存储有限数量的东西，而且通常它比可能存入所缓存的东西要小得多（例如，你的硬盘比互联网小得多）。这意味着有时需要将缓存中已有内容替换掉，放入其他内容。对于去掉什么的决策方法被称为置换策略。</p>
+<p>这就是LRU的用武之地。LRU代表最近用得最少的缓存中内容，这是一种常用的缓存置换策略。</p>
+<p>为什么置换策略很重要？</p>
+<p>“最近使用最少”这种置换策略的基本思想是：如果你有一段时间没有访问过某个东西，你可能近期不会访问它。要使用此策略，只需在缓存已满时删除最早使用的项即可。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/lru_20200204105245.png" alt=""></p>
+<p>在上图中，缓存中的每个项都附带了访问时间。依据LRU策略，选择访问时间为2:55PM 的项作为要置换的项，因为它是最早被访问的。如果有两个对象具有相同的访问时间，那么LRU将从中随机选择一个。</p>
+<p>这种去掉长时间不用的东西的策略，被称为Bélády的最优算法，它是置换缓存内容的最佳策略。当然，我们根本不知道未来会有什么操作。谢天谢地，在许多情况下，LRU提供了近乎最佳的性能。</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" style="zoom:67%;" />
+
+<h2 id="怎样使用它？"><a href="#怎样使用它？" class="headerlink" title="怎样使用它？"></a>怎样使用它？</h2><p><code>functools.lru_cache</code>是一个装饰器，因此你可以将它放在函数的顶部：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import functools</span><br><span class="line"></span><br><span class="line">@functools.lru_cache(maxsize&#x3D;128)</span><br><span class="line">def fib(n):</span><br><span class="line">  if n &lt; 2:</span><br><span class="line">    return 1</span><br><span class="line">  return fib(n-1) + fib(n-2)</span><br></pre></td></tr></table></figure>
+
+<p>Fibonacci数列在递归示例中经常被用到，要提升这个函数的速度，使用<code>functools.lru_cache</code>之后，不费吹灰之力，就能让这个递归函数狂飙。在我的机器上运行这些代码，得到了这个函数有缓存版本和没有缓存版本的以下结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -m timeit -s &#39;from fib_test import fib&#39; &#39;fib(30)&#39;</span><br><span class="line">10 loops, best of 3: 282 msec per loop</span><br><span class="line"></span><br><span class="line">$ python3 -m timeit -s &#39;from fib_test import fib_cache&#39; &#39;fib_cache(30)&#39;</span><br><span class="line">10000000 loops, best of 3: 0.0791 usec per loop</span><br></pre></td></tr></table></figure>
+
+<p>增加一行代码之后，速度提高了3565107倍。</p>
+<p>当然，我认为很难看出你在实际中会如何使用它，因为我们很少需要计算斐波那契数列。回到web页面示例，我们可以举一个更实际的用缓存渲染前端模板的例子。</p>
+<p>在服务器开发中，通常单个页面存储为具有占位符变量的模板。例如，下面是一个页面模板，该页面显示某一天各种足球比赛的结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1&gt;Matches for &#123;&#123;day&#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">    &lt;table id&#x3D;&quot;matches&quot;&gt;</span><br><span class="line">      &lt;tr&gt;</span><br><span class="line">        &lt;td&gt;Home team&lt;&#x2F;td&gt;</span><br><span class="line">        &lt;td&gt;Away team&lt;&#x2F;td&gt;</span><br><span class="line">        &lt;td&gt;Score&lt;&#x2F;td&gt;</span><br><span class="line">      &lt;&#x2F;tr&gt;</span><br><span class="line">      &#123;% for match in matches %&#125;</span><br><span class="line">      &lt;tr&gt;</span><br><span class="line">        &lt;td&gt;&#123;&#123;match[&quot;home&quot;]&#125;&#125;&lt;&#x2F;td&gt;</span><br><span class="line">        &lt;td&gt;&#123;&#123;match[&quot;away&quot;]&#125;&#125;&lt;&#x2F;td&gt;</span><br><span class="line">        &lt;td&gt;&#123;&#123;match[&quot;home_goals&quot;]&#125;&#125; - &#123;&#123;match[&quot;away_goals&quot;]&#125;&#125;&lt;&#x2F;td&gt;</span><br><span class="line">      &lt;&#x2F;tr&gt;</span><br><span class="line">      &#123;% endfor %&#125;</span><br><span class="line">    &lt;&#x2F;table&gt;</span><br><span class="line">  &lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>呈现模板时，看起来如下所示：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/match_20200204105426.png" alt=""></p>
+<p>这是缓存的主要目标，因为每天的结果不会改变，而且很可能每天会有多次访问。下面是一个提供此模板的Flask应用程序。我引入了50ms的延迟来模拟通过网络或者从大型数据库获取匹配字典。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import json</span><br><span class="line">import time</span><br><span class="line">from flask import Flask, render_template</span><br><span class="line"></span><br><span class="line">app &#x3D; Flask(__name__)</span><br><span class="line"></span><br><span class="line">with open(&#39;match.json&#39;,&#39;r&#39;) as f:</span><br><span class="line">    match_dict &#x3D; json.load(f)</span><br><span class="line"></span><br><span class="line">def get_matches(day):</span><br><span class="line">    # simulate network&#x2F;database delay</span><br><span class="line">    time.sleep(0.05)</span><br><span class="line">    return match_dict[day]</span><br><span class="line"></span><br><span class="line">@app.route(&#39;&#x2F;matches&#x2F;&lt;day&gt;&#39;)</span><br><span class="line">def show_matches(day):</span><br><span class="line">    matches &#x3D; get_matches(day)</span><br><span class="line">    return render_template(&#39;matches.html&#39;, matches&#x3D;matches, day&#x3D;day)</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>requests</code>在不缓存的情况下获得三天的数据，在我的计算机上本地运行平均需要171ms。这还不错，但我们可以做得更好，即使考虑到人为的延迟。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&#39;&#x2F;matches&#x2F;&lt;day&gt;&#39;)</span><br><span class="line">@functools.lru_cache(maxsize&#x3D;4)</span><br><span class="line">def show_matches(day):</span><br><span class="line">    matches &#x3D; get_matches(day)</span><br><span class="line">    return render_template(&#39;matches.html&#39;, matches&#x3D;matches, day&#x3D;day)</span><br></pre></td></tr></table></figure>
+
+<p>在本例中，我设置了<code>maxsize=4</code>，因为我的测试脚本只有相同的三天，最好设置2次幂。使用这种方法，10个循环的平均速度可以降到13.7ms。</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" style="zoom:67%;" />
+
+<h2 id="还有什么应该知道？"><a href="#还有什么应该知道？" class="headerlink" title="还有什么应该知道？"></a>还有什么应该知道？</h2><p>Python文档虽然很详细，但是有一些东西还是要强调的。</p>
+<h3 id="内置函数"><a href="#内置函数" class="headerlink" title="内置函数"></a>内置函数</h3><p>装饰器附带了一些很有用的内置函数。<code>cache_info()</code>返回访问数（hits）、未访问数（misses）和当前缓存使用量（currsize）、最大容量（maxsize），帮助你了解缓存使用情况。<code>cache_clear()</code>将删除缓存中的所有元素。</p>
+<h3 id="有时候不要使用缓存"><a href="#有时候不要使用缓存" class="headerlink" title="有时候不要使用缓存"></a>有时候不要使用缓存</h3><p>通常，只有在以下情况下才能使用缓存：</p>
+<ul>
+<li>在缓存期内，数据不会更改。</li>
+<li>函数将始终为相同的参数返回相同的值（因此时间和随机对缓存没有意义）。</li>
+<li>函数没有副作用。如果缓存被访问，则永远不会调用该函数，因此请确保不更改其中的任何状态。</li>
+<li>函数不返回不同的可变对象。例如，返回列表的函数不适合缓存，因为将要缓存的是对列表的引用，而不是列表内容。</li>
+</ul>
+<p>原文链接：<a href="https://www.cameronmacleod.com/blog/python-lru-cache" target="_blank" rel="noopener">https://www.cameronmacleod.com/blog/python-lru-cache</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Python LRU 缓存" >
+    <span class="tag-code">Python LRU 缓存</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/04/quicksort/">
+        <span class="nav-arrow">← </span>
+        
+          通俗易懂讲算法：快速排序
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是缓存？"><span class="toc-nav-text">什么是缓存？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LRU是什么意思？"><span class="toc-nav-text">LRU是什么意思？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#怎样使用它？"><span class="toc-nav-text">怎样使用它？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#还有什么应该知道？"><span class="toc-nav-text">还有什么应该知道？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#内置函数"><span class="toc-nav-text">内置函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#有时候不要使用缓存"><span class="toc-nav-text">有时候不要使用缓存</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/02/05/speed-python/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
