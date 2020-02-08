@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      理解微积分概念，必不可少 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>理解微积分概念，必不可少</h2>
+    <p class="post-date">2020-02-08</p>
+    <section class="markdown-content"><p>作者：Charley Knight</p>
+<p>翻译：老齐</p>
+<p><strong>译者注：</strong> 我国已经和正在进行着教学改革的基本行为“减负”，即削减课程和课程内容，这种做法虽然迎合了某些人的口味——包括对教育无知的普通民众，但从长远来看坑害了工农子弟。这其中的缘由，因为普遍人群不理解，至今仍然津津乐道。对于工农子弟而言，迟早会更深刻体验到“减负”给他们带来的竞争力降低的痛苦。为此，刊发此文，希望能够对一些人有启发。</p>
+<hr>
+<p>随着学位课程寻求精简和提高毕业率，微积分正处于断档状态，即使是在大学STEM专业也是如此。这是错误的，并且对我们的学生造成很大的伤害。</p>
+<p>像哲学一样，微积分教我们如何思考。大多数STEM教育者都受益于对微积分的学习。那些支持将微积分从必修课程中除去的人应该批判性地思考：如果没有微积分知识，他们将如何能够理解这个世界。对我来说，这种想法是如此的陌生以至于难以理解。</p>
+<p>作为在攻读生物学位中进行定量训练的支持者，我最近被问到是否需要在考试中有计算题目，以及学生是否需要使用微积分。这个问题所基于的假设是：如果我不要求学生使用微积分的数学知识，那么我们的学位就不需要教授微积分。</p>
+<p>我认为这是一个错误的概念。原因有几个，其中之一是微积分教给我们如何思考。它不仅仅是求导和求积的规则。对我来说，微积分是关于比率、比率的变化，以及如何用这些比率的和预测。对于我所研究的生物世界而言，这些已经成为研究者的直觉，有着深刻的影响。</p>
+<p>一个影响深远的例子来自气候变化和政治。有一句经常被引用的话：我们必须“降低二氧化碳排放率”。比率是随时间变化的。显然，降低二氧化碳的排放率对于避免大气中二氧化碳含量升高的负面影响至关重要。</p>
+<p>然而，在研究气候政策和预测的细节时，往往是为了“限制二氧化碳排放量的增长比率”，以保持增长率不变。事实上，这就是“一切照旧的情景”。相比之下，二氧化碳的增加速度更为可怕，这是自工业革命以来人类历史的典型特征。</p>
+<p>同样，一些任务是将人均二氧化碳排放量减少到1992年的水平。由于人口增长，今天的二氧化碳排放量将大大超过1992年的排放量，按照1992年的要求不会减少今天的大气中二氧化碳含量。</p>
+<p>二氧化碳排放率曲线下的面积是在任何时间段排到大气中的二氧化碳量。对我们许多人来说，这似乎是直觉。如果不是，你应该学微积分。</p>
+<p>微积分重要性的另一个例子，它来自我的一门《生态系统生态学》课程。净生态系统生产力（NEP）是指一个系统在一年内存储的生物量。NEP有两个组成部分，总初级生产力（GPP）和生态系统呼吸（ER）。GPP产生生物量，ER将生物量以CO2形式返回大气。请原谅我这个简单的等式：NEP=GPP-ER。</p>
+<p>下图显示了温带森林中NEP、GPP和ER的日变化和季节变化（Chapin、Matson和Vitousek，2011）。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/1*CQpqUAuGEvDmQuG2AgC-DA_20200207135245.png" alt=""></p>
+<p>学习《生态系统生态学》的学生必须解读这些图表，告诉我这个系统是在一天内还是在一个季节内储存了碳。NEP的和表示一段时间内的碳储存，应该清楚的是，该系统一整天都在储存碳，但不太清楚全年是否有净收益。如果这对你来说是直观的，那可能是因为你学了微积分。</p>
+<p>此外，还有许多其他的微积分概念来说明这个图中的生物现象。例如，GPP随时间和季节呈线性上升，直至某一点。换句话说，有一个拐点。为什么？</p>
+<p>就一天中的某个时间而言，光照充足，所有的树叶都处于光合作用饱和状态，更多的光并不会导致更多的光合作用。</p>
+<p>当GPP不再呈线性上升时，表示系统的叶面积已经饱和，单纯叶面积的增加并不会导致GPP的增加。</p>
+<p>我可以用一整个小时的课来讲从这些曲线可以推导出的生物推论，它们都与微积分中的概念有关。如果你认为微积分所有的详细数学知识都是必须的，那也不尽然，但是微积分的概念是必不可少的。</p>
+<p>原文链接：<a href="https://medium.com/datadriveninvestor/the-concepts-of-calculus-are-essential-5e82fb10dd08" target="_blank" rel="noopener">https://medium.com/datadriveninvestor/the-concepts-of-calculus-are-essential-5e82fb10dd08</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#数学 微积分 教育" >
+    <span class="tag-code">数学 微积分 教育</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/05/speed-python/">
+        <span class="nav-arrow">← </span>
+        
+          让Python程序轻松加速的方法
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/02/08/理解微积分/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
