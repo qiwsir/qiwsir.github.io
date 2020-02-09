@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的 `!=`与`is not`不同 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的 `!=`与`is not`不同</h2>
+    <p class="post-date">2020-02-09</p>
+    <section class="markdown-content"><p>翻译：老齐</p>
+<p>与本文内容配套的图书：《跟老齐学Python：轻松入门》《Python大学实用教程》，各大电商平台有售。</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" style="zoom:50%;" />
+
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" style="zoom: 50%;" />
+
+<hr>
+<p>Python中的<code>is</code>和<code>==</code>是不一样的。使用<code>is</code>可以比较数字，代码也正常运行。也有人说<code>is</code>比<code>==</code>要更快，或者你可能觉得它看起来更像Python。然而，重要的是要记住这些运算符的行为并不完全相同。</p>
+<p><code>==</code>用于比较两个对象的值是否相等，而<code>is</code>检查两个变量是否指向内存中的同一个对象。在大多数情况下，这意味着你应该使用<code>==</code>和<code>！=</code>，除非与<code>None</code>进行比较。</p>
+<p>在本文中，你将学习：</p>
+<ul>
+<li>对象相等和同一性的区别是什么</li>
+<li>何时使用<code>==</code>和<code>is</code>比较对象</li>
+<li>这些Python运算符的原理是什么</li>
+<li>为什么使用<code>is</code>和<code>is not</code>比较值会导致意外</li>
+<li>如何编写自定义的<code>__eq__()</code>类方法来定义相等运算符行为</li>
+</ul>
+<h2 id="介绍is-和is-not的应用"><a href="#介绍is-和is-not的应用" class="headerlink" title="介绍is 和is not的应用"></a>介绍<code>is</code> 和<code>is not</code>的应用</h2><p><code>is</code> 和<code>is not</code>用来比较两个对象。在CPython中，比较的是对象的内存地址。Python中的一切都是对象，每个对象都存储在特定的内存位置， <code>is</code>和<code>is not</code>‘检查两个变量是否引用内存中的同一个对象。</p>
+<p>注意: 记住，具有相同值的对象可能存储在不同的内存地址中。</p>
+<p>你可以使用<code>id()</code> 来检查一个对象的内存地址:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; help(id)</span><br><span class="line">Help on built-in function id in module builtins:</span><br><span class="line"></span><br><span class="line">id(obj, &#x2F;)</span><br><span class="line">    Return the identity of an object.</span><br><span class="line"></span><br><span class="line">    This is guaranteed to be unique among simultaneously existing objects.</span><br><span class="line">    (CPython uses the object&#39;s memory address.)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; id(id)</span><br><span class="line">2570892442576</span><br></pre></td></tr></table></figure>
+
+<p>最后一行显示存储内置函数<code>id</code>本身的内存地址。</p>
+<p>通常，具有相同值的对象在默认情况下具有相同的id。例如，数字-5到256在CPython中被保存，每个数字都存储在内存中单一且固定的位置，这为常用整数节省了内存。</p>
+<p>你可以使用<code>sys.intern()</code>来保存字符串以提高性能，此函数允许你比较它们的内存地址，而不是对字符串里的字符进行逐个比较：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from sys import intern</span><br><span class="line">&gt;&gt;&gt; a &#x3D; &#39;hello world&#39;</span><br><span class="line">&gt;&gt;&gt; b &#x3D; &#39;hello world&#39;</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">1603648396784</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">1603648426160</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a &#x3D; intern(a)</span><br><span class="line">&gt;&gt;&gt; b &#x3D; intern(b)</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">1603648396784</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">1603648396784</span><br></pre></td></tr></table></figure>
+
+<p>变量<code>a</code>和<code>b</code>最初指向内存中的两个不同对象，如它们的不同id所示。使用<code>intern</code>后，<code>a</code>和<code>b</code>则指向内存中的同一对象。在原来的操作中，两个<code>&#39;hello world&#39;</code>分别在新的内存位置创建对象，但是，对同样的字符串执行<code>intern</code>后，后面所创建的字符串所指向的内存地址与第一个<code>&#39;hello world&#39;</code>的内存地址相同。</p>
+<p>注意：即使对象的内存地址在任何给定的时间都是唯一的，但这个内存地址在同一代码的不同运行过程中是不同的，并且取决于CPython的版本和运行代码的计算机。</p>
+<p>默认情况下，具有<code>intern</code>效果的对象是<code>None</code>、<code>True</code>、<code>False</code>和简单字符串。请记住，大多数情况下，具有相同值的不同对象将存储在不同的内存地址中，这意味着你不应该使用<code>is</code>来比较值。</p>
+<h3 id="存储整数"><a href="#存储整数" class="headerlink" title="存储整数"></a>存储整数</h3><p>Python将常用的值（例如，整数-5到256）默认保存在内存中，从而节省内存开支。下面的代码向你展示了为什么只有一些整数具有固定的内存地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; 256</span><br><span class="line">&gt;&gt;&gt; b &#x3D; 256</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">1638894624</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">1638894624</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a &#x3D; 257</span><br><span class="line">&gt;&gt;&gt; b &#x3D; 257</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">2570926051952</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">2570926051984</span><br></pre></td></tr></table></figure>
+
+<p>最初，<code>a</code>和<code>b</code>引用内存中的同一个存储对象，但当它们的值超出常用整数的范围（从-5到256）时，它们就存储在不同的内存地址中。</p>
+<h3 id="当多个变量引用同一对象时"><a href="#当多个变量引用同一对象时" class="headerlink" title="当多个变量引用同一对象时"></a>当多个变量引用同一对象时</h3><p>用赋值运算符（<code>=</code>）使一个变量等于另一个变量时，可以使这些变量指向内存中的同一对象。这可能会导致可变对象出现意外行为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; [1, 2, 3]</span><br><span class="line">&gt;&gt;&gt; b &#x3D; a</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">[1, 2, 3]</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">[1, 2, 3]</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a.append(4)</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">[1, 2, 3, 4]</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">[1, 2, 3, 4]</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">2570926056520</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">2570926056520</span><br></pre></td></tr></table></figure>
+
+<p>刚才发生了什么? 你向<code>a</code> 添加了一个新元素，但是现在<code>b</code>也包含了这个元素! 在<code>b = a</code>这一行，设置b指向与a相同的内存地址，这样两个变量就都引用相同的对象。</p>
+<p>如果你独立地定义这些列表，那么它们就被存储在不同的内存地址中，并独立地运行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; [1, 2, 3]</span><br><span class="line">&gt;&gt;&gt; b &#x3D; [1, 2, 3]</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">2356388925576</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">2356388952648</span><br></pre></td></tr></table></figure>
+
+<p>因为<code>a</code>和<code>b</code>现在引用内存中的不同对象，所以更改一个对象不会影响另一个对象。</p>
+<h2 id="用-和-比较对象"><a href="#用-和-比较对象" class="headerlink" title="用==和!=比较对象"></a>用<code>==</code>和<code>!=</code>比较对象</h2><p>回想一下，具有相同值的对象通常存储在不同的内存地址中。如果要检查两个对象是否具有相同的值，而不管它们存储在内存中的位置，使用运算符<code>=</code>和<code>！=</code>。在绝大多数情况下，这就是你想做的。</p>
+<h3 id="当对象副本相等但不相同时"><a href="#当对象副本相等但不相同时" class="headerlink" title="当对象副本相等但不相同时"></a>当对象副本相等但不相同时</h3><p>在下面的示例中，<code>b</code>是<code>a</code>的副本（<code>a</code>是可变对象，如列表或字典）。两个变量都有相同的值，但它们将各自存储在不同的内存地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; [1, 2, 3]</span><br><span class="line">&gt;&gt;&gt; b &#x3D; a.copy()</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">[1, 2, 3]</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">[1, 2, 3]</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a &#x3D;&#x3D; b</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; a is b</span><br><span class="line">False</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">2570926058312</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">2570926057736</span><br></pre></td></tr></table></figure>
+
+<p><code>a</code> 和 <code>b</code> 现在存储在不同的内存地址，因此<code>a is b</code>不再返回True。但是，<code>a==b</code>返回True，因为两个对象具有相同的值。</p>
+<h3 id="相等比较如何起作用"><a href="#相等比较如何起作用" class="headerlink" title="相等比较如何起作用"></a>相等比较如何起作用</h3><p><code>==</code>的魔力体现在该符号左边对象所具有的<code>__eq__()</code>方法中。</p>
+<p>这是一个神奇的类方法，每当这个类的一个实例与另一个对象进行比较时都会调用它。如果未实现此方法，则默认情况下<code>==</code>比较两个对象的内存地址。</p>
+<p>作为练习，创建一个继承<code>str</code>的<code>SillyString</code>类并实现<code>__eq__()</code> ，以比较此字符串的长度是否与另一个对象的长度相同：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class SillyString(str):</span><br><span class="line">    # This method gets called when using &#x3D;&#x3D; on the object</span><br><span class="line">    def __eq__(self, other):</span><br><span class="line">        print(f&#39;comparing &#123;self&#125; to &#123;other&#125;&#39;)</span><br><span class="line">        # Return True if self and other have the same length</span><br><span class="line">        return len(self) &#x3D;&#x3D; len(other)</span><br></pre></td></tr></table></figure>
+
+<p>现在，用<code>&#39;hello world&#39;</code>创建的SillyString实例应该等于用<code>&#39;world hello&#39;</code>创建的实例，甚至等于长度相同的任何其他对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; # Compare two strings</span><br><span class="line">&gt;&gt;&gt; &#39;hello world&#39; &#x3D;&#x3D; &#39;world hello&#39;</span><br><span class="line">False</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; # Compare a string with a SillyString</span><br><span class="line">&gt;&gt;&gt; &#39;hello world&#39; &#x3D;&#x3D; SillyString(&#39;world hello&#39;)</span><br><span class="line">comparing world hello to hello world</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; # Compare a SillyString with a list</span><br><span class="line">&gt;&gt;&gt; SillyString(&#39;hello world&#39;) &#x3D;&#x3D; [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]</span><br><span class="line">comparing hello world to [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p>当然，对于一个字符串形式的对象来说，这是愚蠢的行为，但它确实说明了当你使用<code>==</code>比较两个对象时会发生什么。对于<code>!=</code>，则是通过实现特定的<code>__ne__()</code>方法，给出逆响应。</p>
+<p>上面的示例还清楚地向你展示了为什么更好的做法是用 <code>is</code>来比较<code>None</code>，而不是使用<code>==</code>运算符。<code>is</code>比较的是内存地址，所以它不仅更快，而且更安全，因为它不依赖于任何<code>__eq__()</code>方法的逻辑。</p>
+<h2 id="比较的比较"><a href="#比较的比较" class="headerlink" title="比较的比较"></a>比较的比较</h2><p>根据经验，你应该常用<code>==</code> 和<code>！=</code>，除非与<code>None</code>进行比较：</p>
+<ul>
+<li>使用<code>==</code>和<code>！=</code>比较对象的相等性。这里，你通常比较两个对象的值。如果要比较两个对象是否具有相同的内容，而不关心它们存储在内存中的位置，则需要下面的做法。</li>
+<li>如果要比较对象的唯一标识，请使用<code>is</code>和<code>is not</code>。这里，你要比较两个变量是否指向内存中的同一个对象。这些运算符的主要用例是与None进行比较。与使用类方法相比，按内存地址与None进行比较更快、更安全。</li>
+</ul>
+<p>具有相同值的变量通常存储在不同的内存地址中，这意味着你应该使用<code>==</code> 和<code>！=</code>来比较他们的值。只有当你想检查两个变量是否指向同一个内存地址时，才使用<code>is</code>和<code>is not</code>。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在本文中，你了解了<code>==</code> 和<code>！=</code>比较两个对象的值，而<code>is</code>和<code>is not</code>比较两个变量是否引用内存中的同一个对象。如果你牢记这一区别，那么应该能够防止代码中出现意外行为。</p>
+<p>你还可以看看如何使用<code>sys.intern()</code>来优化字符串的内存使用和比较，尽管Python可能已经在幕后自动为你处理了这一问题。</p>
+<p>现在你已经了解了两种比较的幕后操作，可以尝试编写自己的<code>__eq__()</code>方法，这些方法定义了在使用<code>==</code>运算符时如何比较该类的实例。去应用关于Python比较运算符的这些新知识吧！</p>
+<p>原文链接：<a href="https://realpython.com/python-is-identity-vs-equality/" target="_blank" rel="noopener">https://realpython.com/python-is-identity-vs-equality/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/08/%E7%90%86%E8%A7%A3%E5%BE%AE%E7%A7%AF%E5%88%86/">
+        <span class="nav-arrow">← </span>
+        
+          理解微积分概念，必不可少
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#介绍is-和is-not的应用"><span class="toc-nav-text">介绍is 和is not的应用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#存储整数"><span class="toc-nav-text">存储整数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#当多个变量引用同一对象时"><span class="toc-nav-text">当多个变量引用同一对象时</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用-和-比较对象"><span class="toc-nav-text">用&#x3D;&#x3D;和!&#x3D;比较对象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#当对象副本相等但不相同时"><span class="toc-nav-text">当对象副本相等但不相同时</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相等比较如何起作用"><span class="toc-nav-text">相等比较如何起作用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#比较的比较"><span class="toc-nav-text">比较的比较</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/02/09/python-is-or-not/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
