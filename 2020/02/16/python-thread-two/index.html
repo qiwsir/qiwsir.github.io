@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      线程：概念和实现（2） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>线程：概念和实现（2）</h2>
+    <p class="post-date">2020-02-16</p>
+    <section class="markdown-content"><p>翻译：老齐</p>
+<p>译者注：与本文相关图书推荐：《Python大学实用教程》《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<hr>
+<h1 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h1><h2 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h2><p>在讨论Python线程的其他特性之前，让我们先讨论一下编写线程程序时遇到的一个更困难的问题：竞态条件。</p>
+<p>一旦你了解了什么是竞态条件，并看到了正在发生的情况，然后就使用标准库提供的模块，以防止这些竞态条件的出现。</p>
+<p>当两个或多个线程访问共享数据或资源时，可能会出现竞态情况。在本例中，你将创建一个每次都发生的大型竞态条件，但请注意，大多数它并不是很明显。示例中的情况通常很少发生，而且会产生令人困惑的结果。可以想象，因为竞态条件而引起的bug很难被发现。</p>
+<p>幸运的是，在下述示例中竞态问题每次都会发生，你将详细地了解它以便解释发生了什么。</p>
+<p>对于本例，将编写一个更新数据库的类。你不会真的有一个数据库：你只是要伪造它，因为这不是本文的重点。</p>
+<p><code>FakeDatabase</code>类中有<code>.__init__()</code> 和 <code>.update()</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class FakeDatabase:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.value &#x3D; 0</span><br><span class="line"></span><br><span class="line">    def update(self, name):</span><br><span class="line">        logging.info(&quot;Thread %s: starting update&quot;, name)</span><br><span class="line">        local_copy &#x3D; self.value</span><br><span class="line">        local_copy +&#x3D; 1</span><br><span class="line">        time.sleep(0.1)</span><br><span class="line">        self.value &#x3D; local_copy</span><br><span class="line">        logging.info(&quot;Thread %s: finishing update&quot;, name)</span><br></pre></td></tr></table></figure>
+
+<p><code>FakeDatabase</code>中的属性<code>.value</code>，用于作为竞态条件中共享的数据。</p>
+<p><code>.__init__()</code>中将<code>.value</code>值初始化为<code>0.</code>，到目前为止，一切正常。</p>
+<p><code>.update()</code> 看起来有点奇怪，它模拟从数据库中读取一个值，对其进行一些计算，然后将一个新值写回数据库。</p>
+<p>所谓从数据库中读取，即将<code>.value</code>的值复制到本地变量。计算就是在原值上加1，然后<code>.sleep()</code> 一小会儿。最后，它通过将本地值复制回<code>.value</code>，将值写回去。</p>
+<p>下面是<code>FakeDatabase</code>的使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    format &#x3D; &quot;%(asctime)s: %(message)s&quot;</span><br><span class="line">    logging.basicConfig(format&#x3D;format, level&#x3D;logging.INFO,</span><br><span class="line">                        datefmt&#x3D;&quot;%H:%M:%S&quot;)</span><br><span class="line"></span><br><span class="line">    database &#x3D; FakeDatabase()</span><br><span class="line">    logging.info(&quot;Testing update. Starting value is %d.&quot;, database.value)</span><br><span class="line">    with concurrent.futures.ThreadPoolExecutor(max_workers&#x3D;2) as executor:</span><br><span class="line">        for index in range(2):</span><br><span class="line">            executor.submit(database.update, index)</span><br><span class="line">    logging.info(&quot;Testing update. Ending value is %d.&quot;, database.value)</span><br></pre></td></tr></table></figure>
+
+<p>程序中创建了两个<code>ThreadPoolExecutor</code>，然后对每个线程调用<code>.submit()</code>，告诉它们运行<code>database.update()</code>。</p>
+<p><code>.submit()</code>有一个明显特征，它允许将位置参数和命名参数传给线程中运行的函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.submit(function, *args, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>在上面的用法中，<code>index</code>作为第一个也是唯一一个位置参数传给<code>database.update()</code>。你将在本文后面看到，可以用类似的方式传多个参数。</p>
+<p>由于每个线程都运行<code>.update()</code>，而<code>.update()</code>会让<code>.value</code>的值加1，因此在最后打印时，你可能会希望<code>database.value</code>为2。但如果是这样的话，你就不会看这个例子了。如果运行上述代码，则输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;racecond.py</span><br><span class="line">Testing unlocked update. Starting value is 0.</span><br><span class="line">Thread 0: starting update</span><br><span class="line">Thread 1: starting update</span><br><span class="line">Thread 0: finishing update</span><br><span class="line">Thread 1: finishing update</span><br><span class="line">Testing unlocked update. Ending value is 1.</span><br></pre></td></tr></table></figure>
+
+<p>你可能已经预料到这种情况会发生，但是让我们来看看实际情况的细节，因为这将使这个问题的解决方案更容易理解。</p>
+<h3 id="单线程"><a href="#单线程" class="headerlink" title="单线程"></a>单线程</h3><p>在用两个线程深入讨论这个问题之前，让我们先退一步，谈谈线程工作流程的一些细节。</p>
+<p>我们不会在这里深入讨论所有的细节，因为这种全面深入的讨论现在并不重要。我们还将简化一些事情，这种做法虽然在技术上并不准确，但会让你对正在发生的事情有正确的认识。</p>
+<p>当你告诉<code>ThreadPoolExecutor</code>运行每个线程时，也就是告诉它要运行哪个函数以及要传给它的参数：<code>executor.submit(database.update, index)</code>。</p>
+<p>其结果是线程池中的每个线程都将调用<code>database.update(index)</code>。注意，<code>database</code>是<code>__main__</code>中创建的<code>FakeDatabase</code>实例对象，调用它的方法<code>.update()</code>。</p>
+<p>每个线程都将引用同一个<code>FakeDatabase</code>的实例<code>database</code>，每个线程还将有一个唯一的值<code>index</code>。为了让上述过程更容易理解，请看下图：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/intro-threading-shared-database_20200215134649.png" alt=""></p>
+<p>当某线程开始运行<code>.update()</code>时，它有此方法的本地的数据，即<code>.update()</code>中的<code>local_copy</code>。这绝对是件好事，否则，在两个线程中运行同一个函数就会互相干扰了。这意味着该函数的所有作用域（或本地）变量对于线程来说都是安全的。</p>
+<p>现在，你已经理解，如果使用单个线程和对<code>.update()</code>的单个调用来运行上面的程序会发生什么情况。</p>
+<p>如果只运行一个线程，如下图所示，会一步一步地执行<code>.update()</code>。下图中，语句显示在上面，下面用图示方式演示了线程中的<code>local_value</code>和共享的<code>database.value</code> 中的值的变化:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/intro-threading-single-thread_20200215134746.png" alt=""></p>
+<p>按照时间顺序，从上到下观察上面的示意图，从创建线程<code>Thread 1</code>开始，到<code>Thread 1</code>结束终止。</p>
+<p> <code>Thread 1</code>启动时，<code>FakeDatabase.value</code>为零。方法中的第一行代码<code>local_copy=self.value</code>将0复制到局部变量。接下来，使用<code>local_copy+=1</code>语句增加<code>local_copy</code>的值。你可以看到<code>Thread 1</code>中的<code>.value</code>值为1。</p>
+<p>然后，调用下一个<code>time.sleep()</code>，这将使当前线程暂停并允许其他线程运行。因为在这个例子中只有一个线程，所以这没有影响。</p>
+<p>当<code>Thread 1</code>唤醒并继续时，它将新值从<code>local_copy</code>复制到<code>FakeDatabase.value</code>，然后线程完成。你可以看到<code>database.value</code>为1。</p>
+<p>到目前为止，一切正常。你只运行了一次<code>.update()</code>并且将<code>FakeDatabase.value</code>递增为1。</p>
+<h3 id="两个线程"><a href="#两个线程" class="headerlink" title="两个线程"></a>两个线程</h3><p>回到竞态条件，两个线程并行，但不是同时运行。每个线程都有自己的<code>local_copy</code>，并指向相同的<code>database</code>，正是这个共享数据库对象导致了这些问题。</p>
+<p>程序还是从<code>Thread 1</code>执行<code>.update()</code>开始:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/intro-threading-two-threads-part1_20200215134844.png" alt=""></p>
+<p>当<code>Thread 1</code>调用<code>time.sleep()</code>时，它允许另一个线程开始运行。这就是事情变得有趣的地方。</p>
+<p><code>Thread 2</code>启动并执行相同的操作。它也将<code>database.value</code>复制到其私有的<code>local_copy</code>，而此时共享的<code>database.value</code>尚未更新：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/intro-threading-two-threads-part2_20200215135535.png" alt=""></p>
+<p>当<code>Thread 1</code>进入睡眠状态时，共享的<code>database.value</code>仍然未被修改，还是0，而此时的<code>local_copy</code>的两个私有版本的值都为1。</p>
+<p><code>Thread 1</code>现在醒来并保存其<code>local_copy</code>的值，然后线程终止，给<code>Thread 2</code>机会。<code>Thread 2</code>不知道在它睡眠时<code>Thread 1</code>运行并更新了<code>database.value</code>的值。<code>Thread 2</code>也将它的<code>local_copy</code>值存储到<code>database.value</code>中，并将其设置为1：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/intro-threading-two-threads-part3_20200215135631.png" alt=""></p>
+<p>这两个线程交替访问一个共享对象，覆盖彼此的结果。当一个线程释放内存或在另一个线程完成访问之前关闭文件句柄时，可能会出现类似的竞态。</p>
+<h3 id="为什么这不是一个愚蠢的示例"><a href="#为什么这不是一个愚蠢的示例" class="headerlink" title="为什么这不是一个愚蠢的示例"></a>为什么这不是一个愚蠢的示例</h3><p>上面的例子是刻意而为，目的是确保每次运行程序时都会发生竞态。因为操作系统可以在任何时候交换线程，所以在读取<code>x</code>的值之后，并且在写回递增的值之前，可以中断类似<code>x=x+1</code>的语句。</p>
+<p>发生这种情况的原因细节非常有趣，但这篇文章的其余部分并不需要这些细节，所以可以跳过这个隐藏的部分。</p>
+<p>既然你已经看到了运行过程中的竞态条件，让我们找出解决问题的方法！</p>
+<h2 id="使用锁实现同步"><a href="#使用锁实现同步" class="headerlink" title="使用锁实现同步"></a>使用锁实现同步</h2><p>有很多方法可以避免或解决竞态。你不会在这里看到所有这些方法，但是有一些方法是经常使用的。让我们从<code>Lock</code>开始。</p>
+<p>要解决上述竞态条件，需要找到一种方法，使得在代码的“读-修改-写”操作中一次只允许一个线程。最常见的方法是使用Python中名为<code>Lock</code>的方法。在其他的一些语言中，类似的被称为<code>Mutex</code>，<code>Mutex</code>源于MUTual EXclusion，这正是<code>Lock</code>的作用。</p>
+<p> <code>Lock</code>像是通行证，一次只能有一个线程拥有<code>Lock</code>，任何其他想要<code>Lock</code>的线程都必须等到<code>Lock</code>的所有者放弃它。</p>
+<p>执行此操作的基本函数是<code>.acquire()</code> 和 <code>.release()</code>。线程将调用<code>my_lock.acquire()</code>来获取自己的锁。如果锁已经被其他线程所有，则将等待它被释放。这里有一点很重要，如果一个线程得到了锁，但尚未返回，你的程序将被卡住。你稍后会读到更多关于这方面的内容。</p>
+<p>幸运的是，Python的<code>Lock</code>也将作为上下文管理器运行，因此你可以在一个带有with的语句中使用它，并且当with代码块由于任何原因退出时，锁也会自动释放。</p>
+<p>让我们看看添加了锁的<code>FakeDatabase</code>，其所调用函数保持不变：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class FakeDatabase:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.value &#x3D; 0</span><br><span class="line">        self._lock &#x3D; threading.Lock()</span><br><span class="line"></span><br><span class="line">    def locked_update(self, name):</span><br><span class="line">        logging.info(&quot;Thread %s: starting update&quot;, name)</span><br><span class="line">        logging.debug(&quot;Thread %s about to lock&quot;, name)</span><br><span class="line">        with self._lock:</span><br><span class="line">            logging.debug(&quot;Thread %s has lock&quot;, name)</span><br><span class="line">            local_copy &#x3D; self.value</span><br><span class="line">            local_copy +&#x3D; 1</span><br><span class="line">            time.sleep(0.1)</span><br><span class="line">            self.value &#x3D; local_copy</span><br><span class="line">            logging.debug(&quot;Thread %s about to release lock&quot;, name)</span><br><span class="line">        logging.debug(&quot;Thread %s after release&quot;, name)</span><br><span class="line">        logging.info(&quot;Thread %s: finishing update&quot;, name)</span><br></pre></td></tr></table></figure>
+
+<p>除了添加一堆调试日志以便更清楚地看到锁操作之外，这里的大变化是添加一个名为<code>._lock</code>的属性，它是一个<code>threading.Lock()</code>实例对象。这个<code>._lock</code>在未锁定状态下初始化，并由with语句锁定和释放。</p>
+<p>这里值得注意的是，运行此方法的线程将一直保持<code>Lock</code>，直到完全完成对数据库的更新。在这种情况下，这意味着函数将在复制、更新、休眠时保持锁定，然后将值写回数据库。</p>
+<p>如果在日志记录设置为警告级别的情况下运行此版本，你将看到以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;fixrace.py</span><br><span class="line">Testing locked update. Starting value is 0.</span><br><span class="line">Thread 0: starting update</span><br><span class="line">Thread 1: starting update</span><br><span class="line">Thread 0: finishing update</span><br><span class="line">Thread 1: finishing update</span><br><span class="line">Testing locked update. Ending value is 2.</span><br></pre></td></tr></table></figure>
+
+<p>看看这个。你的程序终于成功了！</p>
+<p>在<code>__main__</code>中配置日志输出后，可以通过添加以下语句将级别设置为<code>DEBUG</code>来打开完整日志记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logging.getLogger().setLevel(logging.DEBUG)</span><br></pre></td></tr></table></figure>
+
+<p>在启用<code>DEBUG</code>后，运行此程序，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;fixrace.py</span><br><span class="line">Testing locked update. Starting value is 0.</span><br><span class="line">Thread 0: starting update</span><br><span class="line">Thread 0 about to lock</span><br><span class="line">Thread 0 has lock</span><br><span class="line">Thread 1: starting update</span><br><span class="line">Thread 1 about to lock</span><br><span class="line">Thread 0 about to release lock</span><br><span class="line">Thread 0 after release</span><br><span class="line">Thread 0: finishing update</span><br><span class="line">Thread 1 has lock</span><br><span class="line">Thread 1 about to release lock</span><br><span class="line">Thread 1 after release</span><br><span class="line">Thread 1: finishing update</span><br><span class="line">Testing locked update. Ending value is 2.</span><br></pre></td></tr></table></figure>
+
+<p>在输出中，你可以看到<code>Thread 0</code>得到了锁，并在进入睡眠状态时仍保持锁定。然后<code>Thread 1</code>启动并尝试获取相同的锁。因为<code>Thread 0</code>仍在持有锁，<code>Thread 1</code>必须等待。这就是<code>Lock</code>的互斥性。</p>
+<p>本文其余部分中的许多示例将日志设置为<code>WARNING</code>和<code>DEBUG</code>级别。我们通常只是<code>DEBUG</code>级别的输出，因为<code>DEBUG</code>日志可能非常长。在日志记录打开的情况下尝试这些程序，看看它们能做什么。</p>
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>在继续探索之前，应该先看看使用锁时的一个常见问题。如你所见，如果已经获取了<code>Lock</code>，则对<code>.acquire()</code>的二次调用将等到持有<code>Lock</code>的线程调用<code>.release()</code>。运行此代码时，你认为会发生什么情况？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import threading</span><br><span class="line"></span><br><span class="line">l &#x3D; threading.Lock()</span><br><span class="line">print(&quot;before first acquire&quot;)</span><br><span class="line">l.acquire()</span><br><span class="line">print(&quot;before second acquire&quot;)</span><br><span class="line">l.acquire()</span><br><span class="line">print(&quot;acquired lock twice&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>当程序第二次调用<code>l.acquire()</code>时，该函数将挂起，等待<code>Lock</code>的释放。在本例中，可以通过删除第二次调用来修复死锁，但死锁通常发生在以下两个微妙的事情之一：</p>
+<ol>
+<li>未正确释放<code>Lock</code>的错误。</li>
+<li>设计问题，其中一个函数需要由某些函数调用，这些函数可能具有或可能不具有<code>Lock</code>。</li>
+</ol>
+<p>第一种情况有时会发生，但使用<code>Lock</code>作为上下文管理器会大大减少错误出现的频率。建议尽可能使用上下文管理器编写代码，因为它们有助于避免异常跳过<code>.release()</code>调用的情况。</p>
+<p>在某些语言中，设计问题可能要复杂一些。值得庆幸的是，Python线程的又一个对象<code>RLock</code>就是为这种情况而设计的。它允许线程在调用<code>.release()</code>之前多次通过<code>.acquire()</code>实现<code>RLock</code>。该线程中调用<code>.release()</code>的次数与调用<code>.acquire()</code>的次数相同。</p>
+<p><code>Lock</code>和<code>RLock</code>是线程中用来防止竞态条件的两个基本工具，还有一些其他工具以不同的方式发挥作用。在你查看它们之前，让我们转到一个稍微不同的问题上。</p>
+<p>（<strong>未完待续</strong>）</p>
+<ul>
+<li><a href="http://itdiffer.com/2020/02/14/python-thread-one/" target="_blank" rel="noopener">线程：概念和实现（1）</a></li>
+</ul>
+<p>原文链接：<a href="https://realpython.com/intro-to-python-threading/" target="_blank" rel="noopener">https://realpython.com/intro-to-python-threading/</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#python 线程" >
+    <span class="tag-code">python 线程</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/15/crawler-nCon-2019/">
+        <span class="nav-arrow">← </span>
+        
+          用网络爬虫技术获取新冠病毒疫情数据
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第二部分"><span class="toc-nav-text">第二部分</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#竞态条件"><span class="toc-nav-text">竞态条件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#单线程"><span class="toc-nav-text">单线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#两个线程"><span class="toc-nav-text">两个线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#为什么这不是一个愚蠢的示例"><span class="toc-nav-text">为什么这不是一个愚蠢的示例</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用锁实现同步"><span class="toc-nav-text">使用锁实现同步</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#死锁"><span class="toc-nav-text">死锁</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/02/16/python-thread-two/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
