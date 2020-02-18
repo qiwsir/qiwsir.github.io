@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      线程：概念和实现（3） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>线程：概念和实现（3）</h2>
+    <p class="post-date">2020-02-18</p>
+    <section class="markdown-content"><p>翻译：老齐</p>
+<p>译者注：与本文相关图书推荐：《Python大学实用教程》《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<hr>
+<h1 id="第三部分"><a href="#第三部分" class="headerlink" title="第三部分"></a>第三部分</h1><h2 id="生产者-消费者线程"><a href="#生产者-消费者线程" class="headerlink" title="生产者-消费者线程"></a>生产者-消费者线程</h2><p>生产者-消费者问题（Producer-Consumer Problem，以下简称：PCP）是计算机科学中研究线程或进程同步的代表性问题，下面要通过它的一个变体来了解Python中<code>threading</code>模块提供的各种方法。</p>
+<p>对于本例，你将想象一个程序需要从网络读取信息并将其写入磁盘。程序会确定是否要请求信息。它必须监听并接受信息，这些信息不会以正常的速度传入，而是会以突发的方式传入。程序的这一部分叫做生产者。</p>
+<p>另一方面，一旦收到信息，你就需要将其写入数据库。数据库访问速度很慢，但这个速度足以跟上信息传输的平均速度。当一大堆信息进来时，访问速度还不够快。这部分是消费者。</p>
+<p>在生产者和消费者之间，创建一个<code>Pipeline</code>，它将随着你对不同的同步对象的了解而变化。</p>
+<p>这是基本的布局。让我们看看使用<code>Lock</code>的解决方案。它并不完美，但它使用的工具是你已经知道的，所以这是一个很好的开始。</p>
+<h3 id="使用锁的PCP"><a href="#使用锁的PCP" class="headerlink" title="使用锁的PCP"></a>使用锁的PCP</h3><p>因为这是一篇关于Python的<code>threading</code>模块的文章，而且你刚刚阅读了<code>Lock</code>的使用方法，，所以让我们尝试用一两个使用<code>Lock</code>的线程来解决这个问题。</p>
+<p>一般的设计是，有一个<code>producer</code>线程从模拟网络读取消息并将信息放入<code>Pipeline</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import random </span><br><span class="line"></span><br><span class="line">SENTINEL &#x3D; object()</span><br><span class="line"></span><br><span class="line">def producer(pipeline):</span><br><span class="line">    &quot;&quot;&quot;Pretend we&#39;re getting a message from the network.&quot;&quot;&quot;</span><br><span class="line">    for index in range(10):</span><br><span class="line">        message &#x3D; random.randint(1, 101)</span><br><span class="line">        logging.info(&quot;Producer got message: %s&quot;, message)</span><br><span class="line">        pipeline.set_message(message, &quot;Producer&quot;)</span><br><span class="line"></span><br><span class="line">    # Send a sentinel message to tell consumer we&#39;re done</span><br><span class="line">    pipeline.set_message(SENTINEL, &quot;Producer&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>要生成模拟信息，<code>producer</code>中会生成一个介于1和101（不含101）之间的随机整数，然后调用<code>pipeline</code>的<code>.set_message()</code>，将其发送到<code>consumer</code>。</p>
+<p><code>producer</code>还使用<code>SENTINEL</code>值作为标记，当向<code>consumer</code>发送了10个值，就停止发送。这有点尴尬，但不要担心，在完成这个示例之后，你将看到消除这个<code>SENTINEL</code>值的方法。</p>
+<p>在<code>pipeline</code>的另一边是消费者：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def consumer(pipeline):</span><br><span class="line">    &quot;&quot;&quot;Pretend we&#39;re saving a number in the database.&quot;&quot;&quot;</span><br><span class="line">    message &#x3D; 0</span><br><span class="line">    while message is not SENTINEL:</span><br><span class="line">        message &#x3D; pipeline.get_message(&quot;Consumer&quot;)</span><br><span class="line">        if message is not SENTINEL:</span><br><span class="line">            logging.info(&quot;Consumer storing message: %s&quot;, message)</span><br></pre></td></tr></table></figure>
+
+<p><code>consumer</code>从<code>pipeline</code>中读取一条信息并将其写入一个虚拟数据库，在本例中，只是将信息打印到显示器上。如果它得到<code>SENTINEL</code>值，就结束函数执行过程，该函数将终止线程。</p>
+<p>在看真正有趣<code>Pipeline</code>部分之前，这里是<code>__main__</code>的代码，它产生了以下线程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    format &#x3D; &quot;%(asctime)s: %(message)s&quot;</span><br><span class="line">    logging.basicConfig(format&#x3D;format, level&#x3D;logging.INFO,</span><br><span class="line">                        datefmt&#x3D;&quot;%H:%M:%S&quot;)</span><br><span class="line">    # logging.getLogger().setLevel(logging.DEBUG)</span><br><span class="line"></span><br><span class="line">    pipeline &#x3D; Pipeline()</span><br><span class="line">    with concurrent.futures.ThreadPoolExecutor(max_workers&#x3D;2) as executor:</span><br><span class="line">        executor.submit(producer, pipeline)</span><br><span class="line">        executor.submit(consumer, pipeline)</span><br></pre></td></tr></table></figure>
+
+<p>这看起来应该相当熟悉，因为它接近前面示例中的<code>__main__</code>代码。</p>
+<p>请记住，你可以通过取消注释行打开<code>DEBUG</code>日志记录，以查看所有日志记录消息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># logging.getLogger().setLevel(logging.DEBUG)</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>DEBUG</code>日志信息来查看每个线程获取和释放锁的确切位置是值得的。</p>
+<p>现在让我们看看将信息从<code>producer</code>传递给消费者的管道：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class Pipeline:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Class to allow a single element pipeline between producer and consumer.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.message &#x3D; 0</span><br><span class="line">        self.producer_lock &#x3D; threading.Lock()</span><br><span class="line">        self.consumer_lock &#x3D; threading.Lock()</span><br><span class="line">        self.consumer_lock.acquire()</span><br><span class="line"></span><br><span class="line">    def get_message(self, name):</span><br><span class="line">        logging.debug(&quot;%s:about to acquire getlock&quot;, name)</span><br><span class="line">        self.consumer_lock.acquire()</span><br><span class="line">        logging.debug(&quot;%s:have getlock&quot;, name)</span><br><span class="line">        message &#x3D; self.message</span><br><span class="line">        logging.debug(&quot;%s:about to release setlock&quot;, name)</span><br><span class="line">        self.producer_lock.release()</span><br><span class="line">        logging.debug(&quot;%s:setlock released&quot;, name)</span><br><span class="line">        return message</span><br><span class="line"></span><br><span class="line">    def set_message(self, message, name):</span><br><span class="line">        logging.debug(&quot;%s:about to acquire setlock&quot;, name)</span><br><span class="line">        self.producer_lock.acquire()</span><br><span class="line">        logging.debug(&quot;%s:have setlock&quot;, name)</span><br><span class="line">        self.message &#x3D; message</span><br><span class="line">        logging.debug(&quot;%s:about to release getlock&quot;, name)</span><br><span class="line">        self.consumer_lock.release()</span><br><span class="line">        logging.debug(&quot;%s:getlock released&quot;, name)</span><br></pre></td></tr></table></figure>
+
+<p>哇！这么多代码。其中相当大的一部分只是日志语句，以便在运行代码时更容易看到发生了什么。下面是删除所有日志记录语句后的相同代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Pipeline:</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Class to allow a single element pipeline between producer and consumer.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.message &#x3D; 0</span><br><span class="line">        self.producer_lock &#x3D; threading.Lock()</span><br><span class="line">        self.consumer_lock &#x3D; threading.Lock()</span><br><span class="line">        self.consumer_lock.acquire()</span><br><span class="line"></span><br><span class="line">    def get_message(self, name):</span><br><span class="line">        self.consumer_lock.acquire()</span><br><span class="line">        message &#x3D; self.message</span><br><span class="line">        self.producer_lock.release()</span><br><span class="line">        return message</span><br><span class="line"></span><br><span class="line">    def set_message(self, message, name):</span><br><span class="line">        self.producer_lock.acquire()</span><br><span class="line">        self.message &#x3D; message</span><br><span class="line">        self.consumer_lock.release()</span><br></pre></td></tr></table></figure>
+
+<p>这似乎更容易处理。此版本代码中的<code>Pipeline</code>有三个成员：</p>
+<ul>
+<li><code>.message</code>存储要传递的信息。</li>
+<li><code>.producer_lock</code>是<code>threading.Lock</code>实例对象，在<code>producer</code>线程中，用它控制对信息的访问</li>
+<li><code>.consumer_lock</code>也是<code>threading.Lock</code>实例对象，它在<code>consumer</code>线程控制对信息的访问。</li>
+</ul>
+<p><code>__init__()</code>初始化这三个成员，然后调用<code>.consumer_lock</code>上的<code>.acquire()</code>。这是你想开始的状态。允许<code>producer</code>添加新信息，但<code>consumer</code>需要等待信息出现。</p>
+<p><code>.get_message()</code> 和 <code>.set_messages()</code>几乎相反。<code>.get_message()</code>调用<code>consumer_lock</code>上的<code>.acquire()</code>，它让<code>consumer</code>等待信息准备就绪。</p>
+<p>一旦<code>consumer</code>获得了<code>.consumer_lock</code>，它就会复制出<code>.message</code>中的值，然后调用<code>.producer_lock</code>上的<code>.release()</code>，释放锁，允许<code>producer</code>将下一条信息插入到<code>pipeline</code>中。</p>
+<p>在运行<code>.set_message()</code>之前，要注意<code>.get_message()</code>中的一个细节，通常以<code>return self.message</code>结束方法，但是此处不这样做，看看你能否弄清楚原因。</p>
+<p>答案在此。一旦<code>consumer</code>调用<code>.producer_lock.release()</code>，它就会与<code>producer</code>交换位置，<code>producer</code>开始运行，这种情况可能在<code>.release()</code>返回之前发生！这意味着，当函数<code>returns self.message</code>时，有比较小的概率会生成下一条信息，因此你将丢失第一条信息。这是另一个竞态的例子。</p>
+<p>转到<code>.set_message()</code>，可以看到事务的另一面，<code>producer</code>会用一条信息来调用它，获取<code>.producer_lock</code>，设置<code>.message</code>，然后调用<code>consumer_lock</code>上的<code>.release()</code>。这样就使得用户可以读取该值。</p>
+<p>将日志设置为<code>WARNING</code>并执行代码，看看它是什么样子的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;prodcom_lock.py</span><br><span class="line">Producer got data 43</span><br><span class="line">Producer got data 45</span><br><span class="line">Consumer storing data: 43</span><br><span class="line">Producer got data 86</span><br><span class="line">Consumer storing data: 45</span><br><span class="line">Producer got data 40</span><br><span class="line">Consumer storing data: 86</span><br><span class="line">Producer got data 62</span><br><span class="line">Consumer storing data: 40</span><br><span class="line">Producer got data 15</span><br><span class="line">Consumer storing data: 62</span><br><span class="line">Producer got data 16</span><br><span class="line">Consumer storing data: 15</span><br><span class="line">Producer got data 61</span><br><span class="line">Consumer storing data: 16</span><br><span class="line">Producer got data 73</span><br><span class="line">Consumer storing data: 61</span><br><span class="line">Producer got data 22</span><br><span class="line">Consumer storing data: 73</span><br><span class="line">Consumer storing data: 22</span><br></pre></td></tr></table></figure>
+
+<p>一开始，你可能会发现奇怪的是，<code>producer</code>在<code>consumer</code>运行之前就收到两条信息。如果回顾一下<code>producer</code>和<code>.set_message()</code>，你会注意到，当<code>producer</code>视图将信息发送到<code>pipeline</code>时，会等待<code>Lock</code>。这是在<code>producer</code>收到信息和日志之后完成的。</p>
+<p>当<code>producer</code>尝试发送第二条信息时，它将第二次调用<code>.set_message()</code>，并且它将被锁定。</p>
+<p>操作系统可以在任何时候交换线程，但它通常会让每个线程在交换之前有一个合理的运行时间。这就是为什么<code>producer</code>通常运行到它在第二次调用<code>.set_message()</code>时被锁定为止。</p>
+<p>但是，一旦某个线程被锁定，操作系统就会将其交换出去，并找到另一个要运行的线程，此时的另一个线程就是<code>consumer</code>。</p>
+<p><code>consumer</code>调用<code>.get_message()</code>，该函数读取信息并调用<code>.producer_lock</code>上的<code>.release()</code>，从而允许<code>producer</code>在下次交换线程时再次运行。</p>
+<p>注意，第一条消息是43，这正是<code>consumer</code>读的内容，尽管 <code>producer</code>已经生成了45这条信息。</p>
+<p>以上是有限的测试，并没有很好地解决PCP，因为它一次只允许管道中的有一个值。当<code>producer</code>收到大量信息时，它将无处安放这些信息。</p>
+<p>让我们使用<code>Queue</code>寻找一个更好的方法来解决这个问题。</p>
+<p>（<strong>未完待续</strong>）</p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/18/how-programming-run/">
+        <span class="nav-arrow">← </span>
+        
+          程序是怎么跑起来的
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第三部分"><span class="toc-nav-text">第三部分</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#生产者-消费者线程"><span class="toc-nav-text">生产者-消费者线程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用锁的PCP"><span class="toc-nav-text">使用锁的PCP</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/02/18/python-thread-three/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
