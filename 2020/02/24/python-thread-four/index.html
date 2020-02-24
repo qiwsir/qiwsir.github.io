@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      线程：概念和实现（4） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>线程：概念和实现（4）</h2>
+    <p class="post-date">2020-02-24</p>
+    <section class="markdown-content"><p>翻译：老齐</p>
+<p>译者注：与本文相关图书推荐：《Python大学实用教程》《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<hr>
+<h1 id="第四部分"><a href="#第四部分" class="headerlink" title="第四部分"></a>第四部分</h1><h3 id="将队列应用于PCP"><a href="#将队列应用于PCP" class="headerlink" title="将队列应用于PCP"></a>将队列应用于PCP</h3><p>如果你希望一次能够处理管道中的多个值，就需要一种针对管道的数据结构，它相当于<code>producer</code>的备份，能实现数量增加和减少。</p>
+<p>Python标准库有一个<code>queue</code>模块，该模块有一个<code>Queue</code> 类，下面将<code>Pipeline</code>改为<code>Queue</code>，就可以不再使用<code>Lock</code>锁定某些变量，此外，还将使用Python的<code>threading</code>模块中的<code>Event</code>来停止工作线程，这是一种与以往不同的方法。</p>
+<p>从<code>Event</code>开始。当有很多线程等待<code>threading.Event</code>实例的时候，它能够将一个线程标记为一个事件。这段代码的关键是，等待事件的线程不一定需要停止它们正在做的事情，它们可以每隔一段时间检查一次<code>Event</code>的状态。</p>
+<p>很多事情都可以触发<code>event</code>。在本例中，主线程将简单地休眠一段时间，然后运行<code>.set()</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    format &#x3D; &quot;%(asctime)s: %(message)s&quot;</span><br><span class="line">    logging.basicConfig(format&#x3D;format, level&#x3D;logging.INFO,</span><br><span class="line">                        datefmt&#x3D;&quot;%H:%M:%S&quot;)</span><br><span class="line">    # logging.getLogger().setLevel(logging.DEBUG)</span><br><span class="line">    pipeline &#x3D; Pipeline()</span><br><span class="line">    event &#x3D; threading.Event()</span><br><span class="line">    with concurrent.futures.ThreadPoolExecutor(max_workers&#x3D;2) as executor:</span><br><span class="line">        executor.submit(producer, pipeline, event)</span><br><span class="line">        executor.submit(consumer, pipeline, event)</span><br><span class="line">        time.sleep(0.1)</span><br><span class="line">        logging.info(&quot;Main: about to set event&quot;)</span><br><span class="line">        event.set()</span><br></pre></td></tr></table></figure>
+
+<p>这里唯一的变化是创建了<code>event</code>对象，然后将<code>event</code>作为参数传给后面的<code>.submit</code>方法，在with语句中，有一句要sleep一秒钟，再记录日志信息，最后调用<code>event.set()</code>。</p>
+<p><code>producer</code>也不需要改变太多:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def producer(pipeline, event):</span><br><span class="line">    &quot;&quot;&quot;Pretend we&#39;re getting a number from the network.&quot;&quot;&quot;</span><br><span class="line">    while not event.is_set():</span><br><span class="line">        message &#x3D; random.randint(1, 101)</span><br><span class="line">        logging.info(&quot;Producer got message: %s&quot;, message)</span><br><span class="line">        pipeline.set_message(message, &quot;Producer&quot;)</span><br><span class="line">    logging.info(&quot;Producer received EXIT event. Exiting&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><code>while</code>循环中不再为<code>pipeline</code>设置<code>SENTINEL</code>值。<code>consumer</code>需要相应做较大改动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def consumer(pipeline, event):</span><br><span class="line">    &quot;&quot;&quot;Pretend we&#39;re saving a number in the database.&quot;&quot;&quot;</span><br><span class="line">    while not event.is_set() or not pipeline.empty():</span><br><span class="line">        message &#x3D; pipeline.get_message(&quot;Consumer&quot;)</span><br><span class="line">        logging.info(</span><br><span class="line">            &quot;Consumer storing message: %s (queue size&#x3D;%s)&quot;,</span><br><span class="line">            message,</span><br><span class="line">            pipeline.qsize(),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    logging.info(&quot;Consumer received EXIT event. Exiting&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>必须删除<code>SENTINEL</code>值相关的代码，<code>while</code>循环的条件也因此更复杂了一些，现在需要考虑<code>not event.is_set()</code>和<code>not pipeline.empty()</code>两个条件，也就是未设置<code>event</code>，或者<code>pipeline</code>未清空时。</p>
+<p>要确保在<code>consumer</code>进程结束是队列中已经是空的了，否则就会出现以下两种糟糕的情况。一是丢失了这些最终消息，但更严重的情况是第二种，<code>producer</code>如果视图将信息添加到完整队列中，会被锁住，从而不能返回。这种事件会发生在<code>producer</code>验证<code>.is_set()</code>条件之后，调用<code>pipeline.set_message()</code>之前。</p>
+<p>这种事件会发生在<code>producer</code>验证<code>.is_set()</code>条件之后，调用<code>pipeline.set_message()</code>之前。</p>
+<p>如果发生这种情况，<code>producer</code>可能会在队列仍然全满的情况下唤醒并退出。然后，调用<code>.set_message()</code>，<code>.set_message()</code>将一直等到队列中有新信息的空间。若<code>consumer</code>已经退出，这种情况就不会发生，而且<code>producer</code>不会退出。</p>
+<p><code>consumer</code>中的其他部分看起来应该很熟悉。</p>
+<p>然而，<code>Pipeline</code>还需要重写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Pipeline(queue.Queue):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        super().__init__(maxsize&#x3D;10)</span><br><span class="line"></span><br><span class="line">    def get_message(self, name):</span><br><span class="line">        logging.debug(&quot;%s:about to get from queue&quot;, name)</span><br><span class="line">        value &#x3D; self.get()</span><br><span class="line">        logging.debug(&quot;%s:got %d from queue&quot;, name, value)</span><br><span class="line">        return value</span><br><span class="line"></span><br><span class="line">    def set_message(self, value, name):</span><br><span class="line">        logging.debug(&quot;%s:about to add %d to queue&quot;, name, value)</span><br><span class="line">        self.put(value)</span><br><span class="line">        logging.debug(&quot;%s:added %d to queue&quot;, name, value)</span><br></pre></td></tr></table></figure>
+
+<p>上面的<code>Pipeline</code>是<code>queue.Queue</code>的子类。<code>Queue</code> 在初始化时指定一个可选参数，以指定队列的最大长度。</p>
+<p>如果为<code>maxsize</code>指定一个正数，则该数字为队列元素个数的极限，如果达到该值，<code>.put()</code>方法被锁定，直到元素的数量少于<code>maxsize</code>才解锁。如果不指定<code>maxsize</code>，则队列将增长到计算机内存的所许可的最值。</p>
+<p><code>.get_message()</code>和<code>.set_message()</code>两个方法代码更少了，它们基本上把<code>.get()</code>和<code>.put()</code>封装在<code>Queue</code>中。你可能想知道防止线程发生竞态条件的锁都去了哪里。</p>
+<p>编写标准库的核心开发人员知道，<code>Queue</code>经常在多线程环境中使用，于是将锁合并到<code>Queue</code>本身中。<code>Queue</code>对于线程来说是安全的。</p>
+<p>此程序的运行如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;prodcom_queue.py</span><br><span class="line">Producer got message: 32</span><br><span class="line">Producer got message: 51</span><br><span class="line">Producer got message: 25</span><br><span class="line">Producer got message: 94</span><br><span class="line">Producer got message: 29</span><br><span class="line">Consumer storing message: 32 (queue size&#x3D;3)</span><br><span class="line">Producer got message: 96</span><br><span class="line">Consumer storing message: 51 (queue size&#x3D;3)</span><br><span class="line">Producer got message: 6</span><br><span class="line">Consumer storing message: 25 (queue size&#x3D;3)</span><br><span class="line">Producer got message: 31</span><br><span class="line"></span><br><span class="line">[many lines deleted]</span><br><span class="line"></span><br><span class="line">Producer got message: 80</span><br><span class="line">Consumer storing message: 94 (queue size&#x3D;6)</span><br><span class="line">Producer got message: 33</span><br><span class="line">Consumer storing message: 20 (queue size&#x3D;6)</span><br><span class="line">Producer got message: 48</span><br><span class="line">Consumer storing message: 31 (queue size&#x3D;6)</span><br><span class="line">Producer got message: 52</span><br><span class="line">Consumer storing message: 98 (queue size&#x3D;6)</span><br><span class="line">Main: about to set event</span><br><span class="line">Producer got message: 13</span><br><span class="line">Consumer storing message: 59 (queue size&#x3D;6)</span><br><span class="line">Producer received EXIT event. Exiting</span><br><span class="line">Consumer storing message: 75 (queue size&#x3D;6)</span><br><span class="line">Consumer storing message: 97 (queue size&#x3D;5)</span><br><span class="line">Consumer storing message: 80 (queue size&#x3D;4)</span><br><span class="line">Consumer storing message: 33 (queue size&#x3D;3)</span><br><span class="line">Consumer storing message: 48 (queue size&#x3D;2)</span><br><span class="line">Consumer storing message: 52 (queue size&#x3D;1)</span><br><span class="line">Consumer storing message: 13 (queue size&#x3D;0)</span><br><span class="line">Consumer received EXIT event. Exiting</span><br></pre></td></tr></table></figure>
+
+<p>通读上述示例的输出，会发现，有的地方很有意思。在顶部，你可以看到<code>producer</code>必须创建5条信息并将其中4条放在队列中，队列中最前面的一条被操作系统换掉之后，第5条条信息才能加入队列。</p>
+<p>然后<code>consumer</code>运行，把第1条信息拉了出来，它打印出了该信息以及队列在此时的长度：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Consumer storing message: 32 (queue size&#x3D;3)</span><br></pre></td></tr></table></figure>
+
+<p>此时，标明第5条信息还没有进入<code>pipeline</code> ，删除单个信息后<code>queue</code>的减小到3。你也知道<code>queue</code>可以保存10条消息，因此<code>queue</code>线程不会被<code>queue</code>阻塞，它被操作系统置换了。</p>
+<p>注意：你调试的输出结果会有所不同。你的输出将随着运行次数的不同而改变。这就是用线程工作的乐趣所在！</p>
+<p>执行代码，你能看到主线程生成event事件，这会导致<code>producer</code>立即退出，<code>consumer</code>还有很多工作要做，所以它会一直运行，直到清理完<code>pipeline</code>。</p>
+<p>尝试操作大小不同的队列，并调用<code>producer</code>或<code>consumer</code>中的<code>time.sleep()</code>，以分别模拟更长的网络或磁盘访问时间。即使对程序的这些内容稍加更改，也会使结果产生很大差异。</p>
+<p>这是解决发PCP的一个好方法，但是你可以进一步简化它，不需要使用<code>Pipeline</code>，一旦去掉日志记录，它就会变成一个<code>queue.Queue</code>。</p>
+<p>下面是直接使用<code>queue.Queue</code>的最终代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">import concurrent.futures</span><br><span class="line">import logging</span><br><span class="line">import queue</span><br><span class="line">import random</span><br><span class="line">import threading</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">def producer(queue, event):</span><br><span class="line">    &quot;&quot;&quot;Pretend we&#39;re getting a number from the network.&quot;&quot;&quot;</span><br><span class="line">    while not event.is_set():</span><br><span class="line">        message &#x3D; random.randint(1, 101)</span><br><span class="line">        logging.info(&quot;Producer got message: %s&quot;, message)</span><br><span class="line">        queue.put(message)</span><br><span class="line"></span><br><span class="line">    logging.info(&quot;Producer received event. Exiting&quot;)</span><br><span class="line"></span><br><span class="line">def consumer(queue, event):</span><br><span class="line">    &quot;&quot;&quot;Pretend we&#39;re saving a number in the database.&quot;&quot;&quot;</span><br><span class="line">    while not event.is_set() or not queue.empty():</span><br><span class="line">        message &#x3D; queue.get()</span><br><span class="line">        logging.info(</span><br><span class="line">            &quot;Consumer storing message: %s (size&#x3D;%d)&quot;, message, queue.qsize()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    logging.info(&quot;Consumer received event. Exiting&quot;)</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    format &#x3D; &quot;%(asctime)s: %(message)s&quot;</span><br><span class="line">    logging.basicConfig(format&#x3D;format, level&#x3D;logging.INFO,</span><br><span class="line">                        datefmt&#x3D;&quot;%H:%M:%S&quot;)</span><br><span class="line"></span><br><span class="line">    pipeline &#x3D; queue.Queue(maxsize&#x3D;10)</span><br><span class="line">    event &#x3D; threading.Event()</span><br><span class="line">    with concurrent.futures.ThreadPoolExecutor(max_workers&#x3D;2) as executor:</span><br><span class="line">        executor.submit(producer, pipeline, event)</span><br><span class="line">        executor.submit(consumer, pipeline, event)</span><br><span class="line"></span><br><span class="line">        time.sleep(0.1)</span><br><span class="line">        logging.info(&quot;Main: about to set event&quot;)</span><br><span class="line">        event.set()</span><br></pre></td></tr></table></figure>
+
+<p>这更易于阅读，并展示了如何使用Python的内置模块来简化复杂的问题。</p>
+<p><code>Lock</code> 和 <code>Queue</code>是便于解决并发问题的类，但标准库还提供了其他类。在结束本文之前，让我们浏览其中一些类。</p>
+<h2 id="Threading"><a href="#Threading" class="headerlink" title="Threading"></a>Threading</h2><p>Python的<code>threading</code>模块还提供了一些类，虽然上面的示例不需要这些，但是它们在不同的用例中可以派上用场，所以熟悉它们是有好处的。</p>
+<h3 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h3><p><code>threading.Semaphore</code>有一些特殊属性的计数器对象，这里实现的计数具有原子性，意味着可以保证操作系统不会在递增或递减计数器的过程中交换线程。</p>
+<p>内部计数器在调用<code>.release()</code>时递增，在调用<code>.acquire()</code>时递减。</p>
+<p>另外一个特殊属性，如果一个线程在计数器为零时调用<code>.acquire()</code>，则该线程将被锁定，直到另一个线程调用<code>.release()</code>，并将计数器增加到1。</p>
+<p><code>Semaphores</code>通常用于保护容量有限的资源。例如，如果你有一个连接池，并且希望将该池的大小限制为特定的数目。</p>
+<h3 id="Timer"><a href="#Timer" class="headerlink" title="Timer"></a>Timer</h3><p><code>threading.Timer</code>用于在经过一定时间后调度要调用的函数，你可以通过传入等待的秒数和调用的函数来创建<code>Timer</code>实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">t &#x3D; threading.Timer(30.0, my_function)</span><br></pre></td></tr></table></figure>
+
+<p>通过调用<code>.start()</code>启动<code>Timer</code>。在指定时间之后的某个时间点，将在新线程上调用该函数。但请注意，无法保证会在你希望的时间准确调用该函数。</p>
+<p>如果要停止已经启动的<code>Timer</code>，可以调用<code>.cancel()</code>。如果在<code>Timer</code>触发后调用<code>.cancel()</code>，不会执行任何操作，也不会产生异常。</p>
+<p><code>Timer</code>可用于在特定时间后提示用户执行操作。如果用户在<code>Timer</code>过期之前执行操作，则可以调用<code>.cancel()</code>。</p>
+<h3 id="Barrier"><a href="#Barrier" class="headerlink" title="Barrier"></a>Barrier</h3><p><code>threading.Barrier</code>可用于保持固定数量的线程同步。创建<code>Barrier</code>时，调用方必须指定将要同步的线程数。每个线程都调用<code>Barrier</code>的<code>.wait()</code>方法，它们都将保持封锁状态，直到指定数量的线程在等待，然后全部同时释放。</p>
+<p>请记住：线程是由操作系统调度的，因此，即使所有线程都是同时释放的，它们也将被调度为一次运行一个线程。</p>
+<p><code>Barrier</code>的一个用途是允许线程池对自身进行初始化。让这些线程初始化后在<code>Barrier</code>上等待，将确保在所有线程完成初始化之前，没有一个线程开始运行。</p>
+<h2 id="结论：Python中的线程"><a href="#结论：Python中的线程" class="headerlink" title="结论：Python中的线程"></a>结论：Python中的线程</h2><p>现在你已经了解了Python的<code>threading</code>提供的许多功能，以及一些如何写线程程序和用线程程序解决问题的示例。你还看到了在编写和调试线程程序时出现的一些问题。</p>
+<p>原文链接：<a href="https://realpython.com/intro-to-python-threading/" target="_blank" rel="noopener">https://realpython.com/intro-to-python-threading/</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#线程 Python" >
+    <span class="tag-code">线程 Python</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/22/data-and-feature01-2/">
+        <span class="nav-arrow">← </span>
+        
+          【公开课】数据准备和特征工程：01-2文件中的数据
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第四部分"><span class="toc-nav-text">第四部分</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#将队列应用于PCP"><span class="toc-nav-text">将队列应用于PCP</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Threading"><span class="toc-nav-text">Threading</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Semaphore"><span class="toc-nav-text">Semaphore</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Timer"><span class="toc-nav-text">Timer</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Barrier"><span class="toc-nav-text">Barrier</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论：Python中的线程"><span class="toc-nav-text">结论：Python中的线程</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/02/24/python-thread-four/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
