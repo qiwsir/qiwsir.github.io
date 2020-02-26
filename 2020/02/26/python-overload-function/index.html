@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python如何实现重载函数 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python如何实现重载函数</h2>
+    <p class="post-date">2020-02-26</p>
+    <section class="markdown-content"><p>作者：Arpit</p>
+<p>翻译：老齐</p>
+<hr>
+<p>重载函数，即多个函数具有相同的名称，但功能不同。例如一个重载函数<code>fn</code>，调用它的时候，要根据传给函数的参数判断调用哪个函数，并且执行相应的功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int area(int length, int breadth) &#123;</span><br><span class="line">  return length * breadth;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">float area(int radius) &#123;</span><br><span class="line">  return 3.14 * radius * radius;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上例是用C++写的代码，函数<code>area</code>就是有两个不同功能的重载函数，一个是根据参数length和breadth计算矩形的面积，另一个是根据参数radius（圆的半径）计算圆的面积。如果用<code>area(7)</code>的方式调用函数<code>area</code>，就会实现第二个函数功能，当<code>area(3, 4)</code>时调用的是第一个函数。</p>
+<h2 id="为什么Python中没有重载函数"><a href="#为什么Python中没有重载函数" class="headerlink" title="为什么Python中没有重载函数"></a>为什么Python中没有重载函数</h2><p>Python中本没有重载函数，如果我们在同一命名空间中定义的多个函数是同名的，最后一个将覆盖前面的各函数，也就是函数的名称只能是唯一的。通过执行<code>locals()</code>和<code>globals()</code>两个函数，就能看到该命名空间中已经存在的函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def area(radius):</span><br><span class="line">  return 3.14 * radius ** 2</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; locals()</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  &#39;area&#39;: &lt;function area at 0x10476a440&gt;,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义了一个函数之后，执行<code>locals()</code>函数，返回了一个字典，其中是本地命名空间中所定义所有变量，键是变量，值则是它的引用。如果有另外一个同名函数，就会将本地命名空间的内容进行更新，不会有两个同名函数共存。所以，Python不支持重载函数，这是发明这个语言的设计理念，但是这并不能阻挡我们不能实现重载函数。下面就做一个试试。</p>
+<h2 id="在Python中实现重载函数"><a href="#在Python中实现重载函数" class="headerlink" title="在Python中实现重载函数"></a>在Python中实现重载函数</h2><p>我们应该知道Python怎么管理命名空间，如果我们要实现重载函数，必须：</p>
+<ul>
+<li>在稳定的虚拟命名空间管理所定义的函数</li>
+<li>根据参数调用合适的函数</li>
+</ul>
+<p>为了简化问题，我们将实现具有相同名称的重载函数，它们的区别就是参数的个数。</p>
+<h2 id="封装函数"><a href="#封装函数" class="headerlink" title="封装函数"></a>封装函数</h2><p>创建一个名为<code>Function</code>的类，并重写实现调用的<code>__call__</code>方法，再写一个名为<code>key</code>的方法，它会返回一个元组，这样让就使得此方法区别于其他方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">from inspect import getfullargspec</span><br><span class="line"></span><br><span class="line">class Function:</span><br><span class="line">  &quot;&quot;&quot;Function is a wrap over standard python function.</span><br><span class="line">  &quot;&quot;&quot;</span><br><span class="line">  def __init__(self, fn):</span><br><span class="line">    self.fn &#x3D; fn</span><br><span class="line"></span><br><span class="line">  def __call__(self, *args, **kwargs):</span><br><span class="line">    &quot;&quot;&quot;when invoked like a function it internally invokes</span><br><span class="line">    the wrapped function and returns the returned value.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    return self.fn(*args, **kwargs)</span><br><span class="line"></span><br><span class="line">  def key(self, args&#x3D;None):</span><br><span class="line">    &quot;&quot;&quot;Returns the key that will uniquely identify</span><br><span class="line">    a function (even when it is overloaded).</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # if args not specified, extract the arguments from the</span><br><span class="line">    # function definition</span><br><span class="line">    if args is None:</span><br><span class="line">      args &#x3D; getfullargspec(self.fn).args</span><br><span class="line"></span><br><span class="line">    return tuple([</span><br><span class="line">      self.fn.__module__,</span><br><span class="line">      self.fn.__class__,</span><br><span class="line">      self.fn.__name__,</span><br><span class="line">      len(args or []),</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码片段中，<code>key</code>方法返回了一个元组，其中的元素包括：</p>
+<ul>
+<li>函数所属的模块</li>
+<li>函数所属的类</li>
+<li>函数名称</li>
+<li>函数的参数长度</li>
+</ul>
+<p>在重写的<code>__call__</code>方法中调用作为参数的函数，并返回计算结果。这样，实例就如同函数一样调用，它的表现效果与作为参数的函数一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def area(l, b):</span><br><span class="line">  return l * b</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; func &#x3D; Function(area)</span><br><span class="line">&gt;&gt;&gt; func.key()</span><br><span class="line">(&#39;__main__&#39;, &lt;class &#39;function&#39;&gt;, &#39;area&#39;, 2)</span><br><span class="line">&gt;&gt;&gt; func(3, 4)</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+
+<p>在上面的举例中，函数<code>area</code>作为<code>Function</code>实例化的参数，<code>key()</code>返回的元组中，第一个元素是模块的名称<code>__main__</code>，第二个是类<code>&lt;class &#39;function&#39;&gt;</code>，第三个是函数的名字<code>area</code>，第四个则是此函数的参数个数<code>2</code>。</p>
+<p>从上面的示例中，还可以看出，调用实例<code>func</code>的方式，就和调用<code>area</code>函数一样，提供参数<code>3</code>和<code>4</code>，就返回<code>12</code>，前面调用<code>area(3, 4)</code>也是同样结果。这种方式，会在后面使用装饰器的时候很有用。</p>
+<h2 id="构建虚拟命名空间"><a href="#构建虚拟命名空间" class="headerlink" title="构建虚拟命名空间"></a>构建虚拟命名空间</h2><p>我们所构建的虚拟命名空间，会保存所定义的所有函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">class Namespace(object):</span><br><span class="line">  &quot;&quot;&quot;Namespace is the singleton class that is responsible</span><br><span class="line">  for holding all the functions.</span><br><span class="line">  &quot;&quot;&quot;</span><br><span class="line">  __instance &#x3D; None</span><br><span class="line"></span><br><span class="line">  def __init__(self):</span><br><span class="line">    if self.__instance is None:</span><br><span class="line">      self.function_map &#x3D; dict()</span><br><span class="line">      Namespace.__instance &#x3D; self</span><br><span class="line">    else:</span><br><span class="line">      raise Exception(&quot;cannot instantiate a virtual Namespace again&quot;)</span><br><span class="line"></span><br><span class="line">  @staticmethod</span><br><span class="line">  def get_instance():</span><br><span class="line">    if Namespace.__instance is None:</span><br><span class="line">      Namespace()</span><br><span class="line">    return Namespace.__instance</span><br><span class="line"></span><br><span class="line">  def register(self, fn):</span><br><span class="line">    &quot;&quot;&quot;registers the function in the virtual namespace and returns</span><br><span class="line">    an instance of callable Function that wraps the</span><br><span class="line">    function fn.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    func &#x3D; Function(fn)</span><br><span class="line">    self.function_map[func.key()] &#x3D; fn</span><br><span class="line">    return func</span><br></pre></td></tr></table></figure>
+
+<p><code>Namespace</code>类中的方法<code>register</code>以函数<code>fn</code>为参数，在此方法内，利用<code>fn</code>创建了<code>Function</code>类的实例，还将它作为字典的值。那么，方法<code>register</code>的返回值，也是一个可调用对象，其功能与前面封装的<code>fn</code>函数一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def area(l, b):</span><br><span class="line">  return l * b</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; namespace &#x3D; Namespace.get_instance()</span><br><span class="line">&gt;&gt;&gt; func &#x3D; namespace.register(area)</span><br><span class="line">&gt;&gt;&gt; func(3, 4)</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+
+<h2 id="用装饰器做钩子"><a href="#用装饰器做钩子" class="headerlink" title="用装饰器做钩子"></a>用装饰器做钩子</h2><p>我们已经定义了一个虚拟命名空间，并且可以向其中注册一个函数，下面就需要一个钩子，在该函数生命周期内调用它，为此使用Python的装饰器。在Python中，装饰器是一种封装的函数，可以将它加到一个已有函数上，并不需要理解其内部结构。装饰器接受函数<code>fn</code>作为参数，并且返回另外一个函数，在这个函数被调用的时候，可以用<code>args</code>和<code>kwargs</code>为参数，并得到返回值。</p>
+<p>下面是一个简单的封装器示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line"></span><br><span class="line">def my_decorator(fn):</span><br><span class="line">  &quot;&quot;&quot;my_decorator is a custom decorator that wraps any function</span><br><span class="line">  and prints on stdout the time for execution.</span><br><span class="line">  &quot;&quot;&quot;</span><br><span class="line">  def wrapper_function(*args, **kwargs):</span><br><span class="line">    start_time &#x3D; time.time()</span><br><span class="line"></span><br><span class="line">    # invoking the wrapped function and getting the return value.</span><br><span class="line">    value &#x3D; fn(*args, **kwargs)</span><br><span class="line">    print(&quot;the function execution took:&quot;, time.time() - start_time, &quot;seconds&quot;)</span><br><span class="line"></span><br><span class="line">    # returning the value got after invoking the wrapped function</span><br><span class="line">    return value</span><br><span class="line"></span><br><span class="line">  return wrapper_function</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@my_decorator</span><br><span class="line">def area(l, b):</span><br><span class="line">  return l * b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; area(3, 4)</span><br><span class="line">the function execution took: 9.5367431640625e-07 seconds</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，定义了名为<code>my_decorator</code>的装饰器，并用它装饰函数<code>area</code>，在交互模式中调用，打印出<code>area(3,4)</code>的执行时间。</p>
+<p>装饰器<code>my_decorator</code>装饰了一个函数之后，当执行函数的时候，该装饰器函数也每次都要调用，所以，装饰器函数是一个理想的钩子，借助它可以向前述定义的虚拟命名空间中注册函数。下面创建一个名为<code>overload</code>的装饰器，用它在虚拟命名空间注册函数，并返回一个可执行对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def overload(fn):</span><br><span class="line">  &quot;&quot;&quot;overload is the decorator that wraps the function</span><br><span class="line">  and returns a callable object of type Function.</span><br><span class="line">  &quot;&quot;&quot;</span><br><span class="line">  return Namespace.get_instance().register(fn)</span><br></pre></td></tr></table></figure>
+
+<p><code>overload</code>装饰器返回<code>Function</code>实例，作为<code>.register()</code>的命名空间。现在，不论什么时候通过<code>overload</code>调用函数，都会返回<code>.register()</code>，即<code>Function</code>实例，并且，在调用的时候，<code>__call__</code>也会执行。</p>
+<h2 id="从命名空间中查看函数"><a href="#从命名空间中查看函数" class="headerlink" title="从命名空间中查看函数"></a>从命名空间中查看函数</h2><p>除通常的模块类和名称外，消除歧义的范围是函数接受的参数数，因此我们在虚拟命名空间中定义了一个称为<code>get</code>的方法，该方法接受Python命名空间中的函数（将是最后一个同名定义 - 因为我们没有更改 Python 命名空间的默认行为）和调用期间传递的参数（我们的非义化因子），并返回要调用的消除歧义函数。</p>
+<p>此<code>get</code>函数的作用是决定调用函数的实现（如果重载）。获取适合函数的过程非常简单，从函数和参数创建使用<code>key</code>函数的唯一键（在注册时完成），并查看它是否存在于函数注册表中，如果在，就执行获取针对它存储操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def get(self, fn, *args):</span><br><span class="line">  &quot;&quot;&quot;get returns the matching function from the virtual namespace.</span><br><span class="line"></span><br><span class="line">  return None if it did not fund any matching function.</span><br><span class="line">  &quot;&quot;&quot;</span><br><span class="line">  func &#x3D; Function(fn)</span><br><span class="line">  return self.function_map.get(func.key(args&#x3D;args))</span><br></pre></td></tr></table></figure>
+
+<p>在<code>get</code>函数中创建了<code>Function</code>的实例，它可以用<code>key</code>方法得到唯一的键，并且不会在逻辑上重复，然后使用这个键在函数注册表中得到相应的函数。</p>
+<h2 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h2><p>如上所述，每当被<code>overload</code>装饰器装饰的函数被调用时，类<code>Function</code>中的方法<code>__call__</code>也被调用，从而通过命名空间的<code>get</code>函数得到恰当的函数，实现重载函数功能。<code>__call__</code>方法的实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def __call__(self, *args, **kwargs):</span><br><span class="line">  &quot;&quot;&quot;Overriding the __call__ function which makes the</span><br><span class="line">  instance callable.</span><br><span class="line">  &quot;&quot;&quot;</span><br><span class="line">  # fetching the function to be invoked from the virtual namespace</span><br><span class="line">  # through the arguments.</span><br><span class="line">  fn &#x3D; Namespace.get_instance().get(self.fn, *args)</span><br><span class="line">  if not fn:</span><br><span class="line">    raise Exception(&quot;no matching function found.&quot;)</span><br><span class="line"></span><br><span class="line">  # invoking the wrapped function and returning the value.</span><br><span class="line">  return fn(*args, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>这个方法从虚拟命名空间中得到恰当的函数，如果它没有找到，则会发起异常。</p>
+<h2 id="重载函数实现"><a href="#重载函数实现" class="headerlink" title="重载函数实现"></a>重载函数实现</h2><p>将上面的代码规整到一起，定义两个名字都是<code>area</code>的函数，一个计算矩形面积，另一个计算圆的面积，两个函数均用装饰器<code>overload</code>装饰。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@overload</span><br><span class="line">def area(l, b):</span><br><span class="line">  return l * b</span><br><span class="line"></span><br><span class="line">@overload</span><br><span class="line">def area(r):</span><br><span class="line">  import math</span><br><span class="line">  return math.pi * r ** 2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; area(3, 4)</span><br><span class="line">12</span><br><span class="line">&gt;&gt;&gt; area(7)</span><br><span class="line">153.93804002589985</span><br></pre></td></tr></table></figure>
+
+<p>当我们给调用的<code>area</code>传一个参数时，返回圆的面积，两个参数时则计算了矩形面积，这样就实现了重载函数<code>area</code>。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Python不支持函数重载，但通过使用常规的语法，我们找到了它的解决方案。我们使用修饰器和用户维护的命名空间来重载函数，并使用参数数作为消除歧义因素。还可以使用参数的数据类型（在修饰中定义）来消除歧义—— 它允许具有相同参数数但不同类型的函数重载。重载的粒度只受函数<code>getfullargspec</code>和我们的想象力的限制。更整洁、更简洁、更高效的方法也可用于上述构造。</p>
+<p>原文链接：<a href="https://arpitbhayani.me/blogs/function-overloading" target="_blank" rel="noopener">https://arpitbhayani.me/blogs/function-overloading</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#重载函数 python" >
+    <span class="tag-code">重载函数 python</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/25/make-blog-by-django/">
+        <span class="nav-arrow">← </span>
+        
+          【公开课】用Django快速做博客
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么Python中没有重载函数"><span class="toc-nav-text">为什么Python中没有重载函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#在Python中实现重载函数"><span class="toc-nav-text">在Python中实现重载函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#封装函数"><span class="toc-nav-text">封装函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建虚拟命名空间"><span class="toc-nav-text">构建虚拟命名空间</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用装饰器做钩子"><span class="toc-nav-text">用装饰器做钩子</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#从命名空间中查看函数"><span class="toc-nav-text">从命名空间中查看函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#调用函数"><span class="toc-nav-text">调用函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重载函数实现"><span class="toc-nav-text">重载函数实现</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/02/26/python-overload-function/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
