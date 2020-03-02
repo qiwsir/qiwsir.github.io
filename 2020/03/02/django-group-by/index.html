@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Django中用SQL实现分组查询 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Django中用SQL实现分组查询</h2>
+    <p class="post-date">2020-03-02</p>
+    <section class="markdown-content"><p>作者：Haki Benita</p>
+<p>翻译：老齐</p>
+<p>与本文有关图书：《跟老齐学Python：Django实战（第二版）》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" alt=""></p>
+<hr>
+<p>聚合在任何类型的ORM中都会引起一些乱七八糟的事情，Django也不例外。虽然在官方文档中已经对ORM中的分组和聚合做了说明，但我还是要从另一个角度来说明如何解决这个问题。</p>
+<p>在本文中，我将QuerySets和SQL放在一起。如果SQL令你最舒服，那么这就是适合你的Django分组资料。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>为了演示不同的GROUP BY，我将使用Django内置的django.contrib.auth中的模型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from django.contrib.auth.models import User</span><br></pre></td></tr></table></figure>
+
+<p>Django ORM生成的SQL语句具有很长的别名。为了简洁起见，我将演示一种简化但等效的执行过程。</p>
+<h2 id="统计行数"><a href="#统计行数" class="headerlink" title="统计行数"></a>统计行数</h2><p>让我们统计一下我们有多少用户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    COUNT(*)</span><br><span class="line">FROM</span><br><span class="line">    auth_user;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User.objects.count()</span><br></pre></td></tr></table></figure>
+
+<p>行的统计查询是如此常见，以至于Django的QuerySet包含了一个函数，与我们接下来将看到的其他QuerySets不同，<code>count</code>返回一个数字。</p>
+<h2 id="如何使用aggregate函数"><a href="#如何使用aggregate函数" class="headerlink" title="如何使用aggregate函数"></a>如何使用<code>aggregate</code>函数</h2><p>Django还提供了另外两种统计查询方法，首先来看看<code>aggregate</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    COUNT(id) AS id__count</span><br><span class="line">FROM</span><br><span class="line">    auth_user;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from django.db.models import Count</span><br><span class="line"></span><br><span class="line">User.objects.aggregate(Count(&#39;id&#39;))</span><br></pre></td></tr></table></figure>
+
+<p>为了使用<code>aggregate</code>，我们导入了<code>Count</code>函数，<code>aggregate</code>以另外一个实现统计查询的表达式为参数，在本例中，我们使用主键<code>id</code>来查询数据库表中的行的数量。</p>
+<p><code>aggregate</code>的结果是一个字典对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from django.db.models import Count</span><br><span class="line">&gt;&gt;&gt; User.objects.aggregate(Count(&#39;id&#39;))</span><br><span class="line">&#123;&quot;id__count&quot;: 891&#125;</span><br></pre></td></tr></table></figure>
+
+<p>键的名称是从字段的名称和查询函数的名称派生的，在本例中，键名是<code>id__count</code>。我们最好不要使用这样的命名方式，而是要自己设定名称：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    COUNT(id) as total</span><br><span class="line">FROM</span><br><span class="line">    auth_user;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from django.db.models import Count</span><br><span class="line">&gt;&gt;&gt; User.objects.aggregate(total&#x3D;Count(&#39;id&#39;))</span><br><span class="line">&#123;&quot;total&quot;: 891&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>aggregate</code>参数的名称，就是返回值字典的键。</p>
+<h2 id="如何实现Group-By"><a href="#如何实现Group-By" class="headerlink" title="如何实现Group By"></a>如何实现Group By</h2><p>使用<code>aggregate</code>，我们得到数据表进行聚合查询结果，这很有用，但我们还希望对指定的行应用此操作。</p>
+<p>让我们根据用户的活动状态来统计用户数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    is_active,</span><br><span class="line">    COUNT(id) AS total</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    is_active</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.values(&#39;is_active&#39;)</span><br><span class="line">.annotate(total&#x3D;Count(&#39;id&#39;)))</span><br></pre></td></tr></table></figure>
+
+<p>这次使用了<code>annotate</code>函数。我们使用<code>values</code>和<code>annotate</code>的组合来完成分组查询：</p>
+<ul>
+<li><code>values(&#39;is_active&#39;)</code>：分组依据</li>
+<li><code>annotate(total=Count(&#39;id&#39;))</code>：要查询的内容</li>
+</ul>
+<p>顺序很重要：如果在<code>annotate</code>之前调用<code>values</code>失败，不会产生查询结果。</p>
+<p>与<code>aggregate</code>一样，<code>annotate</code>的参数名称是QuerySet返回值的键，示例中就是<code>total</code>。</p>
+<h2 id="分组筛选"><a href="#分组筛选" class="headerlink" title="分组筛选"></a>分组筛选</h2><p>若要对筛选查询应用聚合功能，可以在查询的任何位置使用<code>filter</code>，例如，仅按员工用户的活动状态对其进行统计：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ELECT</span><br><span class="line">    is_active,</span><br><span class="line">    COUNT(id) AS total</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">WHERE</span><br><span class="line">    is_staff &#x3D; True</span><br><span class="line">GROUP BY</span><br><span class="line">    is_active</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.values(&#39;is_active&#39;)</span><br><span class="line">.filter(is_staff&#x3D;True)</span><br><span class="line">.annotate(total&#x3D;Count(&#39;id&#39;)))</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何进行分组排序"><a href="#如何进行分组排序" class="headerlink" title="如何进行分组排序"></a>如何进行分组排序</h2><p>与<code>filter</code>类似，要对分组结果排序，可以在查询中使用<code>order_by</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    is_active,</span><br><span class="line">    COUNT(id) AS total</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    is_active</span><br><span class="line">ORDER BY</span><br><span class="line">    is_active,</span><br><span class="line">    total</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.values(&#39;is_active&#39;)</span><br><span class="line">.annotate(total&#x3D;Count(&#39;id&#39;))</span><br><span class="line">.order_by(&#39;is_staff&#39;, &#39;total&#39;))</span><br></pre></td></tr></table></figure>
+
+<p>请注意：你可以按分组的关键词<code>is_active</code>和聚合的关键词<code>total</code>进行排序。</p>
+<h2 id="如何联合聚合查询"><a href="#如何联合聚合查询" class="headerlink" title="如何联合聚合查询"></a>如何联合聚合查询</h2><p>要生成同分组的多个聚合查询，请添加多个annotation：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    is_active,</span><br><span class="line">    COUNT(id) AS total,</span><br><span class="line">    MAX(date_joined) AS last_joined</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    is_active</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from django.db.models import Max</span><br><span class="line"></span><br><span class="line">(User.objects</span><br><span class="line">.values(&#39;is_active&#39;)</span><br><span class="line">.annotate(</span><br><span class="line">    total&#x3D;Count(&#39;id&#39;),</span><br><span class="line">    last_joined&#x3D;Max(&#39;date_joined&#39;),</span><br><span class="line">))</span><br></pre></td></tr></table></figure>
+
+<p>该查询将得到活动用户和非活动用户的数量，以及用户加入每个组的最后日期。</p>
+<h2 id="根据多个字段进行分组"><a href="#根据多个字段进行分组" class="headerlink" title="根据多个字段进行分组"></a>根据多个字段进行分组</h2><p>就像执行多个聚合一样，我们可能也希望根据多个字段进行分组。例如，按活动状态和人员状态分组:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    is_active,</span><br><span class="line">    is_staff,</span><br><span class="line">    COUNT(id) AS total</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    is_active,</span><br><span class="line">    is_staff</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.values(&#39;is_active&#39;, &#39;is_staff&#39;)</span><br><span class="line">.annotate(total&#x3D;Count(&#39;id&#39;)))</span><br></pre></td></tr></table></figure>
+
+<p>此查询的结果包括<code>is_active</code>、<code>is_staff</code>和每个组中的用户数。</p>
+<h2 id="根据表达式分组"><a href="#根据表达式分组" class="headerlink" title="根据表达式分组"></a>根据表达式分组</h2><p>分组的另一个常见用例是按表达式分组。例如，统计每年加入的用户数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    EXTRACT(&#39;year&#39; FROM date_joined),</span><br><span class="line">    COUNT(id) AS total</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    EXTRACT(&#39;year&#39; FROM date_joined)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.values(&#39;date_joined__year&#39;)</span><br><span class="line">.annotate(total&#x3D;Count(&#39;id&#39;)))</span><br></pre></td></tr></table></figure>
+
+<p>注意，为了从日期开始获取年份，我们在第一次调用<code>values()</code>时使用了特殊表达式<code>&lt;field&gt;__year</code>。查询的结果是一个dict，键的名称将是<code>date_joined__year</code>。</p>
+<p>有时，内置表达式不够，需要在更复杂的表达式上进行聚合。例如，按注册后登录的用户分组：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">  last_login &gt; date_joined AS logged_since_joined,</span><br><span class="line">  COUNT(id) AS total</span><br><span class="line">FROM</span><br><span class="line">  auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">  last_login &gt; date_joined</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from django.db.models import (</span><br><span class="line">    ExpressionWrapper,</span><br><span class="line">    Q, F, BooleanField,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">(User.objects</span><br><span class="line">.annotate(</span><br><span class="line">    logged_since_joined&#x3D;ExpressionWrapper(</span><br><span class="line">        Q(last_login__gt&#x3D;F(&#39;date_joined&#39;)),</span><br><span class="line">        output_field&#x3D;BooleanField(),</span><br><span class="line">    )</span><br><span class="line">)</span><br><span class="line">.values(&#39;logged_since_joined&#39;)</span><br><span class="line">.annotate(total&#x3D;Count(&#39;id&#39;))</span><br><span class="line">.values(&#39;logged_since_joined&#39;, &#39;total&#39;)</span><br></pre></td></tr></table></figure>
+
+
+<p>这里的表达式相当复杂。我们首先使用<code>annotate</code>构建表达式，然后在下面对<code>values()</code>的调用中通过引用表达式将其标记为按该关键词分组。后面的代码就跟前述一样了。</p>
+<h2 id="根据条件聚合"><a href="#根据条件聚合" class="headerlink" title="根据条件聚合"></a>根据条件聚合</h2><p>根据条件，只能对组的一部分进行聚合。当有多个聚合时，条件就很有用了。例如，按注册年份统计员工用户和非员工用户的数量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    EXTRACT(&#39;year&#39; FROM date_joined),</span><br><span class="line"></span><br><span class="line">    COUNT(id) FILTER (</span><br><span class="line">        WHERE is_staff &#x3D; True</span><br><span class="line">    ) AS staff_users,</span><br><span class="line"></span><br><span class="line">    COUNT(id) FILTER (</span><br><span class="line">        WHERE is_staff &#x3D; False</span><br><span class="line">    ) AS non_staff_users</span><br><span class="line"></span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    EXTRACT(&#39;year&#39; FROM date_joined)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from django.db.models import F, Q</span><br><span class="line"></span><br><span class="line">(User.objects</span><br><span class="line">.values(&#39;date_joined__year&#39;)</span><br><span class="line">.annotate(</span><br><span class="line">    staff_users&#x3D;(</span><br><span class="line">        Count(&#39;id&#39;, filter&#x3D;Q(is_staff&#x3D;True))</span><br><span class="line">    ),</span><br><span class="line">    non_staff_users&#x3D;(</span><br><span class="line">        Count(&#39;id&#39;, filter&#x3D;Q(is_staff&#x3D;False))</span><br><span class="line">    ),</span><br><span class="line">))</span><br></pre></td></tr></table></figure>
+
+<p>上面的SQL来自PostgreSQL，它和SQLite是目前唯一支持<code>FILTER</code>语法快捷方式（正式名称为“选择性聚合”）的数据库。对于其他数据库，ORM将使用<code>CASE ... WHEN</code>来代替。</p>
+<h2 id="如何使用Having"><a href="#如何使用Having" class="headerlink" title="如何使用Having"></a>如何使用Having</h2><p>HAVING子句用于筛选聚合函数的结果。例如，查找超过100多个用户加入的年份：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    is_active,</span><br><span class="line">    COUNT(id) AS total</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    is_active</span><br><span class="line">HAVING</span><br><span class="line">    COUNT(id) &gt; 100</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.annotate(year_joined&#x3D;F(&#39;date_joined__year&#39;))</span><br><span class="line">.values(&#39;is_active&#39;)</span><br><span class="line">.annotate(total&#x3D;Count(&#39;id&#39;))</span><br><span class="line">.filter(total__gt&#x3D;100))</span><br></pre></td></tr></table></figure>
+
+<p>对<code>annotate</code>中的<code>total</code>查询结果进行过滤，即后面的<code>filter</code>，它与SQL中的HAVING子句等效。</p>
+<h2 id="根据Distinct分组"><a href="#根据Distinct分组" class="headerlink" title="根据Distinct分组"></a>根据Distinct分组</h2><p>对于某些聚合函数（如“COUNT”），有时只需要计算不同的出现次数。例如，每一种活动状态中的用户有多少不同的姓氏：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    is_active,</span><br><span class="line">    COUNT(id) AS total,</span><br><span class="line">    COUNT(DISTINCT last_name) AS unique_names</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    is_active</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.values(&#39;is_active&#39;)</span><br><span class="line">.annotate(</span><br><span class="line">    total&#x3D;Count(&#39;id&#39;),</span><br><span class="line">    unique_names&#x3D;Count(&#39;last_name&#39;, distinct&#x3D;True),</span><br><span class="line">))</span><br></pre></td></tr></table></figure>
+
+<p>注意在<code>Count</code>的参数中使用了<code>distinct=True</code>。</p>
+<h2 id="使用聚合字段创建表达式"><a href="#使用聚合字段创建表达式" class="headerlink" title="使用聚合字段创建表达式"></a>使用聚合字段创建表达式</h2><p>聚合字段通常只是解决较大问题的第一步。例如，按用户活动状态列出的唯一姓氏的百分比是多少：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    is_active,</span><br><span class="line">    COUNT(id) AS total,</span><br><span class="line">    COUNT(DISTINCT last_name) AS unique_names,</span><br><span class="line">    (COUNT(DISTINCT last_name)::float</span><br><span class="line">        &#x2F; COUNT(id)::float) AS pct_unique_names</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">GROUP BY</span><br><span class="line">    is_active</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from django.db.models import FloatField</span><br><span class="line">from django.db.models.functions import Cast</span><br><span class="line"></span><br><span class="line">(User.objects</span><br><span class="line">.values(&#39;is_active&#39;)</span><br><span class="line">.annotate(</span><br><span class="line">    total&#x3D;Count(&#39;id&#39;),</span><br><span class="line">    unique_names&#x3D;Count(&#39;last_name&#39;, distinct&#x3D;True),</span><br><span class="line">)</span><br><span class="line">.annotate(pct_unique_names&#x3D;(</span><br><span class="line">    Cast(&#39;unique_names&#39;, FloatField())</span><br><span class="line">    &#x2F; Cast(&#39;total&#39;, FloatField())</span><br><span class="line">))</span><br></pre></td></tr></table></figure>
+
+<p>第一个<code>annotate()</code>定义聚合字段。第二个<code>annotate()</code>使用聚合函数构造表达式。</p>
+<h2 id="跨表分组"><a href="#跨表分组" class="headerlink" title="跨表分组"></a>跨表分组</h2><p>到目前为止，我们只是在一个模型中进行各种数据查询操作，但聚合也能在不同模型（即不同数据库表）之间实现，比较简单的情况是一对一或外键关系。例如，假设我们有一个与用户一一对应的<code>User profile</code>模型，并且我们希望按配置文件的类型统计用户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    p.type,</span><br><span class="line">    COUNT(u.id) AS total</span><br><span class="line">FROM</span><br><span class="line">    auth_user u</span><br><span class="line">    JOIN user_profile p ON u.id &#x3D; p.user_id</span><br><span class="line">GROUP BY</span><br><span class="line">    p.type</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.values(&#39;user_profile__type&#39;)</span><br><span class="line">.annotate(total&#x3D;Count(&#39;id&#39;)))</span><br></pre></td></tr></table></figure>
+
+
+<p>就像分组表达式一样，在<code>values</code>中使用关联表，并按该该字段分组。请注意：表示关联数据库包的名称将是<code>user_profile__type</code>。</p>
+<h2 id="根据多对多关系分组"><a href="#根据多对多关系分组" class="headerlink" title="根据多对多关系分组"></a>根据多对多关系分组</h2><p>更复杂的还是多对多的关系。例如，计算每个用户参与了多少个小组：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    u.id,</span><br><span class="line">    COUNT(ug.group_id) AS memberships</span><br><span class="line">FROM</span><br><span class="line">    auth_user</span><br><span class="line">    LEFT OUTER JOIN auth_user_groups ug ON (</span><br><span class="line">        u.id &#x3D; ug.user_id</span><br><span class="line">    )</span><br><span class="line">GROUP BY</span><br><span class="line">    u.id</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(User.objects</span><br><span class="line">.annotate(memberships&#x3D;Count(&#39;groups&#39;))</span><br><span class="line">.values(&#39;id&#39;, &#39;memberships&#39;))</span><br></pre></td></tr></table></figure>
+
+<p>用户可以是多个组的成员，要统计用户所属的组数，我们在<code>User</code>模型中使用了相关名称<code>groups</code>。如果未显式设置相关名称（且未显式禁用），Django将自动生成格式为<code>{related model model}_set</code>的名称。例如<code>group_set</code>。</p>
+<p>原文链接：<a href="https://hakibenita.com/django-group-by-sql" target="_blank" rel="noopener">https://hakibenita.com/django-group-by-sql</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/02/26/python-overload-function/">
+        <span class="nav-arrow">← </span>
+        
+          Python如何实现重载函数
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#准备"><span class="toc-nav-text">准备</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#统计行数"><span class="toc-nav-text">统计行数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何使用aggregate函数"><span class="toc-nav-text">如何使用aggregate函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何实现Group-By"><span class="toc-nav-text">如何实现Group By</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分组筛选"><span class="toc-nav-text">分组筛选</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何进行分组排序"><span class="toc-nav-text">如何进行分组排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何联合聚合查询"><span class="toc-nav-text">如何联合聚合查询</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#根据多个字段进行分组"><span class="toc-nav-text">根据多个字段进行分组</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#根据表达式分组"><span class="toc-nav-text">根据表达式分组</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#根据条件聚合"><span class="toc-nav-text">根据条件聚合</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何使用Having"><span class="toc-nav-text">如何使用Having</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#根据Distinct分组"><span class="toc-nav-text">根据Distinct分组</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用聚合字段创建表达式"><span class="toc-nav-text">使用聚合字段创建表达式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#跨表分组"><span class="toc-nav-text">跨表分组</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#根据多对多关系分组"><span class="toc-nav-text">根据多对多关系分组</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/02/django-group-by/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
