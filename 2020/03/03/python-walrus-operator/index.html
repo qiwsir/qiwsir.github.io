@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python3.8新语法：海象运算符 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python3.8新语法：海象运算符</h2>
+    <p class="post-date">2020-03-03</p>
+    <section class="markdown-content"><p>作者：Brett Slatkin</p>
+<p>翻译：老齐</p>
+<p>与本文内容有关的图书：《跟老齐学Python：轻松入门》、《Python大学实用教程》（以下图书，各大电商平台有售）</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" style="zoom:67%;" />
+
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" style="zoom:67%;" />
+
+<hr>
+<p>Python3.8引入了一种叫做海象运算符（walrus）的新语法（<strong>译者注：</strong> 对于walrus的翻译，目前尚未出现对于Python的专门术语翻译，所以，此处姑且用字面意思“海象”），它其实是一种赋值语句，用于解决Python语言中长期存在的、可能导致代码重复的问题。正常的赋值语句是<code>a=b</code>，读作“a等于b”，而海象赋值语句是<code>a:=b</code>，读作“a walrus /ˈwɔːlrəs/ b”（因为<code>:=</code>看起来像一对眼球和獠牙，类似于海象。注意：此语句还没有适合的中文读法，总不能读作“a海象b”吧）。</p>
+<p>海象运算符的优势在于能在不允许赋值的地方（如if语句的条件表达式中）使用赋值变量。海象运算符左侧有个标识符，赋值表达式的值等于分配给这个标识符的值。</p>
+<p>例如，假设我有一篮子新鲜水果，我正试图经营一家果汁店。在这里，我定义了篮子里的东西：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fresh_fruit &#x3D; &#123;</span><br><span class="line">    &#39;apple&#39;: 10,</span><br><span class="line">    &#39;banana&#39;: 8,</span><br><span class="line">    &#39;lemon&#39;: 5,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当顾客到柜台点柠檬水时，我需要确保篮子里至少有一个柠檬用来榨果汁。我的操作方法是检索柠檬的数量，然后使用if语句查询非零的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def make_lemonade(count):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">def out_of_stock():</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">count &#x3D; fresh_fruit.get(&#39;lemon&#39;, 0)</span><br><span class="line">if count:</span><br><span class="line">    make_lemonade(count)</span><br><span class="line">else:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+
+<p>这个看似简单的代码问题吸引了过多的关注。<code>count</code>变量仅在if语句的第一个代码块中使用，在if语句上方定义<code>count</code>会使它看起来比实际情况更为重要，好像后面的所有代码（包括else块）都需要访问<code>count</code>变量，然而事实并非如此。</p>
+<p>我们获取一个值，检查它是否为非零，然后使用它。这种模式在Python中非常常见。许多程序员试图绕过多次出现<code>count</code>的情况，甚至不惜使用各种损害可读性的招数。现在好了，在Python3.8中增加了海象运算符，可以简化上面的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if count :&#x3D; fresh_fruit.get(&#39;lemon&#39;, 0):</span><br><span class="line">    make_lemonade(count)</span><br><span class="line">else:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+
+<p>虽然现在只是少了一行，但可读性提高很多。因为现在可以清楚地看到<code>count</code>只与if语句的第一行相关。赋值表达式首先为<code>count</code>变量赋值，然后在if语句的上下文中使用该值，以确定如何继续控制流程。这两步行为——分配和评估——是海象运算符的基本性质。</p>
+<p>柠檬是非常有效的，所以我的柠檬水配方中只需要一个，这意味着非零检查就足够了。不过，如果顾客点了苹果酒，我需要确保至少有四个苹果。在这里，我从<code>fruit_basket</code>字典中获取计数，然后在if语句中使用比较表达式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def make_cider(count):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">count &#x3D; fresh_fruit.get(&#39;apple&#39;, 0)</span><br><span class="line">if count &gt;&#x3D; 4:</span><br><span class="line">    make_cider(count)</span><br><span class="line">else:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+
+<p>这个问题和柠檬水的例子一样，<code>count</code>的赋值会分散对这个变量的注意力。在这里，我还使用了海象运算符来提高代码的清晰度：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (count :&#x3D; fresh_fruit.get(&#39;apple&#39;, 0)) &gt;&#x3D; 4:</span><br><span class="line">    make_cider(count)</span><br><span class="line">else:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+
+<p>这样做可以收到预期的效果，并使代码缩短了一行。需要注意的是，我需要用圆括号将赋值表达式括起来，以便与if语句中的4进行比较。在柠檬水的例子中不需要使用圆括号，因为赋值表达式本身就是一个非零检查；它不是一个较大表达式的子表达式。与其他表达式一样，应尽量避免使用圆括号把赋值表达式括起来。</p>
+<p>有时候会出现一种类似的重复模式，那就是当我需要根据某些条件在封闭范围内分配一个变量，然后在函数中的稍后位置引用该变量。例如，假设客户订购了一些香蕉冰沙。为了制作它们，我需要至少两个香蕉的香蕉片，否则将引发<code>OutOfBananas</code>异常。在这里，我以一种典型的方式来实现这个逻辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def slice_bananas(count):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">class OutOfBananas(Exception):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">def make_smoothies(count):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">pieces &#x3D; 0</span><br><span class="line">count &#x3D; fresh_fruit.get(&#39;banana&#39;, 0)</span><br><span class="line">if count &gt;&#x3D; 2:</span><br><span class="line">    pieces &#x3D; slice_bananas(count)</span><br><span class="line"></span><br><span class="line">try:</span><br><span class="line">    smoothies &#x3D; make_smoothies(pieces)</span><br><span class="line">except OutOfBananas:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+
+<p>另一种常见的方法是将<code>pieces=0</code>赋值放入else块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">count &#x3D; fresh_fruit.get(&#39;banana&#39;, 0)</span><br><span class="line">if count &gt;&#x3D; 2:</span><br><span class="line">    pieces &#x3D; slice_bananas(count)</span><br><span class="line">else:</span><br><span class="line">    pieces &#x3D; 0</span><br><span class="line"></span><br><span class="line">try:</span><br><span class="line">    smoothies &#x3D; make_smoothies(pieces)</span><br><span class="line">except OutOfBananas:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+
+<p>第二种方法可能会让人觉得奇怪，因为这意味着<code>pieces</code>变量出现在了条件语句中两个不同的位置，可以在这两个位置进行初始定义。由于Python的作用域规则，这种分割定义在技术上是可行的，但它的可读性不好，也不优雅。这就是许多人喜欢上面那种结构的原因，在它里面的<code>pieces = 0</code>的赋值在前面出现。</p>
+<p>海象运算符也可以用一行代码来缩短这个例子。这个小变化消除了对<code>count</code>变量的任何强调。现在，很明显，除了if语句之外，<code>pieces</code>也很重要:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pieces &#x3D; 0</span><br><span class="line">if (count :&#x3D; fresh_fruit.get(&#39;banana&#39;, 0)) &gt;&#x3D; 2:</span><br><span class="line">    pieces &#x3D; slice_bananas(count)</span><br><span class="line"></span><br><span class="line">try:</span><br><span class="line">    smoothies &#x3D; make_smoothies(pieces)</span><br><span class="line">except OutOfBananas:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+
+<p>使用海象运算符还可以提高在条件语句中分别在两个分支中的<code>pieces</code>复制的可读性。当<code>count</code>定义不再位于if语句之前时，跟踪<code>pieces</code>变量变得更容易:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if (count :&#x3D; fresh_fruit.get(&#39;banana&#39;, 0)) &gt;&#x3D; 2:</span><br><span class="line">    pieces &#x3D; slice_bananas(count)</span><br><span class="line">else:</span><br><span class="line">    pieces &#x3D; 0</span><br><span class="line"></span><br><span class="line">try:</span><br><span class="line">    smoothies &#x3D; make_smoothies(pieces)</span><br><span class="line">except OutOfBananas:</span><br><span class="line">    out_of_stock()</span><br></pre></td></tr></table></figure>
+
+<p>初学Python的程序员经常遇到的一个难题是缺少灵活的<code>switch/case</code>语句，与此类功能近似的一般做法是使用多个if、elif和else语句的深度嵌套。</p>
+<p>例如，假设我想实现一个优先级系统，这样每个客户都可以自动获得最好的果汁，而不必预定。在这里，我设置这样的流程，让它先供应香蕉冰沙，然后供应苹果酒，最后供应柠檬水：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">count &#x3D; fresh_fruit.get(&#39;banana&#39;, 0)</span><br><span class="line">if count &gt;&#x3D; 2:</span><br><span class="line">    pieces &#x3D; slice_bananas(count)</span><br><span class="line">    to_enjoy &#x3D; make_smoothies(pieces)</span><br><span class="line">else:</span><br><span class="line">    count &#x3D; fresh_fruit.get(&#39;apple&#39;, 0)</span><br><span class="line">    if count &gt;&#x3D; 4:</span><br><span class="line">        to_enjoy &#x3D; make_cider(count)</span><br><span class="line">    else:</span><br><span class="line">        count &#x3D; fresh_fruit.get(&#39;lemon&#39;, 0)</span><br><span class="line">        if count:</span><br><span class="line">            to_enjoy &#x3D; make_lemonade(count)</span><br><span class="line">        else:</span><br><span class="line">            to_enjoy &#x3D; &#39;Nothing&#39;</span><br></pre></td></tr></table></figure>
+
+<p>像这样难看的结构在Python代码中司空见惯，幸运的是，海象运算符提供了一个优雅的解决方案，它几乎可以像switch/case语句的专用语法一样通用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if (count :&#x3D; fresh_fruit.get(&#39;banana&#39;, 0)) &gt;&#x3D; 2:</span><br><span class="line">    pieces &#x3D; slice_bananas(count)</span><br><span class="line">    to_enjoy &#x3D; make_smoothies(pieces)</span><br><span class="line">elif (count :&#x3D; fresh_fruit.get(&#39;apple&#39;, 0)) &gt;&#x3D; 4:</span><br><span class="line">    to_enjoy &#x3D; make_cider(count)</span><br><span class="line">elif count :&#x3D; fresh_fruit.get(&#39;lemon&#39;, 0):</span><br><span class="line">    to_enjoy &#x3D; make_lemonade(count)</span><br><span class="line">else:</span><br><span class="line">    to_enjoy &#x3D; &#39;Nothing&#39;</span><br></pre></td></tr></table></figure>
+
+<p>使用海象运算符版本只比原来的版本短五行，但是由于嵌套和缩进的减少，可读性有了很大提高。如果在你的代码中看到像上面那样丑陋的代买，我建议你尽量使用海象运算符重写。</p>
+<p>初学Python的程序员常常遇到的另一个挫折是缺少do/while循环构造。例如，假设我想在新水果到货时将果汁装入瓶中，直到没有剩余的水果为止。在这里，我用while循环实现这个逻辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def pick_fruit():</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">def make_juice(fruit, count):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">bottles &#x3D; []</span><br><span class="line">fresh_fruit &#x3D; pick_fruit()</span><br><span class="line">while fresh_fruit:</span><br><span class="line">    for fruit, count in fresh_fruit.items():</span><br><span class="line">        batch &#x3D; make_juice(fruit, count)</span><br><span class="line">        bottles.extend(batch)</span><br><span class="line">    fresh_fruit &#x3D; pick_fruit()</span><br></pre></td></tr></table></figure>
+
+<p>这里存在重复，先后执行了两次<code>fresh_fruit = pick_fruit()</code>，一个在循环前设置初始条件，另一个在循环结束时补充到货的水果列表。</p>
+<p>在这种情况下，改进代码复用的策略是使用loop-and-a-half（如果出现这种情况，需要立即退出并跳过循环体中的任何剩余语句）。这消除了多余的行，但它也破坏了while循环，使其成为一个愚蠢的无限循环。现在，循环的所有流控制都依赖于break条件语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">bottles &#x3D; []</span><br><span class="line">while True:                     # Loop</span><br><span class="line">    fresh_fruit &#x3D; pick_fruit()</span><br><span class="line">    if not fresh_fruit:         # And a half</span><br><span class="line">        break</span><br><span class="line">    for fruit, count in fresh_fruit.items():</span><br><span class="line">        batch &#x3D; make_juice(fruit, count)</span><br><span class="line">        bottles.extend(batch)</span><br></pre></td></tr></table></figure>
+
+<p>海象运算符消除了对loop-and-a-half的需要。方法是：允许重新设置<code>fresh_fruit</code>变量，然后每次都通过while循环有条件地求值。此解决方案简短易读，应该是代码中的首选方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bottles &#x3D; []</span><br><span class="line">while fresh_fruit :&#x3D; pick_fruit():</span><br><span class="line">    for fruit, count in fresh_fruit.items():</span><br><span class="line">        batch &#x3D; make_juice(fruit, count)</span><br><span class="line">        bottles.extend(batch)</span><br></pre></td></tr></table></figure>
+
+<p>在许多其他情况下，可以使用还有海象运算符的赋值表达式来消除冗余。通常，当你发现自己在许多行中多次重复同一个表达式或赋值时，应该考虑使用海象运算符来提高可读性。</p>
+<h2 id="牢记"><a href="#牢记" class="headerlink" title="牢记"></a>牢记</h2><ul>
+<li>赋值表达式使用walrus运算符(:=)在单个表达式中同时对变量名进行赋值和计算，从而减少重复。</li>
+<li>当赋值表达式是一个较大表达式的子表达式时，它必须用圆括号括起来。</li>
+<li>尽管在Python中不能用switch/case语句和do/while循环，但是通过使用海象运算符的赋值表达式可以更清楚地模拟它们的功能。</li>
+</ul>
+<p>原文链接：<a href="https://effectivepython.com/2020/02/02/prevent-repetition-with-assignment-expressions" target="_blank" rel="noopener">https://effectivepython.com/2020/02/02/prevent-repetition-with-assignment-expressions</a></p>
+<blockquote>
+<p>关注微信公众号：老齐教室。读深度文章，得精湛技艺，享绚丽人生。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/02/django-group-by/">
+        <span class="nav-arrow">← </span>
+        
+          Django中用SQL实现分组查询
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#牢记"><span class="toc-nav-text">牢记</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/03/python-walrus-operator/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
