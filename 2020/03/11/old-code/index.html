@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      如何跳过古董代码的坑 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>如何跳过古董代码的坑</h2>
+    <p class="post-date">2020-03-11</p>
+    <section class="markdown-content"><p>作者：Isha Tripathi</p>
+<p>翻译：老齐</p>
+<p>与本文有关的图书推荐：《跟老齐学Python：Django实战（第二版）》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" alt=""></p>
+<hr>
+<p>想象下面的场景：</p>
+<p>这是一个黑暗的暴风雨之夜。闪电每隔几分钟就会划破天空。在远处，你可以看到一大堆几年前写的代码。这些代码大部分都被作者遗忘了，甚至找不到作者。你小心翼翼地接近它，却不知道从哪里开始。你惴惴不安地决定从某一处开始，不知道你的勇敢会给团队带来什么样的灾难。</p>
+<p>如果这个场景不适合你，那么请想象下面的场景：</p>
+<p>在一种叫做层层叠的益智类游戏中， 每一层都在另一层上保持不稳定的平衡。只要有一个仓促的动作，整座塔就倒塌了。</p>
+<p>这正是处理遗留代码的感觉。让我首先描述一下我所说的“遗留”代码。我指的是：</p>
+<p>源代码来自其他人和（或）源代码来自旧版的程序。</p>
+<p>之所以继承，通常是因为你（作为公司或开发人员）需要接手另一个公司或开发人员编写的代码，并且需要扩展和维护上述代码库。我将要在这篇文章中讨论使用遗留代码的两方面的问题：</p>
+<ul>
+<li>遗留代码库的常见问题</li>
+<li>通过实现交付和代码质量的平衡，有效克服这些问题</li>
+</ul>
+<h2 id="代码覆盖率"><a href="#代码覆盖率" class="headerlink" title="代码覆盖率"></a>代码覆盖率</h2><p>我在使用遗留系统时遇到的一个常见问题是缺少测试。即使有测试的话，也很少有单元测试，也许还有一些集成或功能级别的测试——这些测试大部分都是事后进行的，而不是对代码进行实际的保护。大多数测试或所有测试只会涉及基本逻辑的场景，并且会忽略系统中的边缘情况。</p>
+<p>这本身可能不是一个严重的问题，但随着系统的发展和开发人员的轮换，问题就出现了。人们越来越难以追踪这些变化对系统造成的影响，因为就写了一些孤立的东西或者使用了全局变量等等，这使得代码必须高度依赖“熟悉系统”的人。</p>
+<p>毋庸置疑，并不是每个问题都可以通过增加代码覆盖率和进行更多测试来解决，但它确实有助于消除一些风险。我们都希望确保对系统的任何更改不会影响现有功能，更广泛的测试覆盖范围恰好有助于此。此外，更多的单元测试可以确保在较低的级别捕获逻辑问题，从而更容易识别出有问题的代码。</p>
+<p>在一个理想的世界中，任何系统都将遵循测试金字塔——大量的单元测试，一些服务测试和较少的UI/功能测试。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/uploads_4_20200310111429.jpg" alt=""></p>
+<p>然而，对于你可能遇到的大多数遗留代码库，测试金字塔可能看起来像这样：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/uploads_15_20200310111509.jpg" alt=""></p>
+<p>当第一次使用类似于以上图像的遗留代码库时，一个常见的误区是试图立即开始编写单元测试。虽然目的是非常可贵的，但这也意味着你在那个时候不会创造任何业务价值。对于没有看到向系统中添加功能价值的客户来说，更难证明你这样做的意义。</p>
+<p>一个更有效的方法是，首先为你所接触的任何一段代码或你所添加的新代码编写测试。这将有助于你找到一个中间地带，这种做法叫做纸杯蛋糕模式。</p>
+<p>注：纸杯蛋糕模式被视为反模式，因为相同数量的信息是在多个层次上测试的。然而，与传统（遗留）的代码库相比，这更适用于绿地代码库。如果你从头开始一个项目，绝对应该避免这种模式。在传统的代码库中，正是这种迫切需要但并不理想的中间地带，帮助铺平了通往理想状态的道路。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/uploads_18_20200310111559.jpg" alt=""></p>
+<p>随着时间的推移，你对系统更加熟悉了，就可以继续在所有级别添加测试，并对你的项目实现一个可接受的测试金字塔。</p>
+<h2 id="过时的库-技术"><a href="#过时的库-技术" class="headerlink" title="过时的库/技术"></a>过时的库/技术</h2><p>我遇到过这样的情况：开发人员非常不愿意升级到新版本的库，因为引入的更改会造成破坏；或者由于担心破坏系统而继续使用过时的工具和技术来编写项目。</p>
+<p>这些担心是完全正确的，绝对值得考虑。然而，人们必须记住，使用过时的工具和库会造成的副作用。这些副作用可能会在最不经意的时候累积起来，并咬伤你。旧的工具通常不再受支持，而且很难找到问题的答案。还有一个事实是，随着时间的推移，你的需求会发生变化，在某些时候，过时的工具将不再满足你的需求。</p>
+<p>为了避免这些误区，请确保在项目中始终使用库和工具的最新版本。库的频繁更新还意味着你在升级时不会需要做出大量更改。大多数的库不会在不同版本之间（我从你的角度来看）做出重大更改，更新起来应该相当简单。即使你必须进行一些更改，更改中所花的时间也比确保整个项目的版本兼容性所花的时间更有效，因为项目中可能会有一个依赖项无法升级。</p>
+<p>使用过时工具的必然结果是最终不得不使用极新的工具。有些工具/库仍处于测试阶段或者甚至没有一个主要版本，使用这些工具/库就要冒着不受所有平台支持的风险。我建议远离这样的库，除非你的项目有一个非常具体的利基要求。</p>
+<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><p>作为一名开发人员，我经常忍不住直接进入代码库，开始重新编写我认为可以改进的代码。在处理遗留代码时，第一步是阅读并理解代码，当某一部分代码理解起来非常吃力时，你会希望重构代码，让其他团队成员避免同样的痛苦。虽然你的队友会欣赏这样的行为，但它可能会损害项目的整体状态，因为它没有增加任何功能价值或业务价值。正如我之前所说的，你很难向客户证明这种做法的合理性，因为客户寄希望于你所带来的商业价值。在尝试重构这样的代码时，也很容易误入迷途。即使你决心对重构进行时间限制，你也可能会身不由己，因为你不想让自己的精力白费。</p>
+<p>不要绝望，因为有一种方法可以处理你不太理解的代码。每当你渴望重构某段代码时，请问自己以下两个问题：</p>
+<ul>
+<li>这段代码是我正在开发的功能的一部分吗?</li>
+<li>这段代码当前的形式是否不够完善?</li>
+</ul>
+<p>如果这两个问题的答案都是否定的，那么就不要对其进行重构。与代码覆盖一样，只重构那些在实现过程中要用的代码。其他的一切都可以添加到这个项目的“技术债务墙”。通常情况下，所谓的“墙”外观如下：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/uploads_12_20200310111713.jpg" alt=""></p>
+<p>墙是一种方法，用来记录代码中的问题，或者记录你所继承的代码。技术债务墙并不是糟糕的设计决策的倾销地，我认为这是不言而喻的。它应该只应用于跟踪现有的问题，团队应该有意识地在项目过程中降低技术债务。我在一些项目中的做法是：在得到有关人员或产品所有者的批准后，优先处理迭代中的一些技术任务，以平衡所要交付的功能价值和技术价值。如果你只关注技术价值，客户会不高兴的；而如果你只关注功能价值，会不断积累技术债务，你的代码会越来越难以维护。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>处理别人的代码库并不总是有趣或容易的，坦率地说，有时会令人沮丧。这可能是由于人们对代码的书写方式有不同的观念，代码的原作者能力有限，或其他的一些因素。然而，这是大多数软件开发人员在他们的职业生涯中必须处理的事情。</p>
+<p>我在处理别人的代码的实践中积累了一些有用的做法，并尝试着做了如上记录。</p>
+<p>原文链接：<a href="https://www.womenwhocode.com/blog/dealing-with-legacy-code" target="_blank" rel="noopener">https://www.womenwhocode.com/blog/dealing-with-legacy-code</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#旧代码" >
+    <span class="tag-code">旧代码</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/06/offical-accounts/">
+        <span class="nav-arrow">← </span>
+        
+          《老齐教室》目录
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://qiniu.mdnice.com/f5a651b2555e4f1528a917eb8828e1a6.jpeg" width=400>
+        <p class="notice">关注微信公众号，免费获得在线机器学习案例</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#代码覆盖率"><span class="toc-nav-text">代码覆盖率</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#过时的库-技术"><span class="toc-nav-text">过时的库&#x2F;技术</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重构"><span class="toc-nav-text">重构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/11/old-code/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
