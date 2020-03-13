@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      如何合并没有共同标识符的数据集 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>如何合并没有共同标识符的数据集</h2>
+    <p class="post-date">2020-03-13</p>
+    <section class="markdown-content"><p>作者： Chris Moffitt </p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>合并数据集，是数据科学中常见的操作。对于有共同标识符的两个数据集，可以使用Pandas中提供的常规方法合并，但是，如果两个数据集没有共同的唯一标识符，怎么合并？这就是本文所要阐述的问题。对此，有两个术语会经常用到：记录连接和模糊匹配，例如，尝试把基于人名把不同数据文件连接在一起，或合并只有组织名称和地址的数据等，都是利用“记录链接”和“模糊匹配”完成的。</p>
+<p>合并没有共同特征的数据，是比较常见且具有挑战性的业务，很难系统地解决，特别是当数据集很大时。如果用人工的方式，使用Excel和查询语句等简单方法能够实现，但这无疑要有很大的工作量。如何解决？Python此时必须登场。Python中有两个库，它们能轻而易举地解决这种问题，并且可以用相对简单的API支持复杂的匹配算法。</p>
+<p>第一个库叫做fuzzymatcher，它用一个简单的接口就能根据两个DataFrame中记录的概率把它们连接起来，第二个库叫做RecordLinkage 工具包，它提供了一组强大的工具，能够实现自动连接记录和消除重复的数据。</p>
+<p>在本文中，我们将学习如何使用这两个工具（或者两个库）来匹配两个不同的数据集，也就是基于名称和地址信息的数据集。此外，我们还将简要学习如何把这些匹配技术用于删除重复的数据。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>只要试图将不同的数据集合并在一起，任何人都可能遇到类似的挑战。在下面的简单示例中，系统中有一个客户记录，我们需要确定数据匹配，而又不使用公共标识符。（下图中箭头标识的两个记录，就是要匹配的对象，它们没有公共标识符。）</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/manual_lookup_20200312142835.png" alt=""></p>
+<p>根据一个小样本的数据集和我们的直觉，记录号为18763和记录号为A1278两条记录看起来是一样的。我们知道Brothers 和 Bro以及Lane和LN是等价的，所以这个过程对人来说相对容易。然而，尝试在编程中利用逻辑来处理这个问题就是一个挑战。</p>
+<p>以我的经验，大多数人会想到使用Excel，查看地址的各个组成部分，并根据州、街道号或邮政编码找到最佳匹配。在某些情况下，这是可行的。但是，我们可能希望使用更精细的方法来比较字符串，为此，几年前我曾写过一个叫做fuzzywuzzy的包。</p>
+<p>挑战在于，这些算法（例如Levenshtein、Damerau-Levenshtein、Jaro-Winkler、q-gram、cosine）是计算密集型的，在大型数据集上进行大量匹配是无法调节比例的。</p>
+<p>如果你有兴趣了解这些概念上的更多数学细节，可以查看维基百科中的有关内容，本文也包含了一些详解。最后，本文将更详细地讨论字符串匹配的方法。</p>
+<p>幸运的是，有一些Python工具可以帮助我们实现这些方法，并解决其中的一些具有挑战性的问题。</p>
+<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><p>在本文中，我们将使用美国医院的数据。之所以选这个数据集，是因为医院的数据具有一些独特性，使其难以匹配：</p>
+<ul>
+<li>许多医院在不同的城市都有相似的名字（圣卢克斯、圣玛丽、社区医院，这很类似我国很多城市都有“协和医院”一样）</li>
+<li>在某个城市内，医院可以占用几个街区，因此地址可能不明确</li>
+<li>医院附近往往有许多诊所和其他相关设施</li>
+<li>医院也会被收购，名字的变更也很常见，从而使得数据处理过程更加困难</li>
+<li>最后，美国有成千上万的医疗机构，所以这个问题很难按比例处理</li>
+</ul>
+<p>在这些例子中，我有两个数据集。第一个是内部数据集，包含基本的医院帐号、名称和所有权信息。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/account_data_20200312142953.png" alt=""></p>
+<p>第二个数据集包含医院信息(含有Provider的特征)，以及特定心衰手术的出院人数和医疗保险费用。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/provider_data_20200312143025.png" alt=""></p>
+<p>以上数据集来自Medicare.gov 和 CMS.gov，并经过简单的数据清洗。</p>
+<blockquote>
+<p>本文项目已经发布到在线实验平台，请关注微信公众号《老齐教室》后，回复：#姓名+手机号+案例#。注意，#符号不要丢掉，否则无法查找到回复信息。</p>
+</blockquote>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" alt=""></p>
+<p>我们的业务场景：现在有医院报销数据和内部帐户数据，要讲两者进行匹配，以便从更多层面来分析每个医院的患者。在本例中，我们有5339个医院帐户和2697家医院的报销信息。但是，这两类数据集没有通用的ID，所以我们将看看是否可以使用前面提到的工具，根据医院的名称和地址信息将两个数据集合并。</p>
+<h2 id="方法1：fuzzymather包"><a href="#方法1：fuzzymather包" class="headerlink" title="方法1：fuzzymather包"></a>方法1：fuzzymather包</h2><p>在第一种方法中，我们将尝试使用fuzzymatcher，这个包利用sqlite的全文搜索功能来尝试匹配两个不同DataFrame中的记录。</p>
+<p>安装fuzzymatcher很简单，如果使用conda安装，依赖项会自动检测安装，也可以使用pip安装fuzzymatcher。考虑到这些算法的计算负担，你会希望尽可能多地使用编译后的c组件，可以用conda实现。</p>
+<p>在所有设置完成后，我们导入数据并将其放入DataFrames：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">from pathlib import Path</span><br><span class="line">import fuzzymatcher</span><br><span class="line">hospital_accounts &#x3D; pd.read_csv(&#39;hospital_account_info.csv&#39;)</span><br><span class="line">hospital_reimbursement &#x3D; pd.read_csv(&#39;hospital_reimbursement.csv&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>以下是医院账户信息:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/account_data_20200312143538.png" alt=""></p>
+<p>Here is the reimbursement information:</p>
+<p>这是报销信息:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/provider_data_20200312143718.png" alt=""></p>
+<p>由于这些列有不同的名称，我们需要定义哪些列与左右两边的DataFrame相匹配，医院帐户信息是左边的DataFrame，报销信息是右边的DataFrame。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">left_on &#x3D; [&quot;Facility Name&quot;, &quot;Address&quot;, &quot;City&quot;, &quot;State&quot;]</span><br><span class="line"></span><br><span class="line">right_on &#x3D; [</span><br><span class="line">    &quot;Provider Name&quot;, &quot;Provider Street Address&quot;, &quot;Provider City&quot;,</span><br><span class="line">    &quot;Provider State&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>现在用fuzzymatcher中的<code>fuzzy_left_join</code>函数找出匹配项:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">matched_results &#x3D; fuzzymatcher.fuzzy_left_join(hospital_accounts,</span><br><span class="line">                                            hospital_reimbursement,</span><br><span class="line">                                            left_on,</span><br><span class="line">                                            right_on,</span><br><span class="line">                                            left_id_col&#x3D;&#39;Account_Num&#39;,</span><br><span class="line">                                            right_id_col&#x3D;&#39;Provider_Num&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>在幕后，fuzzymatcher为每个组合确定最佳匹配。对于这个数据集，我们分析了超过1400万个组合。在我的笔记本电脑上，这个过程花费了2分11秒。</p>
+<p>变量<code>matched_results</code>所引用的DataFrame对象包含连接在一起的所有数据以及<code>best_match_score</code>——这个特征的数据用于评估该匹配连接的优劣。</p>
+<p>下面是这些列的一个子集，前5个最佳匹配项经过重新排列增强了可读性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cols &#x3D; [</span><br><span class="line">    &quot;best_match_score&quot;, &quot;Facility Name&quot;, &quot;Provider Name&quot;, &quot;Address&quot;, &quot;Provider Street Address&quot;,</span><br><span class="line">    &quot;Provider City&quot;, &quot;City&quot;, &quot;Provider State&quot;, &quot;State&quot;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">matched_results[cols].sort_values(by&#x3D;[&#39;best_match_score&#39;], ascending&#x3D;False).head(5)</span><br></pre></td></tr></table></figure>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/best_match_1_20200312144452.png" alt=""></p>
+<p>第一个项目的匹配得分是3.09分，看起来肯定是良好的匹配。你可以看到，对位于Red Wing的Mayo诊所，特征<code>Facility Name</code>和<code>Provider Name</code>的值基本一样，观察结果也证实这条匹配是很合适的。</p>
+<p>我们也可以查看哪些地方的匹配效果不好：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">matched_results[cols].sort_values(by&#x3D;[&#39;best_match_score&#39;], ascending&#x3D;True).head(5)</span><br></pre></td></tr></table></figure>
+
+<p>这里显示了一些糟糕的分数以及明显的不匹配情况:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/bad_match_1_20200312144552.png" alt=""></p>
+<p>这个例子凸显了一部分问题，即一个数据集包括来自Puerto Rico的数据，而另一个数据集中没有，这种差异明确显示，在尝试匹配之前，你需要确保对数据的真正了解，以及尽可能对数据进行清理和筛选。</p>
+<p>我们已经看到了一些极端的情况。现在看一看，分数小于0.8的一些匹配，它们可能会更具挑战性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">matched_results[cols].query(&quot;best_match_score &lt;&#x3D; .80&quot;).sort_values(</span><br><span class="line">    by&#x3D;[&#39;best_match_score&#39;], ascending&#x3D;False).head(5)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/partial_matches_20200312144640.png" alt=""></p>
+<p>上述示例展示了一些匹配如何变得更加模糊，例如，ADVENTIST HEALTH UKIAH VALLEY）是否与UKIAH VALLEY MEDICAL CENTER 相同？根据你的数据集和需求，你需要找到自动和手动匹配检查的正确平衡点。</p>
+<p>总的来说，fuzzymatcher是一个对中型数据集有用的工具。如果样本量超过10000行时，将需要较长时间进行计算，对此，要有良好的规划。然而，fuzzymatcher的确很好用，特别是与Pandas结合，使它成为一个很好的工具。</p>
+<h2 id="方法2：RecordLinkage工具包"><a href="#方法2：RecordLinkage工具包" class="headerlink" title="方法2：RecordLinkage工具包"></a>方法2：RecordLinkage工具包</h2><p>RecordLinkage工具包提供了另一组强有力的工具，用于连接数据集中的记录和识别数据中的重复记录。</p>
+<p>其主要功能如下：</p>
+<ul>
+<li>能够根据列的数据类型，为每个列定义匹配的类型</li>
+<li>使用“块”限制潜在的匹配项的池</li>
+<li>使用评分算法提供匹配项的排名</li>
+<li>衡量字符串相似度的多种算法</li>
+<li>有监督和无监督的学习方法</li>
+<li>多种数据清理方法</li>
+</ul>
+<p>权衡之下，如果仅仅是为了进一步验证而管理这些数据结果，这些操作就有点太复杂了。然而，这些步骤都会用标准的Panda指令实现，所以不要害怕。</p>
+<p>依然可以使用<code>pip</code>来安装库。我们将使用前面的数据集，但会在读取数据的时候设置某列为索引，这使得后续的数据连接更容易解释。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">import recordlinkage</span><br><span class="line"></span><br><span class="line">hospital_accounts &#x3D; pd.read_csv(&#39;hospital_account_info.csv&#39;, index_col&#x3D;&#39;Account_Num&#39;)</span><br><span class="line">hospital_reimbursement &#x3D; pd.read_csv(&#39;hospital_reimbursement.csv&#39;, index_col&#x3D;&#39;Provider_Num&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>因为RecordLinkage有更多的配置选项，所以我们需要几个步骤来定义连接规则。第一步是创建<code>indexer</code>对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">indexer &#x3D; recordlinkage.Index()</span><br><span class="line">indexer.full()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 输出</span><br><span class="line"></span><br><span class="line">WARNING:recordlinkage:indexing - performance warning - A full index can result in large number of record pairs.</span><br></pre></td></tr></table></figure>
+
+<p>这个警告指出了记录连接库和模糊匹配器之间的区别。通过记录连接，我们可以灵活地影响评估的记录对的数量。调用索引对象的<code>full</code>方法，可以计算出所有可能的记录对（我们知道这些记录对的数量超过了14M）。我过一会儿再谈其他的选择，下面继续探讨完整的索引，看看它是如何运行的。</p>
+<p>下一步是建立所有需要检查的潜在的候选记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">candidates &#x3D; indexer.index(hospital_accounts, hospital_reimbursement)</span><br><span class="line">print(len(candidates))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 输出</span><br><span class="line"></span><br><span class="line">14399283</span><br></pre></td></tr></table></figure>
+
+<p>这个快速检查恰好确认了比较的记录总数。</p>
+<p>既然我们已经定义了左、右数据集和所有候选数据集，就可以使用<code>Compare()</code>进行比较。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">compare &#x3D; recordlinkage.Compare()</span><br><span class="line">compare.exact(&#39;City&#39;, &#39;Provider City&#39;, label&#x3D;&#39;City&#39;)</span><br><span class="line">compare.string(&#39;Facility Name&#39;,</span><br><span class="line">            &#39;Provider Name&#39;,</span><br><span class="line">            threshold&#x3D;0.85,</span><br><span class="line">            label&#x3D;&#39;Hosp_Name&#39;)</span><br><span class="line">compare.string(&#39;Address&#39;,</span><br><span class="line">            &#39;Provider Street Address&#39;,</span><br><span class="line">            method&#x3D;&#39;jarowinkler&#39;,</span><br><span class="line">            threshold&#x3D;0.85,</span><br><span class="line">            label&#x3D;&#39;Hosp_Address&#39;)</span><br><span class="line">features &#x3D; compare.compute(candidates, hospital_accounts,</span><br><span class="line">                        hospital_reimbursement)</span><br></pre></td></tr></table></figure>
+
+<p>以上选定几个特征，用它们确定一个城市的精确匹配，此外在执行<code>string</code>方法中还设置了阈值。除了这些选参数之外，你还可以定义其他一些参数，比如数字、日期和地理坐标。了解更多示例，请参阅文档。</p>
+<p>最后一步是使用<code>compute</code>方法对所有特征进行比较。在本例中，我们使用完整索引，用时3分钟41秒。</p>
+<p>下面是一个优化方案，这里有一个重要概念，就是块，使用块可以减少比较的记录数量。例如，如果只想比较处于同一个州的医院，我们可以依据<code>State</code>列创建块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">indexer &#x3D; recordlinkage.Index()</span><br><span class="line">indexer.block(left_on&#x3D;&#39;State&#39;, right_on&#x3D;&#39;Provider State&#39;)</span><br><span class="line">candidates &#x3D; indexer.index(hospital_accounts, hospital_reimbursement)</span><br><span class="line">print(len(candidates))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 输出</span><br><span class="line"></span><br><span class="line">475830</span><br></pre></td></tr></table></figure>
+
+<p>依据<code>State</code>分块，候选项将被筛选为只包含州值相同的那些，筛选后只剩下475,830条记录。如果我们运行相同的比较代码，只需要7秒。一个很好的加速方法!</p>
+<p>在这个数据集中，<code>State</code>的数据是干净的，但是如果有点混乱的话，还可以使用另一种分块算法，比如<code>SortedNeighborhood</code>，减少一些小的拼写错误带来的影响。</p>
+<p>例如，如果州名包含“Tenessee”和“Tennessee”怎么办？前面的分块就无效了，但可以使用<code>sortedneighbourhood</code>方法处理此问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">indexer &#x3D; recordlinkage.Index()</span><br><span class="line">indexer.sortedneighbourhood(left_on&#x3D;&#39;State&#39;, right_on&#x3D;&#39;Provider State&#39;)</span><br><span class="line">candidates &#x3D; indexer.index(hospital_accounts, hospital_reimbursement)</span><br><span class="line">print(len(candidates))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 输出</span><br><span class="line"></span><br><span class="line">998860</span><br></pre></td></tr></table></figure>
+
+<p>上述示例，<code>sortedneighbourhood</code>处理了998,860个记录，花费了15.9秒，这一操作似乎很合理的。</p>
+<p>不管你使用哪个方法，结果都入下所示，是一个DataFrame。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/feature_matrix_20200312144741.png" alt=""></p>
+<p>这个DataFrame显示所有比较的结果，在帐户和报销DataFrames中，每行有一个比较结果。这些项目对应着我们所定义的比较，1代表匹配，0代表不匹配。</p>
+<p>由于大量记录没有匹配项，难以看出我们可能有多少匹配项，为此可以把单个的得分加起来查看匹配的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">features.sum(axis&#x3D;1).value_counts().sort_index(ascending&#x3D;False)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 输出</span><br><span class="line"></span><br><span class="line">3.0      2285</span><br><span class="line">2.0       451</span><br><span class="line">1.0      7937</span><br><span class="line">0.0    988187</span><br><span class="line">dtype: int6</span><br></pre></td></tr></table></figure>
+
+<p>现在我们知道有988187行没有任何匹配值，7937行至少有一个匹配项，451行有2个匹配项，2285行有3个匹配项。</p>
+<p>为了使剩下的分析更简单，让我们用2或3个匹配项获取所有记录，并添加总分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">potential_matches &#x3D; features[features.sum(axis&#x3D;1) &gt; 1].reset_index()</span><br><span class="line">potential_matches[&#39;Score&#39;] &#x3D; potential_matches.loc[:, &#39;City&#39;:&#39;Hosp_Address&#39;].sum(axis&#x3D;1)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/match_scoring_20200312144818.png" alt=""></p>
+<p>下面是对所得结果进行解释：索引为1的行，<code>Account_Num</code>值为26270、<code>Provider_Num</code>值为868740，该行显示，在城市、医院名称和医院地址方面相匹配。</p>
+<p>再详细查看这两个记录的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hospital_accounts.loc[26270,:]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Facility Name         SCOTTSDALE OSBORN MEDICAL CENTER</span><br><span class="line">Address                          7400 EAST OSBORN ROAD</span><br><span class="line">City                                        SCOTTSDALE</span><br><span class="line">State                                               AZ</span><br><span class="line">ZIP Code                                         85251</span><br><span class="line">County Name                                   MARICOPA</span><br><span class="line">Phone Number                            (480) 882-4004</span><br><span class="line">Hospital Type                     Acute Care Hospitals</span><br><span class="line">Hospital Ownership                         Proprietary</span><br><span class="line">Name: 26270, dtype: object</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hospital_reimbursement.loc[868740,:]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Provider Name                SCOTTSDALE OSBORN MEDICAL CENTER</span><br><span class="line">Provider Street Address                 7400 EAST OSBORN ROAD</span><br><span class="line">Provider City                                      SCOTTSDALE</span><br><span class="line">Provider State                                             AZ</span><br><span class="line">Provider Zip Code                                       85251</span><br><span class="line">Total Discharges                                           62</span><br><span class="line">Average Covered Charges                               39572.2</span><br><span class="line">Average Total Payments                                6551.47</span><br><span class="line">Average Medicare Payments                             5451.89</span><br><span class="line">Name: 868740, dtype: object</span><br></pre></td></tr></table></figure>
+
+<p>是的。它们看起来很匹配。</p>
+<p>现在我们知道了匹配项，还需要对数据进行调整，以便更容易地对所有数据进行检查。我将为每一个数据集创建一个用于连接的名称和地址查询。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">hospital_accounts[&#39;Acct_Name_Lookup&#39;] &#x3D; hospital_accounts[[</span><br><span class="line">    &#39;Facility Name&#39;, &#39;Address&#39;, &#39;City&#39;, &#39;State&#39;</span><br><span class="line">]].apply(lambda x: &#39;_&#39;.join(x), axis&#x3D;1)</span><br><span class="line"></span><br><span class="line">hospital_reimbursement[&#39;Reimbursement_Name_Lookup&#39;] &#x3D; hospital_reimbursement[[</span><br><span class="line">    &#39;Provider Name&#39;, &#39;Provider Street Address&#39;, &#39;Provider City&#39;,</span><br><span class="line">    &#39;Provider State&#39;</span><br><span class="line">]].apply(lambda x: &#39;_&#39;.join(x), axis&#x3D;1)</span><br><span class="line"></span><br><span class="line">account_lookup &#x3D; hospital_accounts[[&#39;Acct_Name_Lookup&#39;]].reset_index()</span><br><span class="line">reimbursement_lookup &#x3D; hospital_reimbursement[[&#39;Reimbursement_Name_Lookup&#39;]].reset_index()</span><br></pre></td></tr></table></figure>
+
+<p>现在与帐户信息数据合并:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">account_merge &#x3D; potential_matches.merge(account_lookup, how&#x3D;&#39;left&#39;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/account_merge_20200312144901.png" alt=""></p>
+<p>最后，与报销数据合并：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">final_merge &#x3D; account_merge.merge(reimbursement_lookup, how&#x3D;&#39;left&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>看看最终的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cols &#x3D; [&#39;Account_Num&#39;, &#39;Provider_Num&#39;, &#39;Score&#39;,</span><br><span class="line">        &#39;Acct_Name_Lookup&#39;, &#39;Reimbursement_Name_Lookup&#39;]</span><br><span class="line">final_merge[cols].sort_values(by&#x3D;[&#39;Account_Num&#39;, &#39;Score&#39;], ascending&#x3D;False)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/final_lookup_20200312144938.png" alt=""></p>
+<p>此处演示的方法和fuzzymatcher有所不同，fuzzymatcher往往包含多个匹配结果，例如，帐号32725可以匹配两个对应项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">final_merge[final_merge[&#39;Account_Num&#39;]&#x3D;&#x3D;32725][cols]</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/potential_match_20200312145015.png" alt=""></p>
+<p>在这种情况下，需要有人找出哪一个匹配是最好的。幸运的是，很容易将所有数据保存到Excel中并进行进一步分析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">final_merge.sort_values(by&#x3D;[&#39;Account_Num&#39;, &#39;Score&#39;],</span><br><span class="line">                    ascending&#x3D;False).to_excel(&#39;merge_list.xlsx&#39;,</span><br><span class="line">                                              index&#x3D;False)</span><br></pre></td></tr></table></figure>
+
+<p>从这个例子中可以看到，RecordLinkage工具包比fuzzymatcher更加灵活，便于自定义。RecordLinkage也并非完美，例如对个人而言，RecordLinkage需要执行更多操作步骤才能完成数据的比较。</p>
+<h2 id="删除重复数据"><a href="#删除重复数据" class="headerlink" title="删除重复数据"></a>删除重复数据</h2><p>RecordLinkage的另一个用途是查找数据集里的重复记录，这个过程与匹配非常相似，只不过是你传递的是一个针对自身的DataFrame。</p>
+<p>我们来看一个使用类似数据集的例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hospital_dupes &#x3D; pd.read_csv(&#39;hospital_account_dupes.csv&#39;, index_col&#x3D;&#39;Account_Num&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>然后创建索引对象，并基于<code>State</code>执行<code>sortedneighbourhood</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dupe_indexer &#x3D; recordlinkage.Index()</span><br><span class="line">dupe_indexer.sortedneighbourhood(left_on&#x3D;&#39;State&#39;)</span><br><span class="line">dupe_candidate_links &#x3D; dupe_indexer.index(hospital_dupes)</span><br></pre></td></tr></table></figure>
+
+<p>根据城市、名称和地址检查是否有重复记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">compare_dupes &#x3D; recordlinkage.Compare()</span><br><span class="line">compare_dupes.string(&#39;City&#39;, &#39;City&#39;, threshold&#x3D;0.85, label&#x3D;&#39;City&#39;)</span><br><span class="line">compare_dupes.string(&#39;Phone Number&#39;,</span><br><span class="line">                    &#39;Phone Number&#39;,</span><br><span class="line">                    threshold&#x3D;0.85,</span><br><span class="line">                    label&#x3D;&#39;Phone_Num&#39;)</span><br><span class="line">compare_dupes.string(&#39;Facility Name&#39;,</span><br><span class="line">                    &#39;Facility Name&#39;,</span><br><span class="line">                    threshold&#x3D;0.80,</span><br><span class="line">                    label&#x3D;&#39;Hosp_Name&#39;)</span><br><span class="line">compare_dupes.string(&#39;Address&#39;,</span><br><span class="line">                    &#39;Address&#39;,</span><br><span class="line">                    threshold&#x3D;0.85,</span><br><span class="line">                    label&#x3D;&#39;Hosp_Address&#39;)</span><br><span class="line">dupe_features &#x3D; compare_dupes.compute(dupe_candidate_links, hospital_dupes)</span><br></pre></td></tr></table></figure>
+
+<p>因为只与单个DataFrame进行比较，因此得到的DataFrame带有<code>Account_Num_1</code>和<code>Account_Num_2</code>:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/dupe_detect_20200312145114.png" alt=""></p>
+<p>下面是我们的评分方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dupe_features.sum(axis&#x3D;1).value_counts().sort_index(ascending&#x3D;False)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">3.0         7</span><br><span class="line">2.0       206</span><br><span class="line">1.0      7859</span><br><span class="line">0.0    973205</span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>添加分数列:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">potential_dupes &#x3D; dupe_features[dupe_features.sum(axis&#x3D;1) &gt; 1].reset_index()</span><br><span class="line">potential_dupes[&#39;Score&#39;] &#x3D; potential_dupes.loc[:, &#39;City&#39;:&#39;Hosp_Address&#39;].sum(axis&#x3D;1)</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个例子：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/potential_dupes_20200312145223.png" alt=""></p>
+<p>这些记录很有可能是重复的，我们来查看其中一组，看看他们是不是相同的记录:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hospital_dupes.loc[51567, :]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Facility Name                SAINT VINCENT HOSPITAL</span><br><span class="line">Address                      835 SOUTH VAN BUREN ST</span><br><span class="line">City                                      GREEN BAY</span><br><span class="line">State                                            WI</span><br><span class="line">ZIP Code                                      54301</span><br><span class="line">County Name                                   BROWN</span><br><span class="line">Phone Number                         (920) 433-0112</span><br><span class="line">Hospital Type                  Acute Care Hospitals</span><br><span class="line">Hospital Ownership    Voluntary non-profit - Church</span><br><span class="line">Name: 51567, dtype: object</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hospital_dupes.loc[41166, :]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Facility Name                   ST VINCENT HOSPITAL</span><br><span class="line">Address                          835 S VAN BUREN ST</span><br><span class="line">City                                      GREEN BAY</span><br><span class="line">State                                            WI</span><br><span class="line">ZIP Code                                      54301</span><br><span class="line">County Name                                   BROWN</span><br><span class="line">Phone Number                         (920) 433-0111</span><br><span class="line">Hospital Type                  Acute Care Hospitals</span><br><span class="line">Hospital Ownership    Voluntary non-profit - Church</span><br><span class="line">Name: 41166, dtype: object</span><br></pre></td></tr></table></figure>
+
+<p>没错，观察结果说明它们有可能是重复记录，姓名和地址相似，电话号码只少了一位数字。</p>
+<p>如你所见，这种是一个强大且相对容易的工具，用于检查数据和重复的记录。</p>
+<h2 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h2><p>除了这里展示的匹配方法之外，RecordLinkage还包含了用于匹配记录的几种机器学习方法。我鼓励感兴趣的读者阅读文档中的示例。</p>
+<p>其中一个非常方便的功能是：有一个基于浏览器的工具，它可以用来为机器学习算法生成记录对。</p>
+<p>本文所介绍的两个包，都包含一些预处理数据的功能，以便使匹配更加可靠。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在数据处理上，经常会遇到诸如“名称”和“地址”等文本字段连接不同的记录的问题，这是很有挑战性的。Python生态系统包含两个有用的库，它们可以使用多种算法将多个数据集的记录进行匹配。</p>
+<p>fuzzymatcher对全文搜索，通过概率实现记录连接，将两个DataFrames简单地匹配在一起。如果你有更大的数据集或需要使用更复杂的匹配逻辑，那么RecordLinkage是一组非常强大的工具，用于连接数据和删除重复项。</p>
+<p>原文链接：<a href="https://pbpython.com/record-linking.html" target="_blank" rel="noopener">https://pbpython.com/record-linking.html</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>为了方便大家阅读、查询本微信公众号的资源，回复：<strong>老齐</strong>，即可显示本公众号的服务目录。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#fuzzymatcher recordlinkage 合并数据集" >
+    <span class="tag-code">fuzzymatcher recordlinkage 合并数据集</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/11/old-code/">
+        <span class="nav-arrow">← </span>
+        
+          如何跳过古董代码的坑
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#引言"><span class="toc-nav-text">引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#问题"><span class="toc-nav-text">问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据"><span class="toc-nav-text">数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法1：fuzzymather包"><span class="toc-nav-text">方法1：fuzzymather包</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法2：RecordLinkage工具包"><span class="toc-nav-text">方法2：RecordLinkage工具包</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#删除重复数据"><span class="toc-nav-text">删除重复数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#高级用法"><span class="toc-nav-text">高级用法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/13/fuzzymatcher-and-record-linkage/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
