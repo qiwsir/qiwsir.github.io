@@ -10,7 +10,7 @@
   
   <title>
     
-      Jupyter不断演进的三大动力 | 老齐教室
+      Python中几种实现斐波那契数列的方法 | 老齐教室
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -148,36 +148,45 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <h2>Jupyter不断演进的三大动力</h2>
-    <p class="post-date">2020-03-15</p>
-    <section class="markdown-content"><p>作者：LJ MIRANDA</p>
+    <h2>Python中几种实现斐波那契数列的方法</h2>
+    <p class="post-date">2020-03-17</p>
+    <section class="markdown-content"><p>作者：Elliott Saslow</p>
 <p>翻译：老齐</p>
-<p>与本文相关的书籍：《跟老齐学Python：数据分析》《数据准备和特征工程》</p>
-<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
-<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
-<h2 id="数据科学的发展状况"><a href="#数据科学的发展状况" class="headerlink" title="数据科学的发展状况"></a>数据科学的发展状况</h2><p>数据科学领域日新月异，在当今时代，用诸如“21世纪最性感的工作”和“数据是新的石油”等说法来强化数据科学，已经并不时髦了，取而代之的是更现实的商业问题和更理性的技术挑战，数据科学所面对的变化，就是这两个方面。因此，现在需要我们做的：(1)分析来自生产和实验的需求，(2) 云技术的快速应用。</p>
-<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/axis_20200314155222.png" alt=""></p>
-<p>首先，生产需求多年来一直在增长。例如：在软件工程生命周期内创建数据产品或发布实验产品。随着机器学习工程师和数据科学软件开发人员的崛起，出现了越来越多的工程类就业岗位，这就是明证。此外，数据分析不再局限于把图表印刷出来，在产品发布、实验过程的重现等方面都有广泛需求，并且这种需求不断增长。</p>
-<p>其次，数据的指数增长使云计算成为大势所趋。我们无法用自己的笔记本电脑加载1TB的数据集！Docker和Kubernetes等工具的流行，使我们能够以前所未有的水平扩大数据处理的工作量。使用云技术，意味着我们要考虑系统的可伸缩、资源配置和有关基础设施。然而，尽管之前的Jupyter生态系统是数据科学家工具箱的一个主要组成部分，但它并不适用于这些变化：</p>
-<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/axis_with_jupyter_20200314155258.png" alt=""></p>
-<p>正如我说过的，我们所知道的Jupyter并不适用于这些变化。Jupyter生态系统适合探索，不适合生产。庞大的数据应该在一台机器上、而不是在一组机器上运行。然而，在过去的五年中，Jupyter的生态系统已经发展壮大。我们现在有了JupyterLab、一些插件、用于其他语言的新内核，以及可供我们使用的第三方工具。当然，我们仍然可以通过在终端中键入<code>jupyter notebook</code>来运行，但是现在这种做法已经远远不能满足需求了!</p>
-<p>这就引出了一个问题：是什么力量促成了这些变化?，我们如何利用这个更大的notebook生态系统来应对当今数据科学的变化?</p>
-<h2 id="三股变革的力量"><a href="#三股变革的力量" class="headerlink" title="三股变革的力量"></a>三股变革的力量</h2><p>Jupyter笔记本电脑生态系统正在成长，我认为这是由三种力量驱动的：</p>
+<p>与本文相关的图书推荐：《Python大学实用教程》《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<hr>
+<p>众所周知，斐波那契数列是一种非常重要的数列。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0,1,1,2,3,4,8,13,21,34,55,...</span><br></pre></td></tr></table></figure>
+
+<p>用递归的方式，可以这样定义斐波那契数列：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/f1_20200315141435.jpeg" alt=""></p>
+<p>按照上面的公式，可以用Python语言直接写出实现它的函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def fib_recursive(n):</span><br><span class="line">    if n &#x3D;&#x3D; 0: return 0</span><br><span class="line">    if n &#x3D;&#x3D; 1: return 1</span><br><span class="line">    else: return(fib_recursive(n-1)+fib_recursive(n-2))</span><br></pre></td></tr></table></figure>
+
+<p>不管什么时候，我们遇到某个算法的实现，总要问一问下面的问题：</p>
 <ul>
-<li><p>云平台：大数据需要大量的计算和存储，而普通消费者所用的机器并不总是能够满足需要。</p>
-</li>
-<li><p>开发环境：越来越多的数据科学团队开始采用软件工程的最佳实践方案——git、pull requests等版本管理操作。</p>
-</li>
-<li><p>从分析到生产的快速推进：在受控环境下检验假设是不够的，为分析而编写的软件应易于在产品中重复使用。</p>
-</li>
+<li>正确吗？正确</li>
+<li>耗时多少？</li>
+<li>是否可以改进？可以</li>
 </ul>
-<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/axis_with_jupyter_forces_20200314155332.png" alt=""></p>
-<p>趋向“云优先”的环境意味着我们可以借助更强大的机器来执行基于notebook的任务。例如，将项目放到服务器上，就能够在远程运行Jupyter，这个远程服务器允许做各项相关环境配置。另一方面，生产工作的日益流程化为我们提供了一系列工具，使我们能够用基于Jupyter的工具完成开发工作。我将在本文的下一部分展示更多这样的工具。</p>
-<p>最后，请注意，工具的增长并不依赖于单个实体或组织。正如我们稍后将看到的，填补这些空白的可能是贡献第三方插件的个人或组织。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在本系列的第一部分中，我们研究了数据科学领域的两个驱动因素：（1）云计算技术，（2）不断增长的生产需求。我们看到Jupyter只占这个生态系统的一小部分。也就是说，Jupyter生态系统经常用于探索（而不是生产），只在本地机器上运行（而不是在云端）。</p>
-<p>然后，使用相同的框架，我们确定了导致变化的三种力量，它们使Jupyter生态系统得以发展。这些力量可能促进了新工具、插件和产品的开发，以满足实际需求。</p>
-<p>在本系列的下一部分中，我将讨论如何使用Jupyter来应对这些变化。我将介绍一些工具和工作流程，它们在日常工作和辅助项目中成为我的助力。敬请关注。</p>
-<p>原文链接：<a href="https://ljvmiranda921.github.io/notebook/2020/03/06/jupyter-notebooks-in-2020/" target="_blank" rel="noopener">https://ljvmiranda921.github.io/notebook/2020/03/06/jupyter-notebooks-in-2020/</a></p>
+<p>现在，无需深入了解具体细节，用递归方式，属于贪心算法，需要花费大量计算步骤来完成。因此，让我们尝试使用列表来完成此操作，下面的方法可以加快处理速度并简化计算。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def fib_poly(n):</span><br><span class="line">    #注意0</span><br><span class="line">    if n &#x3D;&#x3D; 0:</span><br><span class="line">        return 0</span><br><span class="line">    #用列表保存数值</span><br><span class="line">    else:</span><br><span class="line">        f &#x3D; np.zeros(n+1)</span><br><span class="line">        f[0] &#x3D; 0</span><br><span class="line">        f[1] &#x3D; 1</span><br><span class="line">        for i in range(2,n+1):</span><br><span class="line">            f[i] &#x3D; f[i-1] + f[i-2]</span><br><span class="line">        return f[n]</span><br></pre></td></tr></table></figure>
+
+<p>Ok，来看看它的表现。下图显示了执行上面两个函数的所用时间比较。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/f2_20200315141544.jpg" alt=""></p>
+<p>哇！注意观察它们所用时间的差别！后面这个函数比前面的递归方法快多了。</p>
+<p>下面的图示中很明显地表示了二者执行时间的差异。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/f3_20200315141622.jpg" alt=""></p>
+<p>哇！ 令人难以置信，递归居然如此慢。还有更快的方法呢？ 应该有：</p>
+<p>如下所示，可以用矩阵的方法计算斐波那契数列，会更快。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/f4_20200315141707.jpg" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">def fib_matrix(n):</span><br><span class="line">    Matrix &#x3D; np.matrix([[0,1],[1,1]])</span><br><span class="line">    vec &#x3D; np.array([[0],[1]])</span><br><span class="line">    return np.matmul(Matrix**n,vec)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/f5_20200315141740.jpg" alt=""></p>
+<p>这真的很酷，在整个测试过程中，矩阵算法在几乎恒定的时间内执行。关于用矩阵实现斐波那契数列的方法，可以参考 <strong>《跟老齐学Python：数据分析》</strong> ，书中有相关说明。</p>
+<p><strong>注：</strong> 此外，斐波那契数列还能够用生成器、迭代器方式实现，这些实现方法，可以到 <strong>《Python大学实用教程》</strong> 查阅。</p>
+<p>原文链接：<a href="https://medium.com/future-vision/fibonacci-sequence-algorithm-5eebae4e85be" target="_blank" rel="noopener">https://medium.com/future-vision/fibonacci-sequence-algorithm-5eebae4e85be</a></p>
 <blockquote>
 <p>搜索技术问答的公众号：老齐教室</p>
 </blockquote>
@@ -193,20 +202,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2020/03/13/fuzzymatcher-and-record-linkage/">
+      <a class="nav-left" href="/2020/03/15/jupyter-introduce/">
         <span class="nav-arrow">← </span>
         
-          如何合并没有共同标识符的数据集
+          Jupyter不断演进的三大动力
         
       </a>
     
-    
-      <a class="nav-right" href="/2020/03/17/fibs-seq/">
-        
-          Python中几种实现斐波那契数列的方法
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -251,7 +253,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据科学的发展状况"><span class="toc-nav-text">数据科学的发展状况</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#三股变革的力量"><span class="toc-nav-text">三股变革的力量</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+      <ol class="nav">none</ol>
     
   </div>
 </aside>
@@ -261,7 +263,7 @@
 
 <script>
   (function () {
-    var url = 'https://qiwsir.github.io/2020/03/15/jupyter-introduce/';
+    var url = 'https://qiwsir.github.io/2020/03/17/fibs-seq/';
     var banner = ''
     /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
