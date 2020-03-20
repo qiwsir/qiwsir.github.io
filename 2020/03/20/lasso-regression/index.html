@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      写给初学者的LASSO回归 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>写给初学者的LASSO回归</h2>
+    <p class="post-date">2020-03-20</p>
+    <section class="markdown-content"><p>作者：Benjamin Obi Tayo Ph.D.</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书：《数据准备和特征工程》</p>
+<img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" style="zoom:67%;" />
+
+<hr>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/L1_20200318143411.png" alt=""></p>
+<p>LASSO回归是对回归算法正则化的一个例子。正则化是一种方法，它通过增加额外参数来解决过拟合问题，从而减少模型的参数、限制复杂度。正则化线性回归最常用的三种方法是岭回归、最小绝对值收敛和选择算子（LASSO）以及弹性网络回归。</p>
+<p>在本文中，我将重点介绍LASSO，并且对岭回归和弹性网络回归做简单的扩展。</p>
+<p>假设我们想在一个数据集上建立一个正则化回归模型，这个数据集包含n个观察和m个特征。</p>
+<p>LASSO回归是一个L1惩罚模型，我们只需将L1范数添加到最小二乘的代价函数中：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/L2_20200318143448.png" alt=""></p>
+<p>看这里</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/L3_20200318143529.png" alt=""></p>
+<p>通过增大超参数α的值，我们加强了模型的正则化强度，并降低了模型的权重。请注意，没有把截距项w0正则化，还要注意α=0对应于标准回归。</p>
+<p>通过调整正则化的强度，某些权重可以变为零，这使得LASSO方法成为一种非常强大的降维技巧。</p>
+<h2 id="LASSO算法"><a href="#LASSO算法" class="headerlink" title="LASSO算法"></a>LASSO算法</h2><ul>
+<li>对于给定的α，只需把代价函数最小化，即可找到权重或模型参数w。</li>
+<li>然后使用下面的等式计算w（不包括w0）的范数：</li>
+</ul>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/L4_20200318143605.png" alt=""></p>
+<h2 id="案例研究：使用游轮数据集预测船员人数"><a href="#案例研究：使用游轮数据集预测船员人数" class="headerlink" title="案例研究：使用游轮数据集预测船员人数"></a>案例研究：使用游轮数据集预测船员人数</h2><p>我们将使用邮轮数据集cruise_ship_info.csv来演示LASSO技术</p>
+<blockquote>
+<p>本案例已经发布在实验平台，请关注微信公众号：老齐教室。并回复：<code>#姓名+手机号+案例#</code>获取。<strong>注意：<code>#</code>必须要有</strong>。</p>
+</blockquote>
+<h3 id="1-导入必要的库"><a href="#1-导入必要的库" class="headerlink" title="1.导入必要的库"></a>1.导入必要的库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import pandas as pd</span><br><span class="line">import matplotlib.pyplot as plt</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-读取数据集并显示列"><a href="#2-读取数据集并显示列" class="headerlink" title="2.读取数据集并显示列"></a>2.读取数据集并显示列</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df &#x3D; pd.read_csv(&quot;cruise_ship_info.csv&quot;)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/L5_20200318143647.png" alt=""></p>
+<h3 id="3-选择重要的变量"><a href="#3-选择重要的变量" class="headerlink" title="3.选择重要的变量"></a>3.选择重要的变量</h3><p>从《数据准备和特征工程》中的有关阐述可知，协方差矩阵图可用于特征选择和降维。从前述数据集中发现，在6个预测特征（ <code>[‘age’, ‘tonnage’, ‘passengers’, ‘length’, ‘cabins’, ‘passenger_density’]</code>）中，如果我们假设重要特征与目标变量的相关系数为0.6或更大，那么目标变量“crew”与4个预测变量“tonnage”, “passengers”, “length, and “cabins”的相关性很强。因此，我们能够将特征空间的维数从6减少到4。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cols_selected &#x3D; [&#39;Tonnage&#39;, &#39;passengers&#39;, &#39;length&#39;, &#39;cabins&#39;,&#39;crew&#39;]</span><br><span class="line">df[cols_selected].head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/L6_20200318143722.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X &#x3D; df[cols_selected].iloc[:,0:4].values    # features matrix </span><br><span class="line">y &#x3D; df[cols_selected][&#39;crew&#39;].values        # target variable</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-实现LASSO回归"><a href="#4-实现LASSO回归" class="headerlink" title="4. 实现LASSO回归"></a>4. 实现LASSO回归</h3><h4 id="a-将数据集分成训练集和测试集"><a href="#a-将数据集分成训练集和测试集" class="headerlink" title="a.将数据集分成训练集和测试集"></a>a.将数据集分成训练集和测试集</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.model_selection import train_test_split</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test &#x3D; train_test_split( X, y, </span><br><span class="line">                                      test_size&#x3D;0.4, random_state&#x3D;0)</span><br></pre></td></tr></table></figure>
+
+<h4 id="b-特征数据区间化"><a href="#b-特征数据区间化" class="headerlink" title="b.特征数据区间化"></a>b.特征数据区间化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.preprocessing import StandardScaler</span><br><span class="line"></span><br><span class="line">sc_y &#x3D; StandardScaler()</span><br><span class="line">sc_x &#x3D; StandardScaler()</span><br><span class="line">y_std &#x3D; sc_y.fit_transform(y_train[:, np.newaxis]).flatten()</span><br><span class="line">X_train_std &#x3D; sc_x.fit_transform(X_train)</span><br><span class="line">X_test_std &#x3D; sc_x.transform(X_test)</span><br><span class="line">y_train_std &#x3D; sc_y.fit_transform(y_train[:, np.newaxis]).flatten()</span><br></pre></td></tr></table></figure>
+
+<h4 id="c-实现LASSO回归"><a href="#c-实现LASSO回归" class="headerlink" title="c.实现LASSO回归"></a>c.实现LASSO回归</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.linear_model import Lasso</span><br><span class="line">from sklearn.metrics import r2_score</span><br><span class="line"></span><br><span class="line">alpha &#x3D; np.linspace(0.01,0.4,10)</span><br><span class="line">r2_train &#x3D;[]</span><br><span class="line">r2_test &#x3D;[]</span><br><span class="line">norm &#x3D; []</span><br><span class="line">alpha &#x3D; np.linspace(0.01,0.4,10)</span><br><span class="line">for i in range(10):</span><br><span class="line">    lasso &#x3D; Lasso(alpha &#x3D; alpha[i])</span><br><span class="line">    lasso.fit(X_train_std,y_train_std)</span><br><span class="line">    y_train_std &#x3D; lasso.predict(X_train_std)</span><br><span class="line">    y_test_std &#x3D; lasso.predict(X_test_std)</span><br><span class="line">    r2_train &#x3D; np.append(r2_train,</span><br><span class="line">              r2_score(y_train,sc_y.inverse_transform(y_train_std)))</span><br><span class="line">    r2_test &#x3D; np.append(r2_test,</span><br><span class="line">              r2_score(y_test,sc_y.inverse_transform(y_test_std)))</span><br><span class="line">    norm &#x3D; np.append(norm,np.linalg.norm(lasso.coef_))</span><br></pre></td></tr></table></figure>
+
+<h4 id="d-可视化结果"><a href="#d-可视化结果" class="headerlink" title="d.可视化结果"></a>d.可视化结果</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize&#x3D;(8,6))</span><br><span class="line">plt.scatter(alpha,r2_train,label&#x3D;&#39;r2_train&#39;)</span><br><span class="line">plt.plot(alpha,r2_train)</span><br><span class="line">plt.scatter(alpha,r2_test,label&#x3D;&#39;r2_test&#39;)</span><br><span class="line">plt.plot(alpha,r2_test)</span><br><span class="line">plt.scatter(alpha,norm,label &#x3D; &#39;norm&#39;)</span><br><span class="line">plt.plot(alpha,norm)</span><br><span class="line">plt.ylim(-0.1,1)</span><br><span class="line">plt.xlim(0,.43)</span><br><span class="line">plt.xlabel(&#39;alpha&#39;, size &#x3D; 14)</span><br><span class="line">plt.ylabel(&#39;R2_score&#39;,size &#x3D; 14)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/L7_20200318143808.png" alt=""></p>
+<p>我们观察到，随着正则化参数α的增加，回归系数的范数变得越来越小。这意味着更多的回归系数被强制为零，这会增加偏差（模型过度简化）。α保持较低值时，比如α=0.1或更低时，是偏差和方差的最佳平衡点。在决定使用哪种降维方法之前，应将该方法与主成分分析法（PCA）进行比较。</p>
+<p>原文链接：<a href="https://towardsdatascience.com/lasso-regression-tutorial-fd68de0aa2a2" target="_blank" rel="noopener">https://towardsdatascience.com/lasso-regression-tutorial-fd68de0aa2a2</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#LASSO 线性回归 正则化" >
+    <span class="tag-code">LASSO 线性回归 正则化</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/17/fibs-seq/">
+        <span class="nav-arrow">← </span>
+        
+          Python中几种实现斐波那契数列的方法
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LASSO算法"><span class="toc-nav-text">LASSO算法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#案例研究：使用游轮数据集预测船员人数"><span class="toc-nav-text">案例研究：使用游轮数据集预测船员人数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-导入必要的库"><span class="toc-nav-text">1.导入必要的库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-读取数据集并显示列"><span class="toc-nav-text">2.读取数据集并显示列</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-选择重要的变量"><span class="toc-nav-text">3.选择重要的变量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-实现LASSO回归"><span class="toc-nav-text">4. 实现LASSO回归</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#a-将数据集分成训练集和测试集"><span class="toc-nav-text">a.将数据集分成训练集和测试集</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#b-特征数据区间化"><span class="toc-nav-text">b.特征数据区间化</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#c-实现LASSO回归"><span class="toc-nav-text">c.实现LASSO回归</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#d-可视化结果"><span class="toc-nav-text">d.可视化结果</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/20/lasso-regression/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
