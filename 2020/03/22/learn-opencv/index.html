@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      手把手教你使用图像处理利器OpenCV | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>手把手教你使用图像处理利器OpenCV</h2>
+    <p class="post-date">2020-03-22</p>
+    <section class="markdown-content"><p>作者：Muhammad Junaid Khalid</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>在本文中，将学习如何使用Python语言进行图像处理，我们不会局限于一个单独的库或框架，然而，有一个库的使用率将会是最高的，那就是OpenCV。我们一开始会讨论一些图像处理，然后继续探讨不同的应用/场景，也就是图像处理的用武之地。开始吧!</p>
+<h2 id="什么是图像处理"><a href="#什么是图像处理" class="headerlink" title="什么是图像处理?"></a>什么是图像处理?</h2><p>在深入研究图像处理的方法之前，重要的是要了解什么是图像处理，特别是这项技术在处理大量图片方面的角色。图像处理完整的说法是“数字图像处理”，经常使用图像处理的领域是“计算机视觉”。对这两个术语不要混淆，图像处理算法和计算机视觉(CV)算法都以图像为输入，然而，在图像处理中，输出也是图像，而在计算机视觉中，输出可以是关于图像的一些特征或信息。</p>
+<h2 id="为什么需要图像处理"><a href="#为什么需要图像处理" class="headerlink" title="为什么需要图像处理?"></a>为什么需要图像处理?</h2><p>我们收集或生成的数据大部分是原始数据，也就是说，由于一些可能的原因，这些数据不适合直接用于应用程序。因此，我们需要首先分析它，执行必要的预处理，然后使用它——特别推荐《数据准备和特征工程》，此书即为这方面最佳读物。</p>
+<p>例如，我们正在尝试构建一个关于猫的分类器。我们的程序会把一个图像作为输入，然后告诉我们这个图像是否包含一只猫。构建这个分类器的第一步是收集数百张含有猫的图片。一个常见的问题是，收集的所有图片的大小都不相同，因此在将它们提供给模型进行训练之前，需要调整它们的大小或者把它们进行预处理，使尺寸符合标准。</p>
+<p>为什么图像处理对于任何计算机视觉应用序都是必不可少的？以上提到的只是众多原因之一。</p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p>为了轻松地学习本文内容，你需要已经具备如下知识。</p>
+<p>首先，应该具备一定的编程语言技能，本文使用的是Python语言，如果尚未掌握此语言，推荐阅读《跟老齐学Python：轻松入门》或《Python大学实用教程》。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<p>其次，你应该了解什么是机器学习以及它的基本工作原理。因为在本文中我们将使用一些机器学习算法来进行图像处理。</p>
+<p>另外，如果你之前接触过或掌握了OpenCV的基本知识，也会有所帮助。但这不是必需的。</p>
+<p>还有，你一定要了解图像在内存中究竟是如何表示的。每幅图像都由一组像素表示，即像素值矩阵。对于灰度图像，像素值的范围是0到255，它们表示该像素的强度。例如，如果你有一个20×20维的图像，它将由一个20x20的矩阵表示(像素值总共是400)。</p>
+<p>如果你正在处理彩色图像，你应该知道它有三个通道——红、绿、蓝(RGB)。因此，一个彩色图像有三个这样的矩阵。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>注意: 由于我们将通过Python使用OpenCV，所以你必须会实用它，前面推荐了关于Python的书籍。下面依次说明在不同操作系统中OpenCV的安装方法：</p>
+<ul>
+<li>Windows</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install opencv-python</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>MacOS</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install opencv3 --with-contrib --with-python3</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Linux</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install libopencv-dev python-opencv</span><br></pre></td></tr></table></figure>
+
+<p>要检查是否安装成功，请在Python交互模式中运行以下命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br></pre></td></tr></table></figure>
+
+<h2 id="必备的基础知识"><a href="#必备的基础知识" class="headerlink" title="必备的基础知识"></a>必备的基础知识</h2><p>在进行图像处理之前，要先做一些准备。</p>
+<p>在本文中，我们将使用以下图像:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/rose1_20200321193726.png" alt=""></p>
+<p>注意: 为了在本文中显示该图像，对其进行了缩放，但是我们使用的图像原始大小约为1180x786。</p>
+<p>你可能注意到图像现在是彩色的，这意味着它由三个颜色通道表示，即红色、绿色和蓝色。我们将把图像转换成灰度，并使用下面的代码将图像分割成单独的通道。</p>
+<h3 id="找到图像细节"><a href="#找到图像细节" class="headerlink" title="找到图像细节"></a>找到图像细节</h3><p>使用<code>imread()</code>函数加载图像后，我们可以得到关于它的一些简单属性，比如像素的数量和尺寸:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line"></span><br><span class="line">img &#x3D; cv2.imread(&#39;rose.jpg&#39;)</span><br><span class="line"></span><br><span class="line">print(&quot;Image Properties&quot;)</span><br><span class="line">print(&quot;- Number of Pixels: &quot; + str(img.size))</span><br><span class="line">print(&quot;- Shape&#x2F;Dimensions: &quot; + str(img.shape))</span><br></pre></td></tr></table></figure>
+
+<p>Output:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Image Properties</span><br><span class="line">- Number of Pixels: 2782440</span><br><span class="line">- Shape&#x2F;Dimensions: (1180, 786, 3)</span><br></pre></td></tr></table></figure>
+
+<h3 id="将图像分割成单独的通道"><a href="#将图像分割成单独的通道" class="headerlink" title="将图像分割成单独的通道"></a>将图像分割成单独的通道</h3><p>现在，我们将使用OpenCV将图像分割成红色、绿色和蓝色的部分，并显示它们:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from google.colab.patches import cv2_imshow</span><br><span class="line"></span><br><span class="line">blue, green, red &#x3D; cv2.split(img)    # Split the image into its channels</span><br><span class="line">img_gs &#x3D; cv2.imread(&#39;rose.jpg&#39;, cv2.IMREAD_GRAYSCALE)    # Convert image to grayscale</span><br><span class="line"></span><br><span class="line">cv2_imshow(red) # Display the red channel in the image</span><br><span class="line">cv2_imshow(blue) # Display the red channel in the image</span><br><span class="line">cv2_imshow(green) # Display the red channel in the image</span><br><span class="line">cv2_imshow(img_gs) # Display the grayscale version of image</span><br></pre></td></tr></table></figure>
+
+<p>为了简单起见，我们只显示灰度图像。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/rose2_20200321193815.png" alt=""></p>
+<h2 id="图像阈值"><a href="#图像阈值" class="headerlink" title="图像阈值"></a>图像阈值</h2><p>阈值的概念非常简单。正如上面在图像表示中所讨论的，像素值可以是0到255之间的任何值。假设我们想要将一幅图像转二值化，即指定一个像素值为0或1。为此，我们可以设置阈值。例如，如果阈值(T)为125，那么所有大于125的像素将被赋值为1，所有小于或等于该值的像素将被赋值为0。下面，我们通过代码来更好地理解它。</p>
+<p>将下面的图像用上述方法进行转换：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/rose3_20200321193909.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line"></span><br><span class="line"># Read image</span><br><span class="line">img &#x3D; cv2.imread(&#39;image.png&#39;, 0)</span><br><span class="line"></span><br><span class="line"># Perform binary thresholding on the image with T &#x3D; 125</span><br><span class="line">r, threshold &#x3D; cv2.threshold(img, 125, 255, cv2.THRESH_BINARY)</span><br><span class="line">cv2_imshow(threshold)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/rose4_20200321193943.png" alt=""></p>
+<p>正如你所看到的, 二值化之后，出现了两个区域，即黑色区域(像素值0)和白色区域(像素值1)。原来, 我们设置的阈值正好在图像的中间，这就是为什么黑白值在那里被分割。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="1-去除图像中的噪声"><a href="#1-去除图像中的噪声" class="headerlink" title="1:去除图像中的噪声"></a>1:去除图像中的噪声</h3><p>现在你已经对图像处理的概念和用途有了基本的了解，接下来让我们来了解一下它的一些具体应用。</p>
+<p>在大多数情况下，我们收集的原始数据有噪声，也就是说，不需要的特征使图像很难被感知。虽然这些图像可以直接用于特征抽取，但是算法的准确性会受到很大的影响。这就是为什么在将图像传递给算法以获得更好的精度之前，要对图像进行处理的原因。</p>
+<p>有许多不同类型的噪声，如高斯噪声，椒盐噪声等。我们可以通过应用滤波器来去除图像中的噪声，或者至少将其影响降到最低。在滤波器方面也有很多选择，每一个滤波器都有不同的优点。因此，对于特定类型的噪声来说，总有一个是最好的。</p>
+<p>为了更好地理解这一点，我们将在上面的玫瑰色图像的灰度版本中添加“盐和胡椒粉”噪声，然后尝试使用不同的滤波器去除图像中的噪声，看看哪一个最适合这种类型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line"># Adding salt &amp; pepper noise to an image</span><br><span class="line"></span><br><span class="line">def salt_pepper(prob):</span><br><span class="line">      # Extract image dimensions</span><br><span class="line">      row, col &#x3D; img_gs.shape</span><br><span class="line"></span><br><span class="line">      # Declare salt &amp; pepper noise ratio</span><br><span class="line">      s_vs_p &#x3D; 0.5</span><br><span class="line">      output &#x3D; np.copy(img_gs)</span><br><span class="line"></span><br><span class="line">      # Apply salt noise on each pixel individually</span><br><span class="line">      num_salt &#x3D; np.ceil(prob * img_gs.size * s_vs_p)</span><br><span class="line">      coords &#x3D; [np.random.randint(0, i - 1, int(num_salt))</span><br><span class="line">            for i in img_gs.shape]</span><br><span class="line">      output[coords] &#x3D; 1</span><br><span class="line"></span><br><span class="line">      # Apply pepper noise on each pixel individually</span><br><span class="line">      num_pepper &#x3D; np.ceil(prob * img_gs.size * (1. - s_vs_p))</span><br><span class="line">      coords &#x3D; [np.random.randint(0, i - 1, int(num_pepper))</span><br><span class="line">            for i in img_gs.shape]</span><br><span class="line">      output[coords] &#x3D; 0</span><br><span class="line">      cv2_imshow(output)</span><br><span class="line"></span><br><span class="line">      return output</span><br><span class="line"></span><br><span class="line"># Call salt &amp; pepper function with probability &#x3D; 0.5</span><br><span class="line"># on the grayscale image of rose</span><br><span class="line">sp_05 &#x3D; salt_pepper(0.5)</span><br><span class="line"></span><br><span class="line"># Store the resultant image as &#39;sp_05.jpg&#39;</span><br><span class="line">cv2.imwrite(&#39;sp_05.jpg&#39;, sp_05)</span><br></pre></td></tr></table></figure>
+
+<p>好的，我们已经把噪声添加到玫瑰图像，这是它现在的样子：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/rose5_20200321194023.png" alt=""></p>
+<p>让我们现在应用不同的滤波器，并记下观察结果，即每个滤波器降噪的效果。</p>
+<h4 id="锐化滤波器"><a href="#锐化滤波器" class="headerlink" title="锐化滤波器"></a>锐化滤波器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Create our sharpening kernel, the sum of all values must equal to one for uniformity</span><br><span class="line">kernel_sharpening &#x3D; np.array([[-1,-1,-1],</span><br><span class="line">                              [-1, 9,-1],</span><br><span class="line">                              [-1,-1,-1]])</span><br><span class="line"></span><br><span class="line"># Applying the sharpening kernel to the grayscale image &amp; displaying it.</span><br><span class="line">print(&quot;\n\n--- Effects on S&amp;P Noise Image with Probability 0.5 ---\n\n&quot;)</span><br><span class="line"></span><br><span class="line"># Applying filter on image with salt &amp; pepper noise</span><br><span class="line">sharpened_img &#x3D; cv2.filter2D(sp_05, -1, kernel_sharpening)</span><br><span class="line">cv2_imshow(sharpened_img)</span><br></pre></td></tr></table></figure>
+
+<p>在有椒盐噪声的图像上应用滤波器得到的图像如下所示。通过与原始灰度图的对比，我们可以看出，它把图像调得太亮了，也无法突出玫瑰上的亮点。因此，我们可以得出结论，锐化滤波器并不能去除噪声。</p>
+<p>锐化滤波器输出:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/rose6_20200321194102.png" alt=""></p>
+<h4 id="中值滤波器"><a href="#中值滤波器" class="headerlink" title="中值滤波器"></a>中值滤波器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from scipy.ndimage import maximum_filter, minimum_filter</span><br><span class="line"></span><br><span class="line">def midpoint(img):</span><br><span class="line">    maxf &#x3D; maximum_filter(img, (3, 3))</span><br><span class="line">    minf &#x3D; minimum_filter(img, (3, 3))</span><br><span class="line">    midpoint &#x3D; (maxf + minf) &#x2F; 2</span><br><span class="line">    cv2_imshow(midpoint)</span><br><span class="line"></span><br><span class="line">print(&quot;\n\n---Effects on S&amp;P Noise Image with Probability 0.5---\n\n&quot;)</span><br><span class="line">midpoint(sp_05)</span><br></pre></td></tr></table></figure>
+<p>在有噪声的图像上应用中值滤波器，得到的图像如下所示。通过与原始灰度图像的对比，我们可以看出，与上面的核方法一样，图像的亮度调高了很多，然而，它能够突出玫瑰上的亮斑（即噪声）。因此，我们可以说，中值滤波器是比锐化滤波器更好的选择，但它仍然不能完全恢复原始图像。</p>
+<p>中值滤波器输出:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/rose7_20200321194145.png" alt=""></p>
+<h4 id="逆谐波均值滤波器"><a href="#逆谐波均值滤波器" class="headerlink" title="逆谐波均值滤波器"></a>逆谐波均值滤波器</h4><p>注意: 对这些滤波器的工作原理的阐述，超出了本文范畴，读者可以在网上搜索，我们还是从应用的层面来研究。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def contraharmonic_mean(img, size, Q):</span><br><span class="line">    num &#x3D; np.power(img, Q + 1)</span><br><span class="line">    denom &#x3D; np.power(img, Q)</span><br><span class="line">    kernel &#x3D; np.full(size, 1.0)</span><br><span class="line">    result &#x3D; cv2.filter2D(num, -1, kernel) &#x2F; cv2.filter2D(denom, -1, kernel)</span><br><span class="line">    return result</span><br><span class="line"></span><br><span class="line">print(&quot;\n\n--- Effects on S&amp;P Noise Image with Probability 0.5 ---\n\n&quot;)</span><br><span class="line">cv2_imshow(contraharmonic_mean(sp_05, (3,3), 0.5))</span><br></pre></td></tr></table></figure>
+
+<p>在有椒盐噪声的图像上应用逆谐波均值滤波器(<a href="https://en.wikipedia.org/wiki/Contraharmonic_mean)得到的图像如下图所示。通过与原始灰度图像的对比，我们可以看到：它几乎完美再现了原始图像。它的强度或亮度级别与原图是相同的，它突出了玫瑰上的亮点。因此，我们可以得出结论，逆谐波均值滤波器在处理椒盐噪声方面是非常有效的。" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Contraharmonic_mean)得到的图像如下图所示。通过与原始灰度图像的对比，我们可以看到：它几乎完美再现了原始图像。它的强度或亮度级别与原图是相同的，它突出了玫瑰上的亮点。因此，我们可以得出结论，逆谐波均值滤波器在处理椒盐噪声方面是非常有效的。</a></p>
+<p>逆谐波均值滤波器输出:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/rose8_20200321194227.png" alt=""></p>
+<p>现在我们已经找到了最佳滤波器，它可以有效地把有噪声的图像恢复到原始图像。我们可以继续下一个应用了。</p>
+<h3 id="2-使用Canny算子进行边缘检测"><a href="#2-使用Canny算子进行边缘检测" class="headerlink" title="2:使用Canny算子进行边缘检测"></a>2:使用Canny算子进行边缘检测</h3><p>到目前为止，我们使用的玫瑰图像的背景是不变的，也就是黑色的，因此，我们将把这个应用用于不同的图像，以更好地展示算法的功效。原因是，如果背景是恒定的，边缘检测任务就变得相当简单，这不是我们所希望的。</p>
+<p>在本文开始部分，我们提到了一个关于猫的分类器。现在我们延用这个例子，看看图像处理如何在其中扮演一个完整的角色。</p>
+<p>在分类算法中，首先扫描图像寻找“对象”。也就是说，当你输入一幅图像时，算法会找到图像中的所有对象，然后将它们与你试图寻找的对象进行特征比较。对于猫分类器，它会将在图像中找到的所有对象与猫图像的特征进行比较，如果找到匹配项，它会告诉我们输入图像中包含了一只猫。</p>
+<p>对于这个猫分类器，仅以一张猫的图像为例，以下是我们将要使用的图像:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/cat1_20200321194307.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line">import numpy as np</span><br><span class="line">from matplotlib import pyplot as plt</span><br><span class="line"></span><br><span class="line"># Declaring the output graph&#39;s size</span><br><span class="line">plt.figure(figsize&#x3D;(16, 16))</span><br><span class="line"></span><br><span class="line"># Convert image to grayscale</span><br><span class="line">img_gs &#x3D; cv2.imread(&#39;cat.jpg&#39;, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">cv2.imwrite(&#39;gs.jpg&#39;, img_gs)</span><br><span class="line"></span><br><span class="line"># Apply canny edge detector algorithm on the image to find edges</span><br><span class="line">edges &#x3D; cv2.Canny(img_gs, 100,200)</span><br><span class="line"></span><br><span class="line"># Plot the original image against the edges</span><br><span class="line">plt.subplot(121), plt.imshow(img_gs)</span><br><span class="line">plt.title(&#39;Original Gray Scale Image&#39;)</span><br><span class="line">plt.subplot(122), plt.imshow(edges)</span><br><span class="line">plt.title(&#39;Edge Image&#39;)</span><br><span class="line"></span><br><span class="line"># Display the two images</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>边缘检测输出:</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/cat2_20200321194340.png" alt=""></p>
+<p>正如你所看到的，图像中包含对象的部分（在本例中是一只猫）已经通过边缘检测用虚线标出或分隔开。现在你一定想知道，什么是边缘检测的Canny算子，它是怎么工作的？现在就讨论一下。</p>
+<p>要理解上述内容，需要讨论三个关键步骤。首先，它对图像进行降噪，降噪方式与前面讨论的方式类似。其次，它使用每个像素的一阶导数来找到边缘。这背后的逻辑是，在边缘存在的地方，会有一个突然的强度变化，导致一阶导数值达到峰值，从而使该像素成为“边缘像素”。</p>
+<p>最后，进行滞后阈值化；上面我们说过，在一个边缘的一阶导数值会有一个峰值，但是我们没有说：这个峰值需要有多高，才能被归类为一个边缘——这叫做阈值!在本文的前面，我们讨论了什么是简单的阈值。迟滞阈值法是在此基础上的一种改进，它利用两个阈值来代替一个阈值。这背后的原因是，如果阈值过高，我们可能会错过一些真正的边缘(真负例)，如果阈值过低，我们会得到很多被归类为边缘的点，而实际上不是边缘(假正例)。一个阈值设置为高，一个设置为低，将所有高于“高阈值”的点标识为边缘，然后对所有高于“低阈值”但低于“高阈值”的点进行评估；边缘上的点确定之后，与边缘点靠近或相邻的点也被确定为边缘，其余的点被丢弃。</p>
+<p>这些是Canny算子用于识别图像边缘的基本概念/方法。</p>
+<p><strong>译者注：</strong> Canny算子是澳洲计算机科学家约翰·坎尼（John F. Canny）于1986年开发出来的一个多级边缘检测算法，其目标是找到一个最优的边缘.</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在本文中，我们学习了如何在不同的平台(如Windows、MacOS和Linux)上安装OpenCV，以及如何验证安装成功。OpenCV是Python中最流行的图像处理库。</p>
+<p>接着我们讨论了什么是图像处理，以及它在机器学习的计算机视觉领域中的应用。我们讨论了一些常见的噪声类型，以及如何使用不同的滤波器将噪声从图像中去除，以便在应用中使用这些图像。</p>
+<p>此外，我们还了解了图像处理如何在高端应用（如：对象检测或分类）中发挥不可或缺的作用。请注意，这篇文章只是冰山一角，数字图像处理还有更多的内容，不可能在一篇短文中全部涵盖。请关注微信公众号「老齐教室」，这里还会刊发有关图像处理的文章。</p>
+<p>原文链接：<a href="https://stackabuse.com/introduction-to-image-processing-in-python-with-opencv/" target="_blank" rel="noopener">https://stackabuse.com/introduction-to-image-processing-in-python-with-opencv/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#OpenCV 图像处理 数据准备 特征工程" >
+    <span class="tag-code">OpenCV 图像处理 数据准备 特征工程</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/20/lasso-regression/">
+        <span class="nav-arrow">← </span>
+        
+          写给初学者的LASSO回归
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#概要"><span class="toc-nav-text">概要</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是图像处理"><span class="toc-nav-text">什么是图像处理?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么需要图像处理"><span class="toc-nav-text">为什么需要图像处理?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预备知识"><span class="toc-nav-text">预备知识</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装"><span class="toc-nav-text">安装</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#必备的基础知识"><span class="toc-nav-text">必备的基础知识</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#找到图像细节"><span class="toc-nav-text">找到图像细节</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#将图像分割成单独的通道"><span class="toc-nav-text">将图像分割成单独的通道</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#图像阈值"><span class="toc-nav-text">图像阈值</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#应用"><span class="toc-nav-text">应用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-去除图像中的噪声"><span class="toc-nav-text">1:去除图像中的噪声</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#锐化滤波器"><span class="toc-nav-text">锐化滤波器</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#中值滤波器"><span class="toc-nav-text">中值滤波器</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#逆谐波均值滤波器"><span class="toc-nav-text">逆谐波均值滤波器</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-使用Canny算子进行边缘检测"><span class="toc-nav-text">2:使用Canny算子进行边缘检测</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/22/learn-opencv/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
