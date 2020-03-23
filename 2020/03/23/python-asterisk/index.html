@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python初学者应该了解的星号（*） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python初学者应该了解的星号（*）</h2>
+    <p class="post-date">2020-03-23</p>
+    <section class="markdown-content"><p>作者：mingrammer</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《Python大学实用教程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt="本书各大电商平台有售"></p>
+<hr>
+<p>与其他编程语言相比，Python语言的操作类型更多样化。</p>
+<p>特别是星号（*），在Python中是一个用途广泛的操作符，而不仅仅用于两个数字相乘的运算之中。在本文中，我们将讨论星号的多种用途。</p>
+<p>这里总结了4种星号的应用场景：</p>
+<ul>
+<li>作为乘法和乘方的运算符</li>
+<li>表示序列中元素的重复</li>
+<li>用于收集参数（可以称之为“打包”）</li>
+<li>用于容器类对象的解包</li>
+</ul>
+<p>下面逐一进行说明。</p>
+<h2 id="乘法或乘方的运算符"><a href="#乘法或乘方的运算符" class="headerlink" title="乘法或乘方的运算符"></a>乘法或乘方的运算符</h2><p>对此你一定不陌生，像乘法一样，Python中也内置了乘方运算符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 2 * 3 </span><br><span class="line">6 </span><br><span class="line">&gt;&gt;&gt; 2 ** 3 </span><br><span class="line">8 </span><br><span class="line">&gt;&gt;&gt; 1.414 * 1.414 </span><br><span class="line">1.9993959999999997</span><br><span class="line">&gt;&gt;&gt; 1.414 ** 1.414</span><br><span class="line">1.6320575353248798</span><br></pre></td></tr></table></figure>
+
+<h2 id="重复类列表的容器元素"><a href="#重复类列表的容器元素" class="headerlink" title="重复类列表的容器元素"></a>重复类列表的容器元素</h2><p>Python也支持类列表的容器类对象（即序列）与整数相乘，即为按照整数实现重复其中的元素数量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># Initialize the zero-valued list with 100 length</span><br><span class="line">zeros_list &#x3D; [0] * 100 </span><br><span class="line"></span><br><span class="line"># Declare the zero-valued tuple with 100 length</span><br><span class="line">zeros_tuple &#x3D; (0,) * 100  </span><br><span class="line"></span><br><span class="line"># Extending the &quot;vector_list&quot; by 3 times</span><br><span class="line">vector_list &#x3D; [[1, 2, 3]] </span><br><span class="line">for i, vector in enumerate(vector_list * 3):     </span><br><span class="line">    print(&quot;&#123;0&#125; scalar product of vector: &#123;1&#125;&quot;.format((i + 1), [(i + 1) * e for e in vector]))</span><br><span class="line"># 1 scalar product of vector: [1, 2, 3]</span><br><span class="line"># 2 scalar product of vector: [2, 4, 6]</span><br><span class="line"># 3 scalar product of vector: [3, 6, 9]</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数收集"><a href="#参数收集" class="headerlink" title="参数收集"></a>参数收集</h2><p>很多函数中，都会有不确定个数的参数。例如，如果我们不知道要提供多少个参数，或者因为什么原因必须传任意个参数等。</p>
+<p>在Python中有两类参数，一类是位置参数，另外一类是关键词参数，前者根据位置确定相应值，后者则是依据参数名称确定。</p>
+<p>在研究任意个位置/关键词参数之前，先讨论确定数量的位置参数和关键词参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># A function that shows the results of running competitions consisting of 2 to 4 runners.</span><br><span class="line">def save_ranking(first, second, third&#x3D;None, fourth&#x3D;None):</span><br><span class="line">    rank &#x3D; &#123;&#125;</span><br><span class="line">    rank[1], rank[2] &#x3D; first, second</span><br><span class="line">    rank[3] &#x3D; third if third is not None else &#39;Nobody&#39;</span><br><span class="line">    rank[4] &#x3D; fourth if fourth is not None else &#39;Nobody&#39;</span><br><span class="line">    print(rank)    </span><br><span class="line"></span><br><span class="line"># Pass the 2 positional arguments</span><br><span class="line">save_ranking(&#39;ming&#39;, &#39;alice&#39;)</span><br><span class="line"># Pass the 2 positional arguments and 1 keyword argument</span><br><span class="line">save_ranking(&#39;alice&#39;, &#39;ming&#39;, third&#x3D;&#39;mike&#39;)</span><br><span class="line"># Pass the 2 positional arguments and 2 keyword arguments (But, one of them was passed as like positional argument)</span><br><span class="line">save_ranking(&#39;alice&#39;, &#39;ming&#39;, &#39;mike&#39;, fourth&#x3D;&#39;jim&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>上述代码中的函数有2个位置参数：<code>first</code>、<code>second</code>，2个关键词参数：<code>third</code>、<code>fourth</code>。位置参数不能省略，必须给所有的位置参数按照其正确的位置传值。然而，对于关键词参数，在定义函数的时候你可以设置默认值，如果调用函数的时候省略了相应的实参，会以默认值作为实参，即关键词参数可以省略。</p>
+<p>如你所见，关键词参数可以省略，所以，它们就不能在未知参数前面进行声明，如果按照下面的方式声明参数，就必然抛出异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def save_ranking(first, second&#x3D;None, third, fourth&#x3D;None):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>但是，在<code>save_ranking(&#39;alice&#39;, &#39;ming&#39;, &#39;mike&#39;, fourth=&#39;jim&#39;)</code>调用中，提供了3个位置实参和一个关键词参数。是的，对于关键词参数，你也可以按照位置参数的方式传值，所对应的关键词能够接受依据位置所传的数据。按照此处的调用方法，<code>&#39;mike&#39;</code>就自动传给了<code>third</code>。</p>
+<p>以上我们已经讨论了参数的基本含义，从上述示例中，我们也能看出来，上面所定义的函数不能接收任意个数的参数，因为该函数的参数是固定数量的。因此，需要对该函数进行改造，让它能够接收任意个参数，不论是位置参数还是关键词参数。看下面的示例：</p>
+<h3 id="收集位置参数"><a href="#收集位置参数" class="headerlink" title="收集位置参数"></a>收集位置参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def save_ranking(*args):</span><br><span class="line">    print(args) </span><br><span class="line">save_ranking(&#39;ming&#39;, &#39;alice&#39;, &#39;tom&#39;, &#39;wilson&#39;, &#39;roy&#39;)</span><br><span class="line"># (&#39;ming&#39;, &#39;alice&#39;, &#39;tom&#39;, &#39;wilson&#39;, &#39;roy&#39;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="收集位置参数和关键词参数"><a href="#收集位置参数和关键词参数" class="headerlink" title="收集位置参数和关键词参数"></a>收集位置参数和关键词参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def save_ranking(*args, **kwargs):</span><br><span class="line">    print(args)     </span><br><span class="line">    print(kwargs)</span><br><span class="line">save_ranking(&#39;ming&#39;, &#39;alice&#39;, &#39;tom&#39;, fourth&#x3D;&#39;wilson&#39;, fifth&#x3D;&#39;roy&#39;)</span><br><span class="line"># (&#39;ming&#39;, &#39;alice&#39;, &#39;tom&#39;)</span><br><span class="line"># &#123;&#39;fourth&#39;: &#39;wilson&#39;, &#39;fifth&#39;: &#39;roy&#39;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，<code>*args</code>意味着收集任意个数的位置参数，<code>**kwargs</code>意味着收集任意个数的关键词参数。这里的<code>*args</code>和<code>**kwargs</code>可以称之为打包。</p>
+<p>如你所见，在上面我们按照位置或关键词传了任意个数的参数。按照位置传的参数被收集到元组中，并用变量<code>args</code>引用；以关键词传的参数则用变量<code>kwargs</code>引用为字典类型。</p>
+<p>前面提到过，关键词参数不能写在位置参数前面，所以，下面的定义方式是错误的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def save_ranking(**kwargs, *args):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>任意个数的参数很有价值，在很多开源项目中都能够看到，一般都是用<code>*args</code>或者<code>**kwargs</code>作为收集任意参数的名称，当然，你可以用其他名称，比如<code>*requeired</code>或者<code>**optional</code>等，都可以。只是对于开源项目而言，我们习惯使用<code>*args</code>和<code>**kwargs</code>罢了。</p>
+<h2 id="解包"><a href="#解包" class="headerlink" title="解包"></a>解包</h2><p>星号还可以用于对容器的解包，这与前面的参数收集类似，比如，有一个包含数据的列表、元组或者字典，还有一个收集任意参数的函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from functools import reduce</span><br><span class="line"></span><br><span class="line">primes &#x3D; [2, 3, 5, 7, 11, 13]</span><br><span class="line"></span><br><span class="line">def product(*numbers):</span><br><span class="line">    p &#x3D; reduce(lambda x, y: x * y, numbers)</span><br><span class="line">    return p </span><br><span class="line"></span><br><span class="line">product(*primes)</span><br><span class="line"># 30030</span><br><span class="line"></span><br><span class="line">product(primes)</span><br><span class="line"># [2, 3, 5, 7, 11, 13]</span><br></pre></td></tr></table></figure>
+
+<p>因为<code>product()</code>能接收任意参数，我们本来需要将列表中的元素取出来，然后传给此函数。但在这里，如果以<code>*primes</code>的方式向函数提供<code>primes</code>列表数据，则<code>primes</code>所引用的列表会被解包，其中的每个素数都被传给函数，并被收集后用变量<code>numbers</code>引用。如果传该列表<code>primes</code>给函数，就不能解包，<code>numbers</code>所引用的元组中只有一个<code>primes</code>列表。</p>
+<p>对于元组也如此，对于字典，需要用<code>**</code>代替<code>*</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">headers &#x3D; &#123;</span><br><span class="line">    &#39;Accept&#39;: &#39;text&#x2F;plain&#39;,</span><br><span class="line">    &#39;Content-Length&#39;: 348, </span><br><span class="line">    &#39;Host&#39;: &#39;http:&#x2F;&#x2F;mingrammer.com&#39; </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">def pre_process(**headers): </span><br><span class="line">    content_length &#x3D; headers[&#39;Content-Length&#39;] </span><br><span class="line">    print(&#39;content length: &#39;, content_length) </span><br><span class="line">    </span><br><span class="line">    host &#x3D; headers[&#39;Host&#39;]</span><br><span class="line">    if &#39;https&#39; not in host: </span><br><span class="line">        raise ValueError(&#39;You must use SSL for http communication&#39;)  </span><br><span class="line">        </span><br><span class="line">pre_process(**headers)</span><br><span class="line"># content length:  348</span><br><span class="line"># Traceback (most recent call last):</span><br><span class="line">#   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">#   File &quot;&lt;stdin&gt;&quot;, line 7, in pre_process</span><br><span class="line"># ValueError: You must use SSL for http communication</span><br></pre></td></tr></table></figure>
+
+<p>还有很多种解包的实现方式，甚至于不针对函数，只是从列表、元组中取出数据，并用动态变量引用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">numbers &#x3D; [1, 2, 3, 4, 5, 6]</span><br><span class="line"></span><br><span class="line"># The left side of unpacking should be list or tuple.</span><br><span class="line">*a, &#x3D; numbers</span><br><span class="line"># a &#x3D; [1, 2, 3, 4, 5, 6]</span><br><span class="line"></span><br><span class="line">*a, b &#x3D; numbers</span><br><span class="line"># a &#x3D; [1, 2, 3, 4, 5]</span><br><span class="line"># b &#x3D; 6</span><br><span class="line"></span><br><span class="line">a, *b, &#x3D; numbers</span><br><span class="line"># a &#x3D; 1 </span><br><span class="line"># b &#x3D; [2, 3, 4, 5, 6]</span><br><span class="line"></span><br><span class="line">a, *b, c &#x3D; numbers</span><br><span class="line"># a &#x3D; 1</span><br><span class="line"># b &#x3D; [2, 3, 4, 5]</span><br><span class="line"># c &#x3D; 6</span><br></pre></td></tr></table></figure>
+
+<p>上述操作中说明，可以分别从列表或元组中解包，得到相应值，然后用<code>*a</code>和<code>*b</code>引用解包所得数据，并将其打包为列表。这与前述任意个数的参数是同样的概念。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>以上简要介绍了Python语言中的星号（*），作为一个操作符，它有很多用途，特别是在“收集参数”中，显得很重要。但是，初学者容易在此处迷惑，所以，如果你是初学者，上面的内容要认真看一看。</p>
+<p>原文链接：<a href="https://medium.com/understand-the-python/understanding-the-asterisk-of-python-8b9daaa4a558" target="_blank" rel="noopener">https://medium.com/understand-the-python/understanding-the-asterisk-of-python-8b9daaa4a558</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Python 星号" >
+    <span class="tag-code">Python 星号</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/22/learn-opencv/">
+        <span class="nav-arrow">← </span>
+        
+          手把手教你使用图像处理利器OpenCV
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#乘法或乘方的运算符"><span class="toc-nav-text">乘法或乘方的运算符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重复类列表的容器元素"><span class="toc-nav-text">重复类列表的容器元素</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参数收集"><span class="toc-nav-text">参数收集</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#收集位置参数"><span class="toc-nav-text">收集位置参数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#收集位置参数和关键词参数"><span class="toc-nav-text">收集位置参数和关键词参数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#解包"><span class="toc-nav-text">解包</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/23/python-asterisk/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
