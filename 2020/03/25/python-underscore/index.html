@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      初学Python语言者必须理解的下划线 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>初学Python语言者必须理解的下划线</h2>
+    <p class="post-date">2020-03-25</p>
+    <section class="markdown-content"><p>作者：mingrammer</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt="本书各大电商平台有售"></p>
+<hr>
+<p>下划线（<code>_</code>）在Python语言中有特殊作用。</p>
+<p>在大多数编程语言中，下划线是命名变量或者函数名称时的连字符，但是，在Python语言中，不仅如此。如果你是一名Python程序员，对于诸如 <code>_ in range(10)</code> , <code>__init__(self)</code> 之类的下发肯定熟知。</p>
+<p>本文将详述下划线（<code>_</code>）的使用方法，帮助初学者理解它。</p>
+<p>在Python语言中，下划线主要应用在如下5个方面：</p>
+<ul>
+<li>在交互模式中，保存最近一个表达式的值</li>
+<li>忽略某个值（“我不重要”）</li>
+<li>给变量或者函数名称赋予特殊含义</li>
+<li>作为国际化或本地化的函数命名</li>
+<li>在数字组成的值中作为分隔符</li>
+</ul>
+<p>下面逐一阐述。</p>
+<h2 id="用在交互模式中"><a href="#用在交互模式中" class="headerlink" title="用在交互模式中"></a>用在交互模式中</h2><p>在Python交互模式总，如果调用<code>_</code>，会显示最近的表达式的值。这个功能在标准的交互模式中都有，你也可以在其它Python交互式解析器中使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 10 </span><br><span class="line">10 </span><br><span class="line">&gt;&gt;&gt; _ </span><br><span class="line">10 </span><br><span class="line">&gt;&gt;&gt; _ * 3 </span><br><span class="line">30 </span><br><span class="line">&gt;&gt;&gt; _ * 20 </span><br><span class="line">600</span><br></pre></td></tr></table></figure>
+
+<h2 id="表示忽略某个值"><a href="#表示忽略某个值" class="headerlink" title="表示忽略某个值"></a>表示忽略某个值</h2><p>下划线也可以用于表示要忽略某个值。如果你不需要某个值或者该值没什么用，可以用下划线作为相应的变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># Ignore a value when unpacking</span><br><span class="line">x, _, y &#x3D; (1, 2, 3) </span><br><span class="line"># x &#x3D; 1, y &#x3D; 3 </span><br><span class="line"></span><br><span class="line"># Ignore the multiple values. It is called &quot;Extended Unpacking&quot; which is available in only Python 3.x</span><br><span class="line">x, *_, y &#x3D; (1, 2, 3, 4, 5) </span><br><span class="line"># x &#x3D; 1, y &#x3D; 5  </span><br><span class="line"></span><br><span class="line"># Ignore the index</span><br><span class="line">for _ in range(10):     </span><br><span class="line">    do_something()  </span><br><span class="line">    </span><br><span class="line"># Ignore a value of specific location</span><br><span class="line">for _, val in list_of_tuple:</span><br><span class="line">    do_something()</span><br></pre></td></tr></table></figure>
+
+<h2 id="给变量或者函数名称赋予特殊含义"><a href="#给变量或者函数名称赋予特殊含义" class="headerlink" title="给变量或者函数名称赋予特殊含义"></a>给变量或者函数名称赋予特殊含义</h2><p>下划线，最多的用途还是在命名中，PEP8是Python开发的公约，它约定了4中命名方式。</p>
+<h3 id="单下划线开始"><a href="#单下划线开始" class="headerlink" title="单下划线开始"></a>单下划线开始</h3><p>以单下划线开始的变量、函数、方法、类名称，意在声明该对象私有化，按照此预订，使用<code>from module import *</code>则无法将相应对象导入。</p>
+<p>然而，Python并不支持真正的私有化，所以我们不能强制某对象私有化，从其他模块中也能直接调用它，有时候，我们会说这种私有化的对象是“内部使用的弱指示器”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">_internal_name &#x3D; &#39;one_nodule&#39; # private variable</span><br><span class="line"></span><br><span class="line">_internal_version &#x3D; &#39;1.0&#39; # private variable</span><br><span class="line"></span><br><span class="line">class _Base: # private class</span><br><span class="line">    _hidden_factor &#x3D; 2 # private variable    </span><br><span class="line">    def __init__(self, price):</span><br><span class="line">        self._price &#x3D; price    </span><br><span class="line">    def _double_price(self): # private method</span><br><span class="line">        return self._price * self._hidden_factor    </span><br><span class="line">    def get_double_price(self):</span><br><span class="line">        return self._double_price()</span><br></pre></td></tr></table></figure>
+
+<h3 id="单下划线结尾"><a href="#单下划线结尾" class="headerlink" title="单下划线结尾"></a>单下划线结尾</h3><p>为了避免与Python关键词和其他内置对象名称冲突，常常用这种命名方式，你可以不用它。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Tkinter.Toplevel(master, class_&#x3D;&#39;ClassName&#39;) # Avoid conflict with &#39;class&#39; keyword</span><br><span class="line"></span><br><span class="line">list_ &#x3D; List.objects.get(1) # Avoid conflict with &#39;list&#39; built-in type</span><br></pre></td></tr></table></figure>
+
+<h3 id="双下划线开始"><a href="#双下划线开始" class="headerlink" title="双下划线开始"></a>双下划线开始</h3><p>这个超越一般约定的语法。当程序运行的时候，Python解析器会对以双下划开始的类中的属性、方法名称重命名，从而避免不同的类中同样名称之间的冲突，基本规则是在双下划线开始的名称前面增加形如“_ClassName”样式的前缀。</p>
+<p>例如在类中有名为<code>__method</code>的方法，这个名字会被更名为<code>_ClassName__method</code>形式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class A:</span><br><span class="line">    def _single_method(self):</span><br><span class="line">        pass    </span><br><span class="line">    def __double_method(self): # for mangling</span><br><span class="line">        passclass B(A):</span><br><span class="line">    def __double_method(self): # for mangling</span><br><span class="line">        pass</span><br></pre></td></tr></table></figure>
+
+<p>如上面所述，以双下划线为开始命名的属性和方法，我们不能用<code>ClassName.__method</code>方式调用，因此，有人把这作为真正的私有化，但是，这里不推荐这种私有化方式，依据就是Python的命名规则。</p>
+<p><strong>译者注：</strong> 此处作者的观点，仅供参考。<code>_namne</code>这种方式私有化，是约定的私有化，不是真正的私有化；<code>__name</code>这种方式真正实现了“私有化”，但在编程中是否采用，有不同的观点。或者说对于“私有化”，在Python中是有不同理解的。</p>
+<h3 id="双下划线开始和结尾"><a href="#双下划线开始和结尾" class="headerlink" title="双下划线开始和结尾"></a>双下划线开始和结尾</h3><p>这种约定用于特殊的变量或者方法——称为“魔法方法”（<strong>译者想：</strong>“magic method”，是不是翻译成“魔幻方法”更好呢？这些特殊方法本来就让学习者感到很“魔幻”。），比如<code>__init__</code>, <code>__len__</code>。这些方法提供了一些特殊的功能，比如<code>__file__</code>声明本地的Python文件，<code>__eq__</code>实现了表达式<code>a == b</code>。</p>
+<p>一般的开发者，很少定义这些方法，但是，在定义类的时候<code>__init__</code>常常在实例化是被执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class A:</span><br><span class="line">    def __init__(self, a): # use special method &#39;__init__&#39; for initializing</span><br><span class="line">        self.a &#x3D; a    </span><br><span class="line">    def __custom__(self): # custom special method. you might almost do not use it</span><br><span class="line">        pass</span><br></pre></td></tr></table></figure>
+
+<h2 id="作为国际化或本地化函数命名"><a href="#作为国际化或本地化函数命名" class="headerlink" title="作为国际化或本地化函数命名"></a>作为国际化或本地化函数命名</h2><p>这仅仅是一个约定，不是函数中的语法。因此，下划线并不意味着国际化（i18n）或本地化（l10n），仅仅是因为这种习惯来自C语言中的习惯。</p>
+<p>内置标准库的模块gettext，可以用于演示i18n/l10n。Python中的web开发框架Django也支持i18n/l10n，并应用此约定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># see official docs : https:&#x2F;&#x2F;docs.python.org&#x2F;3&#x2F;library&#x2F;gettext.html</span><br><span class="line">import gettext</span><br><span class="line"></span><br><span class="line">gettext.bindtextdomain(&#39;myapplication&#39;,&#39;&#x2F;path&#x2F;to&#x2F;my&#x2F;language&#x2F;directory&#39;)</span><br><span class="line">gettext.textdomain(&#39;myapplication&#39;)</span><br><span class="line">_ &#x3D; gettext.gettext</span><br><span class="line"></span><br><span class="line"># ...</span><br><span class="line"></span><br><span class="line">print(_(&#39;This is a translatable string.&#39;))</span><br></pre></td></tr></table></figure>
+
+<h2 id="数字之间的分隔符"><a href="#数字之间的分隔符" class="headerlink" title="数字之间的分隔符"></a>数字之间的分隔符</h2><p>这个功能是在Python3.6中加入的，用下划线作为数字的分隔符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dec_base &#x3D; 1_000_000</span><br><span class="line">bin_base &#x3D; 0b_1111_0000</span><br><span class="line">hex_base &#x3D; 0x_1234_abcdprint(dec_base) # 1000000</span><br><span class="line">print(bin_base) # 240</span><br><span class="line">print(hex_base) # 305441741</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>本文总结了Python中下换线的使用方法，有的方法或许对你是比较新鲜的，比如i18n/l10n，此前我就不知道。希望本文能对你有启发。</p>
+<p>原文链接：<a href="https://medium.com/hackernoon/understanding-the-underscore-of-python-309d1a029edc" target="_blank" rel="noopener">https://medium.com/hackernoon/understanding-the-underscore-of-python-309d1a029edc</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#下划线" >
+    <span class="tag-code">下划线</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/23/python-asterisk/">
+        <span class="nav-arrow">← </span>
+        
+          Python初学者应该了解的星号（*）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用在交互模式中"><span class="toc-nav-text">用在交互模式中</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表示忽略某个值"><span class="toc-nav-text">表示忽略某个值</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#给变量或者函数名称赋予特殊含义"><span class="toc-nav-text">给变量或者函数名称赋予特殊含义</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#单下划线开始"><span class="toc-nav-text">单下划线开始</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#单下划线结尾"><span class="toc-nav-text">单下划线结尾</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#双下划线开始"><span class="toc-nav-text">双下划线开始</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#双下划线开始和结尾"><span class="toc-nav-text">双下划线开始和结尾</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#作为国际化或本地化函数命名"><span class="toc-nav-text">作为国际化或本地化函数命名</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数字之间的分隔符"><span class="toc-nav-text">数字之间的分隔符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/25/python-underscore/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
