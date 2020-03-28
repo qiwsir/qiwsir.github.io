@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用Python实现各类数学符号运算 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用Python实现各类数学符号运算</h2>
+    <p class="post-date">2020-03-28</p>
+    <section class="markdown-content"><p>翻译：老齐</p>
+<p>与本文相关图书推荐：《跟老齐学Python：数据分析》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200327143255.png" alt=""></p>
+<hr>
+<p>在机器学习项目中，你肯定要在代码中实现各种运算，其中必然要用到各种数学符号，因此，必须了解并熟知如何实现。</p>
+<p>本文列出常用的数学符号及其Python实现方法，一旦用到，就可以直接拷贝。</p>
+<p>$$\frac{1}{N}\sum_{i=1}^N(y_i-\hat{y_i})^2$$</p>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>$$x_i$$</p>
+<p>这个符号用于表示向量中第几个值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; [10, 20, 30]</span><br><span class="line">i &#x3D; 0</span><br><span class="line">print(x[i]) # 10</span><br></pre></td></tr></table></figure>
+
+<p>还可以拓展到2维向量，乃至更多维度。</p>
+<p>$$X_{ij}$$</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; [ [10, 20, 30], [40, 50, 60] ]</span><br><span class="line">i &#x3D; 0</span><br><span class="line">j &#x3D; 1</span><br><span class="line">print(x[i][j]) # 20</span><br></pre></td></tr></table></figure>
+
+<h3 id="求和"><a href="#求和" class="headerlink" title="求和"></a>求和</h3><p>$$\sum_{i=1}^Nx_i$$</p>
+<p>这个符号的意思是对某一范围内的向量中的元素求和，上下标为范围。它等同于Python中对向量的索引从0到N-1进行循环，注意，如何用前面的$x_i$符号得到每个值得索引。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; [1, 2, 3, 4, 5]</span><br><span class="line">result &#x3D; 0</span><br><span class="line">N &#x3D; len(x)</span><br><span class="line">for i in range(N):</span><br><span class="line">    result &#x3D; result + x[i]</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码可以用内置函数简化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; [1, 2, 3, 4, 5]</span><br><span class="line">result &#x3D; sum(x)</span><br></pre></td></tr></table></figure>
+
+<h3 id="PI"><a href="#PI" class="headerlink" title="PI"></a>PI</h3><p>$$\prod_{i=1}^Nx_i$$</p>
+<p>这个符号的意思是将向量中指定范围的元素求乘积（读作：pi，即字母π的大写形式），Python中的实现方法就是循环得到元素，然后计算乘积。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; [1, 2, 3, 4, 5]</span><br><span class="line">result &#x3D; 1</span><br><span class="line">N &#x3D; len(x)</span><br><span class="line">for i in range(N):</span><br><span class="line">    result &#x3D; result * x[i]</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<h3 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h3><p>管道符（键盘上的竖线）有多种不同的含义，要具体看它的应用方式。</p>
+<h4 id="绝对值"><a href="#绝对值" class="headerlink" title="绝对值"></a>绝对值</h4><p>$$|X|$$</p>
+<p>作为绝对值符号，返回该数值的绝对值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; 10</span><br><span class="line">y &#x3D; -20</span><br><span class="line">abs(x) # 10</span><br><span class="line">abs(y) # 20</span><br></pre></td></tr></table></figure>
+
+<h4 id="范数"><a href="#范数" class="headerlink" title="范数"></a>范数</h4><p>$$||X||$$</p>
+<p>范数，也称为向量的模（长），即向量的大小。Python中通过计算数组中每个值的平方和再开方得到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; [1, 2, 3]</span><br><span class="line">math.sqrt(x[0]**2 + x[1]**2 + x[2]**2)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Epsilon"><a href="#Epsilon" class="headerlink" title="Epsilon"></a>Epsilon</h3><p>$$3\in X$$</p>
+<p>这是一个希腊字母（读如：<code>[ˈepsɪlɑːn]</code>），它用于检验某个元素是不是集合的一员，在Python中，用下面的方式实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X &#x3D; &#123;1, 2, 3&#125;</span><br><span class="line">3 in X</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>$$f:X \to Y$$</p>
+<p>这个符号表示函数中的X与Y的对应关系，Python中就是编写一个函数，X为参数，输出Y。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def f(X):</span><br><span class="line">    Y &#x3D; ...</span><br><span class="line">    return Y</span><br></pre></td></tr></table></figure>
+
+<p>有时候你也会遇到下面的表述方式，用R替代X、Y：</p>
+<p>$$f:R \to R$$</p>
+<p>R意味着输入输出都是实数，比如整数、浮点数、无理数、有理数等。Python中当然可以表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; 1</span><br><span class="line">y &#x3D; 2.5</span><br><span class="line">z &#x3D; math.pi</span><br></pre></td></tr></table></figure>
+
+<p>还有可能遇到下面的形式：</p>
+<p>$$f:R^d \to R$$</p>
+<p>$R^d$意味着实数组成的d维度向量（<strong>译者注</strong>：实数域的d维子空间）。</p>
+<p>假设d=2，Python中可以用Numpy提供的函数，例如下面代码中的求和函数，返回的是一个数值，它实现了$R^d$ 到 $R$的映射</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X &#x3D; [1, 2]</span><br><span class="line">f &#x3D; np.sum</span><br><span class="line">Y &#x3D; f(X)</span><br></pre></td></tr></table></figure>
+
+<p><strong>译者注：</strong> 严格来讲，本文上面的示例不很准确。<code>[[1], [2]]</code>，这样的才是严格的2维。</p>
+<h3 id="张量"><a href="#张量" class="headerlink" title="张量"></a>张量</h3><h4 id="转置"><a href="#转置" class="headerlink" title="转置"></a>转置</h4><p>$$X^T$$</p>
+<p>这个符号表示的是行列转换，Python中用下面方法实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X &#x3D; [[1, 2, 3], </span><br><span class="line">    [4, 5, 6]]</span><br><span class="line">np.transpose(X)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果显示行列交换了位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[1, 4], </span><br><span class="line"> [2, 5],</span><br><span class="line"> [3, 6]]</span><br></pre></td></tr></table></figure>
+
+<h4 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h4><p>$$X \bullet Y$$</p>
+<p>张量间的乘法，在Python中用<code>np.multiply</code>实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; [[1, 2], </span><br><span class="line">    [3, 4]]</span><br><span class="line">y &#x3D; [[2, 2], </span><br><span class="line">    [2, 2]]</span><br><span class="line">z &#x3D; np.multiply(x, y)</span><br></pre></td></tr></table></figure>
+
+<p>输出是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[2, 4]],</span><br><span class="line">[[6, 8]]</span><br></pre></td></tr></table></figure>
+
+<h4 id="点积"><a href="#点积" class="headerlink" title="点积"></a>点积</h4><p>$$XY$$<br>$$X.Y$$</p>
+<p>点积的结果是每个序列中对应数字积的和。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">X &#x3D; [1, 2, 3]</span><br><span class="line">Y &#x3D; [4, 5, 6]</span><br><span class="line">dot &#x3D; sum([i*j for i, j in zip(X, Y)])</span><br><span class="line"># 1*4 + 2*5 + 3*6</span><br><span class="line"># 32</span><br></pre></td></tr></table></figure>
+
+<h4 id="有帽子的符号"><a href="#有帽子的符号" class="headerlink" title="有帽子的符号"></a>有帽子的符号</h4><p>$$\hat{x}$$</p>
+<p>向量上有一个小帽子的符号，表示的是向量中的每个分量除以向量的长度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; [1, 2, 3]</span><br><span class="line">length &#x3D; math.sqrt(sum([e**2 for e in x]))</span><br><span class="line">x_hat &#x3D; [e&#x2F;length for e in x]</span><br></pre></td></tr></table></figure>
+
+<p>如此所得向量的大小就是1，并且方向不变。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">math.sqrt(sum([e**2 for e in x_hat]))</span><br><span class="line"># 1.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="感叹号"><a href="#感叹号" class="headerlink" title="感叹号"></a>感叹号</h3><p>$$x!$$</p>
+<p>用感叹号表示阶乘，即从1开始，一直到该数字的所有整数的乘积，在Python中，这样计算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x &#x3D; 5</span><br><span class="line">fact &#x3D; 1</span><br><span class="line">for i in range(x, 0, -1):</span><br><span class="line">    fact &#x3D; fact * i</span><br><span class="line">print(fact)</span><br></pre></td></tr></table></figure>
+
+<p>也可以用内置模块中的函数实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import math</span><br><span class="line">math.factorial(x)</span><br></pre></td></tr></table></figure>
+
+<p>输出是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 5*4*3*2*1</span><br><span class="line">120</span><br></pre></td></tr></table></figure>
+
+<p>原文链接：<a href="https://amitness.com/2019/08/math-for-programmers/" target="_blank" rel="noopener">https://amitness.com/2019/08/math-for-programmers/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Python 数学计算" >
+    <span class="tag-code">Python 数学计算</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/25/python-underscore/">
+        <span class="nav-arrow">← </span>
+        
+          初学Python语言者必须理解的下划线
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#索引"><span class="toc-nav-text">索引</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#求和"><span class="toc-nav-text">求和</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#PI"><span class="toc-nav-text">PI</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#管道符"><span class="toc-nav-text">管道符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#绝对值"><span class="toc-nav-text">绝对值</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#范数"><span class="toc-nav-text">范数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Epsilon"><span class="toc-nav-text">Epsilon</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#函数"><span class="toc-nav-text">函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#张量"><span class="toc-nav-text">张量</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#转置"><span class="toc-nav-text">转置</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#乘法"><span class="toc-nav-text">乘法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#点积"><span class="toc-nav-text">点积</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#有帽子的符号"><span class="toc-nav-text">有帽子的符号</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#感叹号"><span class="toc-nav-text">感叹号</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/28/python-math-symbole/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
