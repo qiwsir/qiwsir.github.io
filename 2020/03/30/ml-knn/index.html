@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      写给小白：K近邻算法入门 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>写给小白：K近邻算法入门</h2>
+    <p class="post-date">2020-03-30</p>
+    <section class="markdown-content"><p>作者：Philipp Muens</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》（电子工业出版社天猫旗舰店有售）</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<p>本文的代码，均发布到百度AI Studio的在线平台中，关注微信公众号「<strong>老齐教室</strong>」，并回复：<code>#真实姓名+手机号+‘案例’#</code>，申请加入含有苯问案例的《机器学习案例》课程，得到包含本案例在内的更多机器学习案例。<strong>注意：</strong> 回复信息中（1）必须以<code>#</code>开始和结尾（2）必须是真实姓名和手机号。</p>
+<p>K近邻（简称K-NN或KNN）是一种简单而优雅的机器学习算法，用于根据现有数据对不可见的数据进行分类。该算法的优点是不需要传统的训练阶段。如果存在分类问题和标记数据，则可以利用现有的已分类数据，预测任何不可见的数据类别。</p>
+<p>让我们仔细看看核心思想背后相关的数学知识和将这些转化为代码的过程。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>想象一下，我们邀请了100个养狗的人带着他们的狗过来做一个我们想做的统计实验。每只参与实验的狗是我们感兴趣的4个不同犬种中的1个。在这些狗及其主人的配合下，我们测量每只狗的3种不同属性：</p>
+<ul>
+<li>weight: 重量（千克）</li>
+<li>height: 高度（厘米）</li>
+<li>alertness: 警觉性（从0到1[1=非常警觉，0=几乎没有警觉]）</li>
+</ul>
+<p>测量完成后，我们将测量值标准化，使其在000到111之间。</p>
+<p>在收集了每只狗的数据后，我们得到了100个测量值，每个测量值都标有相应的狗品种。</p>
+<p>下面是一个例子：</p>
+<p>$$\begin{pmatrix}0.5\0.8\0.1\end{pmatrix}=Podenco$$</p>
+<p>为了更好地理解数据，最好把它标出来。由于我们收集了3种不同的测量数据（重量、高度和警惕性），因此可以将所有100个数据点投影到三维空间中，并根据其标签为每个数据点上色（例如，把“Podenco”的标签涂上棕色）。</p>
+<p>不幸的是，我们在试图绘制此数据时遇到问题，因为我们忘了标注其中的一个测量数据。我们确实有狗的重量，高度和警觉性，但由于某种原因，我们忘记写下这只狗的品种。</p>
+<p>既然我们已经有其他狗的测量数据，有没有可能推测出这只狗的品种呢？我们仍然可以将未标记的数据添加到现有三维空间中，所有其他的彩色数据点都在这个空间里。但我们该怎么给这个推测的数据点上色呢？</p>
+<p>一个可能的解决方案是查看问题数据点周围的5个邻居，看看它们是什么颜色的。如果这些数据点中的大多数标记为“Podenco”，那么我们的测量数据很可能也是从Podenco中获取的。</p>
+<p>这正是K-NN算法（k近邻算法）的作用。该算法根据一个不可见数据点的K近邻和这些K近邻的绝大多数类型，来预测该数据点的类。让我们从数学的角度来仔细研究一下这个问题。</p>
+<h2 id="两个概念"><a href="#两个概念" class="headerlink" title="两个概念"></a>两个概念</h2><p>为了通过K-NN对数据进行分类，我们只需要实现两个概念。</p>
+<p>如上所述，该算法通过查看K个最近邻和它们各自的大多数类来对数据进行分类。</p>
+<p>因此我们需要实现两个函数：距离函数和投票函数。前者用于计算两点之间距离的，后者返回给定的任意标签列表中最常见的标签。</p>
+<h3 id="距离函数"><a href="#距离函数" class="headerlink" title="距离函数"></a>距离函数</h3><p>考虑到“最近邻”的概念，我们需要计算“待分类”数据点与所有其他数据点之间的距离，以找到距离最近的点。</p>
+<p>有几个不同的距离函数。对于我们的实现，将使用欧几里德距离，因为它计算简单，可以很容易地扩展到多维。</p>
+<p>用数学符号表示如下：</p>
+<p>$$d(x, y)=d(y, x)=\sqrt{\sum_{i=1}^N(x_i-y_i)^2}$$</p>
+<p>让我们通过一个例子来解释这个公式。假设有两个向量$\overrightarrow{a}$和$\overrightarrow{b}$，两者之间的欧氏距离计算如下:</p>
+<p>$$\overrightarrow{a}=\begin{pmatrix}1\2\3\4\end{pmatrix} \overrightarrow{b}=\begin{pmatrix}5\6\7\8\end{pmatrix}$$</p>
+<p>$$d(\overrightarrow{a},\overrightarrow{b})=d(\overrightarrow{b},\overrightarrow{a})=\sqrt{(1-5)^2+(2-6)^2+(3-7)^2+(4-8)^2}$$$$=\sqrt{64}=8$$</p>
+<p>将其转化为代码的结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def distance(x: List[float], y: List[float]) -&gt; float:</span><br><span class="line">    assert len(x) &#x3D;&#x3D; len(y)</span><br><span class="line">    interim_res: float &#x3D; 0</span><br><span class="line">    for i, _ in enumerate(x):</span><br><span class="line">        interim_res +&#x3D; (x[i] - y[i]) ** 2</span><br><span class="line">    return sqrt(interim_res)</span><br><span class="line"></span><br><span class="line">assert distance([1, 2, 3, 4], [5, 6, 7, 8]) &#x3D;&#x3D; 8</span><br></pre></td></tr></table></figure>
+
+<p>太好了。我们刚刚实现了第一个构建：一个欧氏距离函数。</p>
+<h3 id="投票函数"><a href="#投票函数" class="headerlink" title="投票函数"></a>投票函数</h3><p>接下来我们需要实现投票函数。投票函数接受一个标签列表作为输入，并返回该列表的“最常见”标签。虽然这听起来很容易实现，但我们应该后退一步，考虑可能遇到的潜在的极端情况。</p>
+<p>其中一种情况是，我们有两个或多个“最常见”标签：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Do we return &#96;a&#96; or &#96;b&#96;?</span><br><span class="line">labels: List[str] &#x3D; [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>对于这些场景，我们需要实现一个决策机制。</p>
+<p>有几种方法可以解决这个问题。一种解决办法可能是随机挑选一个标签。然而，在我们的例子中，我们不应该孤立地考虑投票函数，因为我们知道：距离函数和投票函数共同来确定对未分类数据的预测。</p>
+<p>我们可以利用这一事实。假设我们的投票函数输入了一个标签列表，这个列表是按距离从近到远排序的。有了这一条件，就很容易打破平局。我们需要做的就是递归地删除列表中的最后一个条目（也就是最远的条目），直到只有一个标签明显胜出。</p>
+<p>下面根据以上的标签示例演示此过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Do we return &#96;a&#96; or &#96;b&#96;?</span><br><span class="line">labels: List[str] &#x3D; [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;]</span><br><span class="line"></span><br><span class="line"># Remove one entry. We&#39;re still unsure if we should return &#96;a&#96; or &#96;b&#96;</span><br><span class="line">labels: List[str] &#x3D; [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;]</span><br><span class="line"></span><br><span class="line"># Remove another entry. Now it&#39;s clear that &#96;a&#96; is the &quot;winner&quot;</span><br><span class="line">labels: List[str] &#x3D; [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>我们把这个算法转换成一个函数，并且称之为<code>majority_vote</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">def majority_vote(labels: List[str]) -&gt; str:</span><br><span class="line">    counted: Counter &#x3D; Counter(labels)</span><br><span class="line">    winner: List[str] &#x3D; []</span><br><span class="line">    max_num: int &#x3D; 0</span><br><span class="line">    most_common: List[Tuple[str, int]]</span><br><span class="line">    for most_common in counted.most_common():</span><br><span class="line">        label: str &#x3D; most_common[0]</span><br><span class="line">        num: int &#x3D; most_common[1]</span><br><span class="line">        if num &lt; max_num:</span><br><span class="line">            break</span><br><span class="line">        max_num &#x3D; num</span><br><span class="line">        winner.append(label)</span><br><span class="line">    if len(winner) &gt; 1:</span><br><span class="line">        return majority_vote(labels[:-1])</span><br><span class="line">    return winner[0]</span><br><span class="line"></span><br><span class="line">assert majority_vote([&#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;]) &#x3D;&#x3D; &#39;b&#39;</span><br><span class="line">assert majority_vote([&#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;a&#39;]) &#x3D;&#x3D; &#39;b&#39;</span><br><span class="line">assert majority_vote([&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;]) &#x3D;&#x3D; &#39;a&#39;</span><br></pre></td></tr></table></figure>
+
+<p>测试表明，我们的<code>majority_vote</code>函数能够可靠地处理上述极端情况（边缘情况）。</p>
+<h2 id="K-NN算法"><a href="#K-NN算法" class="headerlink" title="K-NN算法"></a>K-NN算法</h2><p>既然我们已经研究并编写了两个函数，现在是时候把它们结合起来了。我们即将实现的knn函数会输入带标签的数据列表、一个新的度量值（我们要分类的数据点）和一个参数k。参数k决定了：在通过<code>majority_vote</code>函数投票给新标签时，我们要考虑多少个邻居。</p>
+<p>knn算法的首要任务是计算新数据点和所有其他现有数据点之间的距离。之后，我们需要从最近到最远的距离排序，并提取数据点标签。然后截断此有序列表，使其仅包含k个最近的数据点标签。最后一步是将此列表传递给投票函数，该函数用于计算预测标签。</p>
+<p>将所述步骤转换为代码，将产生以下knn函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def knn(labeled_data: List[LabeledData], new_measurement, k: int &#x3D; 5) -&gt; Prediction:</span><br><span class="line">    class Distance(NamedTuple):</span><br><span class="line">        label: str</span><br><span class="line">        distance: float</span><br><span class="line">    distances: List[Distance] &#x3D; [Distance(data.label, distance(new_measurement, data.measurements))</span><br><span class="line">                                         for data in labeled_data]</span><br><span class="line">    distances &#x3D; sorted(distances, key&#x3D;attrgetter(&#39;distance&#39;))</span><br><span class="line">    labels &#x3D; [distance.label for distance in distances][:k]</span><br><span class="line">    label: str &#x3D; majority_vote(labels)</span><br><span class="line">    return Prediction(label, new_measurement)</span><br></pre></td></tr></table></figure>
+
+<p>就是这样。这就是从头开始实现的k近邻算法!</p>
+<h2 id="鸢尾花分类"><a href="#鸢尾花分类" class="headerlink" title="鸢尾花分类"></a>鸢尾花分类</h2><p>现在是时候看看我们的自制k-NN实现效果是否像宣传的那样了。为了测试我们编写的代码，我们将使用臭名昭著的鸢尾花数据集。</p>
+<p>该数据集由三种不同的鸢尾花的50个样本组成:</p>
+<ul>
+<li>Iris Setosa</li>
+<li>Iris Virginica</li>
+<li>Iris Versicolor</li>
+</ul>
+<p>对每一个样品，收集了4种不同的测量数据：萼片的宽度和长度以及花瓣的宽度和长度。</p>
+<p>下面是数据集中的一个示例行，其中前4个数字是萼片长度、萼片宽度、花瓣长度、花瓣宽度，最后一个字符串表示这些测量数据的标签。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">6.9,3.1,5.1,2.3,Iris-virginica</span><br></pre></td></tr></table></figure>
+
+<p>探索这些数据的最好方法是可视化。不幸的是，很难绘制和检查四维数据。然而，我们可以选择两个特征（如花瓣长度和花瓣宽度）并绘制二维散点图。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fig &#x3D; px.scatter(x&#x3D;xs, y&#x3D;ys, color&#x3D;text, hover_name&#x3D;text, labels&#x3D;&#123;&#39;x&#39;: &#39;Petal Length&#39;, &#39;y&#39;: &#39;Petal Width&#39;&#125;)</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/iris1_20200329104636.png" alt=""></p>
+<p>我们可以清楚地看到数据点的分类情况，每个类别的数据点有着相同的颜色，因此具有相同的标签。</p>
+<p>现在假设我们有一个新的、未标记的数据点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new_measurement: List[float] &#x3D; [7, 3, 4.8, 1.5]</span><br></pre></td></tr></table></figure>
+
+<p>将这个数据点添加到现有的散点图，结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">fig &#x3D; px.scatter(x&#x3D;xs, y&#x3D;ys, color&#x3D;text, hover_name&#x3D;text, labels&#x3D;&#123;&#39;x&#39;: &#39;Petal Length&#39;, &#39;y&#39;: &#39;Petal Width&#39;&#125;)</span><br><span class="line">fig.add_annotation(</span><br><span class="line">    go.layout.Annotation(</span><br><span class="line">            x&#x3D;new_measurement[petal_length_idx],</span><br><span class="line">            y&#x3D;new_measurement[petal_width_idx],</span><br><span class="line">            text&#x3D;&quot;The measurement we want to classify&quot;)</span><br><span class="line">)</span><br><span class="line">fig.update_annotations(dict(</span><br><span class="line">            xref&#x3D;&quot;x&quot;,</span><br><span class="line">            yref&#x3D;&quot;y&quot;,</span><br><span class="line">            showarrow&#x3D;True,</span><br><span class="line">            arrowhead&#x3D;7,</span><br><span class="line">            ax&#x3D;0,</span><br><span class="line">            ay&#x3D;-40,</span><br><span class="line">            borderwidth&#x3D;2,</span><br><span class="line">            borderpad&#x3D;4,</span><br><span class="line">            bgcolor&#x3D;&quot;#c3c3c3&quot;</span><br><span class="line">))</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/iris2_20200329104719.png" alt=""></p>
+<p>即使我们只是在二维中绘制花瓣的长度和宽度，新的测量值似乎也可能来自“变色鸢尾”。</p>
+<p>让我们用knn函数得到一个明确的答案：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">knn(labeled_data, new_measurement, 5)</span><br></pre></td></tr></table></figure>
+
+<p>果然，我们得到的结果表明，我们正在处理一个“变色鸢尾”：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Prediction(label&#x3D;&#39;Iris-versicolor&#39;, measurements&#x3D;[7, 3, 4.8, 1.5])</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>k近邻分类算法是一种非常强大的分类算法，它可以根据已有标签的数据来标记缺失标签的数据。k-NNs的主要思想是：利用新的“待分类”数据点的K个最近邻来“投票”选出它应有的标签。</p>
+<p>因此，我们需要两个核心函数来实现k-NN。第一个函数计算两个数据点之间的距离，以便找到最近的邻居。第二个函数执行多数投票，以便可以决定哪个标签在给定的邻域中最常见。</p>
+<p>同时使用这两个函数可以使k-NN发挥积极作用，并且可以可靠地标记未显示的数据点。</p>
+<p>我希望这篇文章是有帮助的，它揭开了k近邻算法的内部工作原理的神秘面纱。</p>
+<p>原文链接：<a href="https://philippmuens.com/k-nearest-neighbors-from-scratch/" target="_blank" rel="noopener">https://philippmuens.com/k-nearest-neighbors-from-scratch/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞转发</strong></p>
+
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/28/python-math-symbole/">
+        <span class="nav-arrow">← </span>
+        
+          用Python实现各类数学符号运算
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#原理"><span class="toc-nav-text">原理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#两个概念"><span class="toc-nav-text">两个概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#距离函数"><span class="toc-nav-text">距离函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#投票函数"><span class="toc-nav-text">投票函数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#K-NN算法"><span class="toc-nav-text">K-NN算法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#鸢尾花分类"><span class="toc-nav-text">鸢尾花分类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/30/ml-knn/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
