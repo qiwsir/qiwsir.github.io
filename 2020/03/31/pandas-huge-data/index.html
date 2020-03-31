@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      利用Pandas和SQLite提升超大数据的读取速度 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>利用Pandas和SQLite提升超大数据的读取速度</h2>
+    <p class="post-date">2020-03-31</p>
+    <section class="markdown-content"><p>作者：Itamar Turner-Trauring</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：数据分析》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<hr>
+<p>让我们想象，你有一个非常大的数据集，以至于读入内存之后会导致溢出，但是你想将它的一部分用Pandas进行处理，如果你在某个时间点只是想加载这个数据集的一部分，可以使用分块方法。</p>
+<p>如果把数据集分为若干部分之后，分别加载进来，最终还是会很慢。</p>
+<p>此时的解决方法，就是创建一个可供搜索的索引，使用SQLite就能轻松解决。</p>
+<h2 id="第一个方法：分块"><a href="#第一个方法：分块" class="headerlink" title="第一个方法：分块"></a>第一个方法：分块</h2><p>来设想一个具体的示例：你要参加某个竞选，为此，你找到了一个CSV文件，里面包含你所在城市每个选民的信息。于是乎你派人去挨门挨户地拜访，邀请特定街道的所有登记选民参与投票。</p>
+<p>现在，Pandas的DataFrame对象中有索引，但是必须要将数据读入内存，然而CSV文件太大了，内存无法容纳，于是，你想到，可以只载入你关注的记录。</p>
+<p>这就是第一个方法，进行分块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line"></span><br><span class="line">def get_voters_on_street(name): </span><br><span class="line">    return pd.concat( </span><br><span class="line">       df[df[&quot;street&quot;] &#x3D;&#x3D; name] for df in </span><br><span class="line">       pd.read_csv(&quot;voters.csv&quot;, chunksize&#x3D;1000) </span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<p>以分块的方式加载CSV文件，并且按照街道名称进行筛选，然后将得到记录并为一体。</p>
+<p>虽然逐行加载，但是关注的是比较小的子集，所以需要一些开销。比如，对于只有70k的数据集，在我的计算机上执行上面的函数，需要574ms。2018年纽约市有460万登记选民，挨个街道查找，需要30s。</p>
+<p>如果我们只做一次，没关系，如果需要反复做，这种方法并不是最佳。</p>
+<h2 id="创建索引对象"><a href="#创建索引对象" class="headerlink" title="创建索引对象"></a>创建索引对象</h2><p>索引就是摘要，有这样一种说法：如果你关心它，就能在这里找到大量数据。在我们的示例中，我们想根据街道名称创建索引，于是就可以快速加载投票者所在的街道了。</p>
+<p>如果你担心索引数据也会超出内存，那么数据库则能作为保存它们的容器，例如PostgreSQL、MySQL等数据库都能实现。哦，你不喜欢安装和维护那些讨厌的服务，好吧，SQLite应运而生了。</p>
+<p>SQLite是一个功能齐全的关系型数据库，它能够像其它数据库一样运行，但是不需要服务器。Pyhton默认就支持这种数据库。SQLite将数据保存在独立的文件中，你必须管理一个SQLite数据文件，而不是CSV文件了。</p>
+<h2 id="用SQLite存储数据"><a href="#用SQLite存储数据" class="headerlink" title="用SQLite存储数据"></a>用SQLite存储数据</h2><p>下面演示一下如何用Pandas操作SQLite：</p>
+<h3 id="1-将数据载入SQLite，并创建索引"><a href="#1-将数据载入SQLite，并创建索引" class="headerlink" title="1. 将数据载入SQLite，并创建索引"></a>1. 将数据载入SQLite，并创建索引</h3><p>SQLite数据库能够保存多张数据表，首先将voters.csv文件的数据载入SQLite，并保存为voters.sqlite文件，在这个文件中，我们创建一个名为voters的表。</p>
+<p>接下来，在SQLite中创建街道的索引。</p>
+<p>只需如下操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import sqlite3</span><br><span class="line"></span><br><span class="line"># Create a new database file:</span><br><span class="line">db &#x3D; sqlite3.connect(&quot;voters.sqlite&quot;)</span><br><span class="line"></span><br><span class="line"># Load the CSV in chunks:</span><br><span class="line">for c in pd.read_csv(&quot;voters.csv&quot;, chunksize&#x3D;1000):</span><br><span class="line">    # Append all rows to a new database table, which</span><br><span class="line">    # we name &#39;voters&#39;:</span><br><span class="line">    c.to_sql(&quot;voters&quot;, db, if_exists&#x3D;&quot;append&quot;)</span><br><span class="line"># Add an index on the &#39;street&#39; column:</span><br><span class="line">db.execute(&quot;CREATE INDEX street ON voters(street)&quot;) </span><br><span class="line">db.close()</span><br></pre></td></tr></table></figure>
+
+<p>虽然我们只创建单个索引，但我们还可以在其他列或多个列上创建其他索引，从而允许我们使用这些列快速搜索数据库。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<h3 id="2-重写查询函数"><a href="#2-重写查询函数" class="headerlink" title="2. 重写查询函数"></a>2. 重写查询函数</h3><p>现在，所有数据都已经载入SQLite，我们可以按照街道进行检索了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def get_voters_for_street(street_name):</span><br><span class="line">    conn &#x3D; sqlite3.connect(&quot;voters.sqlite&quot;)</span><br><span class="line">    q &#x3D; &quot;SELECT * FROM voters WHERE street &#x3D; ?&quot;</span><br><span class="line">    values &#x3D; (street_name,)</span><br><span class="line">    return pd.read_sql_query(q, conn, values)</span><br></pre></td></tr></table></figure>
+
+<p>执行上述函数，SQLite只加载与查询匹配的行，并其通过Pandas将它们保存为DataFrame对象。</p>
+<h2 id="50多倍的加速"><a href="#50多倍的加速" class="headerlink" title="50多倍的加速"></a>50多倍的加速</h2><p>那个CSV文件供给70,000行记录，原来花费了574ms，现在只用了10ms。</p>
+<p>提速50多倍，这是因为，只需要加载我们关心的行，而不是CSV文件中的每一行。</p>
+<p>原文链接：<a href="https://pythonspeed.com/articles/indexing-pandas-sqlite/" target="_blank" rel="noopener">https://pythonspeed.com/articles/indexing-pandas-sqlite/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞转发</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/30/ml-knn/">
+        <span class="nav-arrow">← </span>
+        
+          写给小白：K近邻算法入门
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#第一个方法：分块"><span class="toc-nav-text">第一个方法：分块</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建索引对象"><span class="toc-nav-text">创建索引对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用SQLite存储数据"><span class="toc-nav-text">用SQLite存储数据</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-将数据载入SQLite，并创建索引"><span class="toc-nav-text">1. 将数据载入SQLite，并创建索引</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-重写查询函数"><span class="toc-nav-text">2. 重写查询函数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#50多倍的加速"><span class="toc-nav-text">50多倍的加速</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/03/31/pandas-huge-data/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
