@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用Pandas从HTML网页中读取数据 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用Pandas从HTML网页中读取数据</h2>
+    <p class="post-date">2020-04-01</p>
+    <section class="markdown-content"><p>作者： Erik Marsja</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt="电子工业出版社天猫旗舰店有售"></p>
+<p>本书已经在【<a href="https://detail.tmall.com/item.htm?spm=a220m.1000862.1000725.1.3ce65a2ef29zoQ&id=612118606197&areaId=320500&is_b=1&cat_id=2&q=%25CA%25FD%25BE%25DD%25D7%25BC%25B1%25B8&rn=8a5993aa9aad6542637ced399701e7a4" target="_blank" rel="noopener">电子工业出版社天猫旗舰店</a>】发售</p>
+<hr>
+<p>本文，我们将通过几步演示如何用Pandas的<code>read_html</code>函数从HTML页面中抓取数据。首先，一个简单的示例，我们将用Pandas从字符串中读入HTML；然后，我们将用一些示例，说明如何从Wikipedia的页面中读取数据。</p>
+<h2 id="用Python载入数据"><a href="#用Python载入数据" class="headerlink" title="用Python载入数据"></a>用Python载入数据</h2><p>对于数据分析和可视化而言，我们通常都要载入数据，一般是从已有的文件中导入，比如常见的CSV文件或者Excel文件。从CSV文件中读入数据，可以使用Pandas的<code>read_csv</code>方法。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line"></span><br><span class="line">df &#x3D; pd.read_csv(&#39;CSVFILE.csv&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>上面的方法通常用于导入结构化的数据，比如CSV或者JSON等。</p>
+<p>我们平时更多使用维基百科的信息，它们通常是以HTML的表格形式存在。</p>
+<p>为了获得这些表格中的数据，我们可以将它们复制粘贴到电子表格中，然后用Pandas的<code>read_excel</code>读取。这样当然可以，然而现在，我们要用网络爬虫的技术自动完成数据读取。</p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p>用Pandas读取HTML表格数据，当然要先安装Pandas了。此处使用pip来安装（也可以使用其它方式，比如Anaconda, ActivePython等），安装方法<code>pip install pandas</code>。</p>
+<p>注意，如果执行此命令后会自动检查pip是否需要升级，如果有必要请升级。此外，我们也会使用lxml或者BeautifulSoup4这些包，安装方法还是用pip：<code>pip install lxml</code>。</p>
+<h2 id="read-html函数"><a href="#read-html函数" class="headerlink" title="read_html函数"></a><code>read_html</code>函数</h2><p>使用Pandas的<code>read_html</code>从HTML的表格中读取数据，其语法很简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.read_html(&#39;URL_ADDRESS_or_HTML_FILE&#39;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/web_20200331125201.jpg" alt=""></p>
+<p>以上就是<code>read_html</code>函数的完整使用方法，下面演示示例：</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p>第一个示例，演示如何使用Pandas的<code>read_html</code>函数，我们要从一个字符串中的HTML表格读取数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line"></span><br><span class="line">html &#x3D; &#39;&#39;&#39;&lt;table&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;th&gt;a&lt;&#x2F;th&gt;</span><br><span class="line">    &lt;th&gt;b&lt;&#x2F;th&gt;</span><br><span class="line">    &lt;th&gt;c&lt;&#x2F;th&gt;</span><br><span class="line">    &lt;th&gt;d&lt;&#x2F;th&gt;</span><br><span class="line">  &lt;&#x2F;tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;1&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;2&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;3&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;4&lt;&#x2F;td&gt;</span><br><span class="line">  &lt;&#x2F;tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;5&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;6&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;7&lt;&#x2F;td&gt;</span><br><span class="line">    &lt;td&gt;8&lt;&#x2F;td&gt;</span><br><span class="line">  &lt;&#x2F;tr&gt;</span><br><span class="line">&lt;&#x2F;table&gt;&#39;&#39;&#39;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">df &#x3D; pd.read_html(html)</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们所得到的结果不是Pandas的DataFrame对象，而是一个Python列表对象，可以使用<code>tupe()</code>函数检验一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(df)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/pandas_read_html_examples_20200331125243.jpg" alt=""></p>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><p>在第二个示例中，我们要从维基百科中抓取数据。我们要抓取的是关于蟒科的表格数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line"></span><br><span class="line">dfs &#x3D; pd.read_html(&#39;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Pythonidae&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们得到了一个包含7个表格的列表（<code>len(df)</code>），如果打开维基百科的那个网页，我们能够看到第一个表格是页面右边的，在本例中，我们更关心的是第二个表格：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dfs[1]</span><br></pre></td></tr></table></figure>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wikipedia_tables_20200331125333.jpg" alt=""></p>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><p>在第三个示例中，我们要读取瑞典的新冠病毒（covid-19）数据。此处，需要在<code>read_html</code>方法中增加一个参数，然后实施数据清洗，最后要对这些数据进行可视化。</p>
+<h4 id="抓取数据"><a href="#抓取数据" class="headerlink" title="抓取数据"></a>抓取数据</h4><p>打开网页，会看到页面中的表格上写着“New COVID-19 cases in Sweden by county”，现在，我们就使用match参数和这个字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dfs &#x3D; pd.read_html(&#39;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;2020_coronavirus_pandemic_in_Sweden&#39;,</span><br><span class="line">                  match&#x3D;&#39;New COVID-19 cases in Sweden by county&#39;)</span><br><span class="line">dfs[0].tail()</span><br></pre></td></tr></table></figure>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/wikipedia_20200331125411.jpg" alt=""></p>
+<p>用这个方法，我们仅得到了网页上的表格，但是，如图中所示，倒数三行是没用的，需要删除它们。</p>
+<h4 id="用Pandas的iloc删除最后几行"><a href="#用Pandas的iloc删除最后几行" class="headerlink" title="用Pandas的iloc删除最后几行"></a>用Pandas的<code>iloc</code>删除最后几行</h4><p>下面，使用Pandas的iloc删除最后三行。注意，我们使用-3作为第二个参数（如果对此不理解，请参考Pandas有关教程，比如《跟老齐学Python：数据分析》），最后再复制一份数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df &#x3D; dfs[0].iloc[:-3, :].copy()</span><br></pre></td></tr></table></figure>
+
+<p>接下来，要学习如何将多级列索引改为一级索引。</p>
+<h4 id="修改多级索引为一级，并删除不必要的字符"><a href="#修改多级索引为一级，并删除不必要的字符" class="headerlink" title="修改多级索引为一级，并删除不必要的字符"></a>修改多级索引为一级，并删除不必要的字符</h4><p>现在，我们要处理多级列索引问题了，准备使用<code>DataFrame.columns</code>和<code>DataFrame.columns,get_level_values()</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.columns &#x3D; df.columns.get_level_values(1)</span><br></pre></td></tr></table></figure>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/scrape_tables_20200331125459.jpg" alt=""></p>
+<p>最后，如你所见，在“Date”那一列，我们用<code>read_html</code>从维基百科网页的表格中获得数据之后，还有一些说明，接下来使用<code>str.replace</code>函数和正则表达式对其进行修订：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[&#39;Date&#39;] &#x3D; df[&#39;Date&#39;].str.replace(r&quot;\[.*?\]&quot;,&quot;&quot;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="用set-index更改索引"><a href="#用set-index更改索引" class="headerlink" title="用set_index更改索引"></a>用<code>set_index</code>更改索引</h4><p>我们继续使用Pandas的<code>set_index</code>方法将日期列设置为索引，这样做能够为后面的作图提供一个时间类型的Series对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[&#39;Date&#39;] &#x3D; pd.to_datetime(df[&#39;Date&#39;])</span><br><span class="line">df.set_index(&#39;Date&#39;, inplace&#x3D;True)</span><br></pre></td></tr></table></figure>
+
+<p>为了后续的作图需要，我们需要用0填充缺失值，然后将相应列的数据类型改为数字类型。为此，使用<code>apply</code>方法。最后，使用<code>cumsum()</code>方法得到每一列的逐项求和的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df.fillna(0, inplace&#x3D;True)</span><br><span class="line">df &#x3D; df.iloc[:,0:21].apply(pd.to_numeric)</span><br><span class="line"></span><br><span class="line">df &#x3D; df.cumsum()</span><br></pre></td></tr></table></figure>
+
+<h4 id="用时间Series作图"><a href="#用时间Series作图" class="headerlink" title="用时间Series作图"></a>用时间Series作图</h4><p>最后一部分，使用<code>read_html</code>所得到的数据，创建一个时间序列的图像。首先，要导入matplotlib，可以用legend函数定义图例的位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">f &#x3D; plt.figure()</span><br><span class="line"></span><br><span class="line">plt.title(&#39;Covid cases Sweden&#39;, color&#x3D;&#39;black&#39;)</span><br><span class="line">df.iloc[:,0:21].plot(ax&#x3D;f.gca())</span><br><span class="line"></span><br><span class="line">plt.legend(loc&#x3D;&#39;center left&#39;, bbox_to_anchor&#x3D;(1.0, 0.5)))</span><br></pre></td></tr></table></figure>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/series_plot_20200331125545.png" alt=""></p>
+<h2 id="结论：如何从HTML中读取数据并转化为DataFrame类型"><a href="#结论：如何从HTML中读取数据并转化为DataFrame类型" class="headerlink" title="结论：如何从HTML中读取数据并转化为DataFrame类型"></a>结论：如何从HTML中读取数据并转化为DataFrame类型</h2><p>本文中，学习了用Pandas的<code>read_html</code>函数从HTML中读取数据的方法，并且，我们利用维基百科中的数据创建了一个含有时间序列的图像。不仅如此，最后还将“Date”列设置为DataFrame的索引。</p>
+<p>原文链接:<a href="https://www.marsja.se/how-to-use-pandas-read_html-to-scrape-data-from-html-tables/" target="_blank" rel="noopener">https://www.marsja.se/how-to-use-pandas-read_html-to-scrape-data-from-html-tables/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞和转发</strong></p></section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Pandas read_html" >
+    <span class="tag-code">Pandas read_html</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/03/31/pandas-huge-data/">
+        <span class="nav-arrow">← </span>
+        
+          利用Pandas和SQLite提升超大数据的读取速度
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用Python载入数据"><span class="toc-nav-text">用Python载入数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预备知识"><span class="toc-nav-text">预备知识</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#read-html函数"><span class="toc-nav-text">read_html函数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#示例1"><span class="toc-nav-text">示例1</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#示例2"><span class="toc-nav-text">示例2</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#示例3"><span class="toc-nav-text">示例3</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#抓取数据"><span class="toc-nav-text">抓取数据</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#用Pandas的iloc删除最后几行"><span class="toc-nav-text">用Pandas的iloc删除最后几行</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#修改多级索引为一级，并删除不必要的字符"><span class="toc-nav-text">修改多级索引为一级，并删除不必要的字符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#用set-index更改索引"><span class="toc-nav-text">用set_index更改索引</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#用时间Series作图"><span class="toc-nav-text">用时间Series作图</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论：如何从HTML中读取数据并转化为DataFrame类型"><span class="toc-nav-text">结论：如何从HTML中读取数据并转化为DataFrame类型</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/01/ml-pandas-read-html/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
