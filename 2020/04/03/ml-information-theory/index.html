@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      必须懂：深度学习中的信息论概念 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>必须懂：深度学习中的信息论概念</h2>
+    <p class="post-date">2020-04-03</p>
+    <section class="markdown-content"><p>作者：Abhishek Parbhakar</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<p>本书已经发售，购买：【电子工业出版社天猫旗舰店】</p>
+<hr>
+<p>信息论是对深度学习和AI有重大贡献的一个重要领域，当然，很多人对它知之甚少。如你所知，深度学习的基石是微积分、概率论和统计学，信息论可以视为是它们之间的复杂的融合。AI中的一些概念就来自于信息论或相关领域，例如：</p>
+<ul>
+<li>常见的交叉熵和损失函数</li>
+<li>基于最大信息熵的决策树</li>
+<li>NLP和语音处理中的Viterbi算法</li>
+<li>循环神经网络和其他模型中的编码器概念</li>
+</ul>
+<h2 id="信息论简史"><a href="#信息论简史" class="headerlink" title="信息论简史"></a>信息论简史</h2><p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ai2_20200402131322.jpeg" alt="克劳德 香农，信息论之父"></p>
+<p>20世纪早期，科学家和工程师困惑于这样的问题：如何量化信息？有没有某个数学化的方法能够测量信息量？例如，以下两句话：</p>
+<ul>
+<li>Bruno是一只狗。</li>
+<li>Bruno是一只大个的有着棕色皮毛的狗。</li>
+</ul>
+<p>不难看出，第二句告诉了我们更多的信息，狗是大的，毛是棕色的，而不仅仅告诉我们是一只狗。我们如何量化这两句话的差异？我们能用数学化的方法测量第二句比第一句有更多得信息吗？</p>
+<p>科学家困惑于此问题。用语义或者语句的数量来衡量信息，只能让问题更麻烦。后来，数学家和工程师克劳德·香农提出了“熵”的思想，这种思想永远改变了我们的世界，标志着“数字信息时代”的开始。</p>
+<p>香农提出“数据的语义相彼此无关”，即数据的类型和含义在涉及信息内容时则无关紧要,相反，他根据概率分布和“不确定性”对信息进行了量化。香农还引入了“位”（“bit”），并谦虚地归功于他的同事John Tukey。 这一革命性的思想不仅奠定了信息理论的基础，而且还为人工智能等领域的发展开辟了新的途径。</p>
+<p>下面我们讨论深度学习和数据科学中4个流行的且广泛应用的、必须要知道的信息论概念：</p>
+<h2 id="熵"><a href="#熵" class="headerlink" title="熵"></a>熵</h2><p>也称为信息熵或者香农熵。</p>
+<h3 id="初步理解"><a href="#初步理解" class="headerlink" title="初步理解"></a>初步理解</h3><p>熵是度量不确定性的量，让我们设想两个实验：</p>
+<ol>
+<li>抛一枚均匀的硬币(P(H)=0.5)，观察它的输出，假设H</li>
+<li>投掷一枚有偏差的硬币(P(H)=0.99)，观察它的输出，假设H</li>
+</ol>
+<p>比较这两个实验，相对于实验1，实验2更容易预测到它的结果。那么，我们说实验1比实验2具有更强的不确定性，实验中的这种不确定性就用熵来度量。</p>
+<p>因此，如果实验具有更多不确定性，熵的值越大，或者说，实验结果的可预测性越强，熵越小。实验的概率分布常常用熵计算。</p>
+<p>实验结果确定，即完全可预测，就相当于抛出一门P(H)=1的硬币，此时熵为0。如果实验完全随机，例如掷骰子，可预测性最低，具有最大的不确定，其实验的熵也最高。</p>
+<p>另一种对熵的理解是通过观测随机实验输出的平均获得信息。从一个实验结果所获得的信息可以定义为一个概率函数，输出越少，获得信息越多。</p>
+<p>例如，一个确定性实验，我们都知道其结果，所以，就没有获得新信息，熵即为0。</p>
+<h3 id="数学表示"><a href="#数学表示" class="headerlink" title="数学表示"></a>数学表示</h3><p>X为离散星随机变量，其状态分别是$x_1, …, x_n$，其熵定义为：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ai3_20200402131445.png" alt=""></p>
+<p>其中$p(x_i)$是X的第i个输出（状态）</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
+<li>熵可用于决策树模型，构建树的每一步，利用熵对特征进行选择。</li>
+<li>依据最大熵原则选择模型，即在众多候选模型中，熵最大的模型最好。</li>
+</ul>
+<h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><h3 id="初步理解-1"><a href="#初步理解-1" class="headerlink" title="初步理解"></a>初步理解</h3><p>交叉熵用于比较两个概率分布，通过它能够知道两个分布的相似度。</p>
+<h3 id="数学表示-1"><a href="#数学表示-1" class="headerlink" title="数学表示"></a>数学表示</h3><p>假设p和q两个概率分布，用如下方式定义交叉熵：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ai4_20200402131548.png" alt=""></p>
+<h3 id="应用-1"><a href="#应用-1" class="headerlink" title="应用"></a>应用</h3><p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ai5_20200402131634.png" alt="基于卷积神经网络的分类器通常使用softmax层作为最后一层，并使用交叉熵损失函数进行训练。"></p>
+<ul>
+<li>交叉熵损失函数广泛用于分类模型，例如logistic回归。交叉熵损失函数随着预测与真实输出的偏差而增大。</li>
+<li>在深度学习中，如卷积神经网络，最后输出softmax层经常使用交叉熵损失函数。</li>
+</ul>
+<h2 id="互信息"><a href="#互信息" class="headerlink" title="互信息"></a>互信息</h2><h3 id="初步理解-2"><a href="#初步理解-2" class="headerlink" title="初步理解"></a>初步理解</h3><p>互信息用于度量两个概率分布或随机变量间的相互独立性，通过它可以知道一个变量的信息有多少与另一个相关。</p>
+<p>互信息显示了随机变量之间的相关性，比单纯的线性相关系数更一般化。</p>
+<h3 id="数学公式"><a href="#数学公式" class="headerlink" title="数学公式"></a>数学公式</h3><p>两个离散型随机变量X和Y的互信息定义为：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ai6_20200402131727.png" alt=""></p>
+<p>其中p(x,y)是X和Y的联合概率分布，p(x)和p(y)分别是X和Y的边际概率分布。</p>
+<h3 id="应用-2"><a href="#应用-2" class="headerlink" title="应用"></a>应用</h3><p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ai7_20200402131808.png" alt="在贝叶斯网络中，变量之间的关系结构可以通过互信息来确定。"></p>
+<ul>
+<li>特征选择：除了相关系数，还可以用互信息。相关系数仅限于线性相关，对非线性相关不适用，但是互信息则不然。零的相互独立性保证了随机变量是独立的，而零相关性则不是。</li>
+<li>在贝叶斯网络总，互信息用于学习两个随机变量的之间的关系结构，并且定义这种关系的强度。</li>
+</ul>
+<h2 id="KL散度"><a href="#KL散度" class="headerlink" title="KL散度"></a>KL散度</h2><p>也叫做相对熵</p>
+<h3 id="初步理解-3"><a href="#初步理解-3" class="headerlink" title="初步理解"></a>初步理解</h3><p>KL散度是另外一种度量两个随机分布相似度的方式，它度量的是一个分布相对另外一个分布的偏差。</p>
+<p>假设有一些数据，其真实分布是P，但P是未知的，因此我们选择一个新的分布Q，来近似该数据。 由于Q只是一个近似值，因此它严格等于P，会发生一些信息丢失，此处的信息丢失就是由KL散度度量的。</p>
+<p>当选择的P近似于Q时，P和Q之间的KL散度显示有多少信息丢失。</p>
+<h3 id="数学公式-1"><a href="#数学公式-1" class="headerlink" title="数学公式"></a>数学公式</h3><p>随机分布Q相对于随机分布的KL散度定义如下：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ai8_20200402131858.png" alt=""></p>
+<h3 id="应用-3"><a href="#应用-3" class="headerlink" title="应用"></a>应用</h3><p>KL散度常用于无监督机器学习技术变分自编码器。</p>
+<hr>
+<p>信息理论最初是由数学家和电气工程师克劳德·香农（Claude Shannon）在1948年发表的开创性论文《通信的数学理论》中提出的。</p>
+<p>原文链接：<a href="https://towardsdatascience.com/must-know-information-theory-concepts-in-deep-learning-ai-e54a5da9769d" target="_blank" rel="noopener">https://towardsdatascience.com/must-know-information-theory-concepts-in-deep-learning-ai-e54a5da9769d</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞转发</strong></p></section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#深度学习 熵" >
+    <span class="tag-code">深度学习 熵</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/01/ml-pandas-read-html/">
+        <span class="nav-arrow">← </span>
+        
+          用Pandas从HTML网页中读取数据
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#信息论简史"><span class="toc-nav-text">信息论简史</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#熵"><span class="toc-nav-text">熵</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#初步理解"><span class="toc-nav-text">初步理解</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数学表示"><span class="toc-nav-text">数学表示</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用"><span class="toc-nav-text">应用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#交叉熵"><span class="toc-nav-text">交叉熵</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#初步理解-1"><span class="toc-nav-text">初步理解</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数学表示-1"><span class="toc-nav-text">数学表示</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用-1"><span class="toc-nav-text">应用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#互信息"><span class="toc-nav-text">互信息</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#初步理解-2"><span class="toc-nav-text">初步理解</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数学公式"><span class="toc-nav-text">数学公式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用-2"><span class="toc-nav-text">应用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#KL散度"><span class="toc-nav-text">KL散度</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#初步理解-3"><span class="toc-nav-text">初步理解</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数学公式-1"><span class="toc-nav-text">数学公式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用-3"><span class="toc-nav-text">应用</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/03/ml-information-theory/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
