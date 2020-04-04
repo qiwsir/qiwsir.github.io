@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      开启数据科学之旅 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>开启数据科学之旅</h2>
+    <p class="post-date">2020-04-04</p>
+    <section class="markdown-content"><p>作者：Shreyas Raghavan</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<p>不是很久以前，商人们往往找占星家来预测下明年是否能挣钱，虽然这毫无根据，并且结果也不确定，但如果听专家的建议来为自己的商业行为作出决定，与此有什么本质却别？现在不同了，我们正在变化，目前已经可以基于事实和数字进行预测。</p>
+<p>我们生活在一个大数据的世界中，去Domino商店订购披萨，他们首先要问你的手机号，通过该手机号，他们能够提取出你的住址、购买记录等信息，但是是否仅限于列出这些数据？ 还是我们可以根据这些数据做些什么？这就是数据科学家的职责了。</p>
+<p>现在，我们就来探讨一些分析数据的工具。</p>
+<ul>
+<li><p>SAS，是“ Statistical Analysis System”的简称，可以用于高级分析、数据管理、商业智能，它是NCSU（北卡罗来纳州立大学）从1966年到1976年研发的许可软件，现在仍然被广泛应用，特别是财富500强的公司都在应用。</p>
+</li>
+<li><p>R语言，是一种开源高级语言，提供了很多分析和统计的模块，包含了很多开源库，主要操作在命令行界面实现。</p>
+</li>
+<li><p>Python语言，我个人最喜欢了。Python是门革命性的语言，本文就要使用此语言。它是由吉多·范罗索姆（Guido Van Rossum）发明的一种高级编程语言，开源，每天都会有很多库产生。如果你打算在机器学习、人工智能领域从业，Python是一门理想的编程语言。</p>
+</li>
+</ul>
+<p>现在，我们就要来看看Python在数据科学中的应用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+
+<p>此处，我们引入了三个基本的库，你的项目大概有90%都会用到这三个库，它们都有什么作用呢？</p>
+<ul>
+<li>Numpy：这个库实现众多数学函数运算，比如矩阵乘法、转置等。</li>
+<li>Pandas：很重要的库，比如加载数据集、创建DataFrame对象，Pandas在分析和预测方面能够实现你想做的任何事情。</li>
+<li>%matplotlib inline：写上这句话，就可以将制作的可视化图像插入到Jupyter中。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train &#x3D; pd.read_csv(&#39;train.csv&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>以上，我们载入了数据集，<code>pd</code>是对<code>pandas</code>的重命名（<code>import pandas as pd</code>），<code>read_csv</code>是pandas里的一个函数，<code>train.csv</code>是一个已经存在的文件。用上面的命令成功地在当前Python环境中加载了文件，从而创建了一个DataFrame对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train.head()</span><br></pre></td></tr></table></figure>
+
+<p>什么是head？不是人体的顶部的吗？Pandas用<code>head</code>函数，是要给我们呈现DataFrame对象中前面的若干条记录，默认显示前5条。</p>
+<p>如果<code>head(20)</code>就会返回前20条记录，是不是很有意思？</p>
+<p>我们也可以用<code>tail()</code>查看最后5条记录（默认值是5）。</p>
+<p>下面是<code>head()</code>的输出结果：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ds1_20200403125336.png" alt=""></p>
+<p>到现在，已经从DataFrame数据集中得到了前5条记录了。</p>
+<p>接下来，重要的事情是你要了解所处理的数据集，比如大小、形状和描述性统计，这些信息对我们进一步处理数据都非常有用，也就是说，我们必须了解数据集（<strong>注：</strong>《数据准备和特征工程》一书中对此内容做了更详细的阐述，请参考。）因为有少数数据集很大，处理它们才是真正的痛苦工作，我们需要从中找到有用的信息，并剔除不需要的内容，这听起来似乎很容易，但真正做起来，非常困难。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ds2_20200403125420.png" alt=""></p>
+<p>从输出结果中可以看到，我们现在操作的数据有891行，12列，总共有10692个数据。</p>
+<p>让我们再来看看基本的统计：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ds3_20200403125456.png" alt=""></p>
+<p>这里呈现的统计数据，比如计数、平均值、百分位、标准差等，在我们处理金融数据或者研究数据间关系是，都是非常重要的。</p>
+<p>继续，我们要实施数据可视化，这是数据科学中最重要的技能，必须会。前面已经导入了matplotlib，这是数据可视化中应用非常广泛的库，如果你去搜索，还会发现别的库，但matplotlib是广受欢迎的。</p>
+<p>对于数据科学家而言，最重要的是知道用什么方式进行表达，下面就讨论这个问题，然后演示代码。</p>
+<h2 id="表达的方式"><a href="#表达的方式" class="headerlink" title="表达的方式"></a>表达的方式</h2><p>进行数据可视化，必须要知道的几件事：</p>
+<ul>
+<li>在一张图中要展现几个变量？</li>
+<li>一个数据点包含了一个信息还是多个？</li>
+<li>展示一段时间的数据，还是将它们分组？</li>
+</ul>
+<p>这些会影响图示的效果。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ds4_20200403125548.png" alt=""></p>
+<p>上面这张图帮助我们理清楚何时用何种类型的可视化方式。</p>
+<p>对于学习数据可视化而言，上面的图示是具有高度参考价值的。很多公司都希望通过数据告诉我们吸引人的故事。</p>
+<p>可视化工具，比如Tableau、PowerBI等创建的仪表盘，能够告诉我们数据中的故事。</p>
+<p>现在，我们要研究如何用matplotlib实现数据可视化：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ds5_20200403125629.png" alt=""></p>
+<p>前面已经引入了matplotlib，并命名别称为plt。从第一行开始，用参数<code>figsize</code>设置了图示的大小，通常，我们可以使用默认值。接下来，就回执年龄的图示。</p>
+<p>我们能够设置标签，<code>xlable</code>意味着x轴，<code>ylable</code>意味着y轴，<code>titile</code>用于设置图示的标题。</p>
+<p>通过图示，我们能够从数据中得到一些信息，能推论出以下各项吗？</p>
+<ul>
+<li>年轻人更多在甲板上。</li>
+<li>老年人数量很少。</li>
+<li>22岁的最多。</li>
+<li>79岁的老人还去旅游。</li>
+</ul>
+<p>我们通过图示，能够推断出的还很多。</p>
+<p>当然，我们也能够用这个数据集做其他类型的统计图。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ds6_20200403125711.png" alt=""></p>
+<p>数据中用二进制的方式标识了一个人是否获救，这是我们下面要研究的内容，通过统计模型进行预测。</p>
+<p>让我们继续，依靠前面的数据，用计算机来预测一个乘客是否能获救。</p>
+<h2 id="机器学习算法"><a href="#机器学习算法" class="headerlink" title="机器学习算法"></a>机器学习算法</h2><p>到目前，我们已经完成了载入数据、数据可视化，以及如何根据数据进行推论，现在我们要看看哪个算法可以用于预测。</p>
+<p>在机器学习中，有两类算法：</p>
+<ul>
+<li>有监督学习：如果数据中有标签列，就可以使用有监督学习，机器会查找跟数据匹配的标签。</li>
+<li>无监督学习：没有标签时就要用无监督学习，机器会对数据进行聚类，并找到数据之间的关系。</li>
+</ul>
+<p>有监督学习的典型例子是回归，而贝叶斯则是无监督学习的典型示例。</p>
+<p>但是，对于本文中的数据，我们打算用Logistic回归试试。具体怎么做？</p>
+<p>Logistic回归能够帮助我们预测某数据的标签是true还是false。基本过程是用给定的数据输入到机器中，然后机器用回归模型进行计算，最后告诉我们一个二进制形式的结果。</p>
+<p>根据维基百科，Logistic回归，或者logit回归、logit模型，是一种回归模型，它的因变量是分类型的。本文中的因变量用二级制形式表示，即只取两个数，“0”或者“1”，这种二进制方式可以代表不同的输出结果，比如通过/挂科、赢/输、生/死，或者健康/生病等。如果因变量是超过两个值得分类数据，可以用多元Logistic回归。如果多个类型值是有顺序的，可以用序数Logistic回归。在经济领域，Logisti回归是一种反应定性问题或者离散问题的模型示例。</p>
+<p>那么，Logistic回归在这里对我们有什么用？</p>
+<p>我们已经有用二进制形式表示获救情况的列，这已不是问题。但是，我们需要将性别（gender）列的值修改为1和0，这样我们就能依靠性别预测一个人是否获救。</p>
+<p>需要导入sklearn库，sklearn非常强大，它不仅仅是统计工具。</p>
+<p>按照下面的操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.linear_model import LogisticRegression</span><br></pre></td></tr></table></figure>
+<p>从sklearn库中引入Logistic回归模块。</p>
+<p>为了使用Logistic回归，先要具备两组数据：</p>
+<ol>
+<li>训练集：用于训练模型</li>
+<li>测试集：通常规模较小，用于检验机器学习模型</li>
+</ol>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ds7_20200403125752.png" alt=""></p>
+<p>将性别转化为二级制形式之后，就可以使用<code>LogisticRegression</code>模型预测输出结果了。</p>
+<p>首先，我们将训练集中的Survived列作为Logistic回归模型的输出。</p>
+<p>为此，已经将数据集划分为训练集和测试集。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ds8_20200403125828.png" alt=""></p>
+<p>下面逐步来看看上面的过程：</p>
+<ol>
+<li>将Survived列作为标签，即输出。data_train是输入的训练数据，其中不包含Survived列。</li>
+<li>然后引入sklean，并创建Logistic模型实例。</li>
+<li>接下来训练模型，计算机会努力找到一种模式，然后用这个模型对给定数据进行预测。</li>
+<li>我们已经得到了一个被称为测试集的数据，它里面没有Survived列。下面利用训练得到的模型对这些数据进行预测。</li>
+</ol>
+<p>以上就是计算机如何通过学习进行预测的过程，当然还有别的模型，以后有机会还要介绍对模型的评估方法，比如评估分数、矩阵分数等。</p>
+<p>希望此文对你有启发。「老齐教室」这个微信公众号中还有很多数据科学、机器学习的文章，共学习者参考。</p>
+<p>原文链接：<a href="https://towardsdatascience.com/how-to-begin-your-own-data-science-journey-2223caad8cee" target="_blank" rel="noopener">https://towardsdatascience.com/how-to-begin-your-own-data-science-journey-2223caad8cee</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞转发</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/03/ml-information-theory/">
+        <span class="nav-arrow">← </span>
+        
+          必须懂：深度学习中的信息论概念
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表达的方式"><span class="toc-nav-text">表达的方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#机器学习算法"><span class="toc-nav-text">机器学习算法</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/04/ml-data-science-start/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
