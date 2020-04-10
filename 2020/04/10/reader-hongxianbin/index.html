@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《数据准备和特征工程》读后感 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>《数据准备和特征工程》读后感</h2>
+    <p class="post-date">2020-04-10</p>
+    <section class="markdown-content"><p>作者：洪贤斌</p>
+<p>有幸第一时间拜读了齐老师的新书《数据准备和特征工程》，深感每位数据科学初学者都应该将其列入必备书单。市面上关于机器学习、深度学习的书籍多如繁星，但数据处理这一更为重要的环节却鲜有涉及。有感还未入门数据科学的朋友往往只对高深莫测的算法模型趋之若鹜，而将数据采集和处理视作“脏活”、“累活”。但真正的资深数据科学从业者，都会不厌其烦地强调数据准备的重要性。可以说，对于每一个现实生活中的落地项目来说，最大的投入往往在数据准备阶段，这也是最具决定性的阶段。数据的缺陷，是难以通过模型改进来解决的。而反之，如果数据足够多，足够准，无论你用多简单的模型，也能获得一个令人满意的成果。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<p>而对于初学者来说，在进行数据分析或者训练模型之前，第一关就是数据的处理。只有对数据处理得心应手，你才能深入学习高深的算法。</p>
+<ul>
+<li>通读本书，你能够熟练地将各种数据载入计算机，之后就可以继续探索数据科学的世界了。</li>
+<li>你的数据可能是一个Excel表格，可能是一个SQL数据库，可能是一个网页的条目，如果你不知道如何将它们导入你的计算机，这本书会给你答案。</li>
+<li>如果你不知道如何将你的数据转化为算法模型可以接受的格式，看完这本书你就能信手拈来。</li>
+<li>如果你想实施特征提取，那这本书将教会你最基本的处理方式，为后续的算法学习打好基础。</li>
+</ul>
+<p>在阅读此书的过程中，常常是想到要了解某个知识点，书中就恰到好处地出现了对应内容。可以说这本书充分考虑到了初学者经常遇到的各种问题，面面俱到却不显冗长。书内每个知识点都有对应的代码实例，手把手带你入门，算是非常“傻瓜化”了。书内每页的注释也非常实用，排版简洁易读，可以说是本书的另一大亮点。</p>
+<p>总的来说，这应该是数据科学初学者人手一本的入门引导书籍，无论你是处理日常办公的数据，还是想深入学习人工智能，此书都能为你的发展打下坚实的基础。</p>
+<hr>
+<p><strong>老齐回复：</strong></p>
+<p>非常感谢洪博士对本书的评价。</p>
+<p>《数据准备和特征工程》一书已经由电子工业出版社出版发行，扫描如下二维码进入「电子工业出版社天猫旗舰店」购买。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG18_20200404154429.jpeg" alt=""></p>
+<p>另外，与本书相配套的学习资源，可以通过如下二维码获取。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%9B%BE%E7%89%87_4%E6%9C%884%E6%97%A515%E6%97%B612%E5%88%8613%E7%A7%92_20200404151443.png" alt=""></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞转发</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/10/dl-information-theroy/">
+        <span class="nav-arrow">← </span>
+        
+          用信息论剖析深度学习
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/10/reader-hongxianbin/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
