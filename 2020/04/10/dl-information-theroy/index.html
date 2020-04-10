@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用信息论剖析深度学习 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用信息论剖析深度学习</h2>
+    <p class="post-date">2020-04-10</p>
+    <section class="markdown-content"><p>作者：Lilian Weng</p>
+<p>翻译：老齐</p>
+<p>与本文相关书籍推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<p>最近，我聆听了Naftali Tishby教授的演讲“深度学习中的信息论”，感觉很有意思。他在演讲中说明了如何将信息论用于研究深度神经网络的增长和转换，他利用IB（Information Bottleneck）方法，为深度神经网络（DNN）开创了一个新的领域，由于参数的数量成指数增长，导致传统的学习理论在该领域均行不通。另外的一种敏锐观察显示，在DNN训练中包含了两个迥异的阶段：首先，训练网络充分表示输入数据，最小化泛化误差；然后，通过压缩输入的表示形式，它学会了忘记不相关的细节。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="马尔科夫链"><a href="#马尔科夫链" class="headerlink" title="马尔科夫链"></a>马尔科夫链</h3><p>马尔科夫过程是一个“无记忆”（也称为“马尔科夫性质”）的随机过程，马尔科夫链是一类包含多个离散状态的马尔科夫过程，也就是说，过程的未来状态的条件概率仅由当前状态决定，而不取决于过去状态。</p>
+<h3 id="KL散度"><a href="#KL散度" class="headerlink" title="KL散度"></a>KL散度</h3><p>KL散度用于度量一个概率分布<code>p</code>偏离另一个期望的概率分布<code>q</code>的程度，它是不对称的。</p>
+<p>$$\begin{aligned}D_{KL}(p | q) &amp;= \sum_x p(x) \log \frac{p(x)}{q(x)} dx \<br> &amp;= - \sum_x p(x)\log q(x) + \sum_x p(x)\log p(x) \<br> &amp;= H(P, Q) - H(P)\end{aligned} $$</p>
+<p>当$p(x)$ == $q(x)$时，$D_{KL}$达到最小值零。</p>
+<h3 id="互信息"><a href="#互信息" class="headerlink" title="互信息"></a>互信息</h3><p>互信息度量两个变量之间的相互依赖程度，它把一个随机变量通过另一个随机变量所获得的“信息量”进行量化，互信息是对称的。</p>
+<p>$$<br>\begin{aligned}<br>I(X;Y) &amp;= D_{KL}[p(x,y) | p(x)p(y)] \<br> &amp;= \sum_{x \in X, y \in Y} p(x, y) \log(\frac{p(x, y)}{p(x)p(y)}) \<br> &amp;= \sum_{x \in X, y \in Y} p(x, y) \log(\frac{p(x|y)}{p(x)}) \<br> &amp;= H(X) - H(X|Y) \<br>\end{aligned}$$</p>
+<h3 id="数据处理不等式-DPI"><a href="#数据处理不等式-DPI" class="headerlink" title="数据处理不等式(DPI)"></a>数据处理不等式(DPI)</h3><p>对于任意的马尔科夫链: $X \to Y \to Z$，我们有$I(X; Y) \geq I(X; Z)$。</p>
+<p>深度神经网络可以看作是一个马尔科夫链，因此当我们沿着DNN层向下移动时，层与输入之间的互信息只会减少。</p>
+<h3 id="再参数化不变性"><a href="#再参数化不变性" class="headerlink" title="再参数化不变性"></a>再参数化不变性</h3><p>对于两个可逆函数$\phi$，$\psi$，互信息仍然是：$I(X; Y) = I(\phi(X); \psi(Y))$。</p>
+<p>例如，如果我们在DNN的一个层中调整权重，它不会影响这个层和另一个层之间的互信息。</p>
+<h2 id="马尔科夫链的深度神经网络"><a href="#马尔科夫链的深度神经网络" class="headerlink" title="马尔科夫链的深度神经网络"></a>马尔科夫链的深度神经网络</h2><p>训练数据来自$X$和$Y$联合分布的抽样观测，输入变量$X$和隐藏层的权重都是高维随机变量。真实值$Y$和预测值$\hat{Y}$是分类设置中较小维度的随机变量。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ib-dnn-structure_20200409110120.png" alt=""></p>
+<p>图1：一个深度神经网络的结构，它包含标签$Y$、输入层$X$、隐藏层$h_1、…、h_m$和预测值$\hat{Y}$。</p>
+<p>如果我们将DNN的隐藏层标记为$h_1,h_2，…，h_m$，如图1所示，我们可以将每一层看作是一个马尔科夫链的状态:$h_i \to h_{i+1}$。根据DPI，我们有:</p>
+<p>$$H(X) \geq I(X; h_1) \geq I(X; h_2) \geq \dots \geq I(X; h_m) \geq I(X; \hat{Y}) \<br>I(X; Y) \geq I(h_1; Y) \geq I(h_2; Y) \geq \dots \geq I(h_m; Y) \geq I(\hat{Y}; Y)$$</p>
+<p>DNN的设计目的是学习如何描述$X$，以便预测$Y$；最终，将$X$压缩成只包含与$Y$相关的信息。Tishby将这一过程描述为“相关信息的逐次细化”。</p>
+<h3 id="信息平面定理"><a href="#信息平面定理" class="headerlink" title="信息平面定理"></a>信息平面定理</h3><p>DNN依次实现了$X$的内部表示，一组隐藏层${T_i}$。根据信息平面定理，通过它的编码器和解码器信息来描述每一层，编码器即对输入数据$X$编码，而解码器则将当前层中的信息转换为目标输出$Y$。</p>
+<p>准确地说，在一个信息平面图中:</p>
+<ul>
+<li>X轴：样本$T_i$复杂度由编码器互信息$I(X;T_i)$决定，样本复杂度是指你需要多少个样本来达到一定的准确性和泛化。</li>
+<li>Y轴：精度(泛化误差)，由解码器互信息$I(T_i;Y)$决定。</li>
+</ul>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ib-information-plane_20200409110204.png" alt=""></p>
+<p>图2：50个DNN隐藏层的编码器和解码器的交互信息。不同层有不同色彩的编码器，绿色是紧挨着输入的一层，橙色是离输入最远的一层。有三个快照，分别是初始阶段、400个阶段和9000个阶段。</p>
+<p>图2中的每个点表示一个隐含层的编码器或解码器的互信息(不采用正则化;没有权重衰减，没有丢失，等等)。它们按照预期的那样向上移动，因为关于真实标签的知识在增加(准确性在提高)。在早期阶段，隐藏层了解了很多关于输入$X$的信息，但是之后它们开始压缩以忘记输入的一些信息。Tishby认为，“学习的最重要的部分实际上是遗忘”。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ib-information-plane-merged_20200409110242.png" alt=""></p>
+<p>图3：这是图2的汇总视图。在泛化误差变得非常小之后进行了压缩。</p>
+<h3 id="两个优化阶段"><a href="#两个优化阶段" class="headerlink" title="两个优化阶段"></a>两个优化阶段</h3><p>对各层权重的均值和标准差的及时跟踪还显示了训练过程的两个优化阶段。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ib-mean-variation_20200409110316.png" alt=""></p>
+<p>图4：各层权重梯度的均值和标准差的范数作为训练函数。不同的层用不同的颜色。</p>
+<p>在早期阶段中，平均值比标准差大三个量级。 经过足够的时间段后，误差趋于饱和，随后标准差变得更大。离输出越远的层，噪声就越大，这是因为噪声可以通过反向传播过程放大和累积（而不是由于层的宽度）。</p>
+<h2 id="学习理论"><a href="#学习理论" class="headerlink" title="学习理论"></a>学习理论</h2><h3 id="“旧的”泛化"><a href="#“旧的”泛化" class="headerlink" title="“旧的”泛化"></a>“旧的”泛化</h3><p>经典学习理论定义的泛化范围为:</p>
+<p>$$\epsilon^2 &lt; \frac{\log|H_\epsilon| + \log{1/\delta}}{2m}$$</p>
+<ul>
+<li>$\epsilon$：训练误差与泛化误差的差值。泛化误差衡量的是一个算法对前所未见的数据的预测有多准确。</li>
+<li>$H_\epsilon$: 假设，通常我们假设大小为$\vert H_\epsilon \vert \sim (1/\epsilon)^d$.</li>
+<li>$\delta$: 信度。</li>
+<li>$m$: 训练样本的数目。</li>
+<li>$d$：假设的VC维度。</li>
+</ul>
+<p>该定义指出，训练误差和泛化误差之间的差异受假设空间大小和数据集大小的限制。假设空间越大，泛化误差就越大。</p>
+<p>但是，它不适用于深度学习。网络越大，需要学习的参数越多。有了这种泛化界限，较大的网络（较大的$d$）会有更糟的界限。我们直觉上会认为更大的网络能够实现更好的性能和更高的表达能力。这里却是和直觉相反。</p>
+<h3 id="“新的”输入压缩"><a href="#“新的”输入压缩" class="headerlink" title="“新的”输入压缩"></a>“新的”输入压缩</h3><p>为了应对这种违反直觉的观察数据，Tishby等人提出了DNN的新输入压缩范围。</p>
+<p>首先让我们将$T_\epsilon$作为输入变量$X$的$\epsilon$分区。此分区将有关标签同质性的输入压缩为小单元格，所有单元格可以覆盖整个输入空间。如果预测输出二进制值，则可以用$2^{\vert T_\epsilon \vert}$代替假设的基数$\vert H_\epsilon \vert$。</p>
+<p>$$|H_\epsilon| \sim 2^{|X|} \to 2^{|T_\epsilon|}$$</p>
+<p>当$X$比较大时，$X$的大小大约是$2^{H(X)}$。ϵ所在的每个单元格的大小是$2^{H(X \vert T_\epsilon)}$。因此，我们有$\vert T_\epsilon \vert \sim \frac{2^{H(X)}}{2^{H(X \vert T_\epsilon)}} = 2^{I(T_\epsilon; X)}$。那么，输入压缩范围就成了:</p>
+<p>$$\epsilon^2 &lt; \frac{2^{I(T_\epsilon; X)} + \log{1/\delta}}{2m}$$</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ib-bound_20200409110352.png" alt=""></p>
+<p>图5：黑线是可实现的最佳IB极限。在一个有限的样本集上训练时，红线对应样本外IB失真的上限。ΔC是复杂性的差距和ΔG是泛化的差距。</p>
+<h2 id="网络和训练数据的大小"><a href="#网络和训练数据的大小" class="headerlink" title="网络和训练数据的大小"></a>网络和训练数据的大小</h2><h3 id="更多隐藏层的好处"><a href="#更多隐藏层的好处" class="headerlink" title="更多隐藏层的好处"></a>更多隐藏层的好处</h3><p>拥有更多的层会给我们带来计算上的好处，并加快训练过程，以获得更好的泛化效果。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ib-layers_20200409110426.png" alt=""></p>
+<p>图6：有更多的隐藏层，优化时间更短(阶段更少)。</p>
+<p>通过随机松弛算法进行压缩:根据扩散方程，k层的松弛时间与该层压缩量$\Delta S_k$: $\Delta t_k \sim \exp(\Delta S_k)$的指数成正比。我们可以按照$\Delta S_k = I(X; T_k) - I(X; T_{k-1})$计算层压缩。因为$\exp(\sum_k \Delta S_k) \geq \sum_k \exp(\Delta S_k)$，所以我们期望使用更多的隐藏层(更大的$k$)来使训练周期呈指数式减少。</p>
+<h3 id="更多训练样本的好处"><a href="#更多训练样本的好处" class="headerlink" title="更多训练样本的好处"></a>更多训练样本的好处</h3><p>拟合更多的训练数据需要通过隐藏层捕获更多的信息，随着训练数据量的增加，解码器互信息$I(T;Y)$ (还记得吗，这与泛化误差直接相关)被推高，更接近理论IB的边界。Tishby强调，与标准理论不同，决定泛化的是互信息，而不是层的大小或VC维度</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/ib-training-size_20200409110502.png" alt=""></p>
+<p>图7：不同大小的训练数据用不同颜色编码。这里绘制了多个聚合网络的信息平面。训练数据越多，泛化效果越好。</p>
+<p>原文链接：<a href="https://lilianweng.github.io/lil-log/2017/09/28/anatomize-deep-learning-with-information-theory.html" target="_blank" rel="noopener">https://lilianweng.github.io/lil-log/2017/09/28/anatomize-deep-learning-with-information-theory.html</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞转发</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/07/ml-feature-enginning/">
+        <span class="nav-arrow">← </span>
+        
+          《数据准备和特征工程》勘误与修订
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本概念"><span class="toc-nav-text">基本概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#马尔科夫链"><span class="toc-nav-text">马尔科夫链</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KL散度"><span class="toc-nav-text">KL散度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#互信息"><span class="toc-nav-text">互信息</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据处理不等式-DPI"><span class="toc-nav-text">数据处理不等式(DPI)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#再参数化不变性"><span class="toc-nav-text">再参数化不变性</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#马尔科夫链的深度神经网络"><span class="toc-nav-text">马尔科夫链的深度神经网络</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#信息平面定理"><span class="toc-nav-text">信息平面定理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#两个优化阶段"><span class="toc-nav-text">两个优化阶段</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#学习理论"><span class="toc-nav-text">学习理论</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#“旧的”泛化"><span class="toc-nav-text">“旧的”泛化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#“新的”输入压缩"><span class="toc-nav-text">“新的”输入压缩</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#网络和训练数据的大小"><span class="toc-nav-text">网络和训练数据的大小</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#更多隐藏层的好处"><span class="toc-nav-text">更多隐藏层的好处</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#更多训练样本的好处"><span class="toc-nav-text">更多训练样本的好处</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/10/dl-information-theroy/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
