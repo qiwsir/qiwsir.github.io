@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      如何在AI Studio数据可视化图像中显示汉字 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>如何在AI Studio数据可视化图像中显示汉字</h2>
+    <p class="post-date">2020-04-12</p>
+    <section class="markdown-content"><p>作者：燕清，老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：数据分析》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<hr>
+<p>AI Studio是一个非常好用的数据科学在线实验平台，不论是教学、学习还是开发，都可以使用。但是，下面的缺憾未免成为了珍珠上的一点瑕疵。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">labels = [<span class="string">'娱乐'</span>,<span class="string">'育儿'</span>,<span class="string">'饮食'</span>,<span class="string">'房贷'</span>,<span class="string">'交通'</span>,<span class="string">'其它'</span>]</span><br><span class="line">sizes = [<span class="number">2</span>,<span class="number">5</span>,<span class="number">12</span>,<span class="number">70</span>,<span class="number">2</span>,<span class="number">9</span>]</span><br><span class="line">explode = (<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.1</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">plt.pie(sizes, explode=explode, labels=labels, autopct=<span class="string">'%1.1f%%'</span>, shadow=<span class="literal">False</span>, startangle=<span class="number">150</span>)</span><br><span class="line">plt.title(<span class="string">"饼图示例-8月份家庭支出"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/output_1_1_20200410160319.png" alt=""></p>
+<p>在绘制这个饼图的时候，我们在标题以及饼图不同区域的标签设置了中文，但是现实效果不能令人满意，没有显示相应的汉字。很多人遇到过这种问题，一种常见解决之道就是“绕着走”，将中文换成英文，乃至于在某些官方的案例中也是如此。</p>
+<p>专业的开发者天生就是“以解决难题为荣”的，这个难题必须要破解。</p>
+<p>如果在网上搜索Matplotlib显示汉字的问题，会有好多种方法，但是那些方法都是针对本地操作系统的，而非针对Ai Studio这样的远程系统——虽然也是Ubuntu操作系统，但是由于每个人使用的是一个虚拟环境，在权限、路径等方面与本地操作系统还是有所差别的。</p>
+<h2 id="查看已有字体"><a href="#查看已有字体" class="headerlink" title="查看已有字体"></a>查看已有字体</h2><p>在开始解决问题之前，先对当前我们使用的虚拟操作系统以及它已有字体有所了解。</p>
+<ol>
+<li>当前的操作系统</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!cat &#x2F;etc&#x2F;*-release</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">DISTRIB_ID&#x3D;Ubuntu</span><br><span class="line">DISTRIB_RELEASE&#x3D;16.04</span><br><span class="line">DISTRIB_CODENAME&#x3D;xenial</span><br><span class="line">DISTRIB_DESCRIPTION&#x3D;&quot;Ubuntu 16.04.3 LTS&quot;</span><br><span class="line">NAME&#x3D;&quot;Ubuntu&quot;</span><br><span class="line">VERSION&#x3D;&quot;16.04.3 LTS (Xenial Xerus)&quot;</span><br><span class="line">ID&#x3D;ubuntu</span><br><span class="line">ID_LIKE&#x3D;debian</span><br><span class="line">PRETTY_NAME&#x3D;&quot;Ubuntu 16.04.3 LTS&quot;</span><br><span class="line">VERSION_ID&#x3D;&quot;16.04&quot;</span><br><span class="line">HOME_URL&#x3D;&quot;http:&#x2F;&#x2F;www.ubuntu.com&#x2F;&quot;</span><br><span class="line">SUPPORT_URL&#x3D;&quot;http:&#x2F;&#x2F;help.ubuntu.com&#x2F;&quot;</span><br><span class="line">BUG_REPORT_URL&#x3D;&quot;http:&#x2F;&#x2F;bugs.launchpad.net&#x2F;ubuntu&#x2F;&quot;</span><br><span class="line">VERSION_CODENAME&#x3D;xenial</span><br><span class="line">UBUNTU_CODENAME&#x3D;xenial</span><br></pre></td></tr></table></figure>
+
+<p>从上述结果，我们了解到，现在所使用的Ai Studio是Ubuntu操作系统。因此，各种Linux命令就可以放心使用了。</p>
+<ol start="2">
+<li>查看已有字体</li>
+</ol>
+<p>首先看一看系统自带的字体。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Linux系统默认字体文件路径</span></span><br><span class="line">!ls /usr/share/fonts/</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmap  truetype	type1  X11</span><br></pre></td></tr></table></figure>
+
+<p>显然操作系统默认有一些字体，但这些字体中有多少是支持显示汉字的呢？还要继续查看:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看系统可用的ttf格式中文字体</span></span><br><span class="line">!fc-list :lang=zh | grep <span class="string">".ttf"</span></span><br></pre></td></tr></table></figure>
+
+<p>没有任何查询结果，说明系统默认字体中没有支持汉字的ttf格式字体。</p>
+<p>熟悉Matplotlib的朋友可能会想到，也应该看看Matplotlib库的字体目录，或者将支持汉字的字体放到该目录中。</p>
+<p>Ai Studio虽然是Ubuntu操作系统，但又不完全等同于本地的Ubuntu系统，Python第三方库的安装位置与本地计算机中的位置不同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.__path__</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#39;&#x2F;opt&#x2F;conda&#x2F;envs&#x2F;python35-paddle120-env&#x2F;lib&#x2F;python3.7&#x2F;site-packages&#x2F;matplotlib&#39;]</span><br></pre></td></tr></table></figure>
+<p>以上的输出结果：<code>/opt/conda/envs/python35-paddle120-env/lib/python3.7/site-packages/matplotlib</code>，就是matplotlib的存储路径，或者说，所有第三方包都会被安装到<code>/opt/conda/envs/python35-paddle120-env/lib/python3.7/site-packages/</code>里面。</p>
+<p>那么，Matplotlib保存字体的路径就应该是<code>/opt/conda/envs/python35-paddle120-env/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf</code>，可以查看其中的字体：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># matplotlib字体路径(aistudio)</span></span><br><span class="line">!ls /opt/conda/envs/python35-paddle120-env/lib/python3<span class="number">.7</span>/site-packages/matplotlib/mpl-data/fonts/ttf</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cmb10.ttf			DejaVuSerif.ttf</span><br><span class="line">cmex10.ttf			LICENSE_STIX</span><br><span class="line">cmmi10.ttf			STIXGeneralBolIta.ttf</span><br><span class="line">cmr10.ttf			STIXGeneralBol.ttf</span><br><span class="line">cmss10.ttf			STIXGeneralItalic.ttf</span><br><span class="line">cmsy10.ttf			STIXGeneral.ttf</span><br><span class="line">cmtt10.ttf			STIXNonUniBolIta.ttf</span><br><span class="line">DejaVuSans-BoldOblique.ttf	STIXNonUniBol.ttf</span><br><span class="line">DejaVuSans-Bold.ttf		STIXNonUniIta.ttf</span><br><span class="line">DejaVuSansDisplay.ttf		STIXNonUni.ttf</span><br><span class="line">DejaVuSansMono-BoldOblique.ttf	STIXSizFiveSymReg.ttf</span><br><span class="line">DejaVuSansMono-Bold.ttf		STIXSizFourSymBol.ttf</span><br><span class="line">DejaVuSansMono-Oblique.ttf	STIXSizFourSymReg.ttf</span><br><span class="line">DejaVuSansMono.ttf		STIXSizOneSymBol.ttf</span><br><span class="line">DejaVuSans-Oblique.ttf		STIXSizOneSymReg.ttf</span><br><span class="line">DejaVuSans.ttf			STIXSizThreeSymBol.ttf</span><br><span class="line">DejaVuSerif-BoldItalic.ttf	STIXSizThreeSymReg.ttf</span><br><span class="line">DejaVuSerif-Bold.ttf		STIXSizTwoSymBol.ttf</span><br><span class="line">DejaVuSerifDisplay.ttf		STIXSizTwoSymReg.ttf</span><br><span class="line">DejaVuSerif-Italic.ttf</span><br></pre></td></tr></table></figure>
+
+<p>查看上面的显示结果，会发现，的确没有支持汉字显示的字体，所以，前面可视化结果中不能显示汉字是很正常的。</p>
+<p>按照在本地计算机上设置汉字显示的思维方法，将支持汉字显示的字体放到上述目录中，并修改相应的配置文件matplotlibrc，是否可以？如果读者有兴趣，可以尝试。这里只说明结果：无法解决本文的问题。</p>
+<h2 id="下载字体"><a href="#下载字体" class="headerlink" title="下载字体"></a>下载字体</h2><p>既然系统默认没有支持汉字的字体，就不得不下载了。注意，不是下载到你所使用的本地计算机，而是下载到当前Ai Studio给我们提供的虚拟操作系统上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载中文字体</span></span><br><span class="line">!wget https://mydueros.cdn.bcebos.com/font/simhei.ttf</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">--2020-04-10 15:44:35--  https:&#x2F;&#x2F;mydueros.cdn.bcebos.com&#x2F;font&#x2F;simhei.ttf</span><br><span class="line">Resolving mydueros.cdn.bcebos.com (mydueros.cdn.bcebos.com)... 182.61.128.198</span><br><span class="line">Connecting to mydueros.cdn.bcebos.com (mydueros.cdn.bcebos.com)|182.61.128.198|:443... connected.</span><br><span class="line">HTTP request sent, awaiting response... 200 OK</span><br><span class="line">Length: 9753388 (9.3M) [application&#x2F;octet-stream]</span><br><span class="line">Saving to: ‘simhei.ttf.1’</span><br><span class="line"></span><br><span class="line">simhei.ttf.1        100%[&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&gt;]   9.30M  54.7MB&#x2F;s    in 0.2s    </span><br><span class="line"></span><br><span class="line">2020-04-10 15:44:35 (54.7 MB&#x2F;s) - ‘simhei.ttf.1’ saved [9753388&#x2F;9753388]</span><br></pre></td></tr></table></figure>
+
+<p>字体下载之后，会保存到当前项目的永久文件夹中。点击界面左侧的“文件夹”，可以看到刚刚下载的字体文件simhei.ttf，再用下面的方式得到这个字体的名称。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看字体的引用名</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.font_manager <span class="keyword">as</span> font_manager</span><br><span class="line">fontpath = <span class="string">'simhei.ttf'</span></span><br><span class="line">prop = font_manager.FontProperties(fname=fontpath)</span><br><span class="line">print(prop.get_name())</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SimHei</span><br></pre></td></tr></table></figure>
+
+<p>从上述返回结果可知，下载的字体文件simhei.ttf，在Matplotlib中，所引用的字体名称是SimHei。</p>
+<h2 id="第一种方法"><a href="#第一种方法" class="headerlink" title="第一种方法"></a>第一种方法</h2><p>这是一种非常灵活的方法，可以根据需要对所绘制图像设置不同的字体。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib.font_manager <span class="keyword">import</span> FontProperties</span><br><span class="line"></span><br><span class="line">font = FontProperties(fname=<span class="string">'simhei.ttf'</span>, size=<span class="number">16</span>)    <span class="comment"># 创建字体对象</span></span><br><span class="line"></span><br><span class="line">labels = [<span class="string">'娱乐'</span>,<span class="string">'育儿'</span>,<span class="string">'饮食'</span>,<span class="string">'房贷'</span>,<span class="string">'交通'</span>,<span class="string">'其它'</span>]</span><br><span class="line">sizes = [<span class="number">2</span>,<span class="number">5</span>,<span class="number">12</span>,<span class="number">70</span>,<span class="number">2</span>,<span class="number">9</span>]</span><br><span class="line">explode = (<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.1</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">plt.pie(sizes, explode=explode, labels=labels, autopct=<span class="string">'%1.1f%%'</span>, shadow=<span class="literal">False</span>, startangle=<span class="number">150</span>, textprops=&#123;<span class="string">'fontproperties'</span>:font&#125;)</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">"饼图示例-8月份家庭支出"</span>, fontproperties=font)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/output_17_1_20200410160601.png" alt=""></p>
+<p>观察上述图示，标题和饼图的各个分区的标示都显示中文了。</p>
+<p>在plt.pie和plt.title中，都是用了参数’fontproperties’，这个参数是matplotlib的文本参数之一（查看：Text properties and layout：<a href="https://matplotlib.org/3.1.1/tutorials/text/text_props.html），其值是FontProperties类的实例，即前面所创建的字体对象。" target="_blank" rel="noopener">https://matplotlib.org/3.1.1/tutorials/text/text_props.html），其值是FontProperties类的实例，即前面所创建的字体对象。</a></p>
+<p>如此解决了当前图示中汉字显示问题。</p>
+<h2 id="第二种方法"><a href="#第二种方法" class="headerlink" title="第二种方法"></a>第二种方法</h2><p>第一种方法定制性比较强，在一个项目中，可以给不同图示配置不同的字体。如果不需要如此，也可以用这里介绍的第二种方法，一个项目中所有可视化的图示都用同一种汉字字体。</p>
+<p>在创建共本项目应用的字体目录fonts，并把所下载的字体放到该目录中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建字体目录fonts</span></span><br><span class="line">!mkdir .fonts</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制字体文件到该路径</span></span><br><span class="line">!cp simhei.ttf .fonts/</span><br></pre></td></tr></table></figure>
+
+<p>上面的操作完成之后，一定要执行下面的操作：</p>
+<p><strong>重启环境</strong>，即用鼠标点击本项目浏览器中的下图所示图标：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WX20200410-152521_20200410160746.png" alt=""></p>
+<p>这步完成之后，执行下面的代码，就实现了汉字的显示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.font_manager <span class="keyword">as</span> font_manager</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置显示中文</span></span><br><span class="line">matplotlib.rcParams[<span class="string">'font.sans-serif'</span>] = [<span class="string">'SimHei'</span>] <span class="comment"># 指定默认字体</span></span><br><span class="line">matplotlib.rcParams[<span class="string">'axes.unicode_minus'</span>] = <span class="literal">False</span>   <span class="comment"># 解决保存图像是负号'-'显示为方块的问题</span></span><br><span class="line"></span><br><span class="line">labels = [<span class="string">'娱乐'</span>,<span class="string">'育儿'</span>,<span class="string">'饮食'</span>,<span class="string">'房贷'</span>,<span class="string">'交通'</span>,<span class="string">'其它'</span>]</span><br><span class="line">sizes = [<span class="number">2</span>,<span class="number">5</span>,<span class="number">12</span>,<span class="number">70</span>,<span class="number">2</span>,<span class="number">9</span>]</span><br><span class="line">explode = (<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.1</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">plt.pie(sizes,explode=explode,labels=labels,autopct=<span class="string">'%1.1f%%'</span>,shadow=<span class="literal">False</span>,startangle=<span class="number">150</span>)</span><br><span class="line">plt.title(<span class="string">"饼图示例-8月份家庭支出"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/output_22_1_20200410161021.png" alt=""></p>
+<p>以上技巧，发布出来，供大家参考。</p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞转发</strong></p>
+
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/10/reader-hongxianbin/">
+        <span class="nav-arrow">← </span>
+        
+          《数据准备和特征工程》读后感
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查看已有字体"><span class="toc-nav-text">查看已有字体</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#下载字体"><span class="toc-nav-text">下载字体</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#第一种方法"><span class="toc-nav-text">第一种方法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#第二种方法"><span class="toc-nav-text">第二种方法</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/12/baidu-aistudio-chinese/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
