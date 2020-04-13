@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python3.9中合并字典的新方法 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python3.9中合并字典的新方法</h2>
+    <p class="post-date">2020-04-13</p>
+    <section class="markdown-content"><p>作者：Yong Cui, Ph.D.</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<hr>
+<p>Python3.9，还在研发中，计划今年10月份发布，2月26日，研发团队发布了α版，其中有一个新功能，会关系到所有开发者，那就是两个操作符：<code>|</code>和<code>|=</code>，分别实现对字典的合并操作。</p>
+<p>本文对此给予简要介绍。</p>
+<h2 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h2><p>Python中的字典，即<code>dict</code>，是一种重要的内置对象类型，它是一种以键值对方式保存数据的容器，因为使用了哈希，使得查询字典中数据时的时间复杂度恒定，这是它美名远播的一个原因。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 创建字典</span><br><span class="line">student &#x3D; &#123;&#39;name&#39;: &#39;John&#39;, &#39;age&#39;: 14&#125;</span><br><span class="line"></span><br><span class="line"># 读取值</span><br><span class="line">age &#x3D; student[&#39;age&#39;]</span><br><span class="line"># age is 14</span><br><span class="line"></span><br><span class="line"># Update 一个值</span><br><span class="line">student[&#39;age&#39;] &#x3D; 15</span><br><span class="line"># student 变成 &#123;&#39;name&#39;: &#39;John&#39;, &#39;age&#39;: 15&#125;</span><br><span class="line"></span><br><span class="line"># 插入一个键值对</span><br><span class="line">student[&#39;score&#39;] &#x3D; &#39;A&#39;</span><br><span class="line"># student 变成 &#123;&#39;name&#39;: &#39;John&#39;, &#39;age&#39;: 15, &#39;score&#39;: &#39;A&#39;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="以往合并字典的方法"><a href="#以往合并字典的方法" class="headerlink" title="以往合并字典的方法"></a>以往合并字典的方法</h2><p>有时，我们需要将两个字典合并，在Python3.9之前，有几种方法可以实现。假设有两个字典：<code>d1</code>和<code>d2</code>，新建一个字典<code>d3</code>，它的值是<code>d1</code>和<code>d2</code>的并集。从下面的演示中我们可以看到，如果字典中被合并的字典中有重复的键，例如<code>d2</code>如果是字典<code>d2a</code>那样，就会把<code>d1</code>中同名的键覆盖了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># two dicts to start with</span><br><span class="line">d1 &#x3D; &#123;&#39;a&#39;: 1, &#39;b&#39;: 2&#125;</span><br><span class="line">d2 &#x3D; &#123;&#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line">d2a &#x3D; &#123;&#39;a&#39;: 10, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"></span><br><span class="line"># target dict</span><br><span class="line">d3 &#x3D; &#123;&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="update-方法"><a href="#update-方法" class="headerlink" title="update()方法"></a><code>update()</code>方法</h3><p>第一种方法我们使用字典的<code>update()</code>方法，下面的代码中演示了操作方法。注意，首先要创建<code>d1</code>的拷贝，否则<code>update()</code>会把原字典的值修改了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># create a copy of d1, as update() modifies the dict in-place</span><br><span class="line">d3 &#x3D; d1.copy()</span><br><span class="line"># d3 is &#123;&#39;a&#39;: 1, &#39;b&#39;: 2&#125;</span><br><span class="line"></span><br><span class="line"># update the d3 with d2</span><br><span class="line">d3.update(d2)</span><br><span class="line"># d3 now is &#123;&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果字典中有重名的键，我们必须更加谨慎，确定保留哪些值。如下代码所示，作为<code>update()</code>方法的参数<code>d2a</code>中，与<code>d3</code>有重复的键，比如<code>a</code>，此时会遵循“最后一个有效”的原则合并。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">d3 &#x3D; d1.copy()</span><br><span class="line">d3.update(d2a)</span><br><span class="line"># d3 now is &#123;&#39;a&#39;: 10, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"># This is not the way that we want d3 &#x3D; d2a.copy()</span><br><span class="line">d3.update(d1)</span><br><span class="line"># d3 now is &#123;&#39;a&#39;: 1, &#39;c&#39;: 3, &#39;d&#39;: 4, &#39;b&#39;: 2&#125;</span><br><span class="line"># This is the way that we want</span><br></pre></td></tr></table></figure>
+
+<h3 id="解包字典"><a href="#解包字典" class="headerlink" title="解包字典"></a>解包字典</h3><p>第二种方法使用字典解包，类似上面的方法，如果有重名的键，依然是“最后一个有效”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># unpacking</span><br><span class="line">d3 &#x3D; &#123;**d1, **d2&#125;</span><br><span class="line"># d3 is &#123;&#39;a&#39;: 10, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"># Not right d3 &#x3D; &#123;**d2a, **d1&#125;</span><br><span class="line"># d3 is &#123;&#39;a&#39;: 1, &#39;c&#39;: 3, &#39;d&#39;: 4, &#39;b&#39;: 2&#125;</span><br><span class="line"># Good</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用dict-iterable-kwarg"><a href="#使用dict-iterable-kwarg" class="headerlink" title="使用dict(iterable, **kwarg)"></a>使用dict(iterable, **kwarg)</h3><p>利用<code>dict(iterable, **kwarg)</code>方法创建一个字典。如果参数<code>iterable</code>是一个字典，就可以创建一个同样键值对的字典，再提供另外一个字典，就可以将这个字典的键值对增加到前面字典中。注意，这个字典如果跟前面字典中有同名的参数，依然是“最后一个有效”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">d3 &#x3D; dict(d1, **d2)</span><br><span class="line"># d3 is &#123;&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"># Good, it&#39;s what we wantd3 &#x3D; dict(d1, **d2a)</span><br><span class="line"># d3 is &#123;&#39;a&#39;: 10, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"># Not right, &#39;a&#39; value got replaced</span><br></pre></td></tr></table></figure>
+
+<p>注意，上面的方法只适用于以字符串为键的字典，因为它其实是以关键词传参。如果像下面这样，就会报错了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; dict(&#123;&#39;a&#39;: 1&#125;, **&#123;2: 3&#125;)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">TypeError: keywords must be strings</span><br><span class="line">&gt;&gt;&gt; dict(&#123;&#39;a&#39;: 1&#125;, **&#123;&#39;2&#39;: 3&#125;)</span><br><span class="line">&#123;&#39;a&#39;: 1, &#39;2&#39;: 3&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="合并字典的新方法"><a href="#合并字典的新方法" class="headerlink" title="合并字典的新方法"></a>合并字典的新方法</h2><p>在最近发布的Python3.9.0α4中，提供了合并运算符<code>|</code>，用于很方便地实现两个字典的合并，下面给出一个示例。你一定会注意到，如果两个字典中有重名的键，依然是“最后一个有效”，这与前面所看到的没有区别，比如<code>update()</code>方法那样的操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># use the merging operator |</span><br><span class="line">d3 &#x3D; d1 | d2</span><br><span class="line"># d3 is now &#123;&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"># goodd3 &#x3D; d1 | d2a</span><br><span class="line"># d3 is now &#123;&#39;a&#39;: 10, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"># not good</span><br></pre></td></tr></table></figure>
+
+<p>与上述运算符相关的是一个增强版的运算符<code>|=</code>，它的作用是对字典进行原地修改，从本质上讲，与<code>update()</code>一样，以下代码段显示其用法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Create a copy for d1</span><br><span class="line">d3 &#x3D; d1.copy()</span><br><span class="line"></span><br><span class="line"># Use the augmented assignment of the merge operator</span><br><span class="line">d3 |&#x3D; d2</span><br><span class="line"># d3 now is &#123;&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"># good </span><br><span class="line"></span><br><span class="line">d3 |&#x3D; d2a</span><br><span class="line"># d3 now is &#123;&#39;a&#39;: 10, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4&#125;</span><br><span class="line"># not good</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文展示了Python3.9即将发布的一个关于合并字典的运算符，此外，对<code>asyncio</code>、<code>math</code>、<code>os</code>模块也有一些更新，迫不及待了吗？10月份Python3.9发布之时，官方文档会有详细说明，敬请查看。</p>
+<p>原文链接：<a href="https://medium.com/better-programming/dictionary-merging-and-updating-in-python-3-9-4ac67c667ce" target="_blank" rel="noopener">https://medium.com/better-programming/dictionary-merging-and-updating-in-python-3-9-4ac67c667ce</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点赞转发</strong></p>
+
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/12/baidu-aistudio-chinese/">
+        <span class="nav-arrow">← </span>
+        
+          如何在AI Studio数据可视化图像中显示汉字
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#字典"><span class="toc-nav-text">字典</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#以往合并字典的方法"><span class="toc-nav-text">以往合并字典的方法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#update-方法"><span class="toc-nav-text">update()方法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#解包字典"><span class="toc-nav-text">解包字典</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用dict-iterable-kwarg"><span class="toc-nav-text">使用dict(iterable, **kwarg)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#合并字典的新方法"><span class="toc-nav-text">合并字典的新方法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/13/python39-dict-merge/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
