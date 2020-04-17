@@ -150,11 +150,7 @@
   <article class="post-article">
     <h2>《数据准备和特征工程》勘误与修订</h2>
     <p class="post-date">2020-04-07</p>
-    <section class="markdown-content"><h1 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h1><ul>
-<li>2020年3月第1版本</li>
-<li>2020年3月第1次印刷</li>
-</ul>
-<h2 id="勘误"><a href="#勘误" class="headerlink" title="勘误"></a>勘误</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><ul>
+    <section class="markdown-content"><h1 id="2020年3月第1版第1次印刷"><a href="#2020年3月第1版第1次印刷" class="headerlink" title="2020年3月第1版第1次印刷"></a>2020年3月第1版第1次印刷</h1><h2 id="勘误"><a href="#勘误" class="headerlink" title="勘误"></a>勘误</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><ul>
 <li>位置：第1自然段，第2行</li>
 <li>原文：另外，数据科学业界中还流传着另一句话：</li>
 <li>修改为：<del>另外</del>，数据科学业界<del>中</del>还流传着另一句话：</li>
@@ -185,6 +181,28 @@
 </blockquote>
 </li>
 </ul>
+<h3 id="第029页"><a href="#第029页" class="headerlink" title="第029页"></a>第029页</h3><ul>
+<li>说明：在第一段代码之后，在“建议读者在上述基础上，……”这段之前，增加下属内容。</li>
+</ul>
+<p>利用read_sql_query函数，能够对数据库表直接使用SQL语句。此外，Pandas中还有一个名为read_sql的函数，它是对函数read_sql_query和read_sql_table的高级封装，用这个函数能够从指定数据库文件中读取数据。</p>
+<p>为了使用这个函数，必须安装SQLAlchemy模块。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> pip install sqlalchemy</span></span><br></pre></td></tr></table></figure>
+
+<p>在演示读取数据之前，先创建一个SQLite的数据库文件（SQLite数据库是Python默认支持的，Python中有相应的标准库sqlite3）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> create_engine</span><br><span class="line">engine = create_engine(<span class="string">'sqlite:///data.db'</span>, echo=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>创建名称为data.db的SQLite数据库，并用变量engine引用此数据库对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">path = <span class="string">'/Users/qiwsir/Documents/Codes/DataSet/pm25'</span></span><br><span class="line">diadf = pd.read_csv(path+<span class="string">"/pm2.csv"</span>)</span><br><span class="line">diadf.to_sql(<span class="string">"diadata.db"</span>, con=engine, index_label=<span class="string">'ID'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从CSV文件中的读取数据，然后执行to_sql方法，将数据保存到前面创建的数据库中，并将相应的数据库表命名为diadata.db。</p>
+<p>执行完上述操作之后，在本地就可以看到名为data.db的数据库文件，如果用可视化工具打开这个数据库，可以查看到里面的内容（如下图所示，相关操作方法请参阅《Python大学实用教程》）。</p>
+<p><img src="/Users/qiwsir/Documents/Codes/FeatureEngineering/chapter1/sqlitedata.png" alt="image-20200414181157920"></p>
+<p>接下来，就可以使用Pandas的read_sql函数从这个数据库中读取数据库表diadata.db中的数据了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = pd.read_sql(<span class="string">'diadata.db'</span>, con=engine, index_col=<span class="string">'ID'</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	 RANK	CITY_ID	CITY_NAME	Exposed days</span><br><span class="line">ID				</span><br><span class="line"><span class="number">0</span>	 <span class="number">1</span>	  <span class="number">594</span>	     拉萨	      <span class="number">2</span></span><br><span class="line"><span class="number">1</span>	 <span class="number">2</span>	  <span class="number">579</span>	     玉溪	      <span class="number">7</span></span><br><span class="line"><span class="number">2</span>	 <span class="number">3</span>	  <span class="number">263</span>	     厦门	      <span class="number">8</span></span><br><span class="line"><span class="number">3</span>	 <span class="number">4</span>	  <span class="number">267</span>	     泉州	      <span class="number">9</span></span><br><span class="line"><span class="number">4</span>	 <span class="number">5</span>	  <span class="number">271</span>	     漳州	      <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
 </section>
     <!-- Tags START -->
     
@@ -252,7 +270,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#版本"><span class="toc-nav-text">版本</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#勘误"><span class="toc-nav-text">勘误</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第003页"><span class="toc-nav-text">第003页</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第014页"><span class="toc-nav-text">第014页</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第015页"><span class="toc-nav-text">第015页</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#修订"><span class="toc-nav-text">修订</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第009页"><span class="toc-nav-text">第009页</span></a></li></ol></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2020年3月第1版第1次印刷"><span class="toc-nav-text">2020年3月第1版第1次印刷</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#勘误"><span class="toc-nav-text">勘误</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第003页"><span class="toc-nav-text">第003页</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第014页"><span class="toc-nav-text">第014页</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第015页"><span class="toc-nav-text">第015页</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#修订"><span class="toc-nav-text">修订</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第009页"><span class="toc-nav-text">第009页</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第029页"><span class="toc-nav-text">第029页</span></a></li></ol></li></ol></li></ol>
     
   </div>
 </aside>
