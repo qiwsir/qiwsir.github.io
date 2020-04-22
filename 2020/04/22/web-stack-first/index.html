@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      剖析Web技术栈（一） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>剖析Web技术栈（一）</h2>
+    <p class="post-date">2020-04-22</p>
+    <section class="markdown-content"><p>作者：Leonardo Giordani</p>
+<p>翻译：老齐</p>
+<p>与本文相关书籍推荐：《跟老齐学Python：Django实战》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" alt=""></p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>最近我与年轻的Web开发人员共事，他们第一次接触到用于生产的一些基础组件，为此出现了许多问题，这些组件都是“web服务”体系中常见的。通过这些问题，我看到了年轻人的困惑，虽然他们掌握了某种高级编程语言(如Node.js或Python)，但不知晓浏览器和他们选择的框架之间所发生复杂事情，不清楚框架的作用和使用的时机。</p>
+<p>如果我们只列出（按随机顺序）在讨论（Python）Web开发时使用的一些名词，对于一些读者来讲，理解起来可能有困难，比如：HTTP、cookies、Web server、Websockets、FTP、多线程、反向代理、Django、nginx、静态文件、POST、证书、框架、Flask、SSL、GET、WSGI、session、TLS、负载均衡、Apache等。</p>
+<p>在这篇文章中，我想基于上面提到的所有单词汇（还有更多别的词），从头开始构建一个可用于生产的Web服务。希望这有助于年轻的开发人员了解全局，理解像我这样的高级开发者在日常对话中经常提到的那些“晦涩”名词（有时可以说是不恰当的）。</p>
+<p>由于本文的重点是全局架构和选用特定组件的理由，因此，在Web开发的示例中，我将用HTML的网页，以Python语言为后端语言，并讨论所选用的对应框架。但，本文内容其实适用于任何编程语言或开发框架。</p>
+<p>在本文的每个部分，都会先说明原理，然后介绍可能的解决方案。之后，我将指出缺失的部分或未解决的问题，并继续下一层次。在这个过程的最后，读者应该清楚地知道每个组件都被添加到系统中的原因。</p>
+<h2 id="完美的架构"><a href="#完美的架构" class="headerlink" title="完美的架构"></a>完美的架构</h2><p>对于系统架构，有一个最基本的认识：天才们不能设计出一个完美的解决方案，我们需要根据实际来选用系统架构。不幸的是，人们常常认为设计模式是“魔术般的解决方案”。然而，《设计模式》（Design Patterns）原著中指出</p>
+<blockquote>
+<p>你的设计既要针对当前的问题，也应该足以用于解决未来的问题和需求。还要避免重构，或者尽可能减少重构。</p>
+</blockquote>
+<p>之后</p>
+<blockquote>
+<p>设计模式使人们更容易再次使用成功的设计和架构。……设计模式有利于你选择可以重复使用的系统架构。</p>
+</blockquote>
+<p>本文讨论的是面向对象的编程，所以下面的内容适用于任何架构。如你所见，我们会遇到“手头的问题”和“设计备选方案”，这意味着最重要的是要了解需求，包括现在和将来的需求。只有得到明确的需求，才能有效地设计解决方案，并且可能会利用其他设计师已经设计的大量模式。</p>
+<p>最后一句，Web栈非常复杂，由多个组件和软件包组成，这些组件和软件包是由不同的程序员为了不同的目标开发的。因此，这些东西的功能会有某种程度的重叠。虽然理论层之间的分界线通常非常清楚，但在实践中，分界线往往很模糊。有了这样的预期，你将永远不会迷失在Web栈中。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>让我们简单回顾一下Web栈中涉及的一些最重要的概念或协议。</p>
+<h3 id="TCP-IP"><a href="#TCP-IP" class="headerlink" title="TCP/IP"></a>TCP/IP</h3><p>TCP/IP是一种网络协议，即两台计算机在通过物理网络连接以交换消息时必须遵循的一组既定规则。TCP/IP由两个不同的协议组成，涉及OSI协议栈的两个不同层，即传输层（TCP）和网络层（IP）。TCP/IP可以在任何物理接口（数据链路和物理OSI层）上实现，如以太网和无线网。TCP/IP网络中的参与者由套接字标识，套接字是由IP地址和端口号组成的元组。</p>
+<p>正如我们所知，TCP/IP是一种可靠的协议，在电信领域，这意味着协议本身会在数据包丢失时进行处理或重传。换言之，虽然没有规定通信的速度，但我们可以确信，一旦发送消息，它将准确无误地到达目的地。</p>
+<h3 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3><p>TCP/IP可以保证一台计算机发送的字节到达其目的地，但这完全没有涉及如何发送有意义的信息的问题。特别是在1989年，Tim Barners-Lee想要解决这样一个问题：如何在网络中对超文本资源进行唯一命名以及如何访问它们。</p>
+<p>HTTP是为解决这一问题而设计的协议，此后得到了极大的发展。在WebSocket等其他协议的帮助下，HTTP侵入了原本被认为不适合的通信领域，例如实时通信或游戏。</p>
+<p>HTTP的核心是一个协议，它规定了文本请求的格式和可能的文本响应。1991年发布的0.9版定义了URL的概念，那时还只允许以GET方式请求特定资源。HTTP 1.0和1.1增加了一些重要的特性，如header、更多的方法和重要的性能优化。在撰写本文时，HTTP/2的采用率约为全球网站的45%，而HTTP/3仍然是一个草案。</p>
+<p>作为开发人员，我们需要记住：HTTP最重要的特点：它是一个无状态协议。这意味着协议不需要服务器跟踪请求之间的通信状态，基本上将会话（sessoin）管理留给服务本身的开发人员。</p>
+<p>会话管理现在非常重要，因为你通常希望在服务前面有一个身份验证层。在该层中，用户提供凭据并访问一些私有数据。但是，在其他情境中也很有用，例如记录用户的偏好等。解决HTTP中的session管理问题，最典型方案是使用cookies或会话tokens。</p>
+<h3 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h3><p>近年来，安全已成为一个非常重要的词，这是有原因的。我们在互联网上交流或存储在数字设备上的敏感数据量正呈指数级增长，但不幸的是，恶意攻击者的数量以及他们的行为可能造成的损害程度也呈指数级增长。</p>
+<p>HTTP本质上是不安全的。它是两台服务器之间的纯文本通信，这种通信通常发生在完全不稳定的网络（如Internet）上。虽然在最初构想该协议时，安全并不是一个问题，但现在是一个极其重要的问题了，因为我们交换的私人信息通常对人们的安全或企业至关重要，需要确保我们正在向正确的服务器发送信息，并且发送的数据不能被拦截。</p>
+<p>HTTPS解决了篡改和窃听的问题，使用传输层安全（Transport Layer Security，TLS）协议对HTTP进行加密，该协议还强制使用由可信机构颁发的数字证书。在撰写本文时，Firefox加载的大约80%的网站默认使用HTTPS。当服务器接收到一个HTTPS连接并将其转换为HTTP连接时，通常说它终止了TLS（或TLS的旧称：SSL）。</p>
+<h3 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h3><p>HTTP的一个很大的缺点是，通信总是由客户端发起的，服务器只能在显式请求时发送数据。虽然可以通过轮询解决服务器主动响应问题，但它不能保证正确的全双工通信性能，即服务器和客户端之间的信道保持打开，并且两者都可以在不被请求的情况下发送数据。这种信道由WebSocket协议提供。</p>
+<p>WebSocket是一项杀手级的技术，它可以应用于在线游戏、实时消息推送(如金融行情或体育新闻)、多媒体通信(如会议或远程教育)等领域。</p>
+<p>重要的是要理解WebSocket不是HTTP，并且可以在没有HTTP的情况下存在。同样，这个新协议被设计用于现有的HTTP连接之上，因此WebSocket通信经常出现在Web页面的某些部分中，最初是使用HTTP检索的。</p>
+<h2 id="通过HTTP实现服务"><a href="#通过HTTP实现服务" class="headerlink" title="通过HTTP实现服务"></a>通过HTTP实现服务</h2><p>我们终于开始讨论比特和字节了。我们旅程的起点是HTTP上的服务，这意味着存在HTTP请求——响应交换。例如，一个GET请求，这是最简单的HTTP方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: localhost</span><br><span class="line">User-Agent: curl&#x2F;7.65.3</span><br><span class="line">Accept: *&#x2F;*</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，客户端正在向服务器发送纯文本消息，格式由HTTP协议指定。第一行包含方法名（<code>GET</code>）、URL（<code>/</code>）和我们正在使用的协议，包括它的版本（<code>HTTP/1.1</code>）。其余的行称为头信息，包含可以帮助服务器管理请求的元数据。在本例中，Host的完整值是<code>localhost:80</code>，但是由于HTTP服务的标准端口是80，所以不需要指定它。</p>
+<p>如果服务器<code>localhost</code>在端口80上提供HTTP服务（即运行一些理解HTTP的程序），那么我们可能得到类似于下面的响应</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HTTP&#x2F;1.0 200 OK</span><br><span class="line">Date: Mon, 10 Feb 2020 08:41:33 GMT</span><br><span class="line">Content-type: text&#x2F;html</span><br><span class="line">Content-Length: 26889</span><br><span class="line">Last-Modified: Mon, 10 Feb 2020 08:41:27 GMT</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE HTML&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">...</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>对于请求所作的响应是一条文本消息，这条消息根据标准进行了格式化。第一行是协议和响应请求的状态（在本例中是200，这意味着成功），而下面几行，都是headers中的信息，最后，在空行之后，是客户端请求的资源，在本例中是对应于URL的网页源代码，由于此HTML页面可能包含对其他资源（如CSS、JS、图像等）的引用，浏览器将发送其他几个请求来收集它需要的所有数据，以便向用户显示正确的页面。</p>
+<p>因此，我们面临的第一个问题是要有一个服务器。服务器理解这一协议，并在接收到HTTP请求时发送适当的响应。我们应该尝试加载请求的资源，如果可以找到它，则返回success（HTTP 200），如果找不到，则返回failure（HTTP 404）。</p>
+<p>（未完，待续）</p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点这里👇👇👇</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/18/regression-regular-notebook/">
+        <span class="nav-arrow">← </span>
+        
+          “线性回归模型正则化”笔记
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#引言"><span class="toc-nav-text">引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#完美的架构"><span class="toc-nav-text">完美的架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#定义"><span class="toc-nav-text">定义</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#TCP-IP"><span class="toc-nav-text">TCP&#x2F;IP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HTTP"><span class="toc-nav-text">HTTP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HTTPS"><span class="toc-nav-text">HTTPS</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#WebSocket"><span class="toc-nav-text">WebSocket</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#通过HTTP实现服务"><span class="toc-nav-text">通过HTTP实现服务</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/22/web-stack-first/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

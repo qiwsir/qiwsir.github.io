@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      “线性回归模型正则化”笔记 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>“线性回归模型正则化”笔记</h2>
+    <p class="post-date">2020-04-18</p>
+    <section class="markdown-content"><h2 id="损失函数与风险"><a href="#损失函数与风险" class="headerlink" title="损失函数与风险"></a>损失函数与风险</h2><p>机器学习模型建立在以“误差”最小化为目的的基础上的：</p>
+<ul>
+<li>将模型应用到测试集中，测试结果与实际情况的误差是我们通常认为的“误差”，这种误差我们通常称做<strong>一般误差</strong>，亦被称为<strong>期望风险</strong>。</li>
+<li>以最小化模型在训练集中的“误差”为目的的算法中的那个“误差”，是<strong>经验误差</strong>，对应于期望风险，它又被称作<strong>经验风险</strong>。而用于表示经验风险（也可称经验损失）的函数：</li>
+</ul>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/640_20200418124434.png" alt=""></p>
+<p>此处函数$L$有多重形式。如下所示：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/640_20200418124734.jpg" alt=""></p>
+<p>下面的是成本函数。计算误差所用的成本函数，也称为<strong>损失函数</strong>。上面图中是常用的损失函数形式。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/640_20200418124840.png" alt=""></p>
+<ul>
+<li>成本函数和损失函数确实没有什么区别。但我们在线性回归中用的J(θ)严格来讲仅仅是一个用于衡量经验误差大小的函数，它与现在我们所讨论的损失函数有一点点区别就是它可以为了方便计算而做出一些修改，也就是说只要它适合我们用于建立模型即可，而目的并不是严格计算出经验风险。</li>
+<li>成本函数仅是为了方便计算而用于表示风险的一个计算式，经验风险函数$R_{emp}$则更偏向于严格衡量模型的经验风险。也正因此，<strong>极大似然估计</strong>也可以看作是经验风险最小化的一个策略。</li>
+</ul>
+<p>一般来说，我们建立模型的基准都是通过最小化经验风险，但经验风险并不代表期望风险，也即测试集中的误差和训练集中的误差是有区别的，这就意味着，当经验风险真的最小化的时候，就会出现过拟合的现象，模型完美贴近训练集，但在测试集中往往会表现不佳。为了避免这一情况出现，也即<strong>防止过拟合出现，就有了结构风险最小化</strong>，而这个策略，事实上就等价于<strong>正则化</strong>。</p>
+<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p><strong>正则化就是通过对模型参数进行调整（数量和大小），降低模型的复杂度，以达到可以避免过拟合的效果。</strong>正则化是机器学习中的一种叫法，其它领域内叫法各不相同：</p>
+<blockquote>
+<p>机器学习把L1和L2叫<strong>正则化</strong>，统计学领域叫<strong>惩罚项</strong>，数学领域叫<strong>范数</strong>。</p>
+</blockquote>
+<p>正则化是一个典型的用于选择模型的方法。它是结构风险最小化策略的实现，是在经验风险上加一个<strong>正则化项或惩罚项</strong>。正则化项一般是模型复杂度的单调递增函数，模型越复杂，正则化值就越大。</p>
+<p>定义结构风险：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/6401_20200418125634.png" alt=""></p>
+<ul>
+<li>前面一项就是经验风险，即损失项，用于衡量模型与数据的拟合度</li>
+<li>后一项中的<code>J(f)</code>就表示<strong>模型的复杂度</strong> ，它是定义在假设空间F上的泛函（<em>通常是指一种定义域为函数，而值域为实数的“函数”。换句话说，就是从函数组成的一个向量空间到实数的一个映射。也就是说它的输入为函数，而输出为实数</em>，来自维基百科），模型f越复杂，复杂度J(f)就越大；反之，模型越简单，复杂度J(f)就越小。也就是说，复杂度表示了对复杂模型的惩罚。λ≥0是系数，用以权衡经验风险和模型复杂度。结构风险小的模型往往对训练数据以及位置的测试数据都有较好的预测。</li>
+<li>λJ(f)称之为正则化项。</li>
+</ul>
+<p>贝叶斯估计中的最大化后验概率估计就是结构风险最小化的一个例子。</p>
+<ul>
+<li>当模型是条件概率分布、损失函数是对数损失函数、模型复杂度由模型的先验概率表示时，结构风险最小化就等价于最大化后验概率估计。</li>
+</ul>
+<p>一般线性回归我们用均方误差作为损失函数。损失函数的代数法表示如下：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WX20200418-152021_20200418152044.png" alt=""></p>
+<p>如果写成矩阵：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/jloss_20200418152149.png" alt=""></p>
+<p>正则化项可以取不同的形式。例如，回归问题中，损失函数是平方损失，正则化项就可以是参数向量的L2范数/L1范数</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/6402_20200418130128.png" alt=""></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/6403_20200418130205.png" alt=""></p>
+<p><strong>正则化的作用就是选择经验风险与模型复杂度同时较小的模型</strong></p>
+<ul>
+<li><p>L2范数优化简单，因为它假设参数服从了高斯分布，利于防止过拟合；</p>
+<p>使用L2范数，其回归称为Ridge回归。在不抛弃任何一个特征的情况下，缩小了回归系数，使得模型相对而言比较的稳定，不至于过拟合。</p>
+<p>对于这个损失函数，一般有梯度下降法和最小二乘法两种极小化损失函数的优化方法，而scikit中的Ridge类用的是最小二乘法。</p>
+<p>RidgeCV类的损失函数和损失函数的优化方法完全与Ridge类相同，区别在于验证方法。</p>
+</li>
+<li><p>L1范数优化稍复杂一些（一个常用的方法是LASSO），它假设参数服从双指数分布，可以增强得到的问题的解的稀疏性。L1正则化通常称为Lasso回归</p>
+<ul>
+<li>Lasso回归可以使得一些特征的系数变小，甚至还是一些绝对值较小的系数直接变为0。增强模型的泛化能</li>
+<li>Lasso回归的损失函数优化方法常用的有两种，坐标轴下降法和最小角回归法。Lasso类采用的是坐标轴下降法</li>
+<li>sklearn中的Lasso类并没有用到交叉验证之类的验证方法</li>
+<li>LassoCV类的损失函数和损失函数的优化方法完全与Lasso类相同，区别在于验证方法。当我们面临在一堆高维特征中找出主要特征时，LassoCV类更是必选。当面对稀疏线性关系时，LassoCV也很好用。</li>
+<li>LassoLars类的损失函数和验证方法与Lasso类相同，区别在于损失函数的优化方法。LassoLars类采用的是最小角回归法</li>
+<li>LassoLarsCV类的损失函数和损失函数的优化方法完全与LassoLars类相同，区别在于验证方法，交叉验证。</li>
+</ul>
+</li>
+</ul>
+<p>从贝叶斯估计的角度来看，正则化项对应于模型的先验概率，可以假设复杂的模型有较小的先验概率，简单的模型有较大的先验概率。</p>
+<p>ElasticNet（弹性网络）可以看做Lasso和Ridge的中庸化的产物。它也是对普通的线性回归做了正则化，但是它的损失函数既不全是L1的正则化，也不全是L2的正则化，而是用一个权重参数ρρ来平衡L1和L2正则化的比重</p>
+<h3 id="L2正则化：岭回归"><a href="#L2正则化：岭回归" class="headerlink" title="L2正则化：岭回归"></a>L2正则化：岭回归</h3><p>通过最小二乘法推导出多元线性回归的求解公式</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/image-20200418150626305_20200418150653.png" alt=""></p>
+<p>这个公式有一个问题：X不能为奇异矩阵，否则无法求解矩阵的逆。岭回归的提出恰好可以很好的解决这个问题，它的思路是：<strong>在原先的β的最小二乘估计中加一个小扰动λI，这样就可以保证矩阵的逆可以求解，使得问题稳定。</strong>公式如下：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/image-20200418150806187_20200418150906.png" alt=""></p>
+<p>这个公式可以通过对结构化风险函数求偏导推出来</p>
+<h2 id="过拟合"><a href="#过拟合" class="headerlink" title="过拟合"></a>过拟合</h2><p>评判模型好坏的标准是：不但对于训练的数据集有很好的拟合效果，而且对于未知的新的数据（测试集）也同样拥有好的效果，即<strong>拥有好的泛化能力。</strong></p>
+<p>如果过分地的学习就会导致模型缺少泛化能力，即<strong>过拟合。</strong></p>
+<p>常见的避免过拟合方法：</p>
+<ul>
+<li>增加数据量</li>
+<li>简化模型</li>
+<li>交叉验证</li>
+<li>正则化</li>
+</ul>
+<h2 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h2><ul>
+<li><p><a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181522&amp;ver=2285&amp;signature=JAbWTeJdrXBABs81oiuUDW3RWZx347IEaccd4L3cx7YOxqSjkfc7I5bqZG-Q1thKEtORDgD02tpZBF*hYixDkGYzxllYRVZQ4eSJmeZZQSVwSC8S6oi396nGvz*H*tmu&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181522&amp;ver=2285&amp;signature=JAbWTeJdrXBABs81oiuUDW3RWZx347IEaccd4L3cx7YOxqSjkfc7I5bqZG-Q1thKEtORDgD02tpZBF*hYixDkGYzxllYRVZQ4eSJmeZZQSVwSC8S6oi396nGvz*H*tmu&amp;new=1</a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181501&amp;ver=2285&amp;signature=v9oAcjGVqJi2-a6G9dW4L6HdHKIw-lAMsWUPtR3JhnDBIRjhsxNztZFS-8T3LhQmeFtC1cW7ESBr43qqQD2YWQlSBGptU1X-*m1rkeIYdPNT-6PHQccXINfdzOwHJmMt&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181501&amp;ver=2285&amp;signature=v9oAcjGVqJi2-a6G9dW4L6HdHKIw-lAMsWUPtR3JhnDBIRjhsxNztZFS-8T3LhQmeFtC1cW7ESBr43qqQD2YWQlSBGptU1X-*m1rkeIYdPNT-6PHQccXINfdzOwHJmMt&amp;new=1</a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181501&amp;ver=2285&amp;signature=yte*U7nowLmhtd4llqceRaFtFvMMNUn-2JjmDZncJIHJ5Kd8qCkuyFm0RkkVM9RHHAjGxLClSRJAVXlWvMIDookt84e3vL1KslA536vBg-XrJ2T0v04c9SzMIib5T1An&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181501&amp;ver=2285&amp;signature=yte*U7nowLmhtd4llqceRaFtFvMMNUn-2JjmDZncJIHJ5Kd8qCkuyFm0RkkVM9RHHAjGxLClSRJAVXlWvMIDookt84e3vL1KslA536vBg-XrJ2T0v04c9SzMIib5T1An&amp;new=1</a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181474&amp;ver=2285&amp;signature=DI5OGNPA*89tp9bFUhEV66dnFNhKaMfIGGvRjkQYRVJ8rsGlsiOnawBYViLIX1hB4OtPbNRBdUzdJHpVoEZmXXIxS6lHRuwqgxrZfWRMJuzPbpTcWL1l6hlkfrmOGyqx&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181474&amp;ver=2285&amp;signature=DI5OGNPA*89tp9bFUhEV66dnFNhKaMfIGGvRjkQYRVJ8rsGlsiOnawBYViLIX1hB4OtPbNRBdUzdJHpVoEZmXXIxS6lHRuwqgxrZfWRMJuzPbpTcWL1l6hlkfrmOGyqx&amp;new=1</a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181474&amp;ver=2285&amp;signature=Bs*KTOPczLwb6y54IeI6CAbsQb4MS3g1jkh-JBEzSIBsTTVu7XItHh14QOJxwFNOC21zK9KIVpgDUwep4iwPW73e8hVyhC0-egLQHc*ZntjOb*2PX95Dv2aON4jca06-&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1587181474&amp;ver=2285&amp;signature=Bs*KTOPczLwb6y54IeI6CAbsQb4MS3g1jkh-JBEzSIBsTTVu7XItHh14QOJxwFNOC21zK9KIVpgDUwep4iwPW73e8hVyhC0-egLQHc*ZntjOb*2PX95Dv2aON4jca06-&amp;new=1</a></p>
+</li>
+<li><p><a href="https://towardsdatascience.com/intuitions-on-l1-and-l2-regularisation-235f2db4c261" target="_blank" rel="noopener">https://towardsdatascience.com/intuitions-on-l1-and-l2-regularisation-235f2db4c261</a></p>
+</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/17/data-science-real/">
+        <span class="nav-arrow">← </span>
+        
+          数据科学：丰满的理想与骨感的现实
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/04/22/web-stack-first/">
+        
+          剖析Web技术栈（一）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#损失函数与风险"><span class="toc-nav-text">损失函数与风险</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#正则化"><span class="toc-nav-text">正则化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#L2正则化：岭回归"><span class="toc-nav-text">L2正则化：岭回归</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#过拟合"><span class="toc-nav-text">过拟合</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料："><span class="toc-nav-text">参考资料：</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/18/regression-regular-notebook/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
