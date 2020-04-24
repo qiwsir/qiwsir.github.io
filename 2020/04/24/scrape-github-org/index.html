@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用Python抓取在Github上的组织名称 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用Python抓取在Github上的组织名称</h2>
+    <p class="post-date">2020-04-24</p>
+    <section class="markdown-content"><p>作者：Florian Dahlitz</p>
+<p>翻译：老齐</p>
+<p>与本文相关书籍推荐：《跟老齐学Python：Django实战》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" alt=""></p>
+<hr>
+<p>我想在我的个人网站上展现我在Github上提交代码的组织名称，并且不用我手动更新提交记录的变化。Github提供了读取数据的API，但是，不能体现出我想一些开发组织提交的代码。这就是我之所以要爬取那些信息的原因。本文的代码仓库：<a href="https://github.com/DahlitzFlorian" target="_blank" rel="noopener">https://github.com/DahlitzFlorian</a></p>
+<p>本文中，我将向你展示一下开发过程。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>为了能顺利完成本文项目，请安装如下依赖。在当前目录中创建一个名为<code>requirements.txt</code>的文件，打开文本编辑器，把下面的内容复制到该文件中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">beautifulsoup4&#x3D;&#x3D;4.9.0</span><br><span class="line">lxml&#x3D;&#x3D;4.5.0</span><br><span class="line">requests&#x3D;&#x3D;2.23.0</span><br></pre></td></tr></table></figure>
+
+<p>我们使用<code>requests</code>获取网页内容，<code>lxml</code>和<code>beautifulsoup4</code>是另外提取信息的工具。</p>
+<p>如果你不想把你本地的Python环境搞得太复杂，可以创建虚拟环境：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python -m venv .venv</span><br><span class="line">$ source .venv&#x2F;bin&#x2F;activate</span><br></pre></td></tr></table></figure>
+
+<p>然后，用<code>pip</code>安装<code>requirements.txt</code>里列出的各项依赖。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python -m pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="从HTML中找到相应的标签"><a href="#从HTML中找到相应的标签" class="headerlink" title="从HTML中找到相应的标签"></a>从HTML中找到相应的标签</h2><p>首先，你要知道从哪里找到需要的信息。在本例中，我打算获取用户向Github某个特定组织的提交记录，打开用户自己Github页面，滚动如下图所示的地方。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/contributions-without-more_20200423103219.png" alt=""></p>
+<p>在你的浏览器上用开发和工具，打开HTML源码，并且找到对应的元素。点击某个组织，对应着看到相应源码，在<code>&lt;a&gt;</code>标签内的<code>&lt;nav&gt;</code>元素中的就是组织名称。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/devtools-nav_20200423103249.png" alt=""></p>
+<p>我们感兴趣的就在<code>&lt;nav&gt;</code>元素里面，所以，要把这个元素的class记录下来，以备后用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">orgs_nav_classes &#x3D; &quot;subnav mb-2 d-flex flex-wrap&quot;</span><br></pre></td></tr></table></figure>
+
+<p>你可能注意到，我忽略了其他的组织名称，后面会演示，那些组织都包含在了我们提取的信息中了。另外，我们使用这个页面上抓取数据，因为HTML代码更可靠，所有的<code>orgs_nav_classes</code>值都一样。</p>
+<p>在工作目录中，创建<code>scrape_github_orgs.py</code>文件，其代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># scrape_github_orgs.py</span><br><span class="line"></span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">from bs4 import BeautifulSoup</span><br><span class="line">from bs4.element import ResultSet</span><br><span class="line"></span><br><span class="line">orgs_nav_classes &#x3D; &quot;subnav mb-2 d-flex flex-wrap&quot;</span><br><span class="line"></span><br><span class="line">def get_user_org_hyperlinks(username: str) -&gt; ResultSet:</span><br><span class="line">    url &#x3D; f&quot;https:&#x2F;&#x2F;github.com&#x2F;users&#x2F;&#123;username&#125;&#x2F;contributions&quot;</span><br><span class="line">    page &#x3D; requests.get(url)</span><br><span class="line">    soup &#x3D; BeautifulSoup(page.content, &quot;html.parser&quot;)</span><br><span class="line"></span><br><span class="line">    nav &#x3D; soup.find(&quot;nav&quot;, class_&#x3D;orgs_nav_classes)</span><br><span class="line">    tmp_orgs &#x3D; nav.find_all(&quot;a&quot;)</span><br><span class="line"></span><br><span class="line">    return tmp_orgs</span><br><span class="line"></span><br><span class="line">print(get_user_org_hyperlinks(&quot;DahlitzFlorian&quot;))</span><br></pre></td></tr></table></figure>
+
+<p>首先，引入需要的<code>requests</code>库，还有<code>bs4</code>中的<code>BeautifulSoup</code>。然后，定义函数<code>get_user_org_hyperlinks()</code>，它的参数是<code>username</code>，返回元素<code>&lt;nav&gt;</code>的值是 <code>orgs_nav_classes</code>的所有内容。最后一行，调用<code>get_user_org_hyperlinks()</code>函数，并且把结果打印出来。</p>
+<p>执行脚本，得到如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ python scrape-github-orgs.py</span><br><span class="line">[&lt;a class&#x3D;&quot;js-org-filter-link f6 py-1 pr-2 pl-1 rounded-1 mr-2 mb-2 subnav-item css-truncate css-truncate-target&quot; data-hovercard-type&#x3D;&quot;organization&quot; data-hovercard-url&#x3D;&quot;&#x2F;orgs&#x2F;python&#x2F;hovercard&quot; data-hydro-click&#x3D;&#39;&#123;&quot;event_type&quot;:&quot;user_profile.highlights_click&quot;,&quot;payload&quot;:&#123;&quot;scoped_org_id&quot;:null,&quot;target_type&quot;:&quot;ORGANIZATION&quot;,&quot;target_url&quot;:&quot;&#x2F;DahlitzFlorian?tab&#x3D;overview&amp;org&#x3D;python&quot;,&quot;originating_url&quot;:&quot;https:&#x2F;&#x2F;github.com&#x2F;users&#x2F;DahlitzFlorian&#x2F;contributions&quot;,&quot;user_id&quot;:null&#125;&#125;&#39; data-hydro-click-hmac&#x3D;&quot;3663f0f1c5ecdf3ad7c4ccbf2ecaea5470a15408175ebcb137f286fd900fc30b&quot; href&#x3D;&quot;&#x2F;DahlitzFlorian?tab&#x3D;overview&amp;org&#x3D;python&quot; style&#x3D;&quot;max-width: 181px;&quot;&gt;</span><br><span class="line">&lt;img alt&#x3D;&quot;&quot; class&#x3D;&quot;avatar mr-1&quot; height&#x3D;&quot;20&quot; src&#x3D;&quot;https:&#x2F;&#x2F;avatars1.githubusercontent.com&#x2F;u&#x2F;1525981?s&#x3D;60&amp;v&#x3D;4&quot; width&#x3D;&quot;20&quot;&#x2F;&gt;</span><br><span class="line">          @python</span><br><span class="line">&lt;&#x2F;a&gt;, &lt;a class&#x3D;&quot;js-org-filter-link f6 py-1 pr-2 pl-1 rounded-1 mr-2 mb-2 subnav-item css-truncate css-truncate-target&quot; data-hovercard-type&#x3D;&quot;organization&quot; data-hovercard-url&#x3D;&quot;&#x2F;orgs&#x2F;deadsnakes&#x2F;hovercard&quot; data-hydro-click&#x3D;&#39;&#123;&quot;event_type&quot;:&quot;user_profile.highlights_click&quot;,&quot;payload&quot;:&#123;&quot;scoped_org_id&quot;:null,&quot;target_type&quot;:&quot;ORGANIZATION&quot;,&quot;target_url&quot;:&quot;&#x2F;DahlitzFlorian?tab&#x3D;overview&amp;org&#x3D;deadsnakes&quot;,&quot;originating_url&quot;:&quot;https:&#x2F;&#x2F;github.com&#x2F;users&#x2F;DahlitzFlorian&#x2F;contributions&quot;,&quot;user_id&quot;:null&#125;&#125;&#39; data-hydro-click-hmac&#x3D;&quot;2e0501a07d2125d7a4baad8faa6ad0c122f0f666c517db46acaed474cc87689b&quot; href&#x3D;&quot;&#x2F;DahlitzFlorian?tab&#x3D;overview&amp;org&#x3D;deadsnakes&quot; style&#x3D;&quot;max-width: 181px;&quot;&gt;</span><br><span class="line">&lt;img alt&#x3D;&quot;&quot; class&#x3D;&quot;avatar mr-1&quot; height&#x3D;&quot;20&quot; src&#x3D;&quot;https:&#x2F;&#x2F;avatars3.githubusercontent.com&#x2F;u&#x2F;31392125?s&#x3D;60&amp;v&#x3D;4&quot; width&#x3D;&quot;20&quot;&#x2F;&gt;</span><br><span class="line">          @deadsnakes</span><br><span class="line">&lt;&#x2F;a&gt;, &lt;a class&#x3D;&quot;js-org-filter-link f6 py-1 pr-2 pl-1 rounded-1 mr-2 mb-2 subnav-item css-truncate css-truncate-target&quot; data-hovercard-type&#x3D;&quot;organization&quot; data-hovercard-url&#x3D;&quot;&#x2F;orgs&#x2F;realpython&#x2F;hovercard&quot; data-hydro-click&#x3D;&#39;&#123;&quot;event_type&quot;:&quot;user_profile.highlights_click&quot;,&quot;payload&quot;:&#123;&quot;scoped_org_id&quot;:null,&quot;target_type&quot;:&quot;ORGANIZATION&quot;,&quot;target_url&quot;:&quot;&#x2F;DahlitzFlorian?tab&#x3D;overview&amp;org&#x3D;realpython&quot;,&quot;originating_url&quot;:&quot;https:&#x2F;&#x2F;github.com&#x2F;users&#x2F;DahlitzFlorian&#x2F;contributions&quot;,&quot;user_id&quot;:null&#125;&#125;&#39; data-hydro-click-hmac&#x3D;&quot;7d9cf37efc7d25bf36c85a17b01f15138f6261575347d3f139283056adce6043&quot; href&#x3D;&quot;&#x2F;DahlitzFlorian?tab&#x3D;overview&amp;org&#x3D;realpython&quot; style&#x3D;&quot;max-width: 181px;&quot;&gt;</span><br><span class="line">&lt;img alt&#x3D;&quot;&quot; class&#x3D;&quot;avatar mr-1&quot; height&#x3D;&quot;20&quot; src&#x3D;&quot;https:&#x2F;&#x2F;avatars1.githubusercontent.com&#x2F;u&#x2F;5448020?s&#x3D;60&amp;v&#x3D;4&quot; width&#x3D;&quot;20&quot;&#x2F;&gt;</span><br><span class="line">          @realpython</span><br><span class="line">&lt;&#x2F;a&gt;, &lt;a class&#x3D;&quot;d-block select-menu-item wb-break-all js-org-filter-link&quot; data-hydro-click&#x3D;&#39;&#123;&quot;event_type&quot;:&quot;user_profile.highlights_click&quot;,&quot;payload&quot;:&#123;&quot;scoped_org_id&quot;:null,&quot;target_type&quot;:&quot;ORGANIZATION&quot;,&quot;target_url&quot;:&quot;&#x2F;DahlitzFlorian?tab&#x3D;overview&amp;org&#x3D;PyCQA&quot;,&quot;originating_url&quot;:&quot;https:&#x2F;&#x2F;github.com&#x2F;users&#x2F;DahlitzFlorian&#x2F;contributions&quot;,&quot;user_id&quot;:null&#125;&#125;&#39; data-hydro-click-hmac&#x3D;&quot;2080f6ec3d42f9ac04eabafad7c72805d26acb10c822037397fd5bd1dafd5da0&quot; href&#x3D;&quot;&#x2F;DahlitzFlorian?tab&#x3D;overview&amp;org&#x3D;PyCQA&quot; role&#x3D;&quot;menuitem&quot; style&#x3D;&quot;padding: 8px 8px 8px 30px;&quot;&gt;</span><br><span class="line">&lt;img alt&#x3D;&quot;&quot; class&#x3D;&quot;select-menu-item-icon mr-2&quot; height&#x3D;&quot;20&quot; src&#x3D;&quot;https:&#x2F;&#x2F;avatars1.githubusercontent.com&#x2F;u&#x2F;8749848?s&#x3D;60&amp;v&#x3D;4&quot; width&#x3D;&quot;20&quot;&#x2F;&gt;</span><br><span class="line">&lt;div class&#x3D;&quot;select-menu-item-text css-truncate css-truncate-target&quot; style&#x3D;&quot;max-width: 95%;&quot;&gt;@PyCQA&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;a&gt;]</span><br></pre></td></tr></table></figure>
+
+<p>下面进入信息提取阶段。</p>
+<h2 id="提取必要的信息"><a href="#提取必要的信息" class="headerlink" title="提取必要的信息"></a>提取必要的信息</h2><p>记住，我们想获得某个用户提交代码的Github上的组织名称，已经得到了包含组织名称的超链接，然而，其中有很多我们不需要的样式类和属性，接下来就要清除它们，利用<code>lxm</code>包（<code>lxml.html.clean.Cleaner</code>）中的<code>Cleaner()</code>实现这个操作。首先，移除比必要的属性，为此创建一个<code>Cleaner</code>的实例，然后设置实例属性<code>safe_attrs_only=True</code>的值为<code>True</code>，与其关联的属性<code>safe_attrs</code>，利用<code>frozenset</code>创建一个不可变对象，并作为此属性的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from lxml.html import clean</span><br><span class="line"></span><br><span class="line">cleaner &#x3D; clean.Cleaner()</span><br><span class="line">cleaner.safe_attrs_only &#x3D; True</span><br><span class="line">cleaner.safe_attrs &#x3D; frozenset([&quot;class&quot;, &quot;src&quot;, &quot;href&quot;, &quot;target&quot;])</span><br></pre></td></tr></table></figure>
+
+<p>上面的三行代码定义了<code>cleaner</code>对象，但是还没有对HTML采取行动，这要留作后用。接下来，我们要编写一个匹配所有HTML标签的正则表达式，因此要使用Python的<code>re</code>模块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line"></span><br><span class="line">html_tags &#x3D; re.compile(&quot;&lt;.*?&gt;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>最后，开始按照我们的需要实施清除操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">orgs &#x3D; []</span><br><span class="line"></span><br><span class="line">for org in tmp_orgs:</span><br><span class="line">    tmp_org &#x3D; str(org)</span><br><span class="line">    org_name &#x3D; re.sub(</span><br><span class="line">        html_tags,</span><br><span class="line">        &quot;&quot;,</span><br><span class="line">        re.search(r&quot;&lt;a(.*)@(.*)&lt;&#x2F;a&gt;&quot;, tmp_org, flags&#x3D;re.DOTALL).group(2).strip(),</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<p><code>orgs</code>是一个列表，把我们打算在网站上呈现的Github组织的超链接放到它里面，每次循环到我们抓取到的超链接，就会将其增加到列表中，上面的代码片段，就是把每个组织的超链接追加到列表中。我们需要的是字符串，不是<code>bs4</code>原酸，要将每个超链接转化为字符串，并且用变量<code>temp_org</code>引用。然后，用<code>re</code>的<code>sub()</code>函数从超链接中提取组织的名称。</p>
+<p>现在，得到了所有组织的名称。太棒了！让我们再按照我们的网站能用的格式获得超链接，利用<code>lxml.html.fromstring()</code>函数，将<code>temp_org</code>的超链接转化为<code>lxml</code>中的树。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import lxml</span><br><span class="line"></span><br><span class="line">from lxml import etree</span><br><span class="line"></span><br><span class="line">tree &#x3D; lxml.html.fromstring(tmp_org)</span><br><span class="line">tree.attrib[&quot;href&quot;] &#x3D; f&quot;https:&#x2F;&#x2F;github.com&#x2F;&#123;org_name&#125;&quot;</span><br><span class="line">tree.attrib[&quot;class&quot;] &#x3D; &quot;org&quot;</span><br><span class="line">tree.set(&quot;target&quot;, &quot;_blank&quot;)</span><br><span class="line">etree.strip_tags(tree, &quot;div&quot;)</span><br><span class="line">cleaned &#x3D; cleaner.clean_html(tree)</span><br><span class="line">orgs.append(lxml.html.tostring(cleaned).decode(&quot;utf-8&quot;))</span><br></pre></td></tr></table></figure>
+
+<p>每个组织的地址都符合<code>https://github.com/org_name</code>格式，<code>org_name</code>就是组织名称，用<code>attrib</code>属性，把这个链接地址作为树状结构的元素。为了便于后续页面风格的设计，我们增加了一个<code>CSS</code>，相应名称为<code>org</code>。当点击超链接的时候，我想在浏览器中打开一个新的tab，于是设置了<code>target=&#39;blank&#39;</code>。</p>
+<p><code>etree.strip_tags(tree, &quot;div&quot;)</code>能够从树状结构中删除<code>&lt;div&gt;</code>元素，这是很有必要的，因为组织名称常常在<code>&lt;div&gt;</code>标签包括的超链接中，不需要这些标签，所以要删除。还要做下面两步：第一，利用<code>cleaner</code>删除所有不必要的<code>&lt;a&gt;</code>标签元素；第二，利用<code>lxml.html.tostring()</code>把树状结构的元素转化为字符串，然后追加到<code>orgs</code>列表中（我们使用的是UTF-8编码）。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<p>把上面的过程写成函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line"></span><br><span class="line">from typing import List</span><br><span class="line"></span><br><span class="line">import lxml</span><br><span class="line"></span><br><span class="line">from bs4.element import ResultSet</span><br><span class="line">from lxml import etree</span><br><span class="line">from lxml.html import clean</span><br><span class="line"></span><br><span class="line">def extract_orgs(tmp_orgs: ResultSet) -&gt; List[str]:</span><br><span class="line">    cleaner &#x3D; clean.Cleaner()</span><br><span class="line">    cleaner.safe_attrs_only &#x3D; True</span><br><span class="line">    cleaner.safe_attrs &#x3D; frozenset([&quot;class&quot;, &quot;src&quot;, &quot;href&quot;, &quot;target&quot;])</span><br><span class="line"></span><br><span class="line">    html_tags &#x3D; re.compile(&quot;&lt;.*?&gt;&quot;)</span><br><span class="line">    orgs &#x3D; []</span><br><span class="line"></span><br><span class="line">    for org in tmp_orgs:</span><br><span class="line">        tmp_org &#x3D; str(org)</span><br><span class="line">        org_name &#x3D; re.sub(</span><br><span class="line">            html_tags,</span><br><span class="line">            &quot;&quot;,</span><br><span class="line">            re.search(r&quot;&lt;a(.*)@(.*)&lt;&#x2F;a&gt;&quot;, tmp_org, flags&#x3D;re.DOTALL).group(2).strip(),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        tree &#x3D; lxml.html.fromstring(tmp_org)</span><br><span class="line">        tree.attrib[&quot;href&quot;] &#x3D; f&quot;https:&#x2F;&#x2F;github.com&#x2F;&#123;org_name&#125;&quot;</span><br><span class="line">        tree.attrib[&quot;class&quot;] &#x3D; &quot;org&quot;</span><br><span class="line">        tree.set(&quot;target&quot;, &quot;_blank&quot;)</span><br><span class="line">        etree.strip_tags(tree, &quot;div&quot;)</span><br><span class="line">        cleaned &#x3D; cleaner.clean_html(tree)</span><br><span class="line">        orgs.append(lxml.html.tostring(cleaned).decode(&quot;utf-8&quot;))</span><br><span class="line"></span><br><span class="line">    return orgs</span><br></pre></td></tr></table></figure>
+
+<p>然后，将抓取和提取两个阶段写成一个函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def get_user_orgs(username: str) -&gt; List[str]:</span><br><span class="line">    tmp_orgs &#x3D; get_user_org_hyperlinks(username)</span><br><span class="line">    return extract_orgs(tmp_orgs)</span><br></pre></td></tr></table></figure>
+
+<p>最后看看我们辛苦工作的结果，在脚本的末尾把最终结果打印出来。下面是最终的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"># scrape_github_orgs.py</span><br><span class="line"></span><br><span class="line">import re</span><br><span class="line"></span><br><span class="line">from typing import List</span><br><span class="line"></span><br><span class="line">import lxml</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">from bs4 import BeautifulSoup</span><br><span class="line">from bs4.element import ResultSet</span><br><span class="line">from lxml import etree</span><br><span class="line">from lxml.html import clean</span><br><span class="line"></span><br><span class="line">orgs_nav_classes &#x3D; &quot;subnav mb-2 d-flex flex-wrap&quot;</span><br><span class="line"></span><br><span class="line">def get_user_org_hyperlinks(username: str) -&gt; ResultSet:</span><br><span class="line">    url &#x3D; f&quot;https:&#x2F;&#x2F;github.com&#x2F;users&#x2F;&#123;username&#125;&#x2F;contributions&quot;</span><br><span class="line">    page &#x3D; requests.get(url)</span><br><span class="line">    soup &#x3D; BeautifulSoup(page.content, &quot;html.parser&quot;)</span><br><span class="line"></span><br><span class="line">    nav &#x3D; soup.find(&quot;nav&quot;, class_&#x3D;orgs_nav_classes)</span><br><span class="line">    tmp_orgs &#x3D; nav.find_all(&quot;a&quot;)</span><br><span class="line"></span><br><span class="line">    return tmp_orgs</span><br><span class="line"></span><br><span class="line">def extract_orgs(tmp_orgs: ResultSet) -&gt; List[str]:</span><br><span class="line">    cleaner &#x3D; clean.Cleaner()</span><br><span class="line">    cleaner.safe_attrs_only &#x3D; True</span><br><span class="line">    cleaner.safe_attrs &#x3D; frozenset([&quot;class&quot;, &quot;src&quot;, &quot;href&quot;, &quot;target&quot;])</span><br><span class="line"></span><br><span class="line">    html_tags &#x3D; re.compile(&quot;&lt;.*?&gt;&quot;)</span><br><span class="line">    orgs &#x3D; []</span><br><span class="line"></span><br><span class="line">    for org in tmp_orgs:</span><br><span class="line">        tmp_org &#x3D; str(org)</span><br><span class="line">        org_name &#x3D; re.sub(</span><br><span class="line">            html_tags,</span><br><span class="line">            &quot;&quot;,</span><br><span class="line">            re.search(r&quot;&lt;a(.*)@(.*)&lt;&#x2F;a&gt;&quot;, tmp_org, flags&#x3D;re.DOTALL).group(2).strip(),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        tree &#x3D; lxml.html.fromstring(tmp_org)</span><br><span class="line">        tree.attrib[&quot;href&quot;] &#x3D; f&quot;https:&#x2F;&#x2F;github.com&#x2F;&#123;org_name&#125;&quot;</span><br><span class="line">        tree.attrib[&quot;class&quot;] &#x3D; &quot;org&quot;</span><br><span class="line">        tree.set(&quot;target&quot;, &quot;_blank&quot;)</span><br><span class="line">        etree.strip_tags(tree, &quot;div&quot;)</span><br><span class="line">        cleaned &#x3D; cleaner.clean_html(tree)</span><br><span class="line">        orgs.append(lxml.html.tostring(cleaned).decode(&quot;utf-8&quot;))</span><br><span class="line"></span><br><span class="line">    return orgs</span><br><span class="line"></span><br><span class="line">def get_user_orgs(username: str) -&gt; List[str]:</span><br><span class="line">    tmp_orgs &#x3D; get_user_org_hyperlinks(username)</span><br><span class="line">    return extract_orgs(tmp_orgs)</span><br><span class="line"></span><br><span class="line">print(get_user_orgs(&quot;DahlitzFlorian&quot;))</span><br></pre></td></tr></table></figure>
+
+<p>执行脚本之后的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python scrape_github_orgs.py</span><br><span class="line">[&#39;&lt;a class&#x3D;&quot;org&quot; href&#x3D;&quot;https:&#x2F;&#x2F;github.com&#x2F;python&quot; target&#x3D;&quot;_blank&quot;&gt;\n&lt;img class&#x3D;&quot;avatar mr-1&quot; src&#x3D;&quot;https:&#x2F;&#x2F;avatars1.githubusercontent.com&#x2F;u&#x2F;1525981?s&#x3D;60&amp;v&#x3D;4&quot;&gt;\n          @python\n&lt;&#x2F;a&gt;&#39;, &#39;&lt;a class&#x3D;&quot;org&quot; href&#x3D;&quot;https:&#x2F;&#x2F;github.com&#x2F;deadsnakes&quot; target&#x3D;&quot;_blank&quot;&gt;\n&lt;img class&#x3D;&quot;avatar mr-1&quot; src&#x3D;&quot;https:&#x2F;&#x2F;avatars3.githubusercontent.com&#x2F;u&#x2F;31392125?s&#x3D;60&amp;v&#x3D;4&quot;&gt;\n          @deadsnakes\n&lt;&#x2F;a&gt;&#39;, &#39;&lt;a class&#x3D;&quot;org&quot; href&#x3D;&quot;https:&#x2F;&#x2F;github.com&#x2F;realpython&quot; target&#x3D;&quot;_blank&quot;&gt;\n&lt;img class&#x3D;&quot;avatar mr-1&quot; src&#x3D;&quot;https:&#x2F;&#x2F;avatars1.githubusercontent.com&#x2F;u&#x2F;5448020?s&#x3D;60&amp;v&#x3D;4&quot;&gt;\n          @realpython\n&lt;&#x2F;a&gt;&#39;, &#39;&lt;a class&#x3D;&quot;org&quot; href&#x3D;&quot;https:&#x2F;&#x2F;github.com&#x2F;PyCQA&quot; target&#x3D;&quot;_blank&quot;&gt;\n&lt;img class&#x3D;&quot;select-menu-item-icon mr-2&quot; src&#x3D;&quot;https:&#x2F;&#x2F;avatars1.githubusercontent.com&#x2F;u&#x2F;8749848?s&#x3D;60&amp;v&#x3D;4&quot;&gt;\n@PyCQA\n&lt;&#x2F;a&gt;&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>相当满意！抓取到了你贡献代码的Github上的组织，并且提取了所需要的信息，然后把这些内容发布到你的网站上。让我们来看一下，在网站上的显示样式，跟Github上的差不多。</p>
+<h2 id="网站上的显示方式"><a href="#网站上的显示方式" class="headerlink" title="网站上的显示方式"></a>网站上的显示方式</h2><p>这里我们使用Jinjia2渲染前端，用<code>for</code>玄幻将<code>orgs</code>中的每个元素循环出来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;GitHub Organizations&lt;&#x2F;title&gt;</span><br><span class="line"></span><br><span class="line">    &lt;link rel&#x3D;&quot;stylesheet&quot; type&#x3D;&quot;text&#x2F;css&quot; href&#x3D;&quot;&#x2F;static&#x2F;css&#x2F;main.css&quot;&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;orgs&quot;&gt;</span><br><span class="line">        &#123;% for org in orgs %&#125;</span><br><span class="line">        &#123;&#123; org | safe &#125;&#125;</span><br><span class="line">        &#123;% endfor %&#125;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我用Flask作为网站框架（<code>python -m pip install flask==1.1.2</code>)，可以参考本文在Github上的代码仓库。下面是为网站增加样式表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">div.orgs &#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    flex-direction: row;</span><br><span class="line">    flex-wrap: wrap;</span><br><span class="line">    align-items: center;</span><br><span class="line">    justify-content: center;</span><br><span class="line">    margin-top: 15px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.org &#123;</span><br><span class="line">    background-color: #fff;</span><br><span class="line">    border: 1px solid #e1e4e8;</span><br><span class="line">    border-radius: 3px;</span><br><span class="line">    padding: 7px;</span><br><span class="line">    margin: 10px;</span><br><span class="line">    color: #586069;</span><br><span class="line">    text-decoration: none;</span><br><span class="line">    display: flex;</span><br><span class="line">    align-items: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.org:hover &#123;</span><br><span class="line">    background-color: #f6f8fa;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.org &gt; img &#123;</span><br><span class="line">    margin-right: 5px;</span><br><span class="line">    max-height: 25px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>把网站跑起来之后，就呈现下面的效果：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/result_20200423103410.png" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在本文中，我们学习了从网站上抓取内容的方法，并且从中提取你需要的信息，然后将这些内容根据要求显示在网页上。这是一个爬虫示例，并且用Jinja2模板展示结果。</p>
+<p>希望能对你有用。在本公众号还有很多爬虫公开课，在公众号中回复：<strong>老齐</strong>，可以找到公开课列表。</p>
+<p>原文链接：<a href="https://florian-dahlitz.de/blog/scrape-github-orgs-using-python" target="_blank" rel="noopener">https://florian-dahlitz.de/blog/scrape-github-orgs-using-python</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点这里👇👇👇</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/22/web-stack-first/">
+        <span class="nav-arrow">← </span>
+        
+          剖析Web技术栈（一）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#准备"><span class="toc-nav-text">准备</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#从HTML中找到相应的标签"><span class="toc-nav-text">从HTML中找到相应的标签</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#提取必要的信息"><span class="toc-nav-text">提取必要的信息</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#网站上的显示方式"><span class="toc-nav-text">网站上的显示方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/24/scrape-github-org/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
