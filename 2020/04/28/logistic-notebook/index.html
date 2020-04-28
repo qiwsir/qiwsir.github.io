@@ -10,7 +10,7 @@
   
   <title>
     
-      cost function 笔记 | 老齐教室
+      【logistic回归】笔记 | 老齐教室
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -148,55 +148,36 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <h2>cost function 笔记</h2>
-    <p class="post-date">2020-04-26</p>
-    <section class="markdown-content"><p>Cost Function，翻译为：代价函数、成本函数</p>
-<p>与之同样的词语：损失函数（Loss function)</p>
-<p>有资料认为二者不同。通常可以认为是一回事。维基百科：</p>
-<blockquote>
-<p>In mathematical optimization, statistics, decision theory and machine learning, a loss function or cost function  is a function that maps an event or values of one or more variables onto a real number intuitively representing some “cost” associated with the  event. An optimization problem seeks to minimize a loss function.</p>
-</blockquote>
-<p>损失函数用于衡量预测值与实际值的偏离程度，如果预测是完全精确的，则损失函数值为0；如果损失函数值不为0，则其表示的是预测的错误有多糟糕。使得损失函数值最小的那些待求参数值，就是“最优”的参数值。</p>
-<p>常用的损失函数：</p>
-<p>（1）0-1损失函数：可用于分类问题，即该函数用于衡量分类错误的数量，但由于此损失函数是非凸（non-convex）的，因此在做最优化计算时，难以求解，所以，正因为如此，0-1损失函数不是那么“实用”（如果这句话有误，请指正）。<br>（2）平方损失函数（Square Loss）：常用于线性回归（Linear Regression）。<br>（3）对数损失（Log Loss）函数：常用于其模型输出每一类概率的分类器（classifier），例如逻辑回归。<br>（4）Hinge损失函数：常用于SVM（Support Vector  Machine，支持向量机，一种机器学习算法）。中文名叫“合页损失函数”，因为hinge有“合页”之意。这个翻译虽然直白，但是你会发现，99％的文章都不会用它的中文名来称呼它，而是用“Hinge损失”之类的说法。</p>
-<p>假设有训练样本$(x, y)$，模型为 $h$, 参数为 $\theta$ 。$h(\theta)=\theta^Tx$ （$\theta^T$ 表示 $\theta$ 的转置）。</p>
-<p>任何能够衡量模型预测出来的值 $h(\theta)$ 与真实值 $y$ 之间的差异的函数都可以叫做代价函数，记作：$C(\theta)$。</p>
-<p>如果有多个样本，则可以将所有代价函数的取值求均值，记作：$J(\theta)$</p>
-<ul>
-<li>选择代价函数时，最好挑选对参数$\theta$ 可微的函数（全微分存在，偏导数一定存在）</li>
-<li>对于每种算法来说，代价函数不是唯一的；</li>
-<li>代价函数是参数 $\theta$ 的函数；</li>
-<li>总的代价函数 $J(\theta)$ 可以用来评价模型的好坏，代价函数的值越小说明模型和参数越符合训练样本$(x, y)$ ；</li>
-<li>$J(\theta)$ 是一个标量；</li>
-</ul>
-<p>训练过程，就是不断选择参数的过程，即优化参数θ的过程，最常用的方法是梯度下降，这里的梯度就是代价函数$J(\theta)$ 对 $\theta_1, \theta_2, \cdots, \theta_n$ 的偏导数。</p>
-<p>一个好的代价函数需要满足两个最基本的要求：能够评价模型的准确性，对参数 $\theta$ 可微。</p>
-<p>在线性回归中，最常用的是<strong>均方误差</strong>(Mean squared error)，即：</p>
-<p>$$J(\theta_0, \theta_1)=\frac{1}{2m}\sum_{i=1}^{m}(\hat y^{(i)}-y^{i})^2=\frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2$$</p>
-<ul>
-<li>$m$：训练样本的个数</li>
-<li>$h_{\theta}(x)$：用参数$\theta$ 和 $x$ 预测出来的值</li>
-<li>$y$：原训练样本中的标签</li>
-<li>上角标 $(i)$：第$i$个样本。</li>
-</ul>
-<p>在逻辑回归中，最常用的是损失函数是<strong>交叉熵</strong>(Cross Entropy)（或者说是对数损失函数（Log Loss））。</p>
-<p>在信息理论中，熵用于衡量某种事件的“不可预测性”，而交叉熵=事件的真实分布+不可预测性，所以交叉熵可以用于度量两个概率分布（真实分布&amp;预测分布）之间的差异性，即：交叉熵损失函数（对数损失函数）可以衡量一个模型对真实值带来的额外噪音，通过最小化交叉熵损失函数（对数损失函数），我们就可以最大化分类器（模型）的精度。</p>
-<p>交叉熵是对「出乎意料」（译者注：原文使用suprise）的度量。神经元的目标是去计算函数x→y=y(x)。但是我们让它取而代之计算函数x→a=a(x)。假设我们把a当作y等于1的概率，1−a是y等于0的概率。那么，交叉熵衡量的是我们在知道y的真实值时的平均「出乎意料」程度。当输出是我们期望的值，我们的「出乎意料」程度比较低；当输出不是我们期望的，我们的「出乎意料」程度就比较高。</p>
-<p>在1948年，克劳德·艾尔伍德·香农将热力学的熵，引入到信息论，因此它又被称为香农熵(Shannon  Entropy)，它是香农信息量(Shannon Information Content,  SIC)的期望。香农信息量用来度量不确定性的大小：一个事件的香农信息量等于0，表示该事件的发生不会给我们提供任何新的信息，例如确定性的事件，发生的概率是1，发生了也不会引起任何惊讶；当不可能事件发生时，香农信息量为无穷大，这表示给我们提供了无穷多的新信息，并且使我们无限的惊讶。</p>
-<p>$J(\theta)=-\frac 1 m [\sum_{i=1}^m(y^{(i)}logh_{\theta}(x^{(i)})+(1-y^{(i)})log(1-h_{\theta}(x^{(i)}))]$</p>
-<p>从单页样本角度，理解如此定义Logistic的代价函数的理由：</p>
-<p>$C(\theta)=ylogh_\theta(x)+(1-y)log(1-h_{\theta}(x))$</p>
-<p>上述表达式等价于：</p>
-<p>$$C(\theta)=\begin{cases}-log(h_{\theta}(x), y=1\-log(1-h_{\theta}(x)), y=0\end{cases}$$</p>
-<p>其中：$h_{\theta}(x)=\frac{1}{1+e^{-\theta^Tx}}$</p>
-<p>参阅：<a href="https://zhuanlan.zhihu.com/p/28415991" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/28415991</a></p>
-<p>以下链接，从概率的角度解释为什么选择Sigmoid函数作为Logistic回归的函数：</p>
-<p><a href="https://zhuanlan.zhihu.com/p/55321901" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/55321901</a></p>
-<p>logistic回归值表示所属类的后验概率，无论是二分类还是多分类，分类结果都是后验概率最大所对应的类。</p>
-<p><strong>参考资料</strong></p>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/28408516" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/28408516</a></li>
-</ul>
+    <h2>【logistic回归】笔记</h2>
+    <p class="post-date">2020-04-28</p>
+    <section class="markdown-content"><p>回归，包括线性回归、Logistic回归</p>
+<p>回归其实就是对已知公式的未知参数进行估计。</p>
+<p>Logistic Regression 就是一个被logistic方程归一化后的线性回归。所得到的的值，在0~1范围内，但不是数学中定义的概率值，称之为“可能性”，即得1或者得0的相对可能性。</p>
+<p>逻辑回归不像朴素贝叶斯一样需要满足条件独立假设（因为它没有求后验概率）。但每个feature的贡献是独立计算的，即LR是不会自动帮你combine 不同的features产生新feature的 (时刻不能抱有这种幻想，那是决策树,LSA, pLSA,  LDA或者你自己要干的事情)。举个例子，如果你需要TF<em>IDF这样的feature，就必须明确的给出来，若仅仅分别给出两维 TF 和 IDF  是不够的，那样只会得到类似 a</em>TF + b<em>IDF 的结果，而不会有 c</em>TF*IDF 的效果。</p>
+<p>Logistic函数/Sigmoid函数（有一种观点。Sigmoid函数式形状像S的函数，画出来像S的函数不止一个，比如Logistic函数式，probit函数也是）</p>
+<p>$$f(x)= \frac{1}{1+e^{-k(x-x_0)}}$$</p>
+<p>$x_0$ 表示函数曲线的中心（sigmoid midpoint），k是曲线的坡度。</p>
+<p>更一般地，写成：</p>
+<p>$$f(X)=\frac{1}{1+e^{-\theta^TX}}$$</p>
+<p>其中：$\theta$ 是参数向量，$X$ 是自变量。</p>
+<p>$$\theta^TX=\theta_0x_0 + \theta_1x_1+\cdots+\theta_nx_n=\sum_{i=0}^{n}\theta_ix_i$$</p>
+<p>上述加权求和的结果在$(-\infty, \infty)$之间，为了能表示预测的概率，我们希望把输出值限制在(0,1) 之间，而不是 (−∞,+∞) 。所以，这时，logistic函数就出场了。这个函数是由 Pierre François Verhulst（皮埃尔·弗朗索瓦·韦吕勒）在1844～1845年的时候给它起的名字。</p>
+<p>logistic函数在统计学和机器学习领域应用最为广泛或者最为人熟知的肯定是逻辑斯谛回归模型了。逻辑斯谛回归（Logistic Regression，简称LR）作为一种对数线性模型（log-linear model）被广泛地应用于分类和回归场景中。</p>
+<p>此外，logistic函数也是神经网络最为常用的激活函数，即sigmoid函数。</p>
+<p>softmax函数</p>
+<p>softmax is a generalization of logistic function that “squashes”(maps) a K -dimensional vector <em>z</em> of arbitrary real values to a K -dimensional vector δ(z) of real values in the range (0, 1) that add up to 1.</p>
+<p>这句话既表明了softmax函数与logistic函数的关系，也同时阐述了softmax函数的本质就是将一个K维的任意实数向量压缩<strong>（映</strong>射）成另一个K维的实数向量，其中向量中的每个元素取值都介于（0，1）之间。</p>
+<p>$$\delta(z)<em>j=\frac{e^{z_j}}{\sum</em>{k=1}^{K}e^{z_k}}, j=1,2,\cdots, K$$</p>
+<p>softmax函数经常用在神经网络的最后一层，作为输出层，进行多分类.</p>
+<p>softmax在增强学习领域内，softmax经常被用作将某个值转化为激活概率，这类情况下，softmax的公式如下</p>
+<p>$$P_t(a)=\frac{e^{\frac{q_t(a)}{T}}}{\sum_{i=1}^{n}e^{\frac{q_t(i)}{T}}}$$</p>
+<p><em>T</em>被称为是温度参数（temperature parameter）。</p>
+<p>当T很大时，即趋于正无穷时，所有的激活值对应的激活概率趋近于相同（激活概率差异性较小）；而当T很低时，即趋于0时，不同的激活值对应的激活概率差异也就越大。</p>
+<p>logistic具体针对的是二分类问题，而softmax解决的是多分类问题，因此从这个角度也可以理解logistic函数是softmax函数的一个特例。</p>
+<p>从概率角度来看logistic和softmax函数的区别。</p>
+<p>softmax建模使用的分布是<strong>多项式分布</strong>，而logistic则基于<strong>伯努利分布</strong></p>
+<p>softmax回归进行的多分类，类与类之间是互斥的，即一个输入只能被归为一类；</p>
+<p>多个logistic回归进行多分类，输出的类别并不是互斥的，即”苹果”这个词语既属于”水果”类也属于”3C”类别。</p>
 </section>
     <!-- Tags START -->
     
@@ -206,20 +187,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2020/04/25/about-official-account/">
+      <a class="nav-left" href="/2020/04/28/web-stack-second/">
         <span class="nav-arrow">← </span>
-        
-          关于【老齐教室】
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2020/04/28/web-stack-second/">
         
           剖析Web技术栈（二）
         
-        <span class="nav-arrow"> →</span>
       </a>
+    
     
   </div>
 
@@ -274,7 +248,7 @@
 
 <script>
   (function () {
-    var url = 'https://qiwsir.github.io/2020/04/26/cost-function-notebook/';
+    var url = 'https://qiwsir.github.io/2020/04/28/logistic-notebook/';
     var banner = ''
     /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
