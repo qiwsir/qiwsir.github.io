@@ -10,7 +10,7 @@
   
   <title>
     
-      项目和网络资源 | 老齐教室
+      cost function 笔记 | 老齐教室
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -148,37 +148,46 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <h2>项目和网络资源</h2>
-    <p class="post-date">2020-03-03</p>
-    <section class="markdown-content"><h2 id="工具类"><a href="#工具类" class="headerlink" title="工具类"></a>工具类</h2><ul>
-<li><a href="https://pdfcandy.com/cn/" target="_blank" rel="noopener">免费的在线PDF编辑器</a></li>
-<li><a href="https://www.jianshu.com/p/25f0139637b7" target="_blank" rel="noopener">Markdown公式</a></li>
+    <h2>cost function 笔记</h2>
+    <p class="post-date">2020-04-26</p>
+    <section class="markdown-content"><p>Cost Function，翻译为：代价函数、成本函数</p>
+<p>与之同样的词语：损失函数。</p>
+<p>假设有训练样本$(x, y)$，模型为 $h$, 参数为 $\theta$ 。$h(\theta)=\theta^Tx$ （$\theta^T$ 表示 $\theta$ 的转置）。</p>
+<p>任何能够衡量模型预测出来的值 $h(\theta)$ 与真实值 $y$ 之间的差异的函数都可以叫做代价函数，记作：$C(\theta)$。</p>
+<p>如果有多个样本，则可以将所有代价函数的取值求均值，记作：$J(\theta)$</p>
+<ul>
+<li>选择代价函数时，最好挑选对参数$\theta$ 可微的函数（全微分存在，偏导数一定存在）</li>
+<li>对于每种算法来说，代价函数不是唯一的；</li>
+<li>代价函数是参数 $\theta$ 的函数；</li>
+<li>总的代价函数 $J(\theta)$ 可以用来评价模型的好坏，代价函数的值越小说明模型和参数越符合训练样本$(x, y)$ ；</li>
+<li>$J(\theta)$ 是一个标量；</li>
 </ul>
-<h2 id="服务器类"><a href="#服务器类" class="headerlink" title="服务器类"></a>服务器类</h2><ul>
-<li><a href="https://github.com/gogs/gogs" target="_blank" rel="noopener">轻量级的Git服务器：Gogs</a></li>
-<li></li>
+<p>训练过程，就是不断选择参数的过程，即优化参数θ的过程，最常用的方法是梯度下降，这里的梯度就是代价函数$J(\theta)$ 对 $\theta_1, \theta_2, \cdots, \theta_n$ 的偏导数。</p>
+<p>一个好的代价函数需要满足两个最基本的要求：能够评价模型的准确性，对参数 $\theta$ 可微。</p>
+<p>在线性回归中，最常用的是<strong>均方误差</strong>(Mean squared error)，即：</p>
+<p>$$J(\theta_0, \theta_1)=\frac{1}{2m}\sum_{i=1}^{m}(\hat y^{(i)}-y^{i})^2=\frac{1}{2m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2$$</p>
+<ul>
+<li>$m$：训练样本的个数</li>
+<li>$h_{\theta}(x)$：用参数$\theta$ 和 $x$ 预测出来的值</li>
+<li>$y$：原训练样本中的标签</li>
+<li>上角标 $(i)$：第$i$个样本。</li>
 </ul>
-<h2 id="数据科学类"><a href="#数据科学类" class="headerlink" title="数据科学类"></a>数据科学类</h2><ul>
-<li>博客：<a href="https://rickwierenga.com/" target="_blank" rel="noopener">Rick Wierenga</a></li>
-<li>博客：<a href="https://www.fast.ai/" target="_blank" rel="noopener">fast.ai </a></li>
-<li><a href="https://spaces.ac.cn/" target="_blank" rel="noopener">科学空间</a>：包含数学和自然科学的知识</li>
-<li>博客（机器学习方向）：    <a href="https://ljvmiranda921.github.io/" target="_blank" rel="noopener">Lj Miranda</a></li>
-<li><a href="https://pbpython.com/" target="_blank" rel="noopener">Practical Business Python</a></li>
-<li><a href="https://philippmuens.com/" target="_blank" rel="noopener">The Intersection</a></li>
-<li><a href="https://pythonspeed.com/" target="_blank" rel="noopener">python=&gt;speed</a></li>
-<li><a href="https://datatofish.com/" target="_blank" rel="noopener">Data to Fish</a></li>
-</ul>
-<h2 id="Web开发类"><a href="#Web开发类" class="headerlink" title="Web开发类"></a>Web开发类</h2><ul>
-<li>博客：<a href="https://lukeplant.me.uk/" target="_blank" rel="noopener">https://lukeplant.me.uk/</a></li>
-<li><a href="https://github.com/Xavier-Lam/wechat-django" target="_blank" rel="noopener">基于Django的微信公众号管理端</a></li>
-</ul>
-<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><ul>
-<li><a href="http://go.itdiffer.com/#/search/1335" target="_blank" rel="noopener">ZLibrary</a></li>
-<li><a href="https://libgen.is/" target="_blank" rel="noopener">Library Genesis</a></li>
-<li><a href="http://www.gutenberg.org/" target="_blank" rel="noopener">Project Gutenberg</a></li>
-<li><a href="https://etc.usf.edu/lit2go/" target="_blank" rel="noopener">Lit2Go</a></li>
-<li><a href="https://www.jiumodiary.com/" target="_blank" rel="noopener">鸠摩搜书</a></li>
-<li><a href="https://ebook.chongbuluo.com/" target="_blank" rel="noopener">电子书搜索</a></li>
+<p>在逻辑回归中，最常用的是代价函数是<strong>交叉熵</strong>(Cross Entropy)。</p>
+<p>交叉熵是对「出乎意料」（译者注：原文使用suprise）的度量。神经元的目标是去计算函数x→y=y(x)。但是我们让它取而代之计算函数x→a=a(x)。假设我们把a当作y等于1的概率，1−a是y等于0的概率。那么，交叉熵衡量的是我们在知道y的真实值时的平均「出乎意料」程度。当输出是我们期望的值，我们的「出乎意料」程度比较低；当输出不是我们期望的，我们的「出乎意料」程度就比较高。</p>
+<p>在1948年，克劳德·艾尔伍德·香农将热力学的熵，引入到信息论，因此它又被称为香农熵(Shannon  Entropy)，它是香农信息量(Shannon Information Content,  SIC)的期望。香农信息量用来度量不确定性的大小：一个事件的香农信息量等于0，表示该事件的发生不会给我们提供任何新的信息，例如确定性的事件，发生的概率是1，发生了也不会引起任何惊讶；当不可能事件发生时，香农信息量为无穷大，这表示给我们提供了无穷多的新信息，并且使我们无限的惊讶。</p>
+<p>$J(\theta)=-\frac 1 m [\sum_{i=1}^m(y^{(i)}logh_{\theta}(x^{(i)})+(1-y^{(i)})log(1-h_{\theta}(x^{(i)}))]$</p>
+<p>从单页样本角度，理解如此定义Logistic的代价函数的理由：</p>
+<p>$C(\theta)=ylogh_\theta(x)+(1-y)log(1-h_{\theta}(x))$</p>
+<p>上述表达式等价于：</p>
+<p>$$C(\theta)=\begin{cases}-log(h_{\theta}(x), y=1\-log(1-h_{\theta}(x)), y=0\end{cases}$$</p>
+<p>其中：$h_{\theta}(x)=\frac{1}{1+e^{-\theta^Tx}}$</p>
+<p>参阅：<a href="https://zhuanlan.zhihu.com/p/28415991" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/28415991</a></p>
+<p>以下链接，从概率的角度解释为什么选择Sigmoid函数作为Logistic回归的函数：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/55321901" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/55321901</a></p>
+<p>logistic回归值表示所属类的后验概率，无论是二分类还是多分类，分类结果都是后验概率最大所对应的类。</p>
+<p><strong>参考资料</strong></p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/28408516" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/28408516</a></li>
 </ul>
 </section>
     <!-- Tags START -->
@@ -186,6 +195,26 @@
     <!-- Tags END -->
     <!-- NAV START -->
     
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/25/about-official-account/">
+        <span class="nav-arrow">← </span>
+        
+          关于【老齐教室】
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/04/28/web-stack-second/">
+        
+          剖析Web技术栈（二）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
     <!-- NAV END -->
     <!-- 打赏 START -->
     
@@ -227,7 +256,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#工具类"><span class="toc-nav-text">工具类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#服务器类"><span class="toc-nav-text">服务器类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据科学类"><span class="toc-nav-text">数据科学类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Web开发类"><span class="toc-nav-text">Web开发类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#下载"><span class="toc-nav-text">下载</span></a></li></ol>
+      <ol class="nav">none</ol>
     
   </div>
 </aside>
@@ -237,7 +266,7 @@
 
 <script>
   (function () {
-    var url = 'https://qiwsir.github.io/project/index.html';
+    var url = 'https://qiwsir.github.io/2020/04/26/cost-function-notebook/';
     var banner = ''
     /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
