@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      剖析Web技术栈（三） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>剖析Web技术栈（三）</h2>
+    <p class="post-date">2020-04-29</p>
+    <section class="markdown-content"><p>作者：Leonardo Giordani</p>
+<p>翻译：老齐</p>
+<p>与本文相关书籍推荐：《跟老齐学Python：Django实战》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" alt=""></p>
+<hr>
+<h2 id="2-Web框架"><a href="#2-Web框架" class="headerlink" title="2 Web框架"></a>2 Web框架</h2><h3 id="2-1基本原理"><a href="#2-1基本原理" class="headerlink" title="2.1基本原理"></a>2.1基本原理</h3><p>开始Web框架！</p>
+<p>正如我多次讨论过的，Web框架的作用是将HTTP请求转换为函数调用，将函数返回值转换为HTTP响应。框架的真正本质是一个层，它通过HTTP和相关协议将工作的业务逻辑连接到Web。该框架负责我们的会话管理，并将URL映射到函数，使我们能够专注于应用逻辑。</p>
+<p>在HTTP服务的总体方案中，应该这样认识框架。框架提供的，比如访问数据库、模板引擎和其他系统的接口，都是一个附加功能。作为程序员，你可能会发现这个附加功能很有用，但原则上它并不是我们运用框架的根本原因，我们首批美国框架是因为它充当了业务逻辑和HTTP之间的一个层。</p>
+<h3 id="2-2-实施"><a href="#2-2-实施" class="headerlink" title="2.2 实施"></a>2.2 实施</h3><p>多亏了Miguel Gringberg撰写的Flask超级教程，我可以非常快地学会Flask。我不会在这里介绍整个教程，因为你可以在他的网站上阅读。我只使用第一篇文章的内容（共23篇！）创建一个非常简单的“Hello，world”应用。另外，同样的应用也可以用Django实现，推荐书籍：《跟老齐学Python：Django实战》。</p>
+<p>要运行下面的示例，你需要一个虚拟环境，并且必须使用<code>pip install flask</code>安装。如果你需要更多关于这方面的细节，请阅读相关教程。</p>
+<p><code>app/__init__.py</code> 文件是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask</span><br><span class="line"></span><br><span class="line">application &#x3D; Flask(__name__)</span><br><span class="line"></span><br><span class="line">from app import routes</span><br></pre></td></tr></table></figure>
+
+<p><code>app/routes.py</code> 文件是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from app import application</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@application.route(&#39;&#x2F;&#39;)</span><br><span class="line">@application.route(&#39;&#x2F;index&#39;)</span><br><span class="line">def index():</span><br><span class="line">    return &quot;Hello, world!&quot;</span><br></pre></td></tr></table></figure>
+
+<p>你已经在这里看到了一个框架的作用。我们定义了一个<code>index</code>函数，并在3行Python中将它与两个不同的URL（<code>/</code>和<code>/index</code>）连接起来。这给我们留出了时间和精力来正确处理业务逻辑。在本例中，这是一个革命性的“Hello, world”。</p>
+<p>最后，<code>service.py</code> 文件是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from app import application</span><br></pre></td></tr></table></figure>
+
+<p>Flask附带了一个所谓的web开发服务器(这些词现在听起来熟悉了吗?)，我们可以在终端上运行它</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ FLASK_APP&#x3D;service.py flask run</span><br><span class="line"> * Serving Flask app &quot;service.py&quot;</span><br><span class="line"> * Environment: production</span><br><span class="line">   WARNING: This is a development server. Do not use it in a production deployment.</span><br><span class="line">   Use a production WSGI server instead.</span><br><span class="line"> * Debug mode: off</span><br><span class="line"> * Running on http:&#x2F;&#x2F;127.0.0.1:5000&#x2F; (Press CTRL+C to quit)</span><br></pre></td></tr></table></figure>
+
+<p>现在，你可以使用浏览器访问给定的URL，并查看一切是否正常运行。请记住，127.0.0.1是指“这台计算机”的特殊IP地址；操作系统通常将名称<code>localhost</code>作为此IP的别名，因此这两个名称可以互换。如你所见，Flask开发服务器的标准端口是5000，因此你必须明确地提到它，否则你的浏览器将尝试访问端口80（默认的HTTP端口）。当你连接到浏览器时，将看到关于HTTP请求的一些日志消息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 - - [14&#x2F;Feb&#x2F;2020 14:54:27] &quot;GET &#x2F; HTTP&#x2F;1.1&quot; 200 -</span><br><span class="line">127.0.0.1 - - [14&#x2F;Feb&#x2F;2020 14:54:28] &quot;GET &#x2F;favicon.ico HTTP&#x2F;1.1&quot; 404 -</span><br></pre></td></tr></table></figure>
+
+<p>现在你可以同时识别这两个，因为这与我们在文章前一部分中使用小服务器得到的请求是相同的。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<h3 id="2-3-参考资料"><a href="#2-3-参考资料" class="headerlink" title="2.3 参考资料"></a>2.3 参考资料</h3><p>这些参考资料为本节讨论的主题提供更详细的信息</p>
+<ul>
+<li><a href="https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world" target="_blank" rel="noopener" title="Miguel Gringberg&#39;s amazing Flask mega-tutorial">Miguel Gringberg’s amazing Flask mega-tutorial</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Localhost" target="_blank" rel="noopener" title="What is localhost">What is localhost</a></li>
+<li><a href="https://github.com/lgiordani/dissecting-a-web-stack-code/tree/master/2_web_framework" target="_blank" rel="noopener" title="本示例代码">本示例代码</a></li>
+</ul>
+<h3 id="2-4-问题"><a href="#2-4-问题" class="headerlink" title="2.4 问题"></a>2.4 问题</h3><p>很显然，我们解决了所有的问题，很多程序员就到此为止。他们学会了如何使用框架（这是一个巨大的成就！），但正如我们将很快发现的，这对于生产系统是不够的。让我们仔细看看Flask服务器的输出。上面清楚地写着：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WARNING: This is a development server. Do not use it in a production deployment.</span><br><span class="line">Use a production WSGI server instead.</span><br></pre></td></tr></table></figure>
+
+<p>我们在处理任何生产系统时所面临的主要问题是性能。当我们最小化代码时，考虑一下我们如何处理JavaScript：我们有意识地混淆代码以使文件更小，但这样做的唯一目的是使文件的读取速度更快。</p>
+<p>对于HTTP服务器来说，情况并不是完全不同。Web框架通常提供一个Web开发服务器，正如Flask所做的那样，它正确地实现了HTTP，但是效率非常低。首先，这是一个阻塞框架，这意味着如果我们的请求需要几秒钟才能被服务（例如，客户端从一个非常慢的数据库检索数据），那么任何其他请求都必须排队等待服务。这最终意味着用户将在浏览器的选项卡中看到一个下拉列表，只是摇摇头，认为我们不能建立一个现代网站。其他性能问题可能与内存管理或磁盘缓存有关。但一般而言，我们可以有把握地说，此Web服务器无法处理任何生产负载（即多个用户同时访问web站点并期望良好的服务质量）。</p>
+<p>这并不奇怪。毕竟，我们为了专注于自己的业务，不想处理TCP/IP连接，所以我们将此委托给了维护框架的其他编码人员。而框架的作者则希望关注中间件、路由、HTTP方法的正确处理等等。他们不想花时间去优化“多用户”体验的性能。在Python世界中尤其如此（但对于Node.js来说，这一点就不那么适用了）：Python不是高度面向并发的，编程风格和性能都不利于快速、无阻塞的应用程序。最近，随着异步和解释器的改进，这种情况正在发生变化，但我将这个问题留在另一篇文章中阐述。</p>
+<p>所以，现在我们有了一个成熟的HTTP服务，我们需要让它变得如此之快，以至于用户甚至不会注意到：它没有在他们的计算机上本地运行。</p>
+<h2 id="3-提高并发性"><a href="#3-提高并发性" class="headerlink" title="3 提高并发性"></a>3 提高并发性</h2><h3 id="3-1-基本原理"><a href="#3-1-基本原理" class="headerlink" title="3.1 基本原理"></a>3.1 基本原理</h3><p>如果每当你遇到性能问题，就求助于并发。现在你会有很多问题！（见此处）</p>
+<p>是的，并发解决了许多问题，但它也是很多问题的根源，所以我们需要找到一种最安全、不那么复杂的方法来使用它。我们基本上可能希望添加一个层，这个层以某种并发方式运行框架，而不需要更改框架本身的任何内容。</p>
+<p>每当你不得不使不同的事物同质化的时候，就创造出一个间接的层面。这几乎解决了任何问题，只有一个问题除外。（见此处）</p>
+<p>因此，我们需要创建一个层，让它以并发方式运行我们的服务，但我们也希望将其与服务的特定实现分离，这与我们正在使用的框架或库无关。</p>
+<h3 id="3-2-实施"><a href="#3-2-实施" class="headerlink" title="3.2 实施"></a>3.2 实施</h3><p>在这种情况下，解决方案是给出Web框架必须公开的API规范，以便让独立的第三方组件可以使用它。在Python世界中，这组规则被命名为WSGI，即Web服务器网关接口，对于其他语言（如Java或Ruby），也存在这样的接口。这里提到的“网关”是系统框架之外的部分，在本文中讨论的是处理生产性能的部分。通过WSGI，我们为框架定义了一种公开公共接口的方式，使得对并发感兴趣的人可以自由地独立实现一些东西。</p>
+<p>如果框架与网关接口兼容，我们可以添加处理并发性的软件，并通过兼容层使用框架。这样的组件是一个可用于生产的HTTP服务器，在Python世界中有两个常见的选择是Gunicorn和uWSGI。</p>
+<p>可用于生产的HTTP服务器意味着软件可以像开发服务器那样理解HTTP，但同时为了支持更大的工作负载而提高性能，正如我们之前所说的，这是通过并发完成的。</p>
+<p>Flask与WSGI兼容，所以我们可以让它与Gunicorn一起工作。要在我们的虚拟环境中安装它，请运行<code>pip install gunicorn</code>，并设置它。创建一个名为<code>wsgi.py</code>的文件，其中包含以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from app import application</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    application.run()</span><br></pre></td></tr></table></figure>
+
+<p>要运行Gunicorn，请指定并发实例的数目和外部端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi</span><br><span class="line">[2020-02-12 18:39:07 +0000] [13393] [INFO] Starting gunicorn 20.0.4</span><br><span class="line">[2020-02-12 18:39:07 +0000] [13393] [INFO] Listening at: http:&#x2F;&#x2F;0.0.0.0:8000 (13393)</span><br><span class="line">[2020-02-12 18:39:07 +0000] [13393] [INFO] Using worker: sync</span><br><span class="line">[2020-02-12 18:39:07 +0000] [13396] [INFO] Booting worker with pid: 13396</span><br><span class="line">[2020-02-12 18:39:07 +0000] [13397] [INFO] Booting worker with pid: 13397</span><br><span class="line">[2020-02-12 18:39:07 +0000] [13398] [INFO] Booting worker with pid: 13398</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，Gunicorn有worker模式，它是实现并发性的一种通用方法。具体来说，Gunicorn实现了一个pre-fork worker模式，这意味着它为每个worker预先创建了一个不同的Unix进程。你可以用<code>ps</code>命令查看进程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ps ax | grep gunicorn</span><br><span class="line">14919 pts&#x2F;1    S+     0:00 ~&#x2F;venv3&#x2F;bin&#x2F;python3 ~&#x2F;venv3&#x2F;bin&#x2F;gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi</span><br><span class="line">14922 pts&#x2F;1    S+     0:00 ~&#x2F;venv3&#x2F;bin&#x2F;python3 ~&#x2F;venv3&#x2F;bin&#x2F;gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi</span><br><span class="line">14923 pts&#x2F;1    S+     0:00 ~&#x2F;venv3&#x2F;bin&#x2F;python3 ~&#x2F;venv3&#x2F;bin&#x2F;gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi</span><br><span class="line">14924 pts&#x2F;1    S+     0:00 ~&#x2F;venv3&#x2F;bin&#x2F;python3 ~&#x2F;venv3&#x2F;bin&#x2F;gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi</span><br></pre></td></tr></table></figure>
+
+<p>在Unix系统中，使用进程只是实现并发的两种方法之一，另一种是使用线程。然而，每种解决方案的优点和缺点都不在本文的讨论范围之内。目前只需记住，你正在应对多个worker，这些worker异步处理传入的请求，从而实现一个非阻塞服务器，准备接受多个连接。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<h3 id="3-3-参考资料"><a href="#3-3-参考资料" class="headerlink" title="3.3 参考资料"></a>3.3 参考资料</h3><p>这些资源为本节讨论的主题提供了更详细的信息</p>
+<ul>
+<li>The <a href="https://wsgi.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener" title="WSGI official documentation">WSGI official documentation</a> and the <a href="https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface" target="_blank" rel="noopener" title="Wikipedia page">Wikipedia page</a></li>
+<li>The homepages of <a href="https://gunicorn.org/" target="_blank" rel="noopener" title="Gunicorn">Gunicorn</a> and <a href="https://uwsgi-docs.readthedocs.io/en/latest/" target="_blank" rel="noopener" title="uWSGI">uWSGI</a></li>
+<li>A good entry point for your journey into the crazy world of concurrency: <a href="https://en.wikipedia.org/wiki/Multithreading_(computer_architecture" target="_blank" rel="noopener" title="multithreading">multithreading</a>).</li>
+<li><a href="https://github.com/lgiordani/dissecting-a-web-stack-code/tree/master/3_concurrency_and_facades" target="_blank" rel="noopener" title="本例代码">本例代码</a></li>
+</ul>
+<h3 id="3-4-问题"><a href="#3-4-问题" class="headerlink" title="3.4 问题"></a>3.4 问题</h3><p>使用Gunicorn，我们现在已经有了一个用于生产的HTTP服务器，并且显然实现了我们需要的一切。不过，仍有许多考虑因素和缺失的部分。</p>
+<h3 id="再回到性能"><a href="#再回到性能" class="headerlink" title="再回到性能"></a>再回到性能</h3><p>3个worker是否足以支撑我们新的杀手级的移动应用程序的负载？预计每分钟有成千上万的访问者，所以也许我们应该增加一些线程。但是，当我们增加线程的数量时，必须记住，我们正在使用的机器具有有限的CPU功率和内存。因此，我们必须再次关注性能，特别是可伸缩性：如何在不停止应用程序的情况下继续添加线程，用更强大的电脑替换现有的电脑，还是重新启动服务？</p>
+<h3 id="积极迎接变化"><a href="#积极迎接变化" class="headerlink" title="积极迎接变化"></a>积极迎接变化</h3><p>这不是我们在生产中必须面对的唯一问题。技术的一个重要方面是：随着新的、（希望是）更好的解决方案的普及，它会随着时间的推移而改变。我们设计系统时，通常尽可能把它们划分为多个通信层，正是因为我们希望能够自由地用其他的东西来替换一个层，无论是用更简单的组件还是更高级的组件，一个性能更好的组件，或者可能只是一个更便宜的组件。所以，再一次，我们希望能够优化底层系统，但要保持相同的界面，就像我们在Web框架中所做的那样。</p>
+<h3 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h3><p>系统中缺少的另一部分是HTTPS。Gunicorn和uWSGI不支持HTTPS协议，因此我们需要另外有一些东西来处理协议的“S”部分，将“HTTP”部分留给内部层。</p>
+<h3 id="负载均衡器"><a href="#负载均衡器" class="headerlink" title="负载均衡器"></a>负载均衡器</h3><p>一般来说，负载均衡只是系统中的一个组件，它将工作分配给一个线程池。Gunicorn已经可以在它的工作线程之间分配负载了，所以这不是一个新的概念，但是我们通常希望在更大的层次上，在机器之间或者整个系统之间这样做。负载均衡可以是分层的，并且可以在多个级别上进行结构化。我们还可以为系统的某些组件标记为准备接受更多的负载（例如，因为它们的硬件更好）。负载均衡在网络服务中是非常重要的，而且负载的定义在不同的系统之间可能有很大的不同：一般来说，在Web服务中，连接的数量是负载的标准度量，因为我们假设：平均来说，所有连接都会给系统带来相同的负荷。</p>
+<h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><p>负载均衡是转发代理，因为它们允许客户端联系池中的任何服务器。同时，反向代理允许客户端通过同一入口点检索多个系统生成的数据。反向代理是一个完美的方法，它将HTTP请求转发到可以用不同技术实现的子系统，例如，你可能希望用Python、Django和Postgres实现系统的一部分，用Go语言中的AWS Lambda函数实现另一部分，并与非关系数据库（如DynamoDB）连接。通常，在HTTP服务中，这个选择是根据URL做出的（例如，路由以/api/开头的每个URL）。</p>
+<h3 id="逻辑层"><a href="#逻辑层" class="headerlink" title="逻辑层"></a>逻辑层</h3><p>我们还需要一个可以实现一定数量逻辑的层来管理简单规则，这些规则与我们实现的服务无关。一个典型的例子是HTTP重定向:如果用户访问服务时使用的前缀是http://而不是https://，会发生什么?正确的方法是通过HTTP 301代码来处理问题，但是你不希望这样的请求影响你的框架，这样简单的任务会浪费资源。</p>
+<p>（未完，待续）</p>
+<p><strong>阅读链接</strong></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+<p style="text-align:right"><strong style="max-width: 100%;color: rgb(255, 255, 255);background-color: rgb(234, 6, 13);box-sizing: border-box !important;overflow-wrap: break-word !important;">觉得好看，就点这里👇👇👇</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/28/logistic-notebook/">
+        <span class="nav-arrow">← </span>
+        
+          【logistic回归】笔记
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-Web框架"><span class="toc-nav-text">2 Web框架</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1基本原理"><span class="toc-nav-text">2.1基本原理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-实施"><span class="toc-nav-text">2.2 实施</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-参考资料"><span class="toc-nav-text">2.3 参考资料</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-问题"><span class="toc-nav-text">2.4 问题</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-提高并发性"><span class="toc-nav-text">3 提高并发性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-基本原理"><span class="toc-nav-text">3.1 基本原理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-2-实施"><span class="toc-nav-text">3.2 实施</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-参考资料"><span class="toc-nav-text">3.3 参考资料</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-问题"><span class="toc-nav-text">3.4 问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#再回到性能"><span class="toc-nav-text">再回到性能</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#积极迎接变化"><span class="toc-nav-text">积极迎接变化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HTTPS"><span class="toc-nav-text">HTTPS</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#负载均衡器"><span class="toc-nav-text">负载均衡器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#反向代理"><span class="toc-nav-text">反向代理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#逻辑层"><span class="toc-nav-text">逻辑层</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/04/29/web-stack-third/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

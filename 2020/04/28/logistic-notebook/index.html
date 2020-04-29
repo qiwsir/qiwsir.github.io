@@ -178,6 +178,24 @@
 <p>softmax建模使用的分布是<strong>多项式分布</strong>，而logistic则基于<strong>伯努利分布</strong></p>
 <p>softmax回归进行的多分类，类与类之间是互斥的，即一个输入只能被归为一类；</p>
 <p>多个logistic回归进行多分类，输出的类别并不是互斥的，即”苹果”这个词语既属于”水果”类也属于”3C”类别。</p>
+<p>推导过程：</p>
+<p>设自变量与因变量的关系是：</p>
+<p>$$Y = \alpha + \beta_1X_1 + \cdots + \beta_nX_n + \epsilon$$</p>
+<p>如果 $X$ 是任意实数，但 $Y$ 是二分类数据，那么，就不能通过线性函数的方式拟合出结果。即，上式左侧是二分类数据，右侧是$(-\infty, \infty)$ 的值。</p>
+<p>一种方法：可以使用分段函数（用 $z$ 表示上式左侧的计算结果）</p>
+<p>$$Y = \begin{cases}0, z \lt 0\0.5, z=0\1,z \gt 0\end{cases}$$</p>
+<p>但这个函数不是连续函数，不连续可微。</p>
+<p>为此，要寻找连续函数，并且能够将$(-\infty, \infty)$ 范围的值映射到$(0,1)$之间，sigmoid函数式一个选择。</p>
+<p>$$Y = \frac {e^z}{1+e^z}=\frac {e^{\alpha + \beta_1X_1 + \cdots + \beta_nX_n + \epsilon}}{1+e^{\alpha + \beta_1X_1 + \cdots + \beta_nX_n + \epsilon}}$$</p>
+<p>则：</p>
+<p>$$\frac{Y}{1-Y}=e^{\alpha + \beta_1X_1 + \cdots + \beta_nX_n + \epsilon}$$</p>
+<p>两边取自然对数</p>
+<p>$$ln(\frac{Y}{1-Y})=\alpha + \beta_1X_1 + \cdots + \beta_nX_n + \epsilon$$</p>
+<p>上式右边，就是普通的回归表达式。</p>
+<p>左边：$\frac{Y}{1-Y}$ 代表结果的两种状态的比率（odds），取自然对数后，叫做对数比率。所以，logistic回归，称为对数比率回归。</p>
+<p>下面，通过“最大似然法”（maximum likehuood）确定上式右侧系数。</p>
+<p>当初引进这个词汇时翻译的过于玄乎，导致很多人看不懂。其实，似然，就是“可能”的意思，最大似然，也就是最大可能。</p>
+<p>要找到的最优β，它们必须满足一个条件，<strong>就是使我们当前获得的数据出现的可能性最大</strong>！举个例子，假如小明认为β=1，在他给出的β下，当前数据出现的可能性只有0.3，小花给出的β为2，在她给出的β下，当前数据出现的可能性为0.6。也就是说，在当前的数据已经出现的情况下，小花的β更加合理！</p>
 </section>
     <!-- Tags START -->
     
@@ -194,6 +212,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2020/04/29/web-stack-third/">
+        
+          剖析Web技术栈（三）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
