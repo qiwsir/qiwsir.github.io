@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      剖析Web技术栈（四） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>剖析Web技术栈（四）</h2>
+    <p class="post-date">2020-05-02</p>
+    <section class="markdown-content"><p>作者：Leonardo Giordani</p>
+<p>翻译：老齐</p>
+<p>与本文相关书籍推荐：《跟老齐学Python：Django实战》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/Django2%E7%AB%8B%E4%BD%93%E5%9B%BE_20200117164816.png" alt=""></p>
+<hr>
+<h2 id="4-Web-server"><a href="#4-Web-server" class="headerlink" title="4 Web server"></a>4 Web server</h2><h3 id="4-1-基本原理"><a href="#4-1-基本原理" class="headerlink" title="4.1 基本原理"></a>4.1 基本原理</h3><p>我们给Web server的一般标签是：用于执行任务的软件，nginx和Apache是两个常用的web server，这两个开源项目目前在市场上处于领先地位，它们使用不同的技术方法，都实现了我们在上一节中讨论的所有特性（以及更多特性）。</p>
+<h3 id="4-2-实施"><a href="#4-2-实施" class="headerlink" title="4.2 实施"></a>4.2 实施</h3><p>为了测试nginx，又要避免与操作系统中其他软件包冲突，我们可以使用Docker。Docker对于模拟多机环境很有用，对于实际的生产环境，也能选择Docker（例如，AWS ECS与Docker容器配合使用）。</p>
+<p>即将运行的基本配置非常简单，一个容器将包含Flask代码并使用Gunicorn运行框架，而另一个容器将运行nginx。Gunicorn将在内部端口8000上提供HTTP，这个端口不会被Docker公开，因此无法从浏览器访问。但是nignx将公开端口80，这是传统的HTTP端口。</p>
+<p>在文件<code>wsgi.py</code>的同一目录中，创建一个<code>Dockerfile</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM python:3.6</span><br><span class="line"></span><br><span class="line">ADD app &#x2F;app</span><br><span class="line">ADD wsgi.py &#x2F;</span><br><span class="line"></span><br><span class="line">WORKDIR .</span><br><span class="line">RUN pip install flask gunicorn</span><br><span class="line">EXPOSE 8000</span><br></pre></td></tr></table></figure>
+
+<p>从Python Docker开始，添加<code>app</code>目录和<code>wsgi.py</code>文件，并安装Gunicorn，然后在同一目录中名为<code>nginx.conf</code>的文件中为nginx创建一个配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;application:8000&#x2F;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就定义了一个服务器，它监听端口80，并将以<code>/</code>开头的所有URL连接到端口8000上名为<code>application</code>的服务器，该服务器是运行Gunicorn的容器。</p>
+<p>最后，创建一个描述容器配置的文件<code>docker compose.yml</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3.7&quot;</span><br><span class="line">services:</span><br><span class="line">  application:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    command: gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi</span><br><span class="line">    expose:</span><br><span class="line">        - 8000</span><br><span class="line"></span><br><span class="line">  nginx:</span><br><span class="line">    image: nginx</span><br><span class="line">    volumes:</span><br><span class="line">     - .&#x2F;nginx.conf:&#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;default.conf</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:80</span><br><span class="line">    depends_on:</span><br><span class="line">      - application</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，我们在nginx配置文件中提到的名称<code>application</code>不是一个魔法字符串，而是我们在Docker Compose配置中分配给Gunicorn容器的名称。</p>
+<p>要创建这个基础设施，我们需要通过<code>pip install Docker Compose</code>在我们的虚拟环境中安装Docker Compose。我还用项目名创建了一个名为<code>.env</code>的文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COMPOSE_PROJECT_NAME&#x3D;service</span><br></pre></td></tr></table></figure>
+
+<p>此时，你可以使用<code>Docker Compose up -d</code>运行Docker Compose。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up -d</span><br><span class="line">Creating network &quot;service_default&quot; with the default driver</span><br><span class="line">Creating service_application_1 ... done</span><br><span class="line">Creating service_nginx_1       ... done</span><br></pre></td></tr></table></figure>
+
+<p>如果一切正常，打开浏览器并访问<code>localhost</code>应该会显示Flask提供的HTML页面。</p>
+<p>通过<code>docker compose</code>日志，我们可以检查服务正在做什么。我们可以在名为<code>application</code>的服务日志中识别Gunicorn的输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose logs application</span><br><span class="line">Attaching to service_application_1</span><br><span class="line">application_1  | [2020-02-14 08:35:42 +0000] [1] [INFO] Starting gunicorn 20.0.4</span><br><span class="line">application_1  | [2020-02-14 08:35:42 +0000] [1] [INFO] Listening at: http:&#x2F;&#x2F;0.0.0.0:8000 (1)</span><br><span class="line">application_1  | [2020-02-14 08:35:42 +0000] [1] [INFO] Using worker: sync</span><br><span class="line">application_1  | [2020-02-14 08:35:42 +0000] [8] [INFO] Booting worker with pid: 8</span><br><span class="line">application_1  | [2020-02-14 08:35:42 +0000] [9] [INFO] Booting worker with pid: 9</span><br><span class="line">application_1  | [2020-02-14 08:35:42 +0000] [10] [INFO] Booting worker with pid: 10</span><br></pre></td></tr></table></figure>
+
+<p>现在我们最感兴趣的是名为<code>nginx</code>的服务，所以我们使用<code>docker compose logs -f nginx</code>实时跟踪日志。刷新你用浏览器访问的<code>localhost</code>页面，容器应该输出如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose logs -f nginx</span><br><span class="line">Attaching to service_nginx_1</span><br><span class="line">nginx_1        | 192.168.192.1 - - [14&#x2F;Feb&#x2F;2020:08:42:20 +0000] &quot;GET &#x2F; HTTP&#x2F;1.1&quot; 200 13 &quot;-&quot; &quot;Mozilla&#x2F;5.0 (X11; Ubuntu; Linux x86_64; rv:72.0) Gecko&#x2F;20100101 Firefox&#x2F;72.0&quot; &quot;-&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这是nginx的标准日志格式。它显示客户机的IP地址（<code>192.168.192.1</code>）、连接时间戳、HTTP请求和响应状态代码（200），以及客户端的其他信息。</p>
+<p>现在让我们增加服务的数量，以查看负载平衡机制的作用。为此，我们首先需要更改nginx的日志格式，以显示对请求做出响应的机器的IP地址。更改“nginx.conf”文件，添加 <code>log_format</code> 和 <code>access_log</code>选项。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">log_format upstreamlog &#39;[$time_local] $host to: $upstream_addr: $request $status&#39;;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;application:8000;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    access_log &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log upstreamlog;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>变量<code>$upstream_addr</code>是nginx代理的服务器的IP地址。现在运行<code>docker compose down</code>停止所有容器，然后通过<code>docker compose up -d --scale application=3</code>重新启动。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose down</span><br><span class="line">Stopping service_nginx_1       ... done</span><br><span class="line">Stopping service_application_1 ... done</span><br><span class="line">Removing service_nginx_1       ... done</span><br><span class="line">Removing service_application_1 ... done</span><br><span class="line">Removing network service_default</span><br><span class="line">$ docker-compose up -d --scale application&#x3D;3</span><br><span class="line">Creating network &quot;service_default&quot; with the default driver</span><br><span class="line">Creating service_application_1 ... done</span><br><span class="line">Creating service_application_2 ... done</span><br><span class="line">Creating service_application_3 ... done</span><br><span class="line">Creating service_nginx_1       ... done</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，Docker Compose为<code>application</code>启动了3个容器，如果你打开日期，可以看到如下内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose logs -f nginx</span><br><span class="line">Attaching to service_nginx_1</span><br><span class="line">nginx_1        | [14&#x2F;Feb&#x2F;2020:09:00:16 +0000] localhost to: 192.168.240.4:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br></pre></td></tr></table></figure>
+
+<p>你可以在这里找到<code>to:192.168.240.4:8000</code>，这是其中一个应用所在容器的IP地址。如果你现在多次访问该页面，应该会注意到上游地址的更改，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose logs -f nginx</span><br><span class="line">Attaching to service_nginx_1</span><br><span class="line">nginx_1        | [14&#x2F;Feb&#x2F;2020:09:00:16 +0000] localhost to: 192.168.240.4:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1        | [14&#x2F;Feb&#x2F;2020:09:00:17 +0000] localhost to: 192.168.240.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1        | [14&#x2F;Feb&#x2F;2020:09:00:17 +0000] localhost to: 192.168.240.3:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1        | [14&#x2F;Feb&#x2F;2020:09:00:17 +0000] localhost to: 192.168.240.4:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1        | [14&#x2F;Feb&#x2F;2020:09:00:17 +0000] localhost to: 192.168.240.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br></pre></td></tr></table></figure>
+
+<p>这表明nginx正在执行负载平衡，但说实话，这是通过Docker的DNS进行的，而不是通过web服务器执行的显式操作。我们可以通过访问nginx容器并运行<code>dig application</code>来验证这一点（你需要运行<code>apt update</code>和<code>apt install dnsutils</code>来安装<code>dig</code>）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">root@99c2f348140e:&#x2F;# dig application</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.11.5-P4-5.1-Debian &lt;&lt;&gt;&gt; application</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 7221</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 0</span><br><span class="line"></span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;application.                   IN      A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">application.            600     IN      A       192.168.240.2</span><br><span class="line">application.            600     IN      A       192.168.240.4</span><br><span class="line">application.            600     IN      A       192.168.240.3</span><br><span class="line"></span><br><span class="line">;; Query time: 1 msec</span><br><span class="line">;; SERVER: 127.0.0.11#53(127.0.0.11)</span><br><span class="line">;; WHEN: Fri Feb 14 09:57:24 UTC 2020</span><br><span class="line">;; MSG SIZE  rcvd: 110</span><br></pre></td></tr></table></figure>
+
+<p>要查看nginx执行的负载平衡，我们可以显式地定义两个服务并为它们分配不同的权重。运行<code>docker compose down</code>并将nginx配置更改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">upstream app &#123;</span><br><span class="line">    server application1:8000 weight&#x3D;3;</span><br><span class="line">    server application2:8000;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">log_format upstreamlog &#39;[$time_local] $host to: $upstream_addr: $request $status&#39;;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;app;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    access_log &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log upstreamlog;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在这里定义了一个<code>upstream</code>结构。它列出了两种不同的服务：<code>application1</code>和<code>application2</code>。其中第一种服务的权重为3。这意味着：每4个请求中，有3个请求将被路由到第一种服务，1个被路由到第二种服务。现在nginx不仅仅依赖于DNS，而是有意识地在两种不同的服务之间进行选择。</p>
+<p>我们在Docker Compose配置文件中相应地定义服务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line">services:</span><br><span class="line">  application1:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    command: gunicorn --workers 6 --bind 0.0.0.0:8000 wsgi</span><br><span class="line">    expose:</span><br><span class="line">        - 8000</span><br><span class="line"></span><br><span class="line">  application2:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    command: gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi</span><br><span class="line">    expose:</span><br><span class="line">        - 8000</span><br><span class="line"></span><br><span class="line">  nginx:</span><br><span class="line">    image: nginx</span><br><span class="line">    volumes:</span><br><span class="line">     - .&#x2F;nginx.conf:&#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;default.conf</span><br><span class="line">    ports:</span><br><span class="line">      - 80:80</span><br><span class="line">    depends_on:</span><br><span class="line">      - application1</span><br><span class="line">      - application2</span><br></pre></td></tr></table></figure>
+
+<p>我基本上重复了<code>application</code>的定义，但是第一种服务现在运行6个工作线，只是为了显示两者之间可能的区别。现在运行<code>docker-compose up -d</code> 和 <code>docker-compose logs -f nginx</code>。如果多次刷新浏览器上的页面，你将看到如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose logs -f nginx</span><br><span class="line">Attaching to service_nginx_1</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:25 +0000] localhost to: 172.18.0.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:25 +0000] localhost to: 172.18.0.2:8000: GET &#x2F;favicon.ico HTTP&#x2F;1.1 404</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:30 +0000] localhost to: 172.18.0.3:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:31 +0000] localhost to: 172.18.0.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:32 +0000] localhost to: 172.18.0.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:33 +0000] localhost to: 172.18.0.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:33 +0000] localhost to: 172.18.0.3:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:34 +0000] localhost to: 172.18.0.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:34 +0000] localhost to: 172.18.0.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:35 +0000] localhost to: 172.18.0.2:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br><span class="line">nginx_1         | [14&#x2F;Feb&#x2F;2020:11:03:35 +0000] localhost to: 172.18.0.3:8000: GET &#x2F; HTTP&#x2F;1.1 200</span><br></pre></td></tr></table></figure>
+
+<p>你可以清楚地看到<code>172.18.0.2（application1）</code>和<code>172.18.0.3（application2）</code>之间的负载平衡。</p>
+<p>我不会在这里展示反向代理或HTTPS的例子，以免这篇文章过长，你可以在下一节中找到有关这类内容的资源。</p>
+<h3 id="4-3-参考资料"><a href="#4-3-参考资料" class="headerlink" title="4.3 参考资料"></a>4.3 参考资料</h3><p>这些资源提供了关于本节讨论的主题的更详细的信息。</p>
+<ul>
+<li>Docker Compose official documentation</li>
+<li>nginx documentation: in particular the sections about log_format and upstream directives</li>
+<li>How to configure logging in nginx</li>
+<li>How to configure load balancing in nginx</li>
+<li>Setting up an HTTPS Server with nginx and how to created self-signed certificates</li>
+<li>How to create a reverse proxy with nginx, the documentation of the location directive and some insights on the location choosing algorithms (one of the most complex parts of nginx)</li>
+<li>The source code of this example is available here</li>
+</ul>
+<h3 id="4-4问题"><a href="#4-4问题" class="headerlink" title="4.4问题"></a>4.4问题</h3><p>现在，我们可以说任务完成了。我们在多线程Web框架前面加了一个用于生产的Web服务器，我们可以专注于编写Python代码，而不是处理HTTP头信息。</p>
+<p>使用Web服务器允许我们扩展基础设施，只需在其后面添加新实例，而不会中断服务。HTTP并发服务器运行框架的多个实例，框架本身使HTTP抽象化，将其映射到我们的高级语言。</p>
+<h2 id="云基础设施"><a href="#云基础设施" class="headerlink" title="云基础设施"></a>云基础设施</h2><p>在互联网的早期，公司都要有自己的服务器，而系统管理员则直接在光秃秃的操作系统上运行所有东西，不用说，这是复杂、昂贵和容易失败的。</p>
+<p>现在“云”是一个好东西，很多网站都部署到云上，而且也有很多组件供我们使用。</p>
+<p>(完毕)</p>
+<p><strong>阅读链接</strong>：</p>
+<ul>
+<li>剖析Web技术栈（一）</li>
+<li>剖析Web技术栈（二）</li>
+<li>剖析Web技术栈（三）</li>
+</ul>
+<p>原文链接：<a href="https://www.thedigitalcatonline.com/blog/2020/02/16/dissecting-a-web-stack/" target="_blank" rel="noopener">https://www.thedigitalcatonline.com/blog/2020/02/16/dissecting-a-web-stack/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/04/30/learn-python-with-laoqi/">
+        <span class="nav-arrow">← </span>
+        
+          《跟老齐学Python：轻松入门》勘误和修订
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-Web-server"><span class="toc-nav-text">4 Web server</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-1-基本原理"><span class="toc-nav-text">4.1 基本原理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-2-实施"><span class="toc-nav-text">4.2 实施</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-3-参考资料"><span class="toc-nav-text">4.3 参考资料</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-4问题"><span class="toc-nav-text">4.4问题</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#云基础设施"><span class="toc-nav-text">云基础设施</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/02/web-stack-forth/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
