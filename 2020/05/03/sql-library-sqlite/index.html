@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的SQL库：SQLite | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的SQL库：SQLite</h2>
+    <p class="post-date">2020-05-03</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<p>现在所发布的各种网站，或者客户端应用的程序，绝大多数要跟数据库连接——毋庸置疑，大数据时代就这么来了。使用任何一种当下流行的高级编程语言，都可以通过某个专门的模块连接数据库。能够对数据库进行操作的软件程序，我们称之为“数据库管理系统（database management system，DBMS）。不同的数据库具有不同的DBMS，程序连接了DBMS就能够对数据库实施：</p>
+<ul>
+<li>增：向数据库中增加记录或者字段内容</li>
+<li>删：删除数据库中的记录或字段内容</li>
+<li>改：修改数据库中记录或字段内容</li>
+<li>查：根据一定要求查询记录或字段内容</li>
+</ul>
+<p>这些基本操作。</p>
+<p>本系列文章，将着重讨论Python语言为关系型数据库提供的SQL库，即用Python语言编写的程序，通过这些库（模块）连接DBMS，进而通过程序完成对数据库的各项操作。</p>
+<h2 id="数据库基本结构"><a href="#数据库基本结构" class="headerlink" title="数据库基本结构"></a>数据库基本结构</h2><p>本文中，我们会应用一个结构简单的数据库，它包括以下4张表：</p>
+<ul>
+<li>users</li>
+<li>posts</li>
+<li>comments</li>
+<li>likes</li>
+</ul>
+<p>每张表的基本结构和各表之间的关系模式如下：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/python-sql-database-schema_20200502114040.png" alt=""></p>
+<p><code>users</code>和<code>posts</code>两张表之间是一对多的关系，即一个用户可以发布多篇文章。同样，一个用户也可以发布多篇评论，所以<code>users</code>和<code>comments</code>之间也是一对多的关系。至于<code>users</code>和<code>likes</code>两张表的关系，由此也就一目了然了，也是一对多。</p>
+<h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><p>本文要讨论的数据库是SQLite，这是一种小型数据库，它不需要启动数据库服务器，可以用类似读写文件的方式对这种数据库进行操作。Python标准库中已经提供了连接模块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import sqlite3</span><br><span class="line">from sqlite3 import Error</span><br><span class="line"></span><br><span class="line">def create_connection(path):</span><br><span class="line">    connection &#x3D; None</span><br><span class="line">    try:</span><br><span class="line">        connection &#x3D; sqlite3.connect(path)</span><br><span class="line">        print(&quot;Connection to SQLite DB successful&quot;)</span><br><span class="line">    except Error as e:</span><br><span class="line">        print(f&quot;The error &#39;&#123;e&#125;&#39; occurred&quot;)</span><br><span class="line">    return connection</span><br></pre></td></tr></table></figure>
+
+<p>以上创建了一个连接数据库的函数<code>create_connection</code>，函数中的主要操作是<code>connection = sqlite3.connect(path)</code>，创建了与指定数据库（<code>path</code>参数）的连接对象。如果该数据库存在，则连接该数据库，否则，根据<code>path</code>创建此数据库并连接。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connection &#x3D; create_connection(&quot;&#x2F;Users&#x2F;qiwsir&#x2F;DB&#x2F;sqlite&#x2F;sm_app.sqlite&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>这就在指定位置创建了名为<code>sm_app.sqlite</code>的数据库，并创建了链接对象。</p>
+<h2 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h2><p>对于SQLite数据库，要在Python中执行各种SQL语句，需要通过<code>cursor.execute()</code>函数。下面就创建一个专门的函数，来完成各种SQL语句的操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def execute_query(connection, query):</span><br><span class="line">    cursor &#x3D; connection.cursor()</span><br><span class="line">    try:</span><br><span class="line">        cursor.execute(query)</span><br><span class="line">        connection.commit()</span><br><span class="line">        print(&quot;Query executed successfully&quot;)</span><br><span class="line">    except Error as e:</span><br><span class="line">        print(f&quot;The error &#39;&#123;e&#125;&#39; occurred&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>上述函数中的<code>connection</code>参数，是前面所创建的数据库连接对象。<code>query</code>则是SQL语句组成的字符串。</p>
+<p>例如，如下是创建<code>users</code>表的SQL语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create_users_table &#x3D; &quot;&quot;&quot;</span><br><span class="line">CREATE TABLE IF NOT EXISTS users (</span><br><span class="line">  id INTEGER PRIMARY KEY AUTOINCREMENT,</span><br><span class="line">  name TEXT NOT NULL,</span><br><span class="line">  age INTEGER,</span><br><span class="line">  gender TEXT,</span><br><span class="line">  nationality TEXT</span><br><span class="line">);</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>通过此语句，将创建<code>users</code>数据库表，其中包括的字段有：<code>id, name, age, gender, nationality</code>，然后用下面的方式，调用函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">execute_query(connection, create_users_table)</span><br></pre></td></tr></table></figure>
+
+<p>如此，即创建了<code>users</code>数据库表，并具有前述个字段。</p>
+<p>同样方法，编写创建<code>posts</code>表的SQL语句字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create_posts_table &#x3D; &quot;&quot;&quot;</span><br><span class="line">CREATE TABLE IF NOT EXISTS posts(</span><br><span class="line">  id INTEGER PRIMARY KEY AUTOINCREMENT, </span><br><span class="line">  title TEXT NOT NULL, </span><br><span class="line">  description TEXT NOT NULL, </span><br><span class="line">  user_id INTEGER NOT NULL, </span><br><span class="line">  FOREIGN KEY (user_id) REFERENCES users (id)</span><br><span class="line">);</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>注意，前面已经说过了，<code>users</code>和<code>posts</code>两张表之间是一对多的关系，那么在<code>posts</code>表中就增加了一个名为<code>user_id</code>的字段作为外键，它的值与<code>users</code>表中的<code>id</code>字段值对应。</p>
+<p>执行如下操作，创建<code>posts</code>表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">execute_query(connection, create_posts_table)</span><br></pre></td></tr></table></figure>
+
+<p>下面的程序，是创建另外两张表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">create_comments_table &#x3D; &quot;&quot;&quot;</span><br><span class="line">CREATE TABLE IF NOT EXISTS comments (</span><br><span class="line">  id INTEGER PRIMARY KEY AUTOINCREMENT, </span><br><span class="line">  text TEXT NOT NULL, </span><br><span class="line">  user_id INTEGER NOT NULL, </span><br><span class="line">  post_id INTEGER NOT NULL, </span><br><span class="line">  FOREIGN KEY (user_id) REFERENCES users (id) FOREIGN KEY (post_id) REFERENCES posts (id)</span><br><span class="line">);</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">create_likes_table &#x3D; &quot;&quot;&quot;</span><br><span class="line">CREATE TABLE IF NOT EXISTS likes (</span><br><span class="line">  id INTEGER PRIMARY KEY AUTOINCREMENT, </span><br><span class="line">  user_id INTEGER NOT NULL, </span><br><span class="line">  post_id integer NOT NULL, </span><br><span class="line">  FOREIGN KEY (user_id) REFERENCES users (id) FOREIGN KEY (post_id) REFERENCES posts (id)</span><br><span class="line">);</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">execute_query(connection, create_comments_table)  </span><br><span class="line">execute_query(connection, create_likes_table)</span><br></pre></td></tr></table></figure>
+
+<p>从上述操作可以看出，在Python程序中操作SQLite数据库，跟直接使用SQL语句差不多，只不过这里是将所有SQL语句放到字符串里面，而后通过<code>cursor.execute()</code>函数执行。不仅这里，后面的操作也都如此。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p>向SQLite数据库插入记录，同样还是使用前面已经编写的<code>execute_query()</code>函数，我们需要做的就是编写<code>INSERT INTO</code>语句。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create_users &#x3D; &quot;&quot;&quot;</span><br><span class="line">INSERT INTO</span><br><span class="line">  users (name, age, gender, nationality)</span><br><span class="line">VALUES</span><br><span class="line">  (&#39;James&#39;, 25, &#39;male&#39;, &#39;USA&#39;),</span><br><span class="line">  (&#39;Leila&#39;, 32, &#39;female&#39;, &#39;France&#39;),</span><br><span class="line">  (&#39;Brigitte&#39;, 35, &#39;female&#39;, &#39;England&#39;),</span><br><span class="line">  (&#39;Mike&#39;, 40, &#39;male&#39;, &#39;Denmark&#39;),</span><br><span class="line">  (&#39;Elizabeth&#39;, 21, &#39;female&#39;, &#39;Canada&#39;);</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">execute_query(connection, create_users)</span><br></pre></td></tr></table></figure>
+
+<p>上述操作是向<code>users</code>表中增加几条用户记录。</p>
+<p>前面在创建<code>users</code>表的时候，将<code>id</code>字段设置为自增加了，所以在这里不需要为这个字段提供值，<code>users</code>表会自动将每个用户记录的<code>id</code>值从1开始增加。</p>
+<p>再如，下面是向<code>posts</code>表中增加6条记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">create_posts &#x3D; &quot;&quot;&quot;</span><br><span class="line">INSERT INTO</span><br><span class="line">  posts (title, description, user_id)</span><br><span class="line">VALUES</span><br><span class="line">  (&quot;Happy&quot;, &quot;I am feeling very happy today&quot;, 1),</span><br><span class="line">  (&quot;Hot Weather&quot;, &quot;The weather is very hot today&quot;, 2),</span><br><span class="line">  (&quot;Help&quot;, &quot;I need some help with my work&quot;, 2),</span><br><span class="line">  (&quot;Great News&quot;, &quot;I am getting married&quot;, 1),</span><br><span class="line">  (&quot;Interesting Game&quot;, &quot;It was a fantastic game of tennis&quot;, 5),</span><br><span class="line">  (&quot;Party&quot;, &quot;Anyone up for a late-night party today?&quot;, 3);</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">execute_query(connection, create_posts)</span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是，<code>user_id</code>的值，因为它是<code>posts</code>的外键，其值必须是<code>users</code>表中<code>id</code>记录已有的值，否则就会报错。</p>
+<p>用同样的方法，对另外两个表<code>comments</code>和<code>likes</code>都可以插入记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">create_comments &#x3D; &quot;&quot;&quot;</span><br><span class="line">INSERT INTO</span><br><span class="line">  comments (text, user_id, post_id)</span><br><span class="line">VALUES</span><br><span class="line">  (&#39;Count me in&#39;, 1, 6),</span><br><span class="line">  (&#39;What sort of help?&#39;, 5, 3),</span><br><span class="line">  (&#39;Congrats buddy&#39;, 2, 4),</span><br><span class="line">  (&#39;I was rooting for Nadal though&#39;, 4, 5),</span><br><span class="line">  (&#39;Help with your thesis?&#39;, 2, 3),</span><br><span class="line">  (&#39;Many congratulations&#39;, 5, 4);</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">create_likes &#x3D; &quot;&quot;&quot;</span><br><span class="line">INSERT INTO</span><br><span class="line">  likes (user_id, post_id)</span><br><span class="line">VALUES</span><br><span class="line">  (1, 6),</span><br><span class="line">  (2, 3),</span><br><span class="line">  (1, 5),</span><br><span class="line">  (5, 4),</span><br><span class="line">  (2, 4),</span><br><span class="line">  (4, 2),</span><br><span class="line">  (3, 6);</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">execute_query(connection, create_comments)</span><br><span class="line">execute_query(connection, create_likes)</span><br></pre></td></tr></table></figure>
+
+<p>以上执行<code>INSERT INTO</code>语句，也同样是应用<code>execute_query()</code>函数完成。</p>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p>毫无疑问，查询操作的SQL语句，也要放到<code>cursor.execute()</code>中执行，但是，这还没完，因为还要有查询的返回结果，就是调用<code>cursor.fetchall()</code>，得到元组组成的列表，每个元组就是数据库表中的一个记录。</p>
+<p>为此，可以编写一个用于查询操作的函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def execute_read_query(connection, query):</span><br><span class="line">    cursor &#x3D; connection.cursor()</span><br><span class="line">    result &#x3D; None</span><br><span class="line">    try:</span><br><span class="line">        cursor.execute(query)</span><br><span class="line">        result &#x3D; cursor.fetchall()</span><br><span class="line">        return result</span><br><span class="line">    except Error as e:</span><br><span class="line">        print(f&quot;The error &#39;&#123;e&#125;&#39; occurred&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>例如查询<code>users</code>表中的所有记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select_users &#x3D; &quot;SELECT * from users&quot;</span><br><span class="line">users &#x3D; execute_read_query(connection, select_users)</span><br><span class="line"></span><br><span class="line">for user in users:</span><br><span class="line">    print(user)</span><br></pre></td></tr></table></figure>
+
+<p>返回结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1, &#39;James&#39;, 25, &#39;male&#39;, &#39;USA&#39;)</span><br><span class="line">(2, &#39;Leila&#39;, 32, &#39;female&#39;, &#39;France&#39;)</span><br><span class="line">(3, &#39;Brigitte&#39;, 35, &#39;female&#39;, &#39;England&#39;)</span><br><span class="line">(4, &#39;Mike&#39;, 40, &#39;male&#39;, &#39;Denmark&#39;)</span><br><span class="line">(5, &#39;Elizabeth&#39;, 21, &#39;female&#39;, &#39;Canada&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>类似地，可以查询<code>posts</code>的所有记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select_posts &#x3D; &quot;SELECT * FROM posts&quot;</span><br><span class="line">posts &#x3D; execute_read_query(connection, select_posts)</span><br><span class="line"></span><br><span class="line">for post in posts:</span><br><span class="line">    print(post)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(1, &#39;Happy&#39;, &#39;I am feeling very happy today&#39;, 1)</span><br><span class="line">(2, &#39;Hot Weather&#39;, &#39;The weather is very hot today&#39;, 2)</span><br><span class="line">(3, &#39;Help&#39;, &#39;I need some help with my work&#39;, 2)</span><br><span class="line">(4, &#39;Great News&#39;, &#39;I am getting married&#39;, 1)</span><br><span class="line">(5, &#39;Interesting Game&#39;, &#39;It was a fantastic game of tennis&#39;, 5)</span><br><span class="line">(6, &#39;Party&#39;, &#39;Anyone up for a late-night party today?&#39;, 3)</span><br></pre></td></tr></table></figure>
+
+<p>以上是比较简单的查询操作，如果进行稍微复杂的，比SQL语句中的<code>JOIN</code>和<code>WHERE</code>等，也都能用同样的方法实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">select_users_posts &#x3D; &quot;&quot;&quot;</span><br><span class="line">SELECT</span><br><span class="line">  users.id,</span><br><span class="line">  users.name,</span><br><span class="line">  posts.description</span><br><span class="line">FROM</span><br><span class="line">  posts</span><br><span class="line">  INNER JOIN users ON users.id &#x3D; posts.user_id</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">users_posts &#x3D; execute_read_query(connection, select_users_posts)</span><br><span class="line"></span><br><span class="line">for users_post in users_posts:</span><br><span class="line">    print(users_post)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(1, &#39;James&#39;, &#39;I am feeling very happy today&#39;)</span><br><span class="line">(2, &#39;Leila&#39;, &#39;The weather is very hot today&#39;)</span><br><span class="line">(2, &#39;Leila&#39;, &#39;I need some help with my work&#39;)</span><br><span class="line">(1, &#39;James&#39;, &#39;I am getting married&#39;)</span><br><span class="line">(5, &#39;Elizabeth&#39;, &#39;It was a fantastic game of tennis&#39;)</span><br><span class="line">(3, &#39;Brigitte&#39;, &#39;Anyone up for a late night party today?&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>再如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">select_posts_comments_users &#x3D; &quot;&quot;&quot;</span><br><span class="line">SELECT</span><br><span class="line">  posts.description as post,</span><br><span class="line">  text as comment,</span><br><span class="line">  name</span><br><span class="line">FROM</span><br><span class="line">  posts</span><br><span class="line">  INNER JOIN comments ON posts.id &#x3D; comments.post_id</span><br><span class="line">  INNER JOIN users ON users.id &#x3D; comments.user_id</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">posts_comments_users &#x3D; execute_read_query(</span><br><span class="line">    connection, select_posts_comments_users</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">for posts_comments_user in posts_comments_users:</span><br><span class="line">    print(posts_comments_user)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(&#39;Anyone up for a late night party today?&#39;, &#39;Count me in&#39;, &#39;James&#39;)</span><br><span class="line">(&#39;I need some help with my work&#39;, &#39;What sort of help?&#39;, &#39;Elizabeth&#39;)</span><br><span class="line">(&#39;I am getting married&#39;, &#39;Congrats buddy&#39;, &#39;Leila&#39;)</span><br><span class="line">(&#39;It was a fantastic game of tennis&#39;, &#39;I was rooting for Nadal though&#39;, &#39;Mike&#39;)</span><br><span class="line">(&#39;I need some help with my work&#39;, &#39;Help with your thesis?&#39;, &#39;Leila&#39;)</span><br><span class="line">(&#39;I am getting married&#39;, &#39;Many congratulations&#39;, &#39;Elizabeth&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>上述操作中，通过<code>cursor.fetchall()</code>方法，返回了所有的记录内容。如果要查看返回的记录名称，怎么操作？可以使用<code>cursor</code>对象的<code>description</code>属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cursor &#x3D; connection.cursor()</span><br><span class="line">cursor.execute(select_posts_comments_users)</span><br><span class="line">cursor.fetchall()</span><br><span class="line"></span><br><span class="line">column_names &#x3D; [description[0] for description in cursor.description]</span><br><span class="line">print(column_names)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#39;post&#39;, &#39;comment&#39;, &#39;name&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>下面的代码，演示了含<code>WHERE</code>的SQL语句查询结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">select_post_likes &#x3D; &quot;&quot;&quot;</span><br><span class="line">SELECT</span><br><span class="line">  description as Post,</span><br><span class="line">  COUNT(likes.id) as Likes</span><br><span class="line">FROM</span><br><span class="line">  likes,</span><br><span class="line">  posts</span><br><span class="line">WHERE</span><br><span class="line">  posts.id &#x3D; likes.post_id</span><br><span class="line">GROUP BY</span><br><span class="line">  likes.post_id</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">post_likes &#x3D; execute_read_query(connection, select_post_likes)</span><br><span class="line"></span><br><span class="line">for post_like in post_likes:</span><br><span class="line">    print(post_like)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(&#39;The weather is very hot today&#39;, 1)</span><br><span class="line">(&#39;I need some help with my work&#39;, 1)</span><br><span class="line">(&#39;I am getting married&#39;, 2)</span><br><span class="line">(&#39;It was a fantastic game of tennis&#39;, 1)</span><br><span class="line">(&#39;Anyone up for a late night party today?&#39;, 2)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>有了前面的操作经验，再执行<code>UPDATE</code>，就轻车熟路了。</p>
+<p>先查询<code>posts</code>中<code>id=2</code>的记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select_post_description &#x3D; &quot;SELECT description FROM posts WHERE id &#x3D; 2&quot;</span><br><span class="line"></span><br><span class="line">post_description &#x3D; execute_read_query(connection, select_post_description)</span><br><span class="line"></span><br><span class="line">for description in post_description:</span><br><span class="line">    print(description)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(&#39;The weather is very hot today&#39;,)</span><br></pre></td></tr></table></figure>
+
+<p>将此条记录内容进行更新：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">update_post_description &#x3D; &quot;&quot;&quot;</span><br><span class="line">UPDATE</span><br><span class="line">  posts</span><br><span class="line">SET</span><br><span class="line">  description &#x3D; &quot;The weather has become pleasant now&quot;</span><br><span class="line">WHERE</span><br><span class="line">  id &#x3D; 2</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">execute_query(connection, update_post_description)</span><br></pre></td></tr></table></figure>
+
+<p>如果再用前面的方法进行查询，就可以看到更新之后的结果了。</p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>执行删除操作的SQL语句，可以通过前面所创建的<code>execute_query()</code>函数完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">delete_comment &#x3D; &quot;DELETE FROM comments WHERE id &#x3D; 5&quot;</span><br><span class="line">execute_query(connection, delete_comment)</span><br></pre></td></tr></table></figure>
+
+<p>以上演示了在Python程序中对SQLite数据库的各项操作，后续会继续演示其他常用关系型数据库，敬请关注。</p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/02/web-stack-forth/">
+        <span class="nav-arrow">← </span>
+        
+          剖析Web技术栈（四）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库基本结构"><span class="toc-nav-text">数据库基本结构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#连接数据库"><span class="toc-nav-text">连接数据库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建数据库表"><span class="toc-nav-text">创建数据库表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#插入"><span class="toc-nav-text">插入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询"><span class="toc-nav-text">查询</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#更新"><span class="toc-nav-text">更新</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#删除"><span class="toc-nav-text">删除</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/03/sql-library-sqlite/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
