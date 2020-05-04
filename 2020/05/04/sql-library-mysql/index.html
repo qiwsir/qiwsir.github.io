@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的SQL库：MySQL | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的SQL库：MySQL</h2>
+    <p class="post-date">2020-05-04</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<hr>
+<p>在上一篇《Python中的SQL库：SQLite》中，已经对数据库的基本操作有所概括，并且用SQLite做了演示。本文将重点介绍在Python程序中如何操作MySQL。</p>
+<p>本文中所用的数据库，其基本结构与上一篇文章相同，此处不再赘述。</p>
+<h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><p>对于MySQL而言，与SQLite不同之处在于Python中没有内置的模块，如果要连接MySQL数据库，需要安装第三方的模块。这方面的模块比较多，比如本文使用的<code>mysql-connector-python</code>只是其中之一。</p>
+<p>首先，要安装这个模块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install mysql-connector-python</span><br></pre></td></tr></table></figure>
+
+<p>然后，编写创建连接MySQL的函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import mysql.connector</span><br><span class="line">from mysql.connector import Error</span><br><span class="line"></span><br><span class="line">def create_connection(host_name, user_name, user_password):</span><br><span class="line">    connection &#x3D; None</span><br><span class="line">    try:</span><br><span class="line">        connection &#x3D; mysql.connector.connect(</span><br><span class="line">            host&#x3D;host_name,</span><br><span class="line">            user&#x3D;user_name,</span><br><span class="line">            passwd&#x3D;user_password</span><br><span class="line">        )</span><br><span class="line">        print(&#39;Connection to MySQL DB successful&#39;)</span><br><span class="line">    except Error as e:</span><br><span class="line">        print(f&quot;The error &#39;&#123;e&#125;&#39; occurred.&quot;)</span><br><span class="line"></span><br><span class="line">    return connection</span><br><span class="line">    </span><br><span class="line">connection &#x3D; create_connection(&quot;localhost&quot;, &#39;root&#39;, &quot;12345678&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>上面的函数汇总，有三个需要提供的参数：</p>
+<ul>
+<li><code>host_name</code>：MySQL服务的远程地址，如果是使用的本地服务，则可以写成<code>localhost</code></li>
+<li><code>user_name</code>：登录MySQL的用户名，本例中直接使用<code>root</code></li>
+<li><code>user_password</code>：即<code>root</code>对应的密码</li>
+</ul>
+<p>通过上述参数，利用<code>mysql.connector.connect()</code>函数建立起数据库连接，并且返回连接对象。</p>
+<p>然后，可以创建数据库，为此编写如下函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def create_database(connection, query):</span><br><span class="line">    cursor &#x3D; connection.cursor()</span><br><span class="line">    try:</span><br><span class="line">        cursor.execute(query)</span><br><span class="line">        print(&quot;Database create successfully&quot;)</span><br><span class="line">    except Error as e:</span><br><span class="line">        print(f&quot;The error &#39;&#123;e&#125;&#39; occurred.&quot;)</span><br><span class="line"></span><br><span class="line">create_database_query &#x3D; &quot;CREATE DATABASE readers&quot;</span><br><span class="line">create_database(connection, create_database_query)</span><br></pre></td></tr></table></figure>
+
+<p>函数<code>create_database</code>的参数<code>connection</code>是前面已经创建的连接对象，<code>query</code>是SQL语句，利用游标对象的<code>execute</code>方法执行SQL语句。如此，创建了名为<code>readers</code>的MySQL数据库。</p>
+<p>然后，重写<code>create_connection</code>函数，在其中指定所要连接的具体数据库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import mysql.connector</span><br><span class="line">from mysql.connector import Error</span><br><span class="line"></span><br><span class="line">def create_connection(host_name, user_name, user_password, db_name):</span><br><span class="line">    connection &#x3D; None</span><br><span class="line">    try:</span><br><span class="line">        connection &#x3D; mysql.connector.connect(</span><br><span class="line">            host&#x3D;host_name,</span><br><span class="line">            user&#x3D;user_name,</span><br><span class="line">            passwd&#x3D;user_password,</span><br><span class="line">            database&#x3D;db_name</span><br><span class="line">        )</span><br><span class="line">        print(&#39;Connection to MySQL DB successful&#39;)</span><br><span class="line">    except Error as e:</span><br><span class="line">        print(f&quot;The error &#39;&#123;e&#125;&#39; occurred.&quot;)</span><br><span class="line"></span><br><span class="line">    return connection</span><br><span class="line"></span><br><span class="line">connection &#x3D; create_connection(&quot;localhost&quot;, &#39;root&#39;, &quot;12345678&quot;, &#39;readers&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>这样，就得到了链接数据库<code>readers</code>的连接对象<code>connection</code>。</p>
+<h2 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h2><p>前面已经看到，要在Python中执行各种SQL语句，需要通过<code>cursor.execute()</code>函数。下面就创建一个专门的函数，来完成各种SQL语句的操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def execute_query(connection, query):</span><br><span class="line">    cursor &#x3D; connection.cursor()</span><br><span class="line">    try:</span><br><span class="line">        cursor.execute(query)</span><br><span class="line">        connection.commit()</span><br><span class="line">        print(&quot;Query executed successfully&quot;)</span><br><span class="line">    except Error as e:</span><br><span class="line">        print(f&quot;The error &#39;&#123;e&#125;&#39; occurred&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>这个函数完成的，其实是所有针对数据库的“写入”操作。</p>
+<p>例如，如下是创建<code>users</code>表的SQL语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create_users_table &#x3D; &quot;&quot;&quot;</span><br><span class="line">CREATE TABLE IF NOT EXISTS users(</span><br><span class="line">    id INT AUTO_INCREMENT,</span><br><span class="line">    name TEXT NOT NULL,</span><br><span class="line">    age INT,</span><br><span class="line">    gender TEXT,</span><br><span class="line">    PRIMARY KEY (id)</span><br><span class="line">) ENGINE &#x3D; InnoDB</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>通过此语句，将创建<code>users</code>数据库表，其中包括的字段有：<code>id, name, age, gender</code>，然后用下面的方式，调用函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">execute_query(connection, create_users_table)</span><br></pre></td></tr></table></figure>
+
+<p>如此，即创建了<code>users</code>数据库表，并具有前述个字段。</p>
+<p>同样方法，编写创建<code>posts</code>表的SQL语句字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create_posts_table &#x3D; &quot;&quot;&quot;</span><br><span class="line">CREATE TABLE IF NOT EXISTS posts (</span><br><span class="line">  id INT AUTO_INCREMENT, </span><br><span class="line">  title TEXT NOT NULL, </span><br><span class="line">  description TEXT NOT NULL, </span><br><span class="line">  user_id INTEGER NOT NULL, </span><br><span class="line">  FOREIGN KEY fk_user_id (user_id) REFERENCES users(id), </span><br><span class="line">  PRIMARY KEY (id)</span><br><span class="line">) ENGINE &#x3D; InnoDB</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">execute_query(connection, create_posts_table)</span><br></pre></td></tr></table></figure>
+
+<p>在上一篇中已经说过，<code>users</code>和<code>posts</code>两张表之间是一对多的关系，在<code>posts</code>表中就增加了一个名为<code>user_id</code>的字段作为外键，它的值与<code>users</code>表中的<code>id</code>字段值对应。</p>
+<p>以上操作，与上一篇中SQLite操作类似。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p>插入记录，当然也是“写入”操作，继续使用前面已经编写的<code>execute_query()</code>函数，我们需要做的就是编写<code>INSERT INTO</code>语句。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">insert_users &#x3D; &quot;&quot;&quot;</span><br><span class="line">INSERT INTO </span><br><span class="line">&#96;users&#96; (&#96;name&#96;, &#96;age&#96;, &#96;gender&#96;)</span><br><span class="line">VALUES</span><br><span class="line">(&#39;zhagnsan&#39;,23,&#39;male&#39;),</span><br><span class="line">(&#39;lisi&#39;,24,&#39;female&#39;),</span><br><span class="line">(&#39;wangwu&#39;,25,&#39;male&#39;);</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">execute_query(connection, insert_users)</span><br></pre></td></tr></table></figure>
+
+<p>上述操作是向<code>users</code>表中增加几条用户记录。</p>
+<p>在前面的<code>execute_query()</code>函数中，使用的是游标对象的<code>execute</code>方法，此外，还有另外一个方法，在写入多条记录的时候，速度更快，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sql &#x3D; &quot;INSERT INTO likes ( user_id, post_id ) VALUES ( %s, %s )&quot;</span><br><span class="line">val &#x3D; [(4, 5), (3, 4)]</span><br><span class="line"></span><br><span class="line">cursor &#x3D; connection.cursor()</span><br><span class="line">cursor.executemany(sql, val)</span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
+
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p>查询，即“读”的操作，与上一篇的中所写的函数一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def execute_read_query(connection, query):</span><br><span class="line">    cursor &#x3D; connection.cursor()</span><br><span class="line">    result &#x3D; None</span><br><span class="line">    try:</span><br><span class="line">        cursor.execute(query)</span><br><span class="line">        result &#x3D; cursor.fetchall()</span><br><span class="line">        return result</span><br><span class="line">    except Error as e:</span><br><span class="line">        print(f&quot;The error &#39;&#123;e&#125;&#39; occurred&quot;)</span><br><span class="line">        </span><br><span class="line">select_users &#x3D; &quot;SELECT * FROM users&quot;</span><br><span class="line">users &#x3D; execute_read_query(connection, select_users)</span><br><span class="line">for user in users:</span><br><span class="line">   print(user)</span><br></pre></td></tr></table></figure>
+
+<p>返回结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1, &#39;zhagnsan&#39;, 23, &#39;male&#39;)</span><br><span class="line">(2, &#39;lisi&#39;, 24, &#39;female&#39;)</span><br><span class="line">(3, &#39;wangwu&#39;, 25, &#39;male&#39;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>对数据库的update，显然是一种“写入”操作，因此，前面编写的<code>execute_query</code>函数对于更新操作依然有效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">update_post_description &#x3D; &quot;&quot;&quot;</span><br><span class="line">UPDATE</span><br><span class="line">  posts</span><br><span class="line">SET</span><br><span class="line">  description &#x3D; &quot;The weather has become pleasant now&quot;</span><br><span class="line">WHERE</span><br><span class="line">  id &#x3D; 2</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">execute_query(connection, update_post_description)</span><br></pre></td></tr></table></figure>
+
+<p>如果再用前面的方法进行查询，就可以看到更新之后的结果了。</p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>执行删除操作的SQL语句，可以通过前面所创建的<code>execute_query()</code>函数完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">delete_comment &#x3D; &quot;DELETE FROM comments WHERE id &#x3D; 2&quot;</span><br><span class="line">execute_query(connection, delete_comment)</span><br></pre></td></tr></table></figure>
+
+<p>以上演示了在Python程序中对MySQL数据库的各项操作，基本上与上一篇中SQLite的操作类似。其实，其他关系型数据库，操作都是如此进行。</p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/03/sql-library-sqlite/">
+        <span class="nav-arrow">← </span>
+        
+          Python中的SQL库：SQLite
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#连接数据库"><span class="toc-nav-text">连接数据库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建数据库表"><span class="toc-nav-text">创建数据库表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#插入"><span class="toc-nav-text">插入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询"><span class="toc-nav-text">查询</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#更新"><span class="toc-nav-text">更新</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#删除"><span class="toc-nav-text">删除</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/04/sql-library-mysql/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
