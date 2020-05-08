@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的正则表达式（一） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的正则表达式（一）</h2>
+    <p class="post-date">2020-05-08</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<hr>
+<p>正则表达式（regular expression）在编程中占有重要地位，它能够按照指定的方式匹配具有某种结构的字符串。本文将对此技术给予详述。</p>
+<h2 id="Python中的正则表达式"><a href="#Python中的正则表达式" class="headerlink" title="Python中的正则表达式"></a>Python中的正则表达式</h2><p>假设有一个字符串<code>s</code>，在程序中，需要检查<code>&#39;123&#39;</code>是否为这个字符串的一部分，这种需求可以用下面的代码实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s &#x3D; &#39;foo123bar&#39;</span><br><span class="line">&gt;&gt;&gt; &#39;123&#39; in s</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p>如果你不仅想知道<code>&#39;123&#39;</code>是否在字符串<code>s</code>中，还想知道它在字符串的什么位置，可以使用字符串的<code>.find()</code>或者<code>.index()</code>方法，返回<code>&#39;123&#39;</code>在<code>s</code>中的索引。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s &#x3D; &#39;foo123bar&#39;</span><br><span class="line">&gt;&gt;&gt; s.find(&#39;123&#39;)</span><br><span class="line">3</span><br><span class="line">&gt;&gt;&gt; s.index(&#39;123&#39;)</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，是按照字符一一对应的方式匹配的，这种方式会适用于很多地方，但是，有时候也会有更复杂的问题。比如，判断字符串中是否有像<code>&#39;123&#39;</code>这样有数字组成的字符串，例如<code>&#39;foo123bar&#39;</code>、’foo456bar’<code>、</code>‘234baz’<code>、和</code>‘qux678’`，再用上面的方法，就会太麻烦了，这就要正则表达式出场了。</p>
+<h3 id="正则表达式极简史"><a href="#正则表达式极简史" class="headerlink" title="正则表达式极简史"></a>正则表达式极简史</h3><p>1951年，数学家斯Stephen Cole Kleene提出了正则表达式，20世纪60年代中期，计算机科学先驱Ken Thompson——Unix的原始设计师之一，他使用Kleene创造的符号在QED文本编辑器中实现了模式匹配。</p>
+<p>自那时以来，正则表达式就出现在了许多编程语言、编辑器和其他工具中，作为确定字符串是否与指定模式匹配的方法，Python、Java 和 Perl等 都支持正则表达式，大多数Unix工具和许多文本编辑器都支持正则表达式。</p>
+<h3 id="re模块"><a href="#re模块" class="headerlink" title="re模块"></a><code>re</code>模块</h3><p>Python中的正则表达式用<code>re</code>模块实现，它包括很多实用的方法，接下来，会介绍其中的大部分。</p>
+<p>现在，先来研究<code>re.search()</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">re.search(&lt;regex&gt;, &lt;string&gt;)</span><br><span class="line"></span><br><span class="line">    Scans a string for a regex match.</span><br></pre></td></tr></table></figure>
+
+<p><code>re.search(&lt;regex&gt;, &lt;string&gt;)</code>按照<code>&lt;regex&gt;</code>参数所设置的正则表达式，扫描<code>&lt;string&gt;</code>参数的字符串，这个过程可以称为“匹配”，如果有符合正则表达式结构的子字符串，即匹配存在，就会返回第一个所匹配的对象，否则返回<code>None</code>。</p>
+<p>后面还会介绍，<code>re.search()</code>中的第三个参数<code>&lt;flags&gt;</code>。</p>
+<h3 id="怎么使用re-search"><a href="#怎么使用re-search" class="headerlink" title="怎么使用re.search()"></a>怎么使用<code>re.search()</code></h3><p>基本使用方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">re.search(...)</span><br></pre></td></tr></table></figure>
+
+<p>熟悉模块使用方法的，可能会知道，还能这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from re import search</span><br><span class="line">search(...)</span><br></pre></td></tr></table></figure>
+
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>下面的示例，演示<code>re.search()</code>的基本应用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s &#x3D; &#39;foo123bar&#39;</span><br><span class="line">&gt;&gt;&gt; import re</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;123&#39;, s)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;123&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在上面示例中，<code>&lt;regex&gt;</code>就是<code>123</code>，<code>&lt;string&gt;</code>是字符串<code>s</code>，最后返回了匹配结果，有此结果，我们至少知道字符串<code>s</code>中含有<code>&#39;123&#39;</code>。</p>
+<p>如果写一个比较完整的程序，可以用条件语句判断一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; if re.search(&#39;123&#39;, s):</span><br><span class="line">...     print(&#39;Found a match.&#39;)</span><br><span class="line">... else:</span><br><span class="line">...     print(&#39;No match.&#39;)</span><br><span class="line">...</span><br><span class="line">Found a match.</span><br></pre></td></tr></table></figure>
+
+<p>前面代码中返回结果<code>&lt;_sre.SRE_Match object; span=(3, 6), match=&#39;123&#39;&gt;</code>，其中的<code>span(3, 6)</code>意思是字符串中匹配<code>&lt;regex&gt;</code>出现的位置，与切片的含义一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s[3:6]</span><br><span class="line">&#39;123&#39;</span><br></pre></td></tr></table></figure>
+
+<p>不过，上面的例子显然没有体现正则表达式的优势，只说明了它的基本操作流程。</p>
+<h3 id="正则表达式中的元字符"><a href="#正则表达式中的元字符" class="headerlink" title="正则表达式中的元字符"></a>正则表达式中的元字符</h3><p>在正则表达式中，有一些特定字符，它们被称为<strong>元字符</strong>，每个元字符，代表了正则表达式中的某个特殊含义，能够满足正则匹配搜索引擎的查询之需。</p>
+<p>例如，一组方括号（<code>[ ]</code>）表示了一个元字符类，即匹配字符类中的任何一个字符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s &#x3D; &#39;foo123bar&#39;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[0-9][0-9][0-9]&#39;, s)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;123&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>[0-9]</code>表示要匹配<code>0</code>到<code>9</code>的任何一个数字字符，<code>[0-9][0-9][0-9]</code>则表示匹配连续三个<code>0</code>到<code>9</code>之间的任何数字字符，在字符串<code>s</code>中，符合要求的就是<code>123</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[0-9][0-9][0-9]&#39;, &#39;foo456bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;456&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[0-9][0-9][0-9]&#39;, &#39;234baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 3), match&#x3D;&#39;234&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[0-9][0-9][0-9]&#39;, &#39;qux678&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;678&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果没有连续的三个数字字符，就不会匹配。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(re.search(&#39;[0-9][0-9][0-9]&#39;, &#39;12foo34&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>另外一个元字符的例子是“句点”（<code>.</code>），它表示任何一种类型的字符（除了换行符）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s &#x3D; &#39;foo123bar&#39;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;1.3&#39;, s)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;123&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; s &#x3D; &#39;foo13bar&#39;</span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;1.3&#39;, s))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>在第一个例子中，<code>1</code>和<code>3</code>是明显有匹配的，<code>.</code>匹配了<code>2</code>。但是，第二个示例则没有匹配。</p>
+<h2 id="re模块的元字符"><a href="#re模块的元字符" class="headerlink" title="re模块的元字符"></a><code>re</code>模块的元字符</h2><p>下表中列出的，是<code>re</code>模块支持的元字符。</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.</td>
+<td>除了换行符之外，匹配任何单个的字符</td>
+</tr>
+<tr>
+<td>^</td>
+<td>（1）在字符串开头锚定匹配（2）补充字符类</td>
+</tr>
+<tr>
+<td>$</td>
+<td>在字符串末尾锚定匹配</td>
+</tr>
+<tr>
+<td>*</td>
+<td>匹配0个或更多</td>
+</tr>
+<tr>
+<td>+</td>
+<td>匹配1个或更多</td>
+</tr>
+<tr>
+<td>?</td>
+<td>当该字符紧跟在任何一个其他限制符 (*, +, ?, {n}, {n,}, {n,m}) 后面时，匹配模式是非贪婪的。非贪婪模式尽可能少的匹配所搜索的字符串，而默认的贪婪模式则尽可能多的匹配所搜索的字符串。例如，对于字符串 “oooo”，’o+?’ 将匹配单个 “o”，而 ‘o+’ 将匹配所有 ‘o’。</td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>n 是一个非负整数。匹配确定的 n 次。例如，’o{2}’ 不能匹配 “Bob” 中的 ‘o’，但是能匹配 “food” 中的两个 o。</td>
+</tr>
+<tr>
+<td>\</td>
+<td>将下一个字符标记为一个特殊字符、或一个原义字符、或一个 向后引用、或一个八进制转义符。例如，’n’ 匹配字符 “n”。’\n’ 匹配一个换行符。序列 ‘\‘ 匹配 “&quot; 而 “(“ 则匹配 “(“。</td>
+</tr>
+<tr>
+<td>[]</td>
+<td>特定字符集</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>()</td>
+<td>创建组</td>
+</tr>
+<tr>
+<td>: #  = !</td>
+<td>特定组</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>有名称的组</td>
+</tr>
+</tbody></table>
+<p>下面以示例说明部分元字符的应用。</p>
+<h3 id="字符类符号："><a href="#字符类符号：" class="headerlink" title="字符类符号：[ ]"></a>字符类符号：[ ]</h3><p><code>[ ]</code>里面表示的字符类，即要匹配的一个字符集合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;ba[artz]&#39;, &#39;foobarqux&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;bar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;ba[artz]&#39;, &#39;foobazqux&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;baz&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>[artz]</code>表示4个独立的字符，在上面的示例中，正则表达式<code>ba[artz]</code>匹配了字符串中的<code>bar</code>和<code>baz</code>，当然，如果有可能，还可以匹配<code>baa</code>、<code>bat</code>。</p>
+<p>字符集中，可以用<code>-</code>表示字符序列的范围，例如<code>[a-z]</code>表示匹配英文小写字母<code>a</code>到<code>z</code>中的任何一个字母。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[a-z]&#39;, &#39;FOObar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;b&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p><code>[0-9]</code>表示任何一个数字字符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[0-9][0-9]&#39;, &#39;foo123bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 5), match&#x3D;&#39;12&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，<code>[0-9][0-9]</code>表示匹配两个数字组成的字符串，对于字符串<code>foo123bar</code>，匹配了第一次出现的符合正则表达式的部分。</p>
+<p><code>[0-9a-fA-F]</code>表示16进制的任何一个字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[0-9a-fA-f]&#39;, &#39;--- a0 ---&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 5), match&#x3D;&#39;a&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里匹配了第一个出现的16进制的字符<code>a</code>。</p>
+<p>也可以在字符类中以<code>^</code>作为第一个字符，则表示要匹配该字符类的补集，即所有不是字符集中的字符。如下所示，<code>[^0-9]</code>表示非数字字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[^0-9]&#39;, &#39;12345foo&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(5, 6), match&#x3D;&#39;f&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里匹配的结果是第一个非数字的字母字符<code>f</code>。如果<code>^</code>不在首位，就没有了上面那种特殊含义了，仅仅是一个普通的<code>^</code>符号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[#:^]&#39;, &#39;foo^bar:baz#qux&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;^&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>前面已经说过，<code>-</code>表示了字符范围，但是，如果希望在正则表达式中匹配一个连字符<code>-</code>，怎么办？如果<code>-</code>在首位或者末尾，就表示连字符本身，如果在中间，可以只用转义符<code>\</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[-abc]&#39;, &#39;123-456&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;-&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[abc-]&#39;, &#39;123-456&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;-&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[ab\-c]&#39;, &#39;123-456&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;-&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>同样，对于<code>]</code>符号，也可以用类似方法处理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[]]&#39;, &#39;foo[1]&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(5, 6), match&#x3D;&#39;]&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[ab\]cd]&#39;, &#39;foo[1]&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(5, 6), match&#x3D;&#39;]&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>[ ]</code>所设定的字符集中，其他各种元字符都失掉了作为元字符的含义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[)*+|]&#39;, &#39;123*456&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;*&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[)*+|]&#39;, &#39;123+456&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;+&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这些元字符都编程了普通的字符。</p>
+<p>（未完，待续）</p>
+<p>参考资料：<a href="https://realpython.com/regex-python/" target="_blank" rel="noopener">https://realpython.com/regex-python/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/04/sql-library-mysql/">
+        <span class="nav-arrow">← </span>
+        
+          Python中的SQL库：MySQL
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python中的正则表达式"><span class="toc-nav-text">Python中的正则表达式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#正则表达式极简史"><span class="toc-nav-text">正则表达式极简史</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#re模块"><span class="toc-nav-text">re模块</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#怎么使用re-search"><span class="toc-nav-text">怎么使用re.search()</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#示例"><span class="toc-nav-text">示例</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#正则表达式中的元字符"><span class="toc-nav-text">正则表达式中的元字符</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#re模块的元字符"><span class="toc-nav-text">re模块的元字符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#字符类符号："><span class="toc-nav-text">字符类符号：[ ]</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/08/regular-expression-first/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
