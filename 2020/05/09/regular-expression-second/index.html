@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的正则表达式（二） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的正则表达式（二）</h2>
+    <p class="post-date">2020-05-09</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<hr>
+<p>在上一篇（<a href="https://itdiffer.com/2020/05/08/regular-expression-first/" target="_blank" rel="noopener">《Python正则表达式（一）》</a>）中，已经介绍了正则表达式的基本含义，并且对<code>re</code>模块中的元字符<code>[ ]</code>进行了说明，本文接续上文，介绍有关元字符。</p>
+<h2 id="re模块的元字符"><a href="#re模块的元字符" class="headerlink" title="re模块的元字符"></a><code>re</code>模块的元字符</h2><h3 id="点（-）"><a href="#点（-）" class="headerlink" title="点（.）"></a>点（<code>.</code>）</h3><p>点<code>.</code>（注意必须是英文状态下的）是一个通配符，即表示了任何符号（换行符除外）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;foo.bar&#39;, &#39;fooxbar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 7), match&#x3D;&#39;fooxbar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;foo.bar&#39;, &#39;foobar&#39;))</span><br><span class="line">None</span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;foo.bar&#39;, &#39;foo\nbar&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>在上面示例中，正则表达式<code>foo.bar</code>表示的匹配规则是：先是三个字符<code>foo</code>，然后用通配符<code>.</code>说明第四个字符可以是除了换行符之外的任何字符，第五个及其后的字符是<code>bar</code>。显然，<code>fooxbar</code>符合这个规则，而<code>foobar</code>和<code>foo\nbar</code>不符合，前者<code>foo</code>之后是<code>b</code>，但<code>b</code>之后是<code>ar</code>而不是<code>bar</code>；后者中间是一个换行符<code>\n</code>。</p>
+<h3 id="w和-W"><a href="#w和-W" class="headerlink" title="\w和\W"></a><code>\w</code>和<code>\W</code></h3><p><code>\w</code>匹配全部由字母和数字组成的字符串，即大写、小写字母以及0到9的数字，注意，也包括下划线。通常，也可以用<code>[a-zA-Z0-9]</code>来替代它。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;\w&#39;, &#39;#(.a$@&amp;&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;a&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[a-zA-Z0-9_]&#39;, &#39;#(.a$@&amp;&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;a&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>显然，字符串<code>&#39;#(.a$@&amp;&#39;</code>中只有一个字母，上面演示中也都显示，匹配了字母<code>a</code>。</p>
+<p>如果是<code>\W</code>（大写），则意味着与<code>\w</code>相反，不包括字母、数字和下划线。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;\W&#39;, &#39;a_1*3Qb&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;*&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[^a-zA-Z0-9_]&#39;, &#39;a_1*3Qb&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;*&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>字符串<code>&#39;a_1*3Qb&#39;</code>中的<code>*</code>不属于字母、数字、下划线集合，在上述示例中匹配到了。注意，<code>[^a-zA-Z0-9_]</code>中以<code>^</code>开头，表示对后面字符集合的补集（取反）。</p>
+<h3 id="d和-D"><a href="#d和-D" class="headerlink" title="\d和\D"></a><code>\d</code>和<code>\D</code></h3><p><code>\d</code>匹配由数字组成的字符，与<code>[0-9]</code>相当。<code>\D</code>同样是<code>\d</code>取反，即<code>[^0-9]</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;\d&#39;, &#39;abc4def&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;4&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;\D&#39;, &#39;234Q678&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;Q&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="s和-S"><a href="#s和-S" class="headerlink" title="\s和\S"></a><code>\s</code>和<code>\S</code></h3><p><code>\s</code>匹配任何空白字符，包括空格、制表符、换行符等等。等价于 <code>[\f\n\r\t\v]</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;\s&#39;, &#39;foo\nbar baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;\n&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>与前面一样，<code>\S</code>也是对<code>\s</code>取反，不匹配任何空白字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;\S&#39;, &#39;  \n foo  \n  &#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 5), match&#x3D;&#39;f&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面几个元字符，也可以写到一个集合中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;[\d\w\s]&#39;, &#39;---3---&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;3&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[\d\w\s]&#39;, &#39;---a---&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;a&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;[\d\w\s]&#39;, &#39;--- ---&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39; &#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>[\d\w\s]</code>的含义就是匹配任何数字、字母和空白字符，<code>-</code>则不在匹配之列。</p>
+<h2 id="转义符"><a href="#转义符" class="headerlink" title="转义符"></a>转义符</h2><p>跟Python中的字符串中规定一样，在正则表达式中，也用<code>\</code>表示对后面的字符转移。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;.&#39;, &#39;foo.bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 1), match&#x3D;&#39;f&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;\.&#39;, &#39;foo.bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;.&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>第一个示例中的<code>.</code>，表示的是通配符，即任何字符。因此匹配了后面字符串中的第一个<code>f</code>。第二个示例中的<code>\.</code>，因为使用了转移符，它表示要匹配一个英文的句点，不再是通配符了，所以最终匹配了后面字符串中的句点符号。</p>
+<p>使用<code>\</code>，需要特别小心。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s &#x3D; r&#39;foo\bar&#39;</span><br><span class="line">&gt;&gt;&gt; print(s)</span><br><span class="line">foo\bar</span><br><span class="line">&gt;&gt;&gt; s</span><br><span class="line">&#39;foo\\bar&#39;</span><br></pre></td></tr></table></figure>
+
+<p>这里创立了原始字符串<code>s</code>，注意，如果单单看<code>print(s)</code>的结果，容易产生误解。因为这里使用了原始字符串<code>r&#39;foo\bar</code>，其中的<code>\</code>就表示了原本的反斜杠符号，而不是转义符。当执行<code>s</code>时，会看到，Python解析器会将其解析为<code>&#39;foo\\bar&#39;</code>，也就是这种方式的字符串和前面定义的原始字符串是一样的，或者说前面定义原始字符串，在Python使用它的时候，会被解析为<code>&#39;foo\\bar&#39;</code>，这就是我们要注意的地方。</p>
+<p>下面要匹配<code>s</code>里面的<code>\</code>，按照通常方法，这样来试试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;\\&#39;, s)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;pyshell#3&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">    re.search(&#39;\\&#39;, s)</span><br><span class="line">  File &quot;C:\Python36\lib\re.py&quot;, line 182, in search</span><br><span class="line">    return _compile(pattern, flags).search(string)</span><br><span class="line">  File &quot;C:\Python36\lib\re.py&quot;, line 301, in _compile</span><br><span class="line">    p &#x3D; sre_compile.compile(pattern, flags)</span><br><span class="line">  File &quot;C:\Python36\lib\sre_compile.py&quot;, line 562, in compile</span><br><span class="line">    p &#x3D; sre_parse.parse(p, flags)</span><br><span class="line">  File &quot;C:\Python36\lib\sre_parse.py&quot;, line 848, in parse</span><br><span class="line">    source &#x3D; Tokenizer(str)</span><br><span class="line">  File &quot;C:\Python36\lib\sre_parse.py&quot;, line 231, in __init__</span><br><span class="line">    self.__next()</span><br><span class="line">  File &quot;C:\Python36\lib\sre_parse.py&quot;, line 245, in __next</span><br><span class="line">    self.string, len(self.string) - 1) from None</span><br><span class="line">sre_constants.error: bad escape (end of pattern) at position 0</span><br></pre></td></tr></table></figure>
+
+<p>出问题了，原因就在于Python解析器实际使用的是<code>&#39;foo\\bar&#39;</code>，那么，这里就有了两个反斜杠，第一个反斜杠表示的是“转移符”，并把这个符号传给了<code>re.search()</code>，正则表达式收到了单个反斜杠，但这不是有意义字符，因此会出现混乱，导致了错误。</p>
+<p>下面演示两种解决方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;\\\\&#39;, s)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;\\&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(r&#39;\\&#39;, s)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 4), match&#x3D;&#39;\\&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="定位字符"><a href="#定位字符" class="headerlink" title="定位字符"></a>定位字符</h2><p>定位字符是零宽度匹配，表示定位的符号不匹配字符串中的任何实际字符，并且不会使用任何搜索字符串。定位字符指示搜索字符串中必须发生匹配的特定位置。</p>
+<h3 id="或-A"><a href="#或-A" class="headerlink" title="^或\A"></a><code>^</code>或<code>\A</code></h3><p><code>^</code>或<code>\A</code>表示匹配输入字符串的开始位置。但是，当它们在方括号表达式中使用时，表示不接受该方括号表达式中的字符集合，即补集或相反。如果要匹配<code>^</code>字符本身，必须要用<code>\^</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;^foo&#39;, &#39;foobar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 3), match&#x3D;&#39;foo&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;^foo&#39;, &#39;barfoo&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>正则表达式<code>^foo</code>表示要匹配以<code>foo</code>开头的字符串，<code>&#39;foobar&#39;</code>符合规则，<code>&#39;barfoo&#39;</code>不符合规则。</p>
+<p><code>\A</code>的作用与<code>^</code>一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;\Afoo&#39;, &#39;foobar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 3), match&#x3D;&#39;foo&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;\Afoo&#39;, &#39;barfoo&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<h3 id="或-Z"><a href="#或-Z" class="headerlink" title="$或\Z"></a><code>$</code>或<code>\Z</code></h3><p>与前述<code>^</code>相对应，<code>$</code>表示在字符串的结尾部分搜索相应匹配。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;bar$&#39;, &#39;foobar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;bar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;bar$&#39;, &#39;barfoo&#39;))</span><br><span class="line">None</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;bar\Z&#39;, &#39;foobar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;bar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;bar\Z&#39;, &#39;barfoo&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例中，<code>bar$</code>表示搜索字符串结尾是<code>bar</code>，<code>foobar</code>符合此正则表达式的规则，<code>barfoo</code>则不符合。在这里，<code>\Z</code>与<code>$</code>的效果一样。</p>
+<p>但是，如果在下面的示例中，就只能使用<code>$</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;bar$&#39;, &#39;foobar\n&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;bar&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="b"><a href="#b" class="headerlink" title="\b"></a><code>\b</code></h3><p><code>\b</code>匹配一个单词（也包括中文字符）的边界，即单词的分界。</p>
+<p>例如这样一句话：<code>Laoqi Classroom</code>，其中每个字符都有一个位置，包括空白（空格）也如此。如果某个字符后面的字符不是字母、数字和下划线，即不全是<code>\w</code>所匹配的字符，那么<code>\b</code>就会匹配后面的字符的后面（但不是下一个字符）。例如这句话中<code>i</code>后面是空格，不在<code>\w</code>范围内，那么<code>\b</code>就会匹配空格后面、<code>C</code>前面的位置。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(r&#39;\bbar&#39;, &#39;foo bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 7), match&#x3D;&#39;bar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(r&#39;\bbar&#39;, &#39;foo.bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 7), match&#x3D;&#39;bar&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>字符串<code>foo bar</code>中有空格，正则表达式<code>r&#39;\bbar&#39;</code>就匹配这个字符后面的位置，并且此位置之后是<code>bar</code>。同理<code>foo.bar</code>亦然。</p>
+<p>但是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(re.search(r&#39;\bbar&#39;, &#39;foobar&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>则不然。因为<code>foobar</code>本身没有<code>\b</code>要匹配的位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(r&#39;foo\b&#39;, &#39;foo bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 3), match&#x3D;&#39;foo&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(r&#39;foo\b&#39;, &#39;foo.bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 3), match&#x3D;&#39;foo&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; print(re.search(r&#39;foo\b&#39;, &#39;foobar&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>按照前述解释，上面示例不难理解。读者可以自己尝试梳理一番。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(r&#39;\bbar\b&#39;, &#39;foo bar baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 7), match&#x3D;&#39;bar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(r&#39;\bbar\b&#39;, &#39;foo(bar)baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 7), match&#x3D;&#39;bar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; print(re.search(r&#39;\bbar\b&#39;, &#39;foobarbaz&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>这几个示例中，则出现了两个<code>\b</code>，其含义是要匹配在<code>bar</code>两侧都能找到“位置”的字符串。</p>
+<p>另外，<code>\B</code>则是对<code>\b</code>的取反。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(re.search(r&#39;\Bfoo\B&#39;, &#39;foo&#39;))</span><br><span class="line">None</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; print(re.search(r&#39;\Bfoo\B&#39;, &#39;.foo.&#39;))</span><br><span class="line">None</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(r&#39;\Bfoo\B&#39;, &#39;barfoobaz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(3, 6), match&#x3D;&#39;foo&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>（未完，待续）</p>
+<p>参考资料：<a href="https://realpython.com/regex-python/" target="_blank" rel="noopener">https://realpython.com/regex-python/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/08/regular-expression-first/">
+        <span class="nav-arrow">← </span>
+        
+          Python中的正则表达式（一）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#re模块的元字符"><span class="toc-nav-text">re模块的元字符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#点（-）"><span class="toc-nav-text">点（.）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#w和-W"><span class="toc-nav-text">\w和\W</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#d和-D"><span class="toc-nav-text">\d和\D</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#s和-S"><span class="toc-nav-text">\s和\S</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#转义符"><span class="toc-nav-text">转义符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#定位字符"><span class="toc-nav-text">定位字符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#或-A"><span class="toc-nav-text">^或\A</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#或-Z"><span class="toc-nav-text">$或\Z</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#b"><span class="toc-nav-text">\b</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/09/regular-expression-second/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
