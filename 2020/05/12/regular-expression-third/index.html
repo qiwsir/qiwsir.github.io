@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的正则表达式（三） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的正则表达式（三）</h2>
+    <p class="post-date">2020-05-12</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<hr>
+<p>《Python正则表达式》这个系列，已经完成了两篇，本文是第三篇，请继续阅读。</p>
+<p>如果错过了前两篇，请关注微信公众号：<strong>老齐教室</strong>。</p>
+<h2 id="量词元字符"><a href="#量词元字符" class="headerlink" title="量词元字符"></a>量词元字符</h2><p>量词元字符，在正则表达式中表示匹配若干个字符，可能是0个、1个或者多个。</p>
+<h3 id=""><a href="#" class="headerlink" title="*"></a><code>*</code></h3><p><code>*</code> 在正则表达式中表示匹配<strong>0个或者多个</strong>字符，例如<code>a*</code>，就表示匹配0个或者更多个字符<code>a</code>，例如可以匹配空字符串、<code>a</code>、<code>aaa</code>等等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;foo-*bar&#39;, &#39;foobar&#39;)                     # 匹配0个横线</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 6), match&#x3D;&#39;foobar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;foo-*bar&#39;, &#39;foo-bar&#39;)                    # 匹配1个</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 7), match&#x3D;&#39;foo-bar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;foo-*bar&#39;, &#39;foo--bar&#39;)                   # 匹配2个</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 8), match&#x3D;&#39;foo--bar&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中的正则表达式<code>foo-*bar</code>，意思是在<code>foo</code>三个字符之后，匹配0个或者更多个<code>-</code>，然后是三个字符<code>bar</code>。<code>foobar</code>中<code>foo</code>之后没有<code>-</code>，即0个，并且最后三个字符是<code>bar</code>，符合正则表达式的规则；<code>foo--bar</code>则是匹配了两个<code>-</code>字符。</p>
+<p>前面已经介绍过<code>.</code>，表示任何字符（除了换行符），如果和<code>*</code>组合，即<code>.*</code>表示0个或者任意多个任何字符（除了换行符），换句话说，匹配字符串中任何字符，直到改行结束（遇到换行符）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;foo.*bar&#39;, &#39;# foo $qux@grault % bar #&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(2, 23), match&#x3D;&#39;foo $qux@grault % bar&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>对于字符串<code>&#39;# foo $qux@grault % bar #&#39;</code>，按照正则表达式<code>foo.*bar</code>进行匹配，从第索引为2的字符开始，符合正则表达式的规则，直到索引为23的字符为止，即匹配了<code>f</code>（含）和<code>r</code>（含）之间的所有字符。特别注意观察返回结果中<code>span</code>和<code>match</code>的值。</p>
+<h3 id="-1"><a href="#-1" class="headerlink" title="+"></a><code>+</code></h3><p><code>+</code> 与上面的<code>*</code>类似，但是，它匹配的是<strong>1个或多个</strong>字符，即至少要有一个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(re.search(&#39;foo-+bar&#39;, &#39;foobar&#39;))              # 0个横线，不匹配</span><br><span class="line">None</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;foo-+bar&#39;, &#39;foo-bar&#39;)                    # 1个，匹配</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 7), match&#x3D;&#39;foo-bar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;foo-+bar&#39;, &#39;foo--bar&#39;)                   # 2个，匹配</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 8), match&#x3D;&#39;foo--bar&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>通过上面演示的示例，比较<code>*</code>和<code>+</code>的差异。</p>
+<h3 id="-2"><a href="#-2" class="headerlink" title="?"></a><code>?</code></h3><p>前面已经有匹配“0个或多个”和“1个或多个”的元字符了，现在应该有匹配<strong>0个或1个</strong>的了，那就是<code>?</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;foo-?bar&#39;, &#39;foobar&#39;)                     # 0个，匹配</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 6), match&#x3D;&#39;foobar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;foo-?bar&#39;, &#39;foo-bar&#39;)                    # 1个，匹配</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 7), match&#x3D;&#39;foo-bar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;foo-?bar&#39;, &#39;foo--bar&#39;))            # 2个，不匹配</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>下面的示例，将前面三个云字符进行比较，进一步理解它们的含义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.match(&#39;foo[1-9]*bar&#39;, &#39;foobar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 6), match&#x3D;&#39;foobar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.match(&#39;foo[1-9]*bar&#39;, &#39;foo42bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 8), match&#x3D;&#39;foo42bar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; print(re.match(&#39;foo[1-9]+bar&#39;, &#39;foobar&#39;))</span><br><span class="line">None</span><br><span class="line">&gt;&gt;&gt; re.match(&#39;foo[1-9]+bar&#39;, &#39;foo42bar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 8), match&#x3D;&#39;foo42bar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.match(&#39;foo[1-9]?bar&#39;, &#39;foobar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 6), match&#x3D;&#39;foobar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; print(re.match(&#39;foo[1-9]?bar&#39;, &#39;foo42bar&#39;))</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>foo[1-9]*bar</code>，匹配<code>foo</code>和<code>bar</code>之间有1~9的数字0个或多个。</li>
+<li><code>foo[1-9]+bar</code>，匹配<code>foo</code>和<code>bar</code>之间有1~9的数字1个或多个。</li>
+<li><code>foo[1-9]?bar</code>，匹配<code>foo</code>和<code>bar</code>之间有1~9的数字0个或1个。</li>
+</ul>
+<p>以上三种量词元字符，还经常组合使用，例如：<code>*?</code>、<code>+?</code>、<code>??</code>等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;&lt;.*&gt;&#39;, &#39;%&lt;foo&gt; &lt;bar&gt; &lt;baz&gt;%&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(1, 18), match&#x3D;&#39;&lt;foo&gt; &lt;bar&gt; &lt;baz&gt;&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中的<code>&lt;.*&gt;</code>表示要匹配<code>&lt;</code>字符之后的任何字符（除了换行字符），然后是<code>&gt;</code>。按照这个规则，匹配了<code>&#39;%&lt;foo&gt; &lt;bar&gt; &lt;baz&gt;%&#39;</code>中的<code>&lt;foo&gt; &lt;bar&gt; &lt;baz&gt;</code>，但是，如果只想匹配<code>&lt;foo&gt;</code>怎么办？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;&lt;.*?&gt;&#39;, &#39;%&lt;foo&gt; &lt;bar&gt; &lt;baz&gt;%&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(1, 6), match&#x3D;&#39;&lt;foo&gt;&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面使用了<code>*?</code>，这种表示可以称为惰性匹配，也将此组合称为惰性量词，对应着，前面提到的<code>*</code>等则称为贪婪量词，对应的匹配是贪婪匹配。下面以表格形式列出它们之间的比较（顺便也增加了另外一种“支配量词”，一并列出进行比较）。</p>
+<table>
+<thead>
+<tr>
+<th>贪婪量词</th>
+<th>惰性量词</th>
+<th>支配量词</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>*?</td>
+<td>*+</td>
+<td>可以不出现,也可以出现任意次</td>
+</tr>
+<tr>
+<td>?</td>
+<td>??</td>
+<td>?+</td>
+<td>可以出现0次或1次</td>
+</tr>
+<tr>
+<td>+</td>
+<td>+?</td>
+<td>++</td>
+<td>至少出现1次或以上</td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>{n}?</td>
+<td>{n}+</td>
+<td>有且只能出现n次</td>
+</tr>
+<tr>
+<td>{n,m}</td>
+<td>{n,m}?</td>
+<td>{n,m}+</td>
+<td>至少出现n次,至多出现m次</td>
+</tr>
+<tr>
+<td>{n,}</td>
+<td>{n,}?</td>
+<td>{n,}+</td>
+<td>至少出现n次或以上</td>
+</tr>
+</tbody></table>
+<ul>
+<li>贪婪匹配：如果符合要求就一直往后匹配，一直到无法匹配为止。</li>
+<li>惰性匹配：一旦匹配到合适的就结束，不在继续匹配下去了。</li>
+<li>支配匹配：只尝试匹配整个字符串。如果整个字符串不匹配，则不做进一步。</li>
+</ul>
+<p>结合线面示例，理解上述匹配模式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;&lt;.+&gt;&#39;, &#39;%&lt;foo&gt; &lt;bar&gt; &lt;baz&gt;%&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(1, 18), match&#x3D;&#39;&lt;foo&gt; &lt;bar&gt; &lt;baz&gt;&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;&lt;.+?&gt;&#39;, &#39;%&lt;foo&gt; &lt;bar&gt; &lt;baz&gt;%&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(1, 6), match&#x3D;&#39;&lt;foo&gt;&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;ba?&#39;, &#39;baaaa&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 2), match&#x3D;&#39;ba&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;ba??&#39;, &#39;baaaa&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 1), match&#x3D;&#39;b&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="m"><a href="#m" class="headerlink" title="{m}"></a><code>{m}</code></h3><p><code>{m}</code>表示匹配<code>m</code>个字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(re.search(&#39;x-&#123;3&#125;x&#39;, &#39;x--x&#39;))                # 2个横线，不匹配</span><br><span class="line">None</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;x-&#123;3&#125;x&#39;, &#39;x---x&#39;)                      # 3个横线，匹配</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 5), match&#x3D;&#39;x---x&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; print(re.search(&#39;x-&#123;3&#125;x&#39;, &#39;x----x&#39;))              # 4个横线，不匹配</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p><code>x-{3}x</code>表示要匹配<code>x</code>字符后面有3个<code>-</code>，再接<code>x</code>的字符串。</p>
+<h3 id="m-n"><a href="#m-n" class="headerlink" title="{m,n}"></a><code>{m,n}</code></h3><p><code>{m,n}</code>表示匹配大于等于m，小于等于n个字符，例如<code>-{2,4}</code>可以匹配2个、3个、4个<code>-</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; for i in range(1, 6):</span><br><span class="line">...     s &#x3D; f&quot;x&#123;&#39;-&#39; * i&#125;x&quot;</span><br><span class="line">...     print(f&#39;&#123;i&#125;  &#123;s:10&#125;&#39;, re.search(&#39;x-&#123;2,4&#125;x&#39;, s))</span><br><span class="line">...</span><br><span class="line">1  x-x        None</span><br><span class="line">2  x--x       &lt;_sre.SRE_Match object; span&#x3D;(0, 4), match&#x3D;&#39;x--x&#39;&gt;</span><br><span class="line">3  x---x      &lt;_sre.SRE_Match object; span&#x3D;(0, 5), match&#x3D;&#39;x---x&#39;&gt;</span><br><span class="line">4  x----x     &lt;_sre.SRE_Match object; span&#x3D;(0, 6), match&#x3D;&#39;x----x&#39;&gt;</span><br><span class="line">5  x-----x    None</span><br></pre></td></tr></table></figure>
+
+<p>有时候会省略m或者n，其含义分别为：</p>
+<ul>
+<li><code>{, n}</code>，等效于<code>{0, n}</code></li>
+<li><code>{m, }</code>，匹配大于等于m个字符</li>
+<li><code>{, }</code>，等效<code>{0, }</code>或者<code>*</code></li>
+</ul>
+<p>注意，如果只是<code>{}</code>，则表示花括号那个字符了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;x&#123;&#125;y&#39;, &#39;x&#123;&#125;y&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 4), match&#x3D;&#39;x&#123;&#125;y&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="m-n-1"><a href="#m-n-1" class="headerlink" title="{m,n}?"></a><code>{m,n}?</code></h3><p>如前面表格所示，这是一种惰性量词，它表示匹配m到n个字符，只要匹配到了，就结束。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;a&#123;3,5&#125;&#39;, &#39;aaaaaaaa&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 5), match&#x3D;&#39;aaaaa&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;a&#123;3,5&#125;?&#39;, &#39;aaaaaaaa&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 3), match&#x3D;&#39;aaa&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>a{3,5}</code>是贪婪匹配，要匹配到最大长度，即5个字符a；而<code>a{3,5}?</code>是惰性匹配，只匹配3个字符a即可。</p>
+<p>（未完，待续）</p>
+<p>参考资料：<a href="https://realpython.com/regex-python/" target="_blank" rel="noopener">https://realpython.com/regex-python/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/09/regular-expression-second/">
+        <span class="nav-arrow">← </span>
+        
+          Python中的正则表达式（二）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#量词元字符"><span class="toc-nav-text">量词元字符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-text">*</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#-1"><span class="toc-nav-text">+</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#-2"><span class="toc-nav-text">?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#m"><span class="toc-nav-text">{m}</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#m-n"><span class="toc-nav-text">{m,n}</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#m-n-1"><span class="toc-nav-text">{m,n}?</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/12/regular-expression-third/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
