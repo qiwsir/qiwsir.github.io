@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的正则表达式（四） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的正则表达式（四）</h2>
+    <p class="post-date">2020-05-14</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>与本文相关的图书推荐：《跟老齐学Python：轻松入门》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<hr>
+<p>《Python正则表达式》这个系列，已经完成了三篇，本文是第四篇，请继续阅读。</p>
+<p>如果错过了前两篇，请关注微信公众号：<strong>老齐教室</strong>。</p>
+<p>前面已经对Python中正则表达的基本内容做了比较完整的讲述，从本文开始，将进入高级应用部分。</p>
+<h2 id="分组和捕获"><a href="#分组和捕获" class="headerlink" title="分组和捕获"></a>分组和捕获</h2><p>分组，就是将一个正则表达式分成若干个子表达式。分组包括两个操作：</p>
+<ul>
+<li>分组：即利用前面已经介绍过的元字符，在圆括号中写出一个一个的正则表达式（子表达式）</li>
+<li>捕获：有的分组，可以按照子表达式匹配字符串。</li>
+</ul>
+<h3 id="分组符号"><a href="#分组符号" class="headerlink" title="分组符号"></a>分组符号</h3><p>通常，用<code>( )</code>表示一个分组，在其中写子表达式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;(bar)&#39;, &#39;foo bar baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 7), match&#x3D;&#39;bar&#39;&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; re.search(&#39;bar&#39;, &#39;foo bar baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 7), match&#x3D;&#39;bar&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，<code>(bar)</code>是一个分组的正则表达式，即一个子表达式，但是，这里因为只有一组，所以与不分组的<code>bar</code>效果是一样。</p>
+<h3 id="一个分组作为一个单元"><a href="#一个分组作为一个单元" class="headerlink" title="一个分组作为一个单元"></a>一个分组作为一个单元</h3><p>如果在一个分组的子表达式后面跟一个量词，那么就是把这个分组作为一个单元。</p>
+<p>例如，<code>(bar)+</code>，意味着将字符串<code>bar</code>看做一个单元，即要匹配至少1个<code>bar</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;(bar)+&#39;, &#39;foo bar baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 7), match&#x3D;&#39;bar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;(bar)+&#39;, &#39;foo barbar baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 10), match&#x3D;&#39;barbar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;(bar)+&#39;, &#39;foo barbarbarbar baz&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(4, 16), match&#x3D;&#39;barbarbarbar&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>下面用表格的方式，比较<code>bar+</code>和<code>(bar)+</code>的区别：</p>
+<table>
+<thead>
+<tr>
+<th>正则表达式</th>
+<th>说明</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>bar+</code></td>
+<td><code>+</code>作用在字符<code>r</code>，匹配的字符串要求在<code>ba</code>的后面可以有1个或更多个<code>r</code></td>
+<td><code>&#39;bar&#39;</code>, <code>&#39;barr&#39;</code>, <code>&#39;barrr&#39;</code></td>
+</tr>
+<tr>
+<td><code>(bar)+</code></td>
+<td><code>+</code>作用在<code>bar</code>，匹配的字符串中药出现<code>bar</code></td>
+<td><code>&#39;bar&#39;</code>, <code>&#39;barbar&#39;</code>, <code>&#39;barbarbar&#39;</code></td>
+</tr>
+</tbody></table>
+<p>下面再看个复杂的示例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;(ba[rz])&#123;2,4&#125;(qux)?&#39;, &#39;bazbarbazqux&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 12), match&#x3D;&#39;bazbarbazqux&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;(ba[rz])&#123;2,4&#125;(qux)?&#39;, &#39;barbar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 6), match&#x3D;&#39;barbar&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>正则表达式<code>(ba[rz]){2,4}(qux)?</code>中，<code>(ba[rz])</code>是一个分组，表示要匹配<code>bar</code>或<code>baz</code>。<code>(ba[rz]){2,4}</code>则表示匹配的数量范围（2到4个），后面的<code>(qux)?</code>又将<code>qux</code>作为一个单元，匹配0个或1个。</p>
+<p>在上述示例基础上，进一步理解：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; re.search(&#39;(foo(bar)?)+(\d\d\d)?&#39;, &#39;foofoobar&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 9), match&#x3D;&#39;foofoobar&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;(foo(bar)?)+(\d\d\d)?&#39;, &#39;foofoobar123&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 12), match&#x3D;&#39;foofoobar123&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; re.search(&#39;(foo(bar)?)+(\d\d\d)?&#39;, &#39;foofoo123&#39;)</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 9), match&#x3D;&#39;foofoo123&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>下面用表格的方式，将上面示例中的几个表达式进行说明。</p>
+<table>
+<thead>
+<tr>
+<th>正则表达式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>foo(bar)?</code></td>
+<td>匹配<code>foo</code>后面跟着0个或1个<code>bar</code></td>
+</tr>
+<tr>
+<td><code>(foo(bar)?)+</code></td>
+<td>按照上面规则匹配的字符串出现1次或多次</td>
+</tr>
+<tr>
+<td><code>\d\d\d</code></td>
+<td>匹配三个整数字符</td>
+</tr>
+<tr>
+<td><code>(\d\d\d)?</code></td>
+<td>0个或1个符合上述规则的字符串</td>
+</tr>
+</tbody></table>
+<p>将上表中的组合在一起，就是<code>(foo(bar)?)+(\d\d\d)?</code>正则表达式。</p>
+<h3 id="捕获"><a href="#捕获" class="headerlink" title="捕获"></a>捕获</h3><p>分组的目的之一是搜索字符串，根据分组原则捕获相应部分。</p>
+<p>在<code>re</code>模块中，有<code>re.search()</code>，可以返回搜索到的匹配对象，针对分组操作，此对象有<code>.groups</code>和<code>.group</code>两个方法。</p>
+<h4 id="m-groups"><a href="#m-groups" class="headerlink" title="m.groups()"></a><code>m.groups()</code></h4><p><code>m.groups()</code>根据正则表达式，返回所有分组所捕获的字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; m &#x3D; re.search(&#39;(\w+),(\w+),(\w+)&#39;, &#39;foo,quux,baz&#39;)</span><br><span class="line">&gt;&gt;&gt; m</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 12), match&#x3D;&#39;foo:quux:baz&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在此示例中，正则表达式<code>(\w+),(\w+),(\w+)</code>包含三个组，每组都是要匹配至少1个字母、数字，即要从<code>foo,quux,baz</code>中得到三个字符串<code>foo</code>、<code>quux</code>、<code>baz</code>，不包含原字符串中的<code>,</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; m.groups()</span><br><span class="line">(&#39;foo&#39;, &#39;quux&#39;, &#39;baz&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>执行<code>m.groups()</code>，返回结果为一个元组，其中包括所捕获的三个字符串。</p>
+<h4 id="m-group-n"><a href="#m-group-n" class="headerlink" title="m.group(n)"></a><code>m.group(n)</code></h4><p><code>m.groups()</code>返回的元组，包含了所有捕获的内容。但在操作中，可能需要返回某个分组，此时使用<code>m.group(n)</code>方法实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; m &#x3D; re.search(&#39;(\w+),(\w+),(\w+)&#39;, &#39;foo,quux,baz&#39;)</span><br><span class="line">&gt;&gt;&gt; m.groups()</span><br><span class="line">(&#39;foo&#39;, &#39;quux&#39;, &#39;baz&#39;)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; m.group(1)</span><br><span class="line">&#39;foo&#39;</span><br><span class="line">&gt;&gt;&gt; m.group(2)</span><br><span class="line">&#39;quux&#39;</span><br><span class="line">&gt;&gt;&gt; m.group(3)</span><br><span class="line">&#39;baz&#39;</span><br></pre></td></tr></table></figure>
+
+<p><code>m.group(1)</code>中的参数是<code>1</code>，表示捕获第一个分组的结果——<strong>注意，不是从0开始</strong>。如果参数为<code>0</code>，会是下面的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; m.group(0)</span><br><span class="line">&#39;foo,quux,baz&#39;</span><br><span class="line">&gt;&gt;&gt; m.group()    # 不写参数，即默认参数是0</span><br><span class="line">&#39;foo,quux,baz&#39;</span><br></pre></td></tr></table></figure>
+
+<p><code>m.group()</code>中的参数，还可以传入多个，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; m.groups()</span><br><span class="line">(&#39;foo&#39;, &#39;quux&#39;, &#39;baz&#39;)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; m.group(2, 3)</span><br><span class="line">(&#39;quux&#39;, &#39;baz&#39;)</span><br><span class="line">&gt;&gt;&gt; m.group(3, 2, 1)</span><br><span class="line">(&#39;baz&#39;, &#39;quux&#39;, &#39;foo&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>此时，能够按照参数的顺序和数值得到多个指定分组捕获，特别注意观察<code>m.group(3, 2, 1)</code>的结果。</p>
+<h3 id="向后引用"><a href="#向后引用" class="headerlink" title="向后引用"></a>向后引用</h3><p>“向后引用”这个术语的英文是“backference”，很多中文资料翻译为“反向引用”，在本文中，我使用“向后引用”这个术语，原因在于这个翻译比较直白地反应了相关的效果。</p>
+<p>所谓“向后引用”就是将前面的分组所捕获的结果向后再复制n个，比如：<code>(\w+), \1</code>，第一个分组<code>(\w+)</code>，后面的<code>\1</code>表示将前面的分组捕获的结果在后面再次依样捕获1个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; regex &#x3D; r&#39;(\w+),\1&#39;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; m &#x3D; re.search(regex, &#39;foo,foo&#39;)</span><br><span class="line">&gt;&gt;&gt; m</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 7), match&#x3D;&#39;foo,foo&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; m.group(1)</span><br><span class="line">&#39;foo&#39;</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，分组<code>(\w+)</code>已经捕获了字符串<code>foo</code>，在正则表达式中的<code>\1</code>表示向后引用前面的捕获结果，即可以继续在字符串中搜索，能够要再捕获一个<code>foo</code>。再如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; m &#x3D; re.search(regex, &#39;qux,qux&#39;)</span><br><span class="line">&gt;&gt;&gt; m</span><br><span class="line">&lt;_sre.SRE_Match object; span&#x3D;(0, 7), match&#x3D;&#39;qux,qux&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; m.group(1)</span><br><span class="line">&#39;qux&#39;</span><br></pre></td></tr></table></figure>
+
+<p>如果搜索的字符串是<code>foo,qux</code>，由于捕获第一个<code>foo</code>之后，继续在字符串中搜索，无法得到<code>foo</code>了，所以，会搜索失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; m &#x3D; re.search(regex, &#39;foo,qux&#39;)</span><br><span class="line">&gt;&gt;&gt; print(m)</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>（未完，待续）</p>
+<p>参考资料：<a href="https://realpython.com/regex-python/" target="_blank" rel="noopener">https://realpython.com/regex-python/</a></p>
+<blockquote>
+<p>搜索技术问答的公众号：老齐教室</p>
+</blockquote>
+<blockquote>
+<p>在公众号中回复：<strong>老齐</strong>，可查看所有文章、书籍、课程。</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/12/regular-expression-third/">
+        <span class="nav-arrow">← </span>
+        
+          Python中的正则表达式（三）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分组和捕获"><span class="toc-nav-text">分组和捕获</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分组符号"><span class="toc-nav-text">分组符号</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一个分组作为一个单元"><span class="toc-nav-text">一个分组作为一个单元</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#捕获"><span class="toc-nav-text">捕获</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#m-groups"><span class="toc-nav-text">m.groups()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#m-group-n"><span class="toc-nav-text">m.group(n)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#向后引用"><span class="toc-nav-text">向后引用</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/14/regular-expression-forth/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
