@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      初学者专题：变量和赋值 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>初学者专题：变量和赋值</h2>
+    <p class="post-date">2020-05-22</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>对于初学Python者，除了看书（《跟老齐学Python：轻松入门》或者《Python大学实用教程》，均为电子工业出版社出版）、或者看视频（网易云课堂、CSDN上均有老齐的视频课程），还要进行专题性总结。比如本文，就是要帮助学习者，对<strong>变量</strong>和<strong>赋值</strong>这两个非常基本、几乎无处不在的内容作为一个专题进行总结。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>Python语言既能够实现面向过程，也能够实现面向对象编程。而面向对象，是当前软件开发的主流编程思想。在我的两本书中，我都强调了面向对象——不要认为这种编程思想不适用于初学者，更不要认为它有多难。</p>
+<p>并且，Python语言中已经有这样一个明确的概念：<strong>万物皆对象</strong>，不论是数字、整数、函数、类，等等，都是对象。</p>
+<p>Python语言中的对象，可以理解为语言中的“实际物体”，它一经创建，存储器中就开辟出一个空间保存它，因而也就有了一个内存地址。</p>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; id(3.14)</span><br><span class="line">4312572400</span><br></pre></td></tr></table></figure>
+
+<p>这里返回的十进制数字，就代表了存储器为浮点数对象<code>3.14</code>分配的内存地址。</p>
+<p>另外，Python中的任何对象都有类型。在Python中，类型就是类。在Python创立之初，这两个没有统一，后来将“类”和“类型”统一了起来，这样我们就可以把每一个具体的数据，看成是某个“类”的实例，而那个“类”就是这个实例的“类型”。</p>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; type(3.14)</span><br><span class="line">&lt;class &#39;float&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>返回值显示，<code>3.14</code>是<code>float</code>类的实例，也就是<code>float</code>类型。</p>
+<p>下面自定义一个类，然后创建实例，再看看那个实例的类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; class Book:</span><br><span class="line">...     book &#x3D; &quot;跟老齐学Python：轻松入门&quot;</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; my_book &#x3D; Book()</span><br><span class="line">&gt;&gt;&gt; type(my_book)</span><br><span class="line">&lt;class &#39;__main__.Book&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>除了返回的类的具体内容不同之外，<code>Book()</code>（注意，这是对象，<code>my_book</code>引用了这个对象，所以，也可以说是<code>my_book</code>，对此的详细说明请阅读本文后续内容）和<code>3.14</code>都是所对应类的实例——返回值格式相同，因此它们也都是所对应类的那种“类型”。</p>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>在Python中使用变量，非常方便，可以用“召之即来挥之即去”形容，也就是不需要“创建”变量，用的时候信手拈来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; int a</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1</span><br><span class="line">    int a</span><br><span class="line">        ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+
+<p>在有些语言里面，比如Java，要使用某个变量，必须先创建它。但是，如果把这个习惯搬到Python中，就如同上面操作那样，会报错。另外，还要注意，Python中的变量不是对象，它不能单独存在。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">NameError: name &#39;a&#39; is not defined</span><br></pre></td></tr></table></figure>
+
+<p>上面的演示，就是想用一个变量<code>a</code>，但是，只是把它单独放在那里，就如同在数学上，“假设变量a”，这样做是不行的。在Python中，变量必须和某个对象关联起来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; 2</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">4308314816</span><br><span class="line">&gt;&gt;&gt; id(2)</span><br><span class="line">4308314816</span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，<code>a=2</code>就是将变量<code>a</code>与对象<code>2</code>关联了起来。注意，这里的变量<code>a</code>不是像容器那样，将对象<code>2</code>放入其中，而是如同标签那样，贴到了对象<code>2</code>上，于是乎通过这个标签就可以找到那个对象。</p>
+<p><code>id(a)</code>并不是返回变量<code>a</code>的内存地址——它不是对象，而是返回了它所引用的对象<code>2</code>的内存地址。再参考后面的<code>id(2)</code>，可以看到两者内存地址一样，也就是说证明了<code>a</code>这个变量引用的对象就是<code>2</code>。</p>
+<p>但是，如果在交互模式中，做下面的操作，就令人匪夷所思了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; 1.23</span><br><span class="line">&gt;&gt;&gt; id(1.23)</span><br><span class="line">4312572400</span><br><span class="line">&gt;&gt;&gt; id(a)</span><br><span class="line">4311689008</span><br></pre></td></tr></table></figure>
+
+<p>按照前面的说法，这个怎么解释？！</p>
+<p>再解释这个之前，先来看下面的操作。</p>
+<p>创建一个文件，比如命名为<code>idvalue.py</code>，然后在文件中写入如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#coding:utf-8</span><br><span class="line"></span><br><span class="line">a &#x3D; 1.23</span><br><span class="line">id_value1 &#x3D; id(a)</span><br><span class="line">id_value2 &#x3D; id(1.23)</span><br><span class="line"></span><br><span class="line">print(f&quot;id(a): &#123;id_value1&#125;&quot;)</span><br><span class="line">print(f&quot;id(1.23): &#123;id_value2&#125;&quot;)</span><br><span class="line"></span><br><span class="line">if id_value1 &#x3D;&#x3D; id_value2:</span><br><span class="line">    print(&quot;id() 返回值相同&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>这段程序，跟前面交互模式里面的一样。但是，请注意接下来的事情。保存文件之后，执行它。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">% python3 idvalue.py</span><br><span class="line">id(a): 4327795888</span><br><span class="line">id(1.23): 4327795888</span><br><span class="line">id() 返回值相同</span><br></pre></td></tr></table></figure>
+
+<p>看执行结果。这里得到的<code>a</code>和<code>1.23</code>的内存地址居然是一样的。</p>
+<p>tu</p>
+<p>神奇吗？</p>
+<p>要解释这种神奇，话就有点长了，要从交互模式的特点开始说起。交互模式，是我们学习和做简单练习的好地方，但是，它有一个缺点，“记忆力太差”，每一行执行完毕，就会将该行“忘记”，下一行又从头开始。当执行了<code>a = 1.23</code>之后，本来内存中已经创建了<code>1.23</code>这个对象，但是，当再次执行<code>id(1.23)</code>时，因为两个不完全一样，交互模式的解析器忘记了前面的<code>1.23</code>，于是乎又在存储器中重新创建了<code>id(1.23)</code>中的<code>1.23</code>对象。</p>
+<p>可为什么<code>a = 2</code>不如此呢？因为Python还有一个习惯，把-256~256这些整数，在内存中有“常住户口”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; b &#x3D; 256</span><br><span class="line">&gt;&gt;&gt; id(b)</span><br><span class="line">4308322944</span><br><span class="line">&gt;&gt;&gt; id(256)</span><br><span class="line">4308322944</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&gt;&gt;&gt; c &#x3D; 257</span><br><span class="line">&gt;&gt;&gt; id(c)</span><br><span class="line">4312572688</span><br><span class="line">&gt;&gt;&gt; id(257)</span><br><span class="line">4312572624</span><br></pre></td></tr></table></figure>
+
+<p>但是，如果在一个程序文件里，Python解析器的“记忆力”就正常了，不会重复创建同样的对象——当然，如拷贝等有意为之的除外。</p>
+<p>至此，我们已经明确，Python中的变量和对象之间是<strong>引用</strong>关系，正式因为这种引用关系，让Python中实现某些操作就非常容易了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; first &#x3D; 1</span><br><span class="line">&gt;&gt;&gt; second &#x3D; 2</span><br><span class="line">&gt;&gt;&gt; first, second &#x3D; second, first</span><br><span class="line">&gt;&gt;&gt; first</span><br><span class="line">2</span><br><span class="line">&gt;&gt;&gt; second</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，变量<code>first</code>引用了<code>1</code>，<code>second</code>引用了<code>2</code>，如果想把这两个变量引用的对象对调一下，在Python里面使用<code>first, second = second, first</code>。这是多么简单、优雅、直接呀。如果在Java里面，就麻烦了——学过C/C++/Java等语言的同学，试一试吧。</p>
+<p>由此，我们可以放胆说：<strong>Python简单、优雅</strong>。</p>
+<p>还是因为“引用”，一个对象可以被多个变量引用，就相当于一个物体上可以贴多个标签那样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; a &#x3D; b &#x3D; 3.14</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">3.14</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">3.14</span><br></pre></td></tr></table></figure>
+
+<p>“变量引用对象”这个思想，还可以扩展到函数的参数。有的人习惯把函数的参数弄很多名称，比如形参、实参等，并且进行区分。在Python语言中，它们本质上都是变量，只不过是在函数作用于里面使用的变量。当定义函数的时候，虽然那个变量也没有引用对象，但因为是定义函数，这个函数并没有执行，所以，一个没有引用对象的变量是许可存在的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; book &#x3D; [&#39;python&#39;,]</span><br><span class="line">&gt;&gt;&gt; def my_book(b):</span><br><span class="line">...     b.append(&quot;feature engineering&quot;)</span><br><span class="line">...     return b</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; my_book(book)</span><br><span class="line">[&#39;python&#39;, &#39;feature engineering&#39;]</span><br><span class="line">&gt;&gt;&gt; book</span><br><span class="line">[&#39;python&#39;, &#39;feature engineering&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，第1行创建了一个列表。第2行开始，创建了一个函数，参数是<code>b</code>——这时候称为“形参”，即形式上的参数。其实，因为这个函数并没有调用，所以，那个变量<code>b</code>可以认为是占位符，可以单独存在，不需要引用任何对象。</p>
+<p>后面，调用这个函数<code>my_book(book)</code>。这里我们通常形象而简要地说：“将<code>boo</code>传给函数”。这句话其实不是很严谨，但它因为形象简短，所以被广为使用。如果严谨地说——未免啰嗦了，调用这个函数后，发生的是：<code>b</code>引用了变量<code>book</code>所引用的对象<code>[&#39;python&#39;,]</code>。</p>
+<p>从后面的执行结果中可以看出，因为函数内和函数外，不同变量引用的对象都是同一个，所以，会发生同样的变化。</p>
+<p>对于变量，最后要强调的就是命名习惯：</p>
+<ul>
+<li>非数字开头</li>
+<li>字母都小写</li>
+<li>用有意的单词或者单词组合，多个单词之间用<code>_</code>连接</li>
+<li>避免使用与下列项目冲突的单词：内置类型、内置函数、关键词</li>
+</ul>
+<p>以下是列出Python关键词的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import keyword</span><br><span class="line">&gt;&gt;&gt; keyword.kwlist</span><br><span class="line">[&#39;False&#39;, &#39;None&#39;, &#39;True&#39;, &#39;and&#39;, &#39;as&#39;, &#39;assert&#39;, &#39;async&#39;, &#39;await&#39;, &#39;break&#39;, &#39;class&#39;, &#39;continue&#39;, &#39;def&#39;, &#39;del&#39;, &#39;elif&#39;, &#39;else&#39;, &#39;except&#39;, &#39;finally&#39;, &#39;for&#39;, &#39;from&#39;, &#39;global&#39;, &#39;if&#39;, &#39;import&#39;, &#39;in&#39;, &#39;is&#39;, &#39;lambda&#39;, &#39;nonlocal&#39;, &#39;not&#39;, &#39;or&#39;, &#39;pass&#39;, &#39;raise&#39;, &#39;return&#39;, &#39;try&#39;, &#39;while&#39;, &#39;with&#39;, &#39;yield&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; help(&quot;keywords&quot;)</span><br><span class="line">Here is a list of the Python keywords.  Enter any keyword to get more help.</span><br><span class="line"></span><br><span class="line">False               class               from                or</span><br><span class="line">None                continue            global              pass</span><br><span class="line">True                def                 if                  raise</span><br><span class="line">and                 del                 import              return</span><br><span class="line">as                  elif                in                  try</span><br><span class="line">assert              else                is                  while</span><br><span class="line">async               except              lambda              with</span><br><span class="line">await               finally             nonlocal            yield</span><br><span class="line">break               for                 not</span><br></pre></td></tr></table></figure>
+
+<p>有一种常见情况，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; list &#x3D; [1,2,3]</span><br><span class="line">&gt;&gt;&gt; list(&quot;laoqi&quot;)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">TypeError: &#39;list&#39; object is not callable</span><br></pre></td></tr></table></figure>
+
+<p>这就是因为本来的内置对象类型<code>list</code>，或者内置函数的名称，已经被<code>&gt;&gt;&gt; list = [1,2,3]</code>占用了，后面再使用<code>list</code>，指的就是这个列表。所以，第二行的操作中会报错。</p>
+<p>tu</p>
+<h2 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h2><p>在理解变量和对象关系的基础上，理解“赋值”或“赋值语句”就简单多了，从本质上讲，赋值就是变量与某对象建立引用关系，只不过，这里不是如前面所说的某个直接的对象，这里的对象可能是经过计算之后得到的，所以，先要知道“表达式”。</p>
+<p>所谓表达式，就是对象间用操作符连接，组成一个有意义的式子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 1 + 2</span><br><span class="line">3</span><br><span class="line">&gt;&gt;&gt; &quot;python&quot; + &quot;lang&quot;</span><br><span class="line">&#39;pythonlang&#39;</span><br></pre></td></tr></table></figure>
+
+<p>以上演示的都是表达式，一般而言，表达式要返回一个对象。如果将这个对象再被变量引用，就成为了“赋值”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; py &#x3D; &quot;python&quot; + &quot;lang&quot;</span><br><span class="line">&gt;&gt;&gt; py</span><br><span class="line">&#39;pythonlang&#39;</span><br></pre></td></tr></table></figure>
+
+<p>当然，前面出现的诸如<code>a = 2</code>也都是赋值语句。</p>
+<p>在赋值语句中，<code>=</code>的作用于数学中的等号有很大区别，它表示将变量与对象之间建立引用关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; n &#x3D; 1</span><br><span class="line">&gt;&gt;&gt; n &#x3D; n + 1</span><br><span class="line">&gt;&gt;&gt; n</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>对于表达式<code>n = n + 1</code>，这里的<code>=</code>如果是数学中的意义，那么就会出现<code>0=1</code>。</p>
+<p>对于<code>n = n + 1</code>这种操作，还可以写成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; n +&#x3D; 1</span><br><span class="line">&gt;&gt;&gt; n</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>这种写法称为自增，同样，减、乘、除也都有类似的操作。</p>
+<p>对于赋值，必须要说明的是Python3.8中新增的功能：<strong>海象运算符</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; n &#x3D; len(&#39;python&#39;)</span><br><span class="line">&gt;&gt;&gt; if n &lt; 10:</span><br><span class="line">...     print(f&quot;the word length is: &#123;n&#125;&quot;)</span><br><span class="line">...</span><br><span class="line">the word length is: 6</span><br></pre></td></tr></table></figure>
+
+<p>在第二行开始的条件语句中，要使用<code>n</code>，必须要要在前面通过赋值语句获得。Python3.8的海象赋值运算符，把上面的赋值那一行和第二行融合起来，让代码更简洁。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; if (i :&#x3D; len(&#39;python&#39;)) &lt; 10:</span><br><span class="line">...     print(f&quot;the word length is: &#123;n&#125;&quot;)</span><br><span class="line">...</span><br><span class="line">the word length is: 6</span><br></pre></td></tr></table></figure>
+
+<p>关于海象运算符，本微信公众号有专门文章阐述，请参阅：《Python3.8新语法：海象运算符》</p>
+<p>最后，要强调的是，Python中函数、类也都是对象，它们同样能够用于赋值语句。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; lam &#x3D; lambda x: x+3</span><br><span class="line">&gt;&gt;&gt; lam(4)</span><br><span class="line">7</span><br><span class="line">&gt;&gt;&gt; q &#x3D; lam</span><br><span class="line">&gt;&gt;&gt; q(4)</span><br><span class="line">7</span><br></pre></td></tr></table></figure>
+
+<p>第一行创建了一个lambda函数，这个函数对象用变量<code>lam</code>引用，也是赋值。注意第三行，只有名称才引用对象，如果是<code>lam()</code>，是试图要执行<code>lam</code>引用的对象，所以，<code>q = lam</code>才是赋值，或者说变量<code>q</code>也引用了这个lambda函数。</p>
+<p>本文对变量和赋值做了专题总结，供初学者复习，以便加深对相关知识的理解。</p>
+<hr>
+<p style="text-align:center">专注于<strong>软件和AI</strong>的公众号</p>
+<p style="text-align:center"><strong>老齐教室</strong></p>
+
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/21/regular-expression-fifth/">
+        <span class="nav-arrow">← </span>
+        
+          Python中的正则表达式（五）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/officialaccounts_20200311104512.png" width=400>
+        <p class="notice">关注微信公众号，搜索各种技术问答</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#对象"><span class="toc-nav-text">对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#变量"><span class="toc-nav-text">变量</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#赋值"><span class="toc-nav-text">赋值</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/22/Variables-and-Assignment/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
