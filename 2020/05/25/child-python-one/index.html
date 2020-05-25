@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      青少年编程：用Python探究数学（1） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>青少年编程：用Python探究数学（1）</h2>
+    <p class="post-date">2020-05-25</p>
+    <section class="markdown-content"><p>说明：本系列文章是为中小学生学习Python语言而编辑，在阅读本文之前，请已经做好如下准备：</p>
+<ul>
+<li>在本地计算已经配置Python开发环境</li>
+<li>能够开启Python自带的IDLE编辑器</li>
+</ul>
+<p>对以上两点，若尚未达到，请自行参考网上有关资料。</p>
+<h2 id="画多边形"><a href="#画多边形" class="headerlink" title="画多边形"></a>画多边形</h2><p>1966年，麻省理工的数学家Seymour Aubrey Papert和Wally Feurzeig设计了一种名为Logo的编程语言，其初衷是为了向儿童教授计算机编程技能，Logo一词源自希腊语逻各斯（logos）。在Logo语言中，有一只小海龟（turtle），通过向它发送命令，可以实现各种绘图操作。Python继承了Logo语言的这个特点，在它里面有一个名为<code>turtle</code>的内置模块，同样能够实现各种绘图操作。</p>
+<p>下面就学习一下，如果用这只小海龟画一个多边形。</p>
+<h3 id="引入模块"><a href="#引入模块" class="headerlink" title="引入模块"></a>引入模块</h3><p>首先，打开Python自带的IDLE编辑器，创建一个名为<code>myturtle.py</code>的文件。</p>
+<p>要使用Python中的“海龟”，必须先要引入它。在刚才创建的文件中，写下第一行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from turtle import *</span><br></pre></td></tr></table></figure>
+
+<p>这一行代码意味着从<code>turtle</code>模块汇总引入所有的函数。</p>
+<ul>
+<li><code>from</code>是一个关键词，表示从哪个模块引入函数</li>
+<li><code>turtle</code>是用来绘图的模块名称</li>
+<li><code>import</code>引入模块的关键词</li>
+<li><code>*</code>表示所有的东西，即<code>turtle</code>模块中的所有内容都被引入到当前文件中</li>
+</ul>
+<p>写完上面的代码，就保存文件。</p>
+<p><strong>注意</strong>：不要把文件命名为<code>turtle.py</code>，这个名称在Python中已经被模块<code>turtle</code>所在的文件占用了。你应该使用其他名称，比如<code>myturtle.py</code>、<code>turtle2.py</code>等等。</p>
+<h3 id="移动海龟"><a href="#移动海龟" class="headerlink" title="移动海龟"></a>移动海龟</h3><p>引入模块之后，就为后面的作图奠定了基础。想一想如何用铅笔作图？一定少不了的就是要让铅笔在纸面上移动起来。与此类似，我们也要先让海龟移动起来，它移动过程中的轨迹，就形成了图形。</p>
+<p>此处，我们使用一个名为<code>forward()</code>的函数，实现位置的移动。接着上面一行，在文件中写第二行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">forward(100)</span><br></pre></td></tr></table></figure>
+
+<p>在<code>forward()</code>函数里面的参数<code>100</code>，表示要移动的距离。还是先看看效果再说。</p>
+<p>保存文件，按<code>F5</code>键，会看到下图结果：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/t01_20200522143252.png" alt=""></p>
+<p>图中间的带有箭头的线段，就是刚才画出来的。从这我们可以看到，海龟的初始位置，是在屏幕的中间，按照<code>forward(100)</code>这个质量，它要向前（向右）移动100个像素那么远的距离。注意，默认我们看到的是箭头——没有海龟出现。并且，默认方向是水平向右。</p>
+<p>如果你非要显示一个海龟，也不是不可以，再增加一行代码。下面显示文件<code>myturtle.py</code>的所有代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from turtle import *</span><br><span class="line"></span><br><span class="line">forward(100)</span><br><span class="line">shape(&quot;turtle&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：写代码的时候，大小写不要弄错，拼写不要弄错，引号不要弄错，都要在英文半角状态下。</p>
+<p>再保存文件，并按下<code>F5</code>键，会看到小海龟和它走过的轨迹了。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/t02_20200522144043.png" alt=""></p>
+<h3 id="改变方向"><a href="#改变方向" class="headerlink" title="改变方向"></a>改变方向</h3><p>真实的海龟，不撞南墙不回头，是吗？不是，它会改变自己的行进方向的。在<code>turtle</code>模块中，也提供了改变方向的函数<code>right()</code>和<code>left()</code>，从名称上就能猜测到，分别实现的是向右转和向左转。</p>
+<p>继续编辑<code>myturtle.py</code>文件，增加两行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from turtle import *</span><br><span class="line"></span><br><span class="line">forward(100)</span><br><span class="line">shape(&quot;turtle&quot;)</span><br><span class="line">right(45)      # new</span><br><span class="line">forward(150)   # new</span><br></pre></td></tr></table></figure>
+
+<p>跟前面的代码比较，增加了两行，并且在新增的两行后面都有<code># new</code>，这个内容叫做<strong>注释</strong>，它是给人看的，就是告诉阅读这部分代码的人，这两行是新增的。在Python中，注释的的内容前面必须写上<code>#</code>，这样在执行这段程序的时候，计算机就把<code>#</code>及其以后的内容忽略了（直到本行结束）。</p>
+<p>在新增的两行中，<code>right(45)</code>表示向右转45°，这里的“右”是相对于海龟前进的方向而言；<code>forward(150)</code>就是向前走150个像素，注意此时的方向。联合起来，就实现了向右转45°并走150个像素。</p>
+<p>执行这个程序（按<code>F5</code>键），得到下图结果：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/t03_20200522145745.png" alt=""></p>
+<p>到目前为止，小海龟从屏幕的中间，水平向右（默认的向前）移动100个像素，然后向右转45°，再前进150个像素。</p>
+<h3 id="画正方形"><a href="#画正方形" class="headerlink" title="画正方形"></a>画正方形</h3><p>利用<code>forward()</code>和<code>right()</code>函数，能够画正方形，可以自己试试。下面是参考代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from turtle import *</span><br><span class="line"></span><br><span class="line">forward(100)</span><br><span class="line">shape(&quot;turtle&quot;)</span><br><span class="line">right(90)     </span><br><span class="line">forward(100)</span><br><span class="line">right(90)     </span><br><span class="line">forward(100)</span><br><span class="line">right(90)     </span><br><span class="line">forward(100)</span><br></pre></td></tr></table></figure>
+
+<p>当然，利用这两个函数，还能画其他图像。</p>
+<p>前面提到了另外一个函数<code>left()</code>，与<code>right()</code>用法一样，只不过是向左转了，你也可以尝试一下。</p>
+<p>上面代码画的是正方形，也就是正四边形，如果画正八边形，是不是就要把<code>right()</code>、<code>forward()</code>两个函数重复更多次了呢？有没有更好的实现方法呢？请看下回分解。</p>
+<hr>
+<p style="text-align:center">专注于<strong>软件和AI</strong>的公众号</p>
+<p style="text-align:center"><strong>老齐教室</strong></p>
+
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/22/Variables-and-Assignment/">
+        <span class="nav-arrow">← </span>
+        
+          初学者专题：变量和赋值
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#画多边形"><span class="toc-nav-text">画多边形</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#引入模块"><span class="toc-nav-text">引入模块</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#移动海龟"><span class="toc-nav-text">移动海龟</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#改变方向"><span class="toc-nav-text">改变方向</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#画正方形"><span class="toc-nav-text">画正方形</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/25/child-python-one/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
