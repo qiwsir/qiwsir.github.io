@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用4个简单的函数提升for循环 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用4个简单的函数提升for循环</h2>
+    <p class="post-date">2020-05-26</p>
+    <section class="markdown-content"><p>作者：Yong Cui, Ph.D.</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《Python大学实用教程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<center>本书适合初学者使用，面向零基础学习者，详细讲述了Python语言的有关知识，并秉承面向对象这种主流开发思想。此外，书中配有大量的练习，学习者通过这些练习，更能体验到开发实践中的应用。</center>
+
+<hr>
+<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>在Python中，for循环经常被用于获得序列或者容器类的元素，比较让人熟知的就是针对可迭代对象的循环。for循环的基本语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for item in iterable:</span><br><span class="line">    # do something here</span><br></pre></td></tr></table></figure>
+
+<p>通常，可迭代对象包括序列（如：列表、元组和range对象）和容器类对象（如字典、集合），下面看一些示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; # 循环列表</span><br><span class="line">&gt;&gt;&gt; for item in [1, 2, 3]:</span><br><span class="line">...     pass</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; # 循环元组</span><br><span class="line">&gt;&gt;&gt; for item in (1, 2, 3):</span><br><span class="line">...     pass</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; # 循环range</span><br><span class="line">&gt;&gt;&gt; for item in range(3):</span><br><span class="line">...     pass</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; # 循环字典</span><br><span class="line">&gt;&gt;&gt; for item in &#123;0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39;&#125;:</span><br><span class="line">...     pass</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; # 循环集合</span><br><span class="line">&gt;&gt;&gt; for item in set([1, 2, 3]):</span><br><span class="line">...     pass</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>上面那些示例中的循环对象，都是基本的可迭代对象，此外，我们还可以用用内置函数，让for循环中的操作更优化，它们是：<code>enumerate(), reversed(), sorted(), 和 zip()</code>，在本文中，我将向您说明这些函数的用法。</p>
+<h2 id="enumerate-函数"><a href="#enumerate-函数" class="headerlink" title="enumerate()函数"></a><code>enumerate()</code>函数</h2><p>第一个要介绍的内置函数是<code>enumerate(iterable, start=0)</code>，它的参数是一个可迭代对象，返回枚举对象。参数<code>start</code>的默认值是0，也可以随意设置，它表示迭代开始编号。</p>
+<p>例如，有一个列表，里面是公司员工的姓名，我们想给每个员工确定一个员工ID，可以使用<code>enumerate()</code>函数这样实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; employees &#x3D; [&#39;John&#39;, &#39;Danny&#39;, &#39;Jennifer&#39;]</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">&gt;&gt;&gt; for id_number, name in enumerate(employees, start&#x3D;30001):</span><br><span class="line">...     print(f&quot;&#123;name&#125;&#39;s employee ID #: &#123;id_number&#125;&quot;)</span><br><span class="line">... </span><br><span class="line">John&#39;s employee ID #: 30001</span><br><span class="line">Danny&#39;s employee ID #: 30002</span><br><span class="line">Jennifer&#39;s employee ID #: 30003</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，我们创建了一个包含员工姓名的列表，它作为可迭代对象传给函数<code>enumerate()</code>，并且，<code>start</code>参数设置为<code>30001</code>，表示员工ID开始的编号。如你所见，每次循环，我们就得到了编号和列表中相应的元素。最后，根据我们的要求将结果打印出来。</p>
+<h2 id="reversed-函数"><a href="#reversed-函数" class="headerlink" title="reversed()函数"></a><code>reversed()</code>函数</h2><p>第二个内置函数<code>reversed(seq)</code>，它以序列对象为参数（例如：元组和列表），返回一个反序的迭代器对象，本质上，这个函数的作用是将传入的序列对象中元素的排列顺序反序。</p>
+<p>假设你的午餐如下面的列表所示，因为新冠病毒，就不要下馆子了。在接下来的一周内，你也不知道怎么变换吃的花样，于是，就干脆将列表中的食物反序吧。为此，我们可以使用<code>reversed()</code>函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; meals &#x3D; [&#39;pizza&#39;, &#39;hamberger&#39;, &#39;pasta&#39;, &#39;ramen&#39;, &#39;salad&#39;]</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">&gt;&gt;&gt; for meal in reversed(meals):</span><br><span class="line">...     print(meal)</span><br><span class="line">... </span><br><span class="line">salad</span><br><span class="line">ramen</span><br><span class="line">pasta</span><br><span class="line">hamberger</span><br><span class="line">pizza</span><br></pre></td></tr></table></figure>
+
+<p>由上面代码可知，利用函数<code>reversed()</code>，得到了按变量<code>meals</code>中元素的相反顺序排列的食物。注意，对于<code>list</code>对象而言，也有一个<code>reverse()</code>方法，它能够原地将列表反序，即不会返回新的对象，或者说，只返回了<code>None</code>，这个操作不能用于for循环中，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; for meal in meals.reverse():</span><br><span class="line">...     print(meal)</span><br><span class="line">... </span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">TypeError: &#39;NoneType&#39; object is not iterable</span><br><span class="line">&gt;&gt;&gt; meals.reverse() is None</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<h2 id="sorted"><a href="#sorted" class="headerlink" title="sorted()"></a><code>sorted()</code></h2><p>第三个内置函数式<code>sorted(iterable, *, key=None, reverse=False)</code>，其参数是可迭代对象，返回一个新的排序了的列表。需要注意两个关键词参数的使用，<code>key</code>，通过它可以指定一个含有一个参数的函数，用这个函数比较可迭代对象中的每个元素；<code>reverse</code>用于指定排序方式，如果为<code>True</code>表示反序。</p>
+<p>假设一个员工列表，其中每个元素表示一个员工对象，每个员工对象包含名字和上一季度的绩效考核分数。我们需要根据绩效考核的分数对员工进行排序。下面的代码演示了实现方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; class Employee:</span><br><span class="line">...     def __init__(self, name, score):</span><br><span class="line">...         self.name &#x3D; name</span><br><span class="line">...         self.score &#x3D; score</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; employee0 &#x3D; Employee(&#39;John Smith&#39;, 95)</span><br><span class="line">&gt;&gt;&gt; employee1 &#x3D; Employee(&#39;Mike Brown&#39;, 99)</span><br><span class="line">&gt;&gt;&gt; employee2 &#x3D; Employee(&#39;Jennifer Thompson&#39;, 97)</span><br><span class="line">&gt;&gt;&gt; employees &#x3D; [employee0, employee1, employee2]</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">&gt;&gt;&gt; for employee in sorted(employees, key&#x3D;lambda x: x.score, reverse&#x3D;True):</span><br><span class="line">...     print(f&#39;&#123;employee.name&#125; Score: &#123;employee.score&#125;&#39;)</span><br><span class="line">... </span><br><span class="line">Mike Brown Score: 99</span><br><span class="line">Jennifer Thompson Score: 97</span><br><span class="line">John Smith Score: 95</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码中，我们自定义了一个类<code>Employee</code>，用它来创建员工实例，并存储姓名和分数。然后创建3个员工实例，并将这三个员工实例存入一个列表中，这个列表将作为可迭代对象传给<code>sorted()</code>函数。<strong>注意：</strong>参数<code>key</code>的值，我们编写了一个lambda函数，它会对列表中每个员工实例的<code>score</code>属性进行比较。<code>reverse</code>参数的值设置为<code>True</code>，在输出结果中，会按照分数从大到小排序。</p>
+<p>与<code>reversed()</code>类似，列表对象有一个<code>sort()</code>方法，它能够对列表进行原地排序，所以，我们不能直接在for循环中用<code>list.sort()</code>方法。另外一个重要区别是，<code>sorted()</code>函数可以用任何可迭代对象为参数（比如：元组、字典），这使它在排序上的能力比<code>sort()</code>方法强悍，后者只能作为列表对象的方法。</p>
+<h2 id="zip-函数"><a href="#zip-函数" class="headerlink" title="zip()函数"></a><code>zip()</code>函数</h2><p>第四个内置函数是<code>zip(*iterables)</code>，可以用一个或多个可迭代对象作为参数，会返回一个迭代器对象，并且将参数中的可迭代对象的元素对应合并，合并后的元素以元组形式组合，如合并后的第1个元组中包含作为参数的每个可迭代对象中的第1个元素。</p>
+<p>假设有两个整数作为元素的列表，我们需要相对应整数的乘积，就可以使用<code>zip()</code>函数来实现这个操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers0 &#x3D; [4, 5, 6]</span><br><span class="line">&gt;&gt;&gt; numbers1 &#x3D; [11, 12, 13]</span><br><span class="line">&gt;&gt;&gt; </span><br><span class="line">&gt;&gt;&gt; for j, k in zip(numbers0, numbers1):</span><br><span class="line">...     print(f&#39;&#123;j&#125; * &#123;k&#125; &#x3D; &#123;j*k&#125;&#39;)</span><br><span class="line">... </span><br><span class="line">4 * 11 &#x3D; 44</span><br><span class="line">5 * 12 &#x3D; 60</span><br><span class="line">6 * 13 &#x3D; 78</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码中，首先创建了两个列表<code>numbers0</code>和<code>numbers1</code>，将它们传给<code>zip()</code>函数，返回的元组中包含了对应的数字。</p>
+<p>一个需要注意的是，<code>zip()</code>函数返回的迭代器对象的长度，是以参数中最短的可迭代对象为准。例如下面的示例，两个字符串的长度不同，最后得到的迭代器对象只有3个元组，并且，必须用<code>list()</code>函数对迭代器对象进行转换，才能显示其具体内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; letters0 &#x3D; &#39;abcde&#39;</span><br><span class="line">&gt;&gt;&gt; letters1 &#x3D; &#39;xyz&#39;</span><br><span class="line">&gt;&gt;&gt; list(zip(letters0, letters1))</span><br><span class="line">[(&#39;a&#39;, &#39;x&#39;), (&#39;b&#39;, &#39;y&#39;), (&#39;c&#39;, &#39;z&#39;)]</span><br></pre></td></tr></table></figure>
+
+<h2 id="要点总结"><a href="#要点总结" class="headerlink" title="要点总结"></a>要点总结</h2><p>本文主要探讨了for循环中使用的4个内置函数。这些函数的特点如下：</p>
+<ul>
+<li><code>enumerate()</code>函数允许创建循环的计数起点。</li>
+<li><code>reversed()</code>函数的作用主要是对序列进行反序。</li>
+<li><code>sorted()</code>函数能够对任何可迭代对象进行排序，并且可以灵活地指定任何排序关键词。</li>
+<li><code>zip()</code>函数主要用于组合可迭代对象中对应的元素，并返回一个迭代器对象。</li>
+</ul>
+<p>原文链接：<a href="https://medium.com/swlh/level-up-for-loops-in-python-with-4-simple-functions-da01173a834c" target="_blank" rel="noopener">https://medium.com/swlh/level-up-for-loops-in-python-with-4-simple-functions-da01173a834c</a></p>
+<hr>
+<p style="text-align:center">专注于<strong>软件和AI</strong>的公众号</p>
+<p style="text-align:center"><strong>老齐教室</strong></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/25/child-python-one/">
+        <span class="nav-arrow">← </span>
+        
+          青少年编程：用Python探究数学（1）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#概要"><span class="toc-nav-text">概要</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#enumerate-函数"><span class="toc-nav-text">enumerate()函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#reversed-函数"><span class="toc-nav-text">reversed()函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#sorted"><span class="toc-nav-text">sorted()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#zip-函数"><span class="toc-nav-text">zip()函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#要点总结"><span class="toc-nav-text">要点总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/26/built-in-funtions-for-loop/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
