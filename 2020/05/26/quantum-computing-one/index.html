@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      什么是量子计算 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>什么是量子计算</h2>
+    <p class="post-date">2020-05-26</p>
+    <section class="markdown-content"><p>作者：Jonathan Hui</p>
+<p>翻译：老齐</p>
+<p>量子位是量子计算中的核心单位，借助于叠加态，我们可以将量子位编码成指数级的信息，这些信息可以比传统的计算机产生的信息多得多。在本文中，首先要介绍一下量子计算的基本原理，以及量子力学中的一些法则。</p>
+<h2 id="叠加态"><a href="#叠加态" class="headerlink" title="叠加态"></a>叠加态</h2><p>叠加态是一个重要的概念，因为这要牵扯到量子位。还是从自旋的数学模型开始吧，别害怕！它很简单。在这里我们会放慢学习的节奏，从而你能够有时间熟悉量子力学中的一些符号，这些符号构成了量子力学中那些优美的函数。另外，我们这里用到的数学，远比你想象得简单。</p>
+<p>当我们说一个叠加态中的粒子的自旋时，其含义非常简单，就是指自旋向上（up spin）和自旋向下（down spin）的线性组合，用狄拉克符号表示就是这样的：</p>
+<p><img src="https://miro.medium.com/max/1400/1*EGcFtVPmX9YSaQGbghY9yw.jpeg" alt=""></p>
+<p>前面的系数 $\alpha$ 叫做振幅（amplitude）</p>
+<p><img src="https://miro.medium.com/max/1400/1*SsG_fD9HVYqSmiKamK4gsw.jpeg" alt=""></p>
+<p>此处的自旋向上和自旋向下就相当于向量的基，类似于直角坐标系中x、y两个向量的基那样，其写法也类似。</p>
+<p><img src="https://miro.medium.com/max/1400/1*gJNn4_gNJGnkSYErOgruKw.jpeg" alt=""></p>
+<p>用狄拉克符号表示，$|\Psi \rangle$ 表示量子态（quantum state），它其实是矩阵。上图中的 superposition 所标示的，就是自旋的线性组合，它就是一种叠加态，也就是一种量子态。</p>
+<p><img src="https://miro.medium.com/max/1400/1*6gpmw0tcLBlfTt1Y8CU1Mw.jpeg" alt=""></p>
+<p>$|0\rangle$ 和 $|1 \rangle$ 是两个正交向量，可以写成：</p>
+<p><img src="https://miro.medium.com/max/1400/1*z8tjjL8v9P7g9PWcRUoUDQ.jpeg" alt=""></p>
+<p>或者是：</p>
+<p><img src="https://miro.medium.com/max/1400/1*Q0w-cHPwYa4Gim6YGMkP6g.jpeg" alt=""></p>
+<p>线性代数，没那么复杂。在这里，我们只是用狄拉克符号将线性代数中的写法简化了。一旦你熟悉了，我们可以用很多简单的方式进行表示。例如，两个正交向量的内积，用 $\langle0|1\rangle$ 表示，它们的结果总是 $0$。而任何两个叠加态的内积则为 $1$。</p>
+<p><img src="https://miro.medium.com/max/1400/1*As0iyHBYZJsQ3SC1YSSyrQ.jpeg" alt=""></p>
+<p>下面所示的是更复杂一些的叠加态以及对应的矩阵表示。</p>
+<p><img src="https://miro.medium.com/max/1400/1*m63fZY-u_g1x_Qakgx7eDw.png" alt=""></p>
+<p>通过对自旋向上和自旋向下的测量，我们能够控制叠加态，但是，当我们测量了自旋向上，叠加态可能坍缩为某一种状态，$|0 \rangle$ 或 $|1 \rangle$。这是量子力学的核心思想，也是自然的运作规律。</p>
+<p>假设一个粒子状态表示为：</p>
+<p><img src="https://miro.medium.com/max/1400/1*Nd6N2aOqtJcCnq6GRyX58g.png" alt=""></p>
+<p>它坍缩为另外一种状态的概率是相应振幅的平方，事实表明，这个模型与实验结果相符的非常好，因此，测量粒子的自旋向上的概率是 $\frac{1}{2}$。</p>
+<p><img src="https://miro.medium.com/max/1400/1*4Q3RTyIK4EspDsa0cMYFrQ.jpeg" alt=""></p>
+<p>这是我们必须要掌握的基本原则，所有状态的测量概率之和是 $1$ （即 $\langle \Psi | \Psi \rangle=1$），计算方式如下：</p>
+<p><img src="https://miro.medium.com/max/1400/1*gwiRYJviMYePkDv6dW-wiw.png" alt=""></p>
+<p>我们可以把叠加态想象成一个单位球体表面的一个点，自旋向上和自旋向下恰恰是这个球体的北极和南极，那么图中的红点就表示了另外一种叠加态，测量它的时候，自然迫使它选择一边，向上还是向下。</p>
+<p><img src="https://miro.medium.com/max/1400/1*5TBm8mIMKLdvHwdE2zWPAg.jpeg" alt=""></p>
+<p>但是，上面图示也不是非常准确。为了更贴近真实的直观表示，像上图那样的球体称为布拉赫球，其中的振幅 $\alpha$ 也可以是复数，例如：</p>
+<p><img src="https://miro.medium.com/max/1400/1*gJbrvoiTZuC9n9fV8P_0kw.jpeg" alt=""></p>
+<p>这样，叠加态的值有6种可能。</p>
+<p><img src="https://miro.medium.com/max/1400/1*k4slG5sTYyrJU_n6cHXLxw.jpeg" alt=""></p>
+<p>通过计算振幅的范数，就得到了概率，方法就是振幅与其共轭相乘，例如 $3+4i$ 的共轭是 $3-4i$，表示为：</p>
+<p><img src="https://miro.medium.com/max/1400/1*9LBNKJpUaEewra2J_QlmzQ.jpeg" alt=""></p>
+<p>下面，我们简要比较一下比特（bit）和量子位。一个比特表示两个可能数值中的一个，不是 $0$ 就是 $1$。一个量子位表示单位球面上的点。在第一个回合中，量子位在表示的状态数量上更胜一筹。</p>
+<p><img src="https://miro.medium.com/max/1400/1*58RF6Nhq9E-AbAlzs57a8Q.jpeg" alt=""></p>
+<p>另外，我们可以通过量子态的组合而成一个复杂系统，根据量子力学的原理，一个复杂系统可以用张量积表示：</p>
+<p><img src="https://miro.medium.com/max/1400/1*2203QcEsV6qXIKyWBjD2Mg.jpeg" alt=""></p>
+<p>其中</p>
+<p><img src="https://miro.medium.com/proxy/1*TPqxqIv5rJcHkhTBiqc3QA.png" alt=""></p>
+<p>例如，这个复杂系统中包括2个自旋向下和1个自旋向上：</p>
+<p><img src="https://miro.medium.com/max/1400/1*odRSKIy1xkUFs7xWda2SqQ.png" alt=""></p>
+<p>很快，我们就会看到，这是多么强大的系统，传统的计算是无法达到的，下面是一个3个量子位的示例：</p>
+<p><img src="https://miro.medium.com/max/1400/1*PY3AIj_p64uLLhqocWFSIg.png" alt=""></p>
+<p>下面的方程描述了2个量子位的系统，它由两个粒子的自旋组成。</p>
+<p><img src="https://miro.medium.com/max/1400/1*LcPSoVEzkPl5BezOSf4kVA.jpeg" alt=""></p>
+<p>因此，新的量子态有4个基向量，分别是$|00\rangle、|01\rangle、|10\rangle、|11\rangle$，相应的是4个复数的系数。</p>
+<p><img src="https://miro.medium.com/max/1400/1*8dOhVk7aSPzrTD_0hbmhMw.png" alt=""></p>
+<p>如果是3量子位，就是8个基向量了：</p>
+<p><img src="https://miro.medium.com/proxy/1*f6IvM9LtDFgVcaTJ2JuOoQ.png" alt=""></p>
+<p>按照这样的组合，64量子位，则有：</p>
+<p><img src="https://miro.medium.com/max/1400/1*ZlIUeLZylvAQpxu11cR7dA.png" alt=""></p>
+<p>基向量。美国最大的彩票头奖为16亿美元，以2的64次幂表示数大约能赢得300亿次最大的彩票。 凭借64量子位，我们可以使用这些十亿亿系数（维度）来编码和处理大量数据。 量子位赢得第二回合。</p>
+<p>线性地增加量子位，就能指数级扩展信息容量。</p>
+<p>收获不小！这样 我们就可以在高维度空间处理信息了。但是无法直接读取系数，所有的计算中，读取量子位的唯一方法是对其进行测量，从而仅返回状态之一（而不返回系数）。</p>
+<p><img src="https://miro.medium.com/max/1400/1*OuIZelz7rJNVaSDYzNq9-A.jpeg" alt=""></p>
+<p>测量量子位时，容量与位无异，在这种约束下设计算法非常棘手。 我们有一个涡轮增压的概念，但是做事的方式很尴尬，稍后会再谈。</p>
+<h2 id="预告"><a href="#预告" class="headerlink" title="预告"></a>预告</h2><p>至此，已经理解了量子位，可以类比于传统计算机中的比特，但比它更强大。在传统计算机中，我们通过 $ +, -, ×, ÷$ 这些运算符操作比特，在量子计算机中，就不能这么做了。那么，如何操作量子位？请看下篇。</p>
+<p>原文链接：<a href="https://medium.com/@jonathan_hui/qc-what-are-qubits-in-quantum-computing-cdb3cb566595" target="_blank" rel="noopener">https://medium.com/@jonathan_hui/qc-what-are-qubits-in-quantum-computing-cdb3cb566595</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/26/built-in-funtions-for-loop/">
+        <span class="nav-arrow">← </span>
+        
+          用4个简单的函数提升for循环
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/05/27/child-python-two/">
+        
+          青少年编程：用Python探究数学（2）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#叠加态"><span class="toc-nav-text">叠加态</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预告"><span class="toc-nav-text">预告</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/26/quantum-computing-one/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
