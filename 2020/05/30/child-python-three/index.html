@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      青少年编程：用Python探究数学（3） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>青少年编程：用Python探究数学（3）</h2>
+    <p class="post-date">2020-05-30</p>
+    <section class="markdown-content"><p>在上一篇中，使用for循环绘制了正多边形。本篇要在此基础上，进一步优化上一篇的程序。</p>
+<p>从数学的角度来讲，正多边形（或者说正 $n$ 边形，$n \ge 3$）的外角和是 $360°$，那么每个外角的度数就是 $\frac{360°}{n}$，其中 $n$ 为多边形的边。根据上一篇所获得的经验，这个外角的度数，正好是小海龟在任何一点向右转的度数。</p>
+<p>有了以上的数学认识，我们就可以轻松绘制任意正多边形了。</p>
+<p>为了能让我们的程序更“智能”一些，先了解一个Python的内置函数：<code>input()</code>，这个函数式用来获得用户通过键盘输入的字符。打开IDLE，会首先看到下面图所示状态：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WX20200530-093353_20200530093424.png" alt=""></p>
+<p>这种状态，我们称之为<strong>交互模式</strong>，也就是允许我们在提示符后面输入一行代码，然后敲回车，计算机（其实是Python解析器）就会执行这行代码。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3</span> + <span class="number">4</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<p>在交互模式中，输入 <code>3+4</code> 之后，敲回车，就返回了这条语句的计算结果。类似地，如果执行 <code>input()</code>函数，会是这样：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WX20200530-094305_20200530094350.png" alt=""></p>
+<p>在<code>input()</code>函数里面的文字，是提示语（绿色文字），也可以不写。注意，提示语的外围，是用英文状态下的引号包裹，必须是英文状态下的引号——英文的引号，可以是单引号，也可以是双引号，在引号包括下的东西称为<strong>字符串</strong>。</p>
+<p>执行了上面的函数之后，就出现了下面一行的提示语（蓝色文字），然后就是光标，等待用户通过键盘输入内容。例如按下键盘上的数字7，然后敲回车键，得到下图显示的效果：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WX20200530-094322_20200530094350.png" alt=""></p>
+<p>这说明<code>input()</code>函数已经捕获了我们通过键盘输入的数字，并且返回了<code>&#39;7&#39;</code>，这是一个<strong>字符串</strong>——符合前面提到的字符串的特点，用引号包裹。</p>
+<p>为了进一步理解<code>input()</code>的作用，再执行下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = input(<span class="string">'please input a number:'</span>)</span><br><span class="line">please input a number:<span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="string">'4'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a + <span class="number">3</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;pyshell#4&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    a + <span class="number">3</span></span><br><span class="line">TypeError: can only concatenate str (<span class="keyword">not</span> <span class="string">"int"</span>) to str</span><br></pre></td></tr></table></figure>
+
+<p>第1行中，<code>a = input(&#39;please input a number:&#39;)</code>的含义是，将捕获的键盘输入字符，用变量<code>a</code>引用，在第3行，就显示了<code>a</code>这边变量引用的内容，是通过键盘输入的数字<code>4</code>，但是，注意，它是一个字符串。</p>
+<p>执行第5行，报错了。注意阅读报错信息——一定要有耐心阅读报错信息，<code>can only concatenate str (not &quot;int&quot;) to str</code>的意思是不能将字符串和整数连接起来。在<code>a + 3</code>中，变量<code>a</code>引用的对象是字符串，而<code>3</code>是一个整数，这两个是不能相加的。在Python中，必须是同种类型的才能相加——不仅仅是相加，其他运算也是如此。怎么办？可以进行类型转化。下面演示的就是把字符串转化为整数的方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>int(a) + <span class="number">3</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<p><code>int(a)</code>就是把字符串转变为了整数，然后就能跟整数3相加了。</p>
+<p>打开前面使用过的文件<code>myturtle.py</code>，对其中代码做如下修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> turtle <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">shape(<span class="string">"turtle"</span>)</span><br><span class="line">n = input(<span class="string">"请输入多边形的边数："</span>)</span><br><span class="line">n = int(n)</span><br><span class="line">alpha = <span class="number">360</span> / n</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">    forward(<span class="number">100</span>)</span><br><span class="line">    right(alpha)</span><br></pre></td></tr></table></figure>
+
+<p>这段代码中，第4行使用了刚刚学习的<code>input()</code>函数，目的就是用户可以通过键盘，输入想要绘制的多边形的边数。注意第5行，根据前面讲过的，要将在第4行获得的键盘输入的数字转化为整数，然后第6行才能做除法，这样就得到了该正n边形的外角的度数，将它用于第9行，作为<code>right()</code>的参数。</p>
+<p>另外，第7行，<code>range()</code>内的参数，也要修改，n边形，就要循环n次。</p>
+<p>保存文件，执行。注意观察显示的界面，那只小海龟趴着不动，为什么？再观察交互模式，其实是等着用户输入边数呢。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/t1_20200530102547.png" alt=""></p>
+<p>比如输入：10，然后回车。就会看到小海龟按照程序中指定的方式画图了，一个正10边形跃然“屏”上。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/t2_20200530103302.png" alt=""></p>
+<p>在上面的程序中，我们实现了正多边形边数的键盘输入，那么，正多边形的边长能不能通过键盘输入呢？读者可以思考一下，然后尝试。下面的代码供参考。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> turtle <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">shape(<span class="string">"turtle"</span>)</span><br><span class="line">n = input(<span class="string">"请输入多边形的边数："</span>)</span><br><span class="line">length = input(<span class="string">"请输入多边形的边长："</span>)</span><br><span class="line">n = int(n)</span><br><span class="line">length = int(length)</span><br><span class="line">alpha = <span class="number">360</span> / n</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">    forward(length)</span><br><span class="line">    right(alpha)</span><br></pre></td></tr></table></figure>
+
+<p>我执行这个程序，分别输入了下图所示的两个值：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/t3_20200530104113.png" alt=""></p>
+<p>我让小海龟画一个正100边的图形，结果什么样？</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/t4_20200530104228.png" alt=""></p>
+<p>怎么看起来像圆？不过仔细观察，会发现，没有圆那么圆滑，不是圆，是多边形。</p>
+<p>“看起来像圆”，这说明当多边形的边数很多的时候，这个多边形就接近圆了。在数学上，人们很早就研究了正多边形和它的外接圆的关系，也发现了这样的规律，当多边形的边数阅读，该多边形与外接圆越接近——这是一种近似地计算圆的周长的方法。中国古代，把这称之为“割圆术”，魏晋时期数学家刘徽于公元263年撰写的《九章算术注》有详细的记载。对此有兴趣深入了解的同学，可以查阅有关资料。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/01300000171148121695984945066_20200530105003.jpg" alt=""></p>
+<p>在本篇中，主要学习使用<code>input()</code>函数，实现了通过键盘输入数字，绘制任意边长和边数的多边形，并在最后实现了“割圆术”。读者不妨发挥自己的想象力，修改程序，看看还有什么新发现？</p>
+<hr>
+<p style="text-align:center">专注于<strong>软件和AI</strong>的公众号</p>
+<p style="text-align:center"><strong>老齐教室</strong></p>
+
+
+
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/27/child-python-two/">
+        <span class="nav-arrow">← </span>
+        
+          青少年编程：用Python探究数学（2）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/05/30/child-python-three/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
