@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的4个Lambda函数示例 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的4个Lambda函数示例</h2>
+    <p class="post-date">2020-06-01</p>
+    <section class="markdown-content"><p>作者：Yong Cui, Ph.D.</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：<strong>《跟老齐学Python：轻松入门》</strong></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E8%BD%BB%E6%9D%BE%E5%85%A5%E9%97%A8_20200122130623.png" alt=""></p>
+<p><strong>说明：</strong> 本书是针对零基础学习者的入门读物，书中以深入浅出的方式介绍了Python语言的相关知识。书中代码使用Python3，并且在本公众号有相关的资源推荐和勘误修订，详情请关注本公众号（【老齐教室】）之后，在菜单中查看。</p>
+<hr>
+<p>不是所有Python开发者都喜欢Lambda函数，我也对它有着比较复杂的感觉，特别是对初学者而言，它不像我们使用的普通函数那么直观，然而对于一些有丰富开发经验的程序员，他们喜欢在必要时使用它。暂且把这些分歧搁置，然我们来了解一下Lambda函数到底是什么。</p>
+<p>Lambda函数式Python里的匿名函数，有时候提到匿名函数，就是指Lambda函数，其基本语法是：<code>lambda parameters: expression</code>。这里用<code>lambda</code>关键词标记我们要定义一个Lambda函数，然后是参数列表，参数的个数可以是0个，或者多个。后面是冒号（英文状态下），然后就是Lambda函数中的表达式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 创建Lambda函数 </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>triple = <span class="keyword">lambda</span> x: x*<span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 查看类型</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(triple)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">function</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; </span></span><br><span class="line"><span class="class">&gt;&gt;&gt; # 调用函数</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">triple</span><span class="params">(<span class="number">5</span>)</span></span></span><br><span class="line"><span class="class">15</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码中，我们创建了一个Lambada函数，并且用变量<code>triple</code>引用，而检查它的类型，我们发现Lambda函数本质也是一种函数。若要使用这个函数，跟我们使用其他函数一样来调用它，调用的时候也是要在括号中根据参数列表的参数提供相应的值。</p>
+<p>需要注意的是，在编程实践中，一般不会将Lambda函数赋给一个变量，在很多程序员眼里，将Lambda函数用在赋值语句中是一种滥用Lambda函数的行为，这点请特别注意。下面的代码中会给大家演示如何正确地使用Lambda函数。</p>
+<h2 id="No-1-对序列排序"><a href="#No-1-对序列排序" class="headerlink" title="No 1. 对序列排序"></a>No 1. 对序列排序</h2><p>Lambda函数的第一应用场景就是用于内置函数<code>sorted()</code>中，用于对序列类型的数据进行排序。如果你熟悉了列表对象的方法，你应该知道它有一个类似的方法<code>sort()</code>，通过它能够实现对列表对象的原地排序。在本微信公众号【老齐教室】中已经发布的文章<a href="https://itdiffer.com/2020/05/26/built-in-funtions-for-loop/" target="_blank" rel="noopener">《用4个简单的函数提升for循环》</a>中对此有详细说明，在文中也说明了<code>sorted()</code>函数的使用方法和场景。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 创建序列</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>grades = [&#123;<span class="string">'name'</span>: <span class="string">'Jennifer'</span>, <span class="string">'final'</span>: <span class="number">95</span>&#125;,</span><br><span class="line"><span class="meta">... </span>    &#123;<span class="string">'name'</span>: <span class="string">'David'</span>, <span class="string">'final'</span>: <span class="number">92</span>&#125;,</span><br><span class="line"><span class="meta">... </span>    &#123;<span class="string">'name'</span>: <span class="string">'Aaron'</span>, <span class="string">'final'</span>: <span class="number">98</span>&#125;]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 根据 name 排序</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(grades, key=<span class="keyword">lambda</span> x: x[<span class="string">'name'</span>])</span><br><span class="line">[&#123;<span class="string">'name'</span>: <span class="string">'Aaron'</span>, <span class="string">'final'</span>: <span class="number">98</span>&#125;, &#123;<span class="string">'name'</span>: <span class="string">'David'</span>, <span class="string">'final'</span>: <span class="number">92</span>&#125;, &#123;<span class="string">'name'</span>: <span class="string">'Jennifer'</span>, <span class="string">'final'</span>: <span class="number">95</span>&#125;]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 根据 final 的值降序排序</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(grades, key=<span class="keyword">lambda</span> x: x[<span class="string">'final'</span>], reverse=<span class="literal">True</span>)</span><br><span class="line">[&#123;<span class="string">'name'</span>: <span class="string">'Aaron'</span>, <span class="string">'final'</span>: <span class="number">98</span>&#125;, &#123;<span class="string">'name'</span>: <span class="string">'Jennifer'</span>, <span class="string">'final'</span>: <span class="number">95</span>&#125;, &#123;<span class="string">'name'</span>: <span class="string">'David'</span>, <span class="string">'final'</span>: <span class="number">92</span>&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码中，有两处<code>sorted()</code>函数中的参数<code>key</code>为Lambda函数，都是用于指定列表对象的排序方式。示例中，列表内的元素是字典，如果我们想根据字典的键<code>name</code>的值排序，就要在变量的后面的方括号中写明，以它作为<code>key</code>的值。如你所见，在执行了<code>sorted()</code>函数之后，列表就按照指定的方式排序了。</p>
+<h2 id="No-2-找到最值"><a href="#No-2-找到最值" class="headerlink" title="No 2. 找到最值"></a>No 2. 找到最值</h2><p>有两个内置函数能够帮助我们找到集合中的最值，<code>min()</code>和<code>max()</code>，这两个方法的用法一样。但是，很多时候我们操作的对象是可迭代对象，并且需要指定<code>key</code>参数，从而得到相应的最值，这就跟<code>sorted()</code>类似了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>grades = [&#123;<span class="string">'name'</span>: <span class="string">'Jennifer'</span>, <span class="string">'final'</span>: <span class="number">95</span>&#125;,</span><br><span class="line"><span class="meta">... </span>    &#123;<span class="string">'name'</span>: <span class="string">'David'</span>, <span class="string">'final'</span>: <span class="number">92</span>&#125;,</span><br><span class="line"><span class="meta">... </span>    &#123;<span class="string">'name'</span>: <span class="string">'Aaron'</span>, <span class="string">'final'</span>: <span class="number">98</span>&#125;]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># final的最大值</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>max(grades, key=<span class="keyword">lambda</span> x: x[<span class="string">'final'</span>])</span><br><span class="line">&#123;<span class="string">'name'</span>: <span class="string">'Aaron'</span>, <span class="string">'final'</span>: <span class="number">98</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># final的最小值</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>min(grades, key=<span class="keyword">lambda</span> x: x[<span class="string">'final'</span>])</span><br><span class="line">&#123;<span class="string">'name'</span>: <span class="string">'David'</span>, <span class="string">'final'</span>: <span class="number">92</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例中，<code>max()</code>函数中的参数<code>key</code>的值用<code>lambda x: x[&#39;final&#39;]</code>获得，从而找到了数据中<code>final</code>最高分数的学生。类似地，<code>min()</code>函数的用法同上。</p>
+<h2 id="No-3-作为工厂函数"><a href="#No-3-作为工厂函数" class="headerlink" title="No 3. 作为工厂函数"></a>No 3. 作为工厂函数</h2><p>很多人都知道Python中内置的字典类型<code>dict</code>，此外，还有另外一个叫做<code>defaultdict</code>的字典类型，它是<code>dict</code>的子类，在<code>collections</code>模块中。<code>defaultdict</code>的完整形式是<code>defaultdict([*default_factory*[,*...*]])</code>，如果指定的键不再字典中，可以用<code>default_factory</code>生成该值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 创建一个 defaultdict</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>known_points = &#123;<span class="string">'first'</span>: (<span class="number">2</span>, <span class="number">3</span>), <span class="string">'second'</span>: (<span class="number">4</span>, <span class="number">2</span>)&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>points = defaultdict(<span class="keyword">lambda</span>: (<span class="number">0</span>, <span class="number">0</span>), known_points)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 读取点</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>points[<span class="string">'first'</span>]</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>points[<span class="string">'second'</span>]</span><br><span class="line">(<span class="number">4</span>, <span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>points[<span class="string">'three'</span>]</span><br><span class="line">(<span class="number">0</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在上面的示例中，我们首先创建了一个<code>defaultdict</code>对象，它包括一些已知的点，特别要注意，我们用Lambda函数<code>lambda: (0, 0)</code>作为参数<code>default_factory</code>的参数。这样，如果<code>defaultdict</code>中没有指定的键是，就会调用这个Lambda函数，并且返回<code>(0, 0)</code>值。这个示例还显示了Lambda函数的参数为0个的情况。</p>
+<h2 id="No-4-与高级函数配合使用"><a href="#No-4-与高级函数配合使用" class="headerlink" title="No 4. 与高级函数配合使用"></a>No 4. 与高级函数配合使用</h2><p>这里所谓的高级函数，指定是<code>map()</code>和<code>filter()</code>这样的函数。一定要理解一个重要的观点：<strong>Python中万物皆对象</strong>。在本微信公众号中，你可以找到很多阐述这一观点的文章。也正是因为这个原因，函数才可以作为另外一个函数的参数，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 创建一个列表</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 列表中的每个元素乘以3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(map(<span class="keyword">lambda</span> x: x * <span class="number">3</span>, numbers))</span><br><span class="line">[<span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">12</span>, <span class="number">15</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 筛选列表中的偶数</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(filter(<span class="keyword">lambda</span> x: x%<span class="number">2</span> == <span class="number">0</span>, numbers))</span><br><span class="line">[<span class="number">2</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中，我们使用了<code>map()</code>和<code>filter()</code>函数，同它们对已有的列表进行操作，并且将返回对象转化为列表。因为<code>map()</code>和<code>filter()</code>函数的返回值不是列表，所以，要用<code>list()</code>进行转化。</p>
+<p>我其实不太提倡你用上面的方式，因为很多时候，我们可以使用列表解析解决问题。比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x * <span class="number">3</span> <span class="keyword">for</span> x <span class="keyword">in</span> numbers]</span><br><span class="line">[<span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">12</span>, <span class="number">15</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x <span class="keyword">for</span> x <span class="keyword">in</span> numbers <span class="keyword">if</span> x%<span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line">[<span class="number">2</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p>结果与前面一样。</p>
+<p>到底是使用高级函数还是列表解析，你可以根据个人情况进行选择。对我而言，列表解析可读性更强，然而，有的人喜欢<code>map()</code>和<code>filter()</code>，因为它们有函数编程的范儿。</p>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>本文中，我们通过示例说明了Lambda函数如何使用。我希望你能够真正理解这个函数。当然，有的程序员不喜欢它。但是，毕竟它允许我们用一行代码搞定一些东西。更详细内容，请参阅《跟老齐学Python：轻松入门》。</p>
+<p>原文链接：<a href="https://medium.com/swlh/lambdas-in-python-4-practical-examples-25afe0e44f88" target="_blank" rel="noopener">https://medium.com/swlh/lambdas-in-python-4-practical-examples-25afe0e44f88</a></p>
+<p style="text-align:center">专注于<strong>软件和AI</strong>的公众号</p>
+<p style="text-align:center"><strong>老齐教室</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/30/child-python-three/">
+        <span class="nav-arrow">← </span>
+        
+          青少年编程：用Python探究数学（3）
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/06/03/dictionary-comprehension/">
+        
+          如何使用Python中的字典解析
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#No-1-对序列排序"><span class="toc-nav-text">No 1. 对序列排序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#No-2-找到最值"><span class="toc-nav-text">No 2. 找到最值</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#No-3-作为工厂函数"><span class="toc-nav-text">No 3. 作为工厂函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#No-4-与高级函数配合使用"><span class="toc-nav-text">No 4. 与高级函数配合使用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结束语"><span class="toc-nav-text">结束语</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/06/01/lambda-in-python/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
