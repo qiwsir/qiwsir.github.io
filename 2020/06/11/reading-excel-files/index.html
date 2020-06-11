@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用Python读取Excel文件指南 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用Python读取Excel文件指南</h2>
+    <p class="post-date">2020-06-11</p>
+    <section class="markdown-content"><p>原作者：Erik Marsja</p>
+<p>编译者：老齐</p>
+<p>与本文相关的图书推荐：<strong>《数据准备和特征工程》</strong></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<p>本书适合于数据科学、机器学习、深度学习等方向的学习者阅读。书中通过案例的形式，系统阐述了数据获取、数据整理、特征工程、特征选择等方法。</p>
+<hr>
+<p>本文，将重点阐述用Python如何读取Excel文件（xlsx），重点是演示使用openpyxl模块读取xlsx类型的文件。首先，我们要看一些简单的示例；然后，我们将学习读取多个Excel文件。</p>
+<p>如果你阅读过《数据准备和特征工程》（电子工业出版社出版）这本书，就肯定知道，在书中，作者介绍了如何使用Pandas读取Excel文件。在阐述本文的同时，你所看到的书中的方法，依然有效且常用。本文的目的主要是要介绍另外一种方法，并且这种方法也有它的特点。</p>
+<h2 id="Openpyxl简介"><a href="#Openpyxl简介" class="headerlink" title="Openpyxl简介"></a>Openpyxl简介</h2><p>openpyxl模块的官方网站是：<a href="https://openpyxl.readthedocs.io/en/stable/。这里，先演示一个简单的示例，看看在Python语言中如何用openpyxl模块读取一个xlsx文件。" target="_blank" rel="noopener">https://openpyxl.readthedocs.io/en/stable/。这里，先演示一个简单的示例，看看在Python语言中如何用openpyxl模块读取一个xlsx文件。</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> openpyxl</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line">xlsx_file = Path(<span class="string">'SimData'</span>, <span class="string">'play_data.xlsx'</span>)</span><br><span class="line">wb_obj = openpyxl.load_workbook(xlsx_file) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到当前工作表:</span></span><br><span class="line">sheet = wb_obj.active</span><br></pre></td></tr></table></figure>
+
+<p>当然，在理解上面代码之前，你应该已经知道如何读写文件了，如果这方面尚有不足，请阅读《跟老齐学Python：轻松入门》中的有关章节。</p>
+<p>为了能够使用openpyxl模块，请先确认，在本地已经安装了Python3和这个模块。模块的安装方法非常简单，即：<code>pip install openpyxl</code>，如果你使用的是conda，还可以：<code>conda install openpyxl</code>。注意，使用pip安装的时候，如果提示你不是最新版本，应该尽快升级，用最新版本的pip来安装。</p>
+<h2 id="读取单个文件"><a href="#读取单个文件" class="headerlink" title="读取单个文件"></a>读取单个文件</h2><p>前面的代码中，已经读取了单个文件，下面我们更详细地对代码进行解读。</p>
+<ol>
+<li>引入模块</li>
+</ol>
+<p>读取xlsx文件的第一步，就是要引入必要的模块，这里我们引入了Path和openpyxl两个模块。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> openpyxl</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/step1-to-read-xlsx-files-import-the-modules_20200611093212.jpg" alt=""></p>
+<ol start="2">
+<li>设置Excel文件路径</li>
+</ol>
+<p>在这一步，我们用Path创建了一个实例，并且用变量<code>xlsx_file</code>引用，它包含了文件的路径和文件名称。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setting the path to the xlsx file:</span></span><br><span class="line">xlsx_file = Path(<span class="string">'SimData'</span>, <span class="string">'play_data.xlsx'</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/step2_20200611093336.jpg" alt=""></p>
+<p>注意，代码中的<code>SimData</code>是当前工作目录的子目录，本例中的Excel文件保存在该目录中，如果保存在了其他目录中，需要设置完整的文件路径，例如：<code>xlsx_file = Path(Path.home(), &#39;Documents&#39;, &#39;SimData&#39;, &#39;play_data.xlsx&#39;)</code>，这是将Excel文件保存到了<code>Documents</code>目录里面的<code>SimData</code>子目录中了。</p>
+<ol start="3">
+<li>读入Excel文件（工作簿）</li>
+</ol>
+<p>第三步，利用<code>load_workbook()</code>方法读取文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wb_obj = openpyxl.load_workbook(xlsx_file)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/step3-to-reading-a-excel-file-in-pytho3-using-openpyxl_20200611094138.jpg" alt=""></p>
+<p>打印输出结果说明，当前得到的是工作簿对象。</p>
+<ol start="4">
+<li>从Excel文件中读入当前工作表</li>
+</ol>
+<p>一个工作簿，有多个工作表。我们能够使用的是当前的工作表，可以用下面的方式获得：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsheet = wb_obj.active</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/setp4-to-reading-a-excel-file-in-Python-read-the-sheet_20200611094434.jpg" alt=""></p>
+<p>如果知道了工作表名称，可以用这种方式得到指定工作表<code>play_data = wb_obj[&#39;play_data&#39;]</code>。这样就能够实现工作表的切换。</p>
+<ol start="5">
+<li>操作工作表</li>
+</ol>
+<p>现在可以编辑工作表了，例如，用下面的方式获得指定单元格的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(sheet[<span class="string">"C2"</span>].value)</span><br></pre></td></tr></table></figure>
+
+<p>再如，对于已经读取到的工作表，我们能够用循环语句获得指定行，并且把各个单元格中的值打印出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> sheet.iter_rows(max_row=<span class="number">6</span>):</span><br><span class="line">    <span class="keyword">for</span> cell <span class="keyword">in</span> row:</span><br><span class="line">        print(cell.value, end=<span class="string">" "</span>)</span><br><span class="line">    print()</span><br></pre></td></tr></table></figure>
+
+<p>注意，上面代码中的参数<code>max_row</code>，其值为<code>6</code>，意味着读取这个工作表的前6行。</p>
+<ol start="6">
+<li>补充：输出行和列的数量</li>
+</ol>
+<p>再补充一个常用操作，就是确定Excel文件的行和列的数量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(sheet.max_row, sheet.max_column)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/step6-reading-xlsx-files-in-python-get-number-of-rows-and-cols_20200611100158.jpg" alt=""></p>
+<h2 id="将读入的Excel文件保存为Python字典"><a href="#将读入的Excel文件保存为Python字典" class="headerlink" title="将读入的Excel文件保存为Python字典"></a>将读入的Excel文件保存为Python字典</h2><p>把Excel文件的内容读入之后，怎么将它保存为字典对象？</p>
+<p>有时候，你可能需要得到列的名称，下面代码就演示了如何实现这种需求。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> openpyxl</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line">xlsx_file = Path(<span class="string">'SimData'</span>, <span class="string">'play_data.xlsx'</span>)</span><br><span class="line">wb_obj = openpyxl.load_workbook(xlsx_file)</span><br><span class="line">sheet = wb_obj.active</span><br><span class="line"></span><br><span class="line">col_names = []</span><br><span class="line"><span class="keyword">for</span> column <span class="keyword">in</span> sheet.iter_cols(<span class="number">1</span>, sheet.max_column):</span><br><span class="line">    col_names.append(column[<span class="number">0</span>].value)</span><br><span class="line">   </span><br><span class="line">print(col_names)</span><br></pre></td></tr></table></figure>
+
+<p>为了将Excel内容保存为字典对象，当然要创建一个字典，然后就是通过循环的方式，向字典中增加相应内容。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, row <span class="keyword">in</span> enumerate(sheet.iter_rows(values_only=<span class="literal">True</span>)):</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">        data[row[<span class="number">1</span>]] = []</span><br><span class="line">        data[row[<span class="number">2</span>]] = []</span><br><span class="line">        data[row[<span class="number">3</span>]] = []</span><br><span class="line">        data[row[<span class="number">4</span>]] = []</span><br><span class="line">        data[row[<span class="number">5</span>]] = []</span><br><span class="line">        data[row[<span class="number">6</span>]] = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        data[<span class="string">'Subject ID'</span>].append(row[<span class="number">1</span>])</span><br><span class="line">        data[<span class="string">'First Name'</span>].append(row[<span class="number">2</span>])</span><br><span class="line">        data[<span class="string">'Day'</span>].append(row[<span class="number">3</span>])</span><br><span class="line">        data[<span class="string">'Age'</span>].append(row[<span class="number">4</span>])</span><br><span class="line">        data[<span class="string">'RT'</span>].append(row[<span class="number">5</span>])</span><br><span class="line">        data[<span class="string">'Gender'</span>].append(row[<span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码中，创建了一个字典<code>data</code>，然后玄幻每一行（<code>iter_rows</code>），并且仅仅获取该行的值。接下来使用条件语句，判断一下，如果是第一行，就增加字典的键，这其实是以键为列的名称。否则，将根据键（加Excel中的每一列）向字典中增加值。</p>
+<h2 id="读取多个Excel文件"><a href="#读取多个Excel文件" class="headerlink" title="读取多个Excel文件"></a>读取多个Excel文件</h2><p>下面，我们要用openpyxl模块读取多个xlsx文件。</p>
+<ol>
+<li>导入模块</li>
+</ol>
+<p>除了前面使用过的恋歌模块之外，增加了一个<code>glob</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> openpyxl</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>读取目录中的所有xlsx文件</li>
+</ol>
+<p>假设在子目录中有多个xlsx文件，现在我们使用<code>glob</code>模块，将它们都读入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xlsx_files = [path <span class="keyword">for</span> path <span class="keyword">in</span> Path(<span class="string">'XLSX_FILES'</span>).rglob(<span class="string">'*.xlsx'</span>)]</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建工作簿对象</li>
+</ol>
+<p>现在已经读入了所有xlsx文件，接下来还是使用<code>load_workbook</code>方法创建工作簿对象，不过，这次要使用列表解析的方式循环了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wbs = [openpyxl.load_workbook(wb) <span class="keyword">for</span> wb <span class="keyword">in</span> xlsx_files]</span><br></pre></td></tr></table></figure>
+
+<p>这个列表中包含了所有xlsx文件的工作簿对象。</p>
+<ol start="4">
+<li>操纵每个文件</li>
+</ol>
+<p>所有的工作簿对象都保存到了<code>wbs</code>引用的列表中，比如乣得到第一个工作簿，可以用<code>wbs[0]</code>，它的默认工作表名称，可以用<code>wbs[0].sheetnames</code>得到。其他操作跟前面就没有什么差别了。这样我们就能读入多个Excel文件了。</p>
+<p>参考链接：<a href="https://www.marsja.se/your-guide-to-reading-excel-xlsx-files-in-python/" target="_blank" rel="noopener">https://www.marsja.se/your-guide-to-reading-excel-xlsx-files-in-python/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/08/child-python-four/">
+        <span class="nav-arrow">← </span>
+        
+          青少年编程：用Python探究数学（4）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Openpyxl简介"><span class="toc-nav-text">Openpyxl简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#读取单个文件"><span class="toc-nav-text">读取单个文件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#将读入的Excel文件保存为Python字典"><span class="toc-nav-text">将读入的Excel文件保存为Python字典</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#读取多个Excel文件"><span class="toc-nav-text">读取多个Excel文件</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/06/11/reading-excel-files/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
