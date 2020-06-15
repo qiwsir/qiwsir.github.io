@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      青少年编程：用Python探究数学（5） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>青少年编程：用Python探究数学（5）</h2>
+    <p class="post-date">2020-06-15</p>
+    <section class="markdown-content"><p>前面用小海龟绘制了一个多边形，这仅仅是对Python的初步了解，如果要更深入地研究如何用Python学习数学，还要继续学习有关运算。本节就向读者介绍Python中的基本算术运算。</p>
+<p>下面的表格中显示了各种运算及其对应的符号。</p>
+<table>
+<thead>
+<tr>
+<th>运算</th>
+<th>符号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>加法</td>
+<td>+</td>
+</tr>
+<tr>
+<td>减法</td>
+<td>-</td>
+</tr>
+<tr>
+<td>乘法</td>
+<td>*</td>
+</tr>
+<tr>
+<td>除法</td>
+<td>/</td>
+</tr>
+<tr>
+<td>乘方</td>
+<td>**</td>
+</tr>
+</tbody></table>
+<p>如何使用？</p>
+<p>还是打开IDLE，你会看到下面的界面——前面也肯定看到过了，不过那时候我们没有研究它。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/p1_20200615092337.png" alt=""></p>
+<p>现在我们要使用这个界面进行操作了。在这个界面中，我们能够知道当前使用的Python版本——上图中演示使用的是3.8.2，读者的可以与此不同，但必须是3.x.x样式的版本，即Python3。此外，还看到了一个重要的提示符<code>&gt;&gt;&gt;</code>，有这个提示符，表示当前的模式是“交互模式”，在此模式之下，当我们输入一条指令之后，敲回车，Python解析器就会对这条指令进行解析，然后返回该指令的结果。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3</span> + <span class="number">4</span></span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<p>写了<code>3 + 4</code>之后，敲回车，就返回了<code>7</code>。</p>
+<p>这就是交互模式的效果。</p>
+<p>注意，在写<code>3 + 4</code>的时候，在<code>3</code>、<code>+</code>、<code>4</code>之间有空格，这里的空格并不被计入指令内容之中，只是为了显示“好看”。没有空格也可以，但是显示就不好看了。</p>
+<p>在交互模式下，练习使用前面表格中的运算符：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">5</span> - <span class="number">9</span></span><br><span class="line"><span class="number">-4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">8</span> * <span class="number">9</span></span><br><span class="line"><span class="number">72</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">8</span> / <span class="number">2</span></span><br><span class="line"><span class="number">4.0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> ** <span class="number">5</span></span><br><span class="line"><span class="number">32</span></span><br></pre></td></tr></table></figure>
+
+<p>此外，我们在前面曾经介绍过了变量，在交互模式中也可以继续使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="number">5</span> - <span class="number">9</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line"><span class="number">-4</span></span><br></pre></td></tr></table></figure>
+
+<p>从上面的练习中可以看出来，所谓交互模式，就是把<code>.py</code>文件中的每一句单独拿出来执行。</p>
+<p>如果在交互模式下完成复杂的运算，比如四则混合运算，可以吗？</p>
+<p>试一试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3</span> + <span class="number">3</span> * (<span class="number">4</span> - <span class="number">2</span>)</span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p>还是要提示，在输入上述所有内容的时候，一定要在英文状态下输入。</p>
+<p>对于常见的数学运算，在Python中还有一些内置函数给予支持，比如：<code>abs()</code>、<code>divmod()</code>、<code>pow()</code>、<code>round()</code>、<code>sum()</code>，下面演示一下这几个内置函数的使用方法，从中可以了解它们的含义。</p>
+<ul>
+<li><code>abs()</code>：求绝对值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-2</span>)</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p><code>abs()</code>是对任何数求模——对于实数，就是绝对值，通常情况，我们讨论的数都是实数，于是就称其取绝对值。如果<code>abs()</code>的参数是一个复数，就是对其取模。</p>
+<ul>
+<li><code>divmod()</code>：计算商和余数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>divmod(<span class="number">5</span>, <span class="number">2</span>)</span><br><span class="line">(<span class="number">2</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>divmod()</code>的参数有两个，第一个是被除数，第二个是除数，返回结果是用圆括号包裹的一个对象，这个对象是Python中的一个内置对象，叫做元组。元组里面有两个数字，第一表示上面两个数相除得到的商，第二个表示的是余数。</p>
+<p>特别提醒，如果被除数或除数是负数，在计算的时候，不同语言有不同的处理习惯，我们先来看一下Python中的计算结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>divmod(<span class="number">-5</span>, <span class="number">2</span>)</span><br><span class="line">(<span class="number">-3</span>, <span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>divmod(<span class="number">11</span>, <span class="number">-5</span>)</span><br><span class="line">(<span class="number">-3</span>, <span class="number">-4</span>)</span><br></pre></td></tr></table></figure>
+
+<p>那么Python中是按照什么习惯规则计算的呢？有一个基本公式：</p>
+<p>$$ (a // b) * b + (a%b) \equiv a$$</p>
+<p>a、b分别表示被除数和除数，如果<code>a / b</code>，可以用<code>//</code>符号得到这两个数相除的商，我们也称这种相除为地板除，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">5</span> // <span class="number">2</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">-5</span> // <span class="number">2</span></span><br><span class="line"><span class="number">-3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">11</span> // <span class="number">-5</span></span><br><span class="line"><span class="number">-3</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的公式中，还出现了另外一种运算<code>a % b</code>，它表示的是计算这两数相除的余数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">5</span> % <span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">-5</span> % <span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">11</span> % <span class="number">-5</span></span><br><span class="line"><span class="number">-4</span></span><br></pre></td></tr></table></figure>
+
+<p>并且，在Python中，余数的符号和除数b的符号相同。</p>
+<p>以上就是Python中计算商和余数的规则。</p>
+<ul>
+<li><code>pow()</code>：幂函数</li>
+</ul>
+<p>这个函数与前面介绍的运算符<code>**</code>的运算是等效的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> ** <span class="number">3</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pow(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>round()</code>：实现四舍五入的函数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>round(<span class="number">3.1415</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">3.14</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>round(<span class="number">2.345</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">2.35</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>sum()</code>：求和</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;pyshell#36&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    sum(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">TypeError: <span class="string">'int'</span> object <span class="keyword">is</span> <span class="keyword">not</span> iterable</span><br></pre></td></tr></table></figure>
+
+<p>像上面那样操作，试图计算1和2的和，但是报错了。因为这个函数不是这样使用的，它是用来计算一个序列——排成一列的数字就组成了一个序列——中所有数字的和，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum(lst)</span><br><span class="line"><span class="number">15</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里，变量<code>lst</code>引用的对象是<code>[1, 2, 3, 4, 5]</code>，这个对象是用<code>[ ]</code>方括号包裹着，它是Python内置对象类型，称为<strong>列表</strong>。现在所创建的列表内，是一些数字。把这个列表作为<code>sum()</code>的参数，意思就是计算列表中所有数字的和。</p>
+<p>用着方法，可以很容易地解决传说中高斯计算的那个题目：求1到100的所有整数的和。那就是写一个列表，其中的元素是1到100的整数，然后按照上面的方式调用<code>sum()</code>函数。只是，如果要真的写含有1到100的整数的列表，也够麻烦的。Python的最大特点就是帮助我们解决麻烦，它有一个内置函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>, <span class="number">101</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>, <span class="number">38</span>, <span class="number">39</span>, <span class="number">40</span>, <span class="number">41</span>, <span class="number">42</span>, <span class="number">43</span>, <span class="number">44</span>, <span class="number">45</span>, <span class="number">46</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">52</span>, <span class="number">53</span>, <span class="number">54</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">57</span>, <span class="number">58</span>, <span class="number">59</span>, <span class="number">60</span>, <span class="number">61</span>, <span class="number">62</span>, <span class="number">63</span>, <span class="number">64</span>, <span class="number">65</span>, <span class="number">66</span>, <span class="number">67</span>, <span class="number">68</span>, <span class="number">69</span>, <span class="number">70</span>, <span class="number">71</span>, <span class="number">72</span>, <span class="number">73</span>, <span class="number">74</span>, <span class="number">75</span>, <span class="number">76</span>, <span class="number">77</span>, <span class="number">78</span>, <span class="number">79</span>, <span class="number">80</span>, <span class="number">81</span>, <span class="number">82</span>, <span class="number">83</span>, <span class="number">84</span>, <span class="number">85</span>, <span class="number">86</span>, <span class="number">87</span>, <span class="number">88</span>, <span class="number">89</span>, <span class="number">90</span>, <span class="number">91</span>, <span class="number">92</span>, <span class="number">93</span>, <span class="number">94</span>, <span class="number">95</span>, <span class="number">96</span>, <span class="number">97</span>, <span class="number">98</span>, <span class="number">99</span>, <span class="number">100</span>]</span><br></pre></td></tr></table></figure>
+
+<p>对于<code>range()</code>应该不陌生吧，前面在画多边形的时候它也出现过了。这里我们再次使用它，能够轻松得到一个含有1到100所有整数的列表。于是乎：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum(range(<span class="number">1</span>, <span class="number">101</span>))</span><br><span class="line"><span class="number">5050</span></span><br></pre></td></tr></table></figure>
+
+<p>高斯的题目解决了！</p>
+<p style="text-align:center">专注于<strong>软件和AI</strong>的公众号</p>
+<p style="text-align:center"><strong>老齐教室</strong></p></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/11/reading-excel-files/">
+        <span class="nav-arrow">← </span>
+        
+          用Python读取Excel文件指南
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/06/15/child-python-five/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
