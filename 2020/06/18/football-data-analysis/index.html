@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      分析梅西和罗纳尔多的比赛数据 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>分析梅西和罗纳尔多的比赛数据</h2>
+    <p class="post-date">2020-06-18</p>
+    <section class="markdown-content"><p>作者：Adil Moujahid</p>
+<p>翻译：老齐</p>
+<p>与本书相关的图书推荐：<strong>《跟老齐学Python：数据分析》</strong></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<p>本书是数据分析、机器学习、深度学习的起步读物，向学习者阐述了这些领域的最基本工具Numpy、Pandas以及数据可视化的使用和实现方法，其中贯穿着诸多实际案例。</p>
+<hr>
+<p>2003年，迈克尔·刘易斯出版了《点球成金》，这是一本关于比利·比恩的书，他是奥克兰运动家棒球队队的总经理，他将统计分析应用于棒球，以确定和招募被低估的棒球运动员。通过数据的运用，比利·比恩所取得的胜利与薪资水平翻倍的球队一样多，并且从2000年到2003年连续4年参加了附加赛。</p>
+<p>2011年，《点球成金》被改编成电影，由布拉德·皮特饰演比利·比恩。这本书和这部电影都很成功，极大地促进了利用数据提高比赛成绩的理念。对体育数据进行分析，进而提交竞技比赛成绩，通常称之为<strong>体育分析</strong>（Sport analytics）。</p>
+<p>在棒球中，这项运动的性质使得收集大量关于比赛中的数据点比较容易。你可以从这个链接下载数据（<a href="http://www.seanlahman.com/baseball-archive/statistics/），其中包含了自1871年以来的关于球员和球队的比赛数据和其他统计数据。如果你对分析棒球数据感兴趣，你可以本微信公众号关注相关的文章。" target="_blank" rel="noopener">http://www.seanlahman.com/baseball-archive/statistics/），其中包含了自1871年以来的关于球员和球队的比赛数据和其他统计数据。如果你对分析棒球数据感兴趣，你可以本微信公众号关注相关的文章。</a></p>
+<p>然而，收集足球数据就变得复杂多了。在足球场上，22个队员无时不刻不在运动中，他们在球场上的位置和移动路径的可能可以说有无穷种，幸运的是，在这几年里，随着传感器技术和视频分析技术的进步，获得高质量的足球比赛数据也称为了可能，从而可以利用这些数据对比赛、球队和球员的情况进行分析。在本文中，我们将使用公开的足球数据集，分析梅西和罗纳尔多在2017-2018赛季中的有关数据，并为此开发一个网页，在网页上，我们以交互的方式来比较这两名球员在场上的位置。</p>
+<p>非常感谢Luca Pappalardo博士（<a href="https://lucapappalardo.com/）和他的同事们，感谢他们为公众提供了这么伟大的数据集。" target="_blank" rel="noopener">https://lucapappalardo.com/）和他的同事们，感谢他们为公众提供了这么伟大的数据集。</a></p>
+<p>下面的动画，就是这个应用的简单演示，你可以到github仓库中得到源码（<a href="https://github.com/adilmoujahid/streamlit-messi-ronaldo）。" target="_blank" rel="noopener">https://github.com/adilmoujahid/streamlit-messi-ronaldo）。</a></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/streamlit-messi-ronaldo_20200618113457.gif" alt=""></p>
+<h2 id="1-数据准备"><a href="#1-数据准备" class="headerlink" title="1. 数据准备"></a>1. 数据准备</h2><p>过去十年里，梅西和罗纳尔多共获得11个金球奖（梅西6个，罗纳尔多5个），可以说统治当时的世界足球。这两位球员都被认为是有史以来最伟大的球员之一，所以也经常被拿来比较。</p>
+<p>我们将分析这两位球员在2017-2018赛季西班牙联赛中的表现，这是罗纳尔多转会尤文图斯之前在西班牙的最后一个赛季。</p>
+<h3 id="1-1-获取数据"><a href="#1-1-获取数据" class="headerlink" title="1.1 获取数据"></a>1.1 获取数据</h3><p>首先，我们要下载有关数据集，下载地址是：<a href="https://figshare.com/collections/Soccer_match_event_dataset/4415000/5。然后关注如下部分：" target="_blank" rel="noopener">https://figshare.com/collections/Soccer_match_event_dataset/4415000/5。然后关注如下部分：</a></p>
+<ul>
+<li><strong>matches/matches_Spain.json</strong>: 西班牙联赛2017-18赛季有关信息。</li>
+<li><strong>events/events_Spain.json</strong>: 西班牙联赛2017-18赛季中每场比赛的所有事件。</li>
+<li><strong>players.json</strong>: 参加了7场国际国内重要比赛的所有球员（意大利、西班牙、发过、德国和英超联赛，2018年世界杯，2016年欧洲杯）。</li>
+<li><strong>teams.json</strong>: 参加了7场国际国内重要比赛的所有球队。</li>
+<li><strong>tags2name.csv</strong>: 标记符和标记名称的对应关系</li>
+</ul>
+<h3 id="1-2-读入数据"><a href="#1-2-读入数据" class="headerlink" title="1.2 读入数据"></a>1.2 读入数据</h3><p>下面是我们使用的Python库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> unicodedata</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+
+<p>然后从<code>players.json</code>文件，根据id读入两个球员的数据：</p>
+<ul>
+<li>梅西的id是3359</li>
+<li>罗纳尔多的id是3322</li>
+</ul>
+<p>再从<code>teams.json</code>文件中根据id找到他们所在的球队：</p>
+<ul>
+<li>巴塞罗那的id是676</li>
+<li>皇家马德里的id是675</li>
+</ul>
+<p>接下来读入西班牙联赛的比赛数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'../data/matches/matches_Spain.json'</span>) <span class="keyword">as</span> json_file:</span><br><span class="line">    matches_spain_data = json.load(json_file)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'../data/events/events_Spain.json'</span>) <span class="keyword">as</span> json_file:</span><br><span class="line">    events_spain_data = json.load(json_file)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-构造数据"><a href="#1-3-构造数据" class="headerlink" title="1.3 构造数据"></a>1.3 构造数据</h3><p>从前述数据中，分别得到皇家马德里和巴塞罗那两个俱乐部的比赛信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">barca_matches  = [match <span class="keyword">for</span> match <span class="keyword">in</span> matches_spain_data <span class="keyword">if</span> <span class="string">'676'</span> <span class="keyword">in</span> match[<span class="string">'teamsData'</span>].keys()]</span><br><span class="line">real_matches  = [match <span class="keyword">for</span> match <span class="keyword">in</span> matches_spain_data <span class="keyword">if</span> <span class="string">'675'</span> <span class="keyword">in</span> match[<span class="string">'teamsData'</span>].keys()]</span><br></pre></td></tr></table></figure>
+
+<p>将它们转化为DataFrame对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">barca_matches_df = pd.DataFrame(barca_matches)</span><br><span class="line">real_matches_df = pd.DataFrame(real_matches)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">barca_matches_df.head(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> 	status 	roundId 	gameweek 	teamsData 	seasonId 	dateutc 	winner 	venue 	wyId 	label 	date 	referees 	duration 	competitionId</span><br><span class="line"><span class="number">0</span> 	Played 	<span class="number">4406122</span> 	<span class="number">38</span> 	&#123;<span class="string">'676'</span>: &#123;<span class="string">'scoreET'</span>: <span class="number">0</span>, <span class="string">'coachId'</span>: <span class="number">92894</span>, <span class="string">'side... 	181144 	2018-05-20 18:45:00 	676 	Camp Nou 	2565922 	Barcelona - Real Sociedad, 1 - 0 	May 20, 2018 at 8:45:00 PM GMT+2 	[&#123;'</span>refereeId<span class="string">': 398931, '</span>role<span class="string">': '</span>referee<span class="string">'&#125;, &#123;'</span>r... 	Regular 	<span class="number">795</span></span><br><span class="line"><span class="number">1</span> 	Played 	<span class="number">4406122</span> 	<span class="number">37</span> 	&#123;<span class="string">'676'</span>: &#123;<span class="string">'scoreET'</span>: <span class="number">0</span>, <span class="string">'coachId'</span>: <span class="number">92894</span>, <span class="string">'side... 	181144 	2018-05-13 18:45:00 	695 	Estadio Ciudad de Valencia 	2565917 	Levante - Barcelona, 5 - 4 	May 13, 2018 at 8:45:00 PM GMT+2 	[&#123;'</span>refereeId<span class="string">': 420995, '</span>role<span class="string">': '</span>referee<span class="string">'&#125;, &#123;'</span>r... 	Regular 	<span class="number">795</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，将梅西和罗纳尔多的有关数据，也生成为DataFrame。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">messi_events_data = []</span><br><span class="line"><span class="keyword">for</span> event <span class="keyword">in</span> events_spain_data:</span><br><span class="line">    <span class="keyword">if</span> event[<span class="string">'playerId'</span>] == <span class="number">3359</span>:</span><br><span class="line">        messi_events_data.append(event)</span><br><span class="line">        </span><br><span class="line">messi_events_data_df = pd.DataFrame(messi_events_data)</span><br><span class="line"></span><br><span class="line">ronaldo_events_data = []</span><br><span class="line"><span class="keyword">for</span> event <span class="keyword">in</span> events_spain_data:</span><br><span class="line">    <span class="keyword">if</span> event[<span class="string">'playerId'</span>] == <span class="number">3322</span>:</span><br><span class="line">        ronaldo_events_data.append(event)</span><br><span class="line"></span><br><span class="line">ronaldo_events_data_df = pd.DataFrame(ronaldo_events_data)</span><br></pre></td></tr></table></figure>
+
+<p>从<code>tags2name.csv</code>中选择我们需要的时间标签：</p>
+<ul>
+<li><strong>101</strong>: Goal（进球）</li>
+<li><strong>301</strong>: Assist（助攻）</li>
+<li><strong>302</strong>: key Pass （关键传球）</li>
+<li><strong>401</strong>: Left Foot（左脚）</li>
+<li><strong>402</strong>: Right Foot（右脚）</li>
+</ul>
+<p>将这些标签加入到DataFrame中作为一列。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_tag</span><span class="params">(tags, tag_id)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tag_id <span class="keyword">in</span> [tag[<span class="string">'id'</span>] <span class="keyword">for</span> tag <span class="keyword">in</span> tags]</span><br><span class="line">    </span><br><span class="line"> messi_events_data_df.columns</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Index([<span class="string">'eventId'</span>, <span class="string">'subEventName'</span>, <span class="string">'tags'</span>, <span class="string">'playerId'</span>, <span class="string">'positions'</span>, <span class="string">'matchId'</span>,</span><br><span class="line">       <span class="string">'eventName'</span>, <span class="string">'teamId'</span>, <span class="string">'matchPeriod'</span>, <span class="string">'eventSec'</span>, <span class="string">'subEventId'</span>, <span class="string">'id'</span>],</span><br><span class="line">      dtype=<span class="string">'object'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">messi_events_data_df[<span class="string">'goal'</span>] = messi_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">101</span>))</span><br><span class="line">messi_events_data_df[<span class="string">'assist'</span>] = messi_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">301</span>))</span><br><span class="line">messi_events_data_df[<span class="string">'key_pass'</span>] = messi_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">302</span>))</span><br><span class="line">messi_events_data_df[<span class="string">'left_foot'</span>] = messi_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">401</span>))</span><br><span class="line">messi_events_data_df[<span class="string">'right_foot'</span>] = messi_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">402</span>))</span><br><span class="line"></span><br><span class="line">ronaldo_events_data_df[<span class="string">'goal'</span>] = ronaldo_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">101</span>))</span><br><span class="line">ronaldo_events_data_df[<span class="string">'assist'</span>] = ronaldo_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">301</span>))</span><br><span class="line">ronaldo_events_data_df[<span class="string">'key_pass'</span>] = ronaldo_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">302</span>))</span><br><span class="line">ronaldo_events_data_df[<span class="string">'left_foot'</span>] = ronaldo_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">401</span>))</span><br><span class="line">ronaldo_events_data_df[<span class="string">'right_foot'</span>] = ronaldo_events_data_df[<span class="string">'tags'</span>].apply(<span class="keyword">lambda</span> x: add_tag(x, <span class="number">402</span>))</span><br><span class="line"></span><br><span class="line">messi_events_data_df.head(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> 	eventId 	subEventName 	tags 	playerId 	positions 	matchId 	eventName 	teamId 	matchPeriod 	eventSec 	subEventId 	id 	goal 	assist 	key_pass 	left_foot 	right_foot</span><br><span class="line"><span class="number">0</span> 	<span class="number">8</span> 	Simple <span class="keyword">pass</span> 	[&#123;<span class="string">'id'</span>: <span class="number">1801</span>&#125;] 	<span class="number">3359</span> 	[&#123;<span class="string">'y'</span>: <span class="number">50</span>, <span class="string">'x'</span>: <span class="number">50</span>&#125;, &#123;<span class="string">'y'</span>: <span class="number">50</span>, <span class="string">'x'</span>: <span class="number">40</span>&#125;] 	<span class="number">2565554</span> 	Pass 	<span class="number">676</span> 	<span class="number">1</span>H 	<span class="number">1.012047</span> 	<span class="number">85</span> 	<span class="number">180465950</span> 	<span class="literal">False</span> 	<span class="literal">False</span> 	<span class="literal">False</span> 	<span class="literal">False</span> 	<span class="literal">False</span></span><br><span class="line"><span class="number">1</span> 	<span class="number">8</span> 	Simple <span class="keyword">pass</span> 	[&#123;<span class="string">'id'</span>: <span class="number">1801</span>&#125;] 	<span class="number">3359</span> 	[&#123;<span class="string">'y'</span>: <span class="number">64</span>, <span class="string">'x'</span>: <span class="number">71</span>&#125;, &#123;<span class="string">'y'</span>: <span class="number">67</span>, <span class="string">'x'</span>: <span class="number">54</span>&#125;] 	<span class="number">2565554</span> 	Pass 	<span class="number">676</span> 	<span class="number">1</span>H 	<span class="number">51.068905</span> 	<span class="number">85</span></span><br></pre></td></tr></table></figure>
+
+<p>把前面关于比赛的信息也合并过来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">messi_events_data_df = pd.merge(messi_events_data_df, barca_matches_df, left_on=<span class="string">'matchId'</span>, right_on=<span class="string">'wyId'</span>, copy=<span class="literal">False</span>, how=<span class="string">"left"</span>)</span><br><span class="line"></span><br><span class="line">ronaldo_events_data_df = pd.merge(ronaldo_events_data_df, real_matches_df, left_on=<span class="string">'matchId'</span>, right_on=<span class="string">'wyId'</span>, copy=<span class="literal">False</span>, how=<span class="string">"left"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>保存数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">messi_events_data_df.to_pickle(<span class="string">'../data/messi_events_data_df.pkl'</span>)</span><br><span class="line">ronaldo_events_data_df.to_pickle(<span class="string">'../data/ronaldo_events_data_df.pkl'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>接下来，还要讲皇家马德里和巴塞罗那两只球队在2017-18赛季的比赛相关数据读取出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">barca_matches_dates_df = barca_matches_df[[<span class="string">'label'</span>, <span class="string">'date'</span>]].copy()</span><br><span class="line">real_matches_dates_df = real_matches_df[[<span class="string">'label'</span>, <span class="string">'date'</span>]].copy()</span><br><span class="line"></span><br><span class="line">barca_matches_dates_df[<span class="string">'date'</span>] = pd.to_datetime(barca_matches_df[<span class="string">'date'</span>], utc=<span class="literal">True</span>).dt.date</span><br><span class="line">real_matches_dates_df[<span class="string">'date'</span>] = pd.to_datetime(real_matches_df[<span class="string">'date'</span>], utc=<span class="literal">True</span>).dt.date</span><br><span class="line"></span><br><span class="line"><span class="comment">#Change date to string </span></span><br><span class="line">barca_matches_dates_df[<span class="string">'date'</span>] = barca_matches_dates_df[<span class="string">'date'</span>].apply(<span class="keyword">lambda</span> x: x.strftime(<span class="string">'%Y-%m-%d'</span>))</span><br><span class="line">real_matches_dates_df[<span class="string">'date'</span>] = real_matches_dates_df[<span class="string">'date'</span>].apply(<span class="keyword">lambda</span> x: x.strftime(<span class="string">'%Y-%m-%d'</span>))</span><br><span class="line"></span><br><span class="line">barca_matches_dates_df = barca_matches_dates_df.rename(columns=&#123;<span class="string">"label"</span>: <span class="string">"match"</span>&#125;)</span><br><span class="line">real_matches_dates_df = real_matches_dates_df.rename(columns=&#123;<span class="string">"label"</span>: <span class="string">"match"</span>&#125;)</span><br><span class="line"></span><br><span class="line">barca_matches_dates_df.head(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">                               match 	date</span><br><span class="line"><span class="number">0</span> 	Barcelona - Real Sociedad, <span class="number">1</span> - <span class="number">0</span> 	<span class="number">2018</span><span class="number">-05</span><span class="number">-20</span></span><br><span class="line"><span class="number">1</span> 	      Levante - Barcelona, <span class="number">5</span> - <span class="number">4</span> 	<span class="number">2018</span><span class="number">-05</span><span class="number">-13</span></span><br></pre></td></tr></table></figure>
+
+<p>也保存一下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">barca_matches_dates_df.to_pickle(<span class="string">'../data/barca_matches_dates_df.pkl'</span>)</span><br><span class="line">real_matches_dates_df.to_pickle(<span class="string">'../data/real_matches_dates_df.pkl'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-分析数据"><a href="#2-分析数据" class="headerlink" title="2. 分析数据"></a>2. 分析数据</h2><p>在这部分，要分析梅西和罗纳尔多在球场上的表现数据了，我们会利用一些统计分析，以可视化的方式表现他们在球场上的状况。</p>
+<p>球员的行为统计。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">goals = [messi_events_data_df[<span class="string">'goal'</span>].sum(), ronaldo_events_data_df[<span class="string">'goal'</span>].sum()]</span><br><span class="line">assists = [messi_events_data_df[<span class="string">'assist'</span>].sum(), ronaldo_events_data_df[<span class="string">'assist'</span>].sum()]</span><br><span class="line">shots = [messi_events_data_df[messi_events_data_df[<span class="string">'eventName'</span>] == <span class="string">'Shot'</span>].count()[<span class="string">'eventName'</span>],</span><br><span class="line">         ronaldo_events_data_df[ronaldo_events_data_df[<span class="string">'eventName'</span>] == <span class="string">'Shot'</span>].count()[<span class="string">'eventName'</span>]]</span><br><span class="line">free_kicks = [messi_events_data_df[messi_events_data_df[<span class="string">'subEventName'</span>] == <span class="string">'Free kick shot'</span>].count()[<span class="string">'subEventName'</span>], </span><br><span class="line">              ronaldo_events_data_df[ronaldo_events_data_df[<span class="string">'subEventName'</span>] == <span class="string">'Free kick shot'</span>].count()[<span class="string">'subEventName'</span>]]</span><br><span class="line">passes = [messi_events_data_df[messi_events_data_df[<span class="string">'eventName'</span>] == <span class="string">'Pass'</span>].count()[<span class="string">'eventName'</span>],</span><br><span class="line">          ronaldo_events_data_df[ronaldo_events_data_df[<span class="string">'eventName'</span>] == <span class="string">'Pass'</span>].count()[<span class="string">'eventName'</span>]]</span><br><span class="line"></span><br><span class="line">stats_df = pd.DataFrame([goals, assists, shots, free_kicks, passes], </span><br><span class="line">                        columns=[<span class="string">'Messi'</span>, <span class="string">'Ronaldo'</span>], </span><br><span class="line">                        index=[<span class="string">'Goals'</span>, <span class="string">'Assists'</span>, <span class="string">'Shots'</span>, <span class="string">'Free Kicks'</span>, <span class="string">'Passes'</span>])</span><br><span class="line"></span><br><span class="line">print(stats_df)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/f1_20200618110112.png" alt=""></p>
+<p>左脚和右脚球比较。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">messi_lf_goals = messi_events_data_df[messi_events_data_df[<span class="string">'left_foot'</span>] == <span class="literal">True</span>][<span class="string">'goal'</span>].sum()</span><br><span class="line">messi_rf_goals = messi_events_data_df[messi_events_data_df[<span class="string">'right_foot'</span>] == <span class="literal">True</span>][<span class="string">'goal'</span>].sum()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Messi's goals with left foot: "</span>, messi_lf_goals)</span><br><span class="line">print(<span class="string">"Messi's goals with right foot: "</span>, messi_rf_goals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出：</span></span><br><span class="line">Messi<span class="string">'s goals with left foot:  32</span></span><br><span class="line"><span class="string">Messi'</span>s goals <span class="keyword">with</span> right foot:  <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ronaldo_lf_goals = ronaldo_events_data_df[ronaldo_events_data_df[<span class="string">'left_foot'</span>] == <span class="literal">True</span>][<span class="string">'goal'</span>].sum()</span><br><span class="line">ronaldo_rf_goals = ronaldo_events_data_df[ronaldo_events_data_df[<span class="string">'right_foot'</span>] == <span class="literal">True</span>][<span class="string">'goal'</span>].sum()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Ronaldo's goals with left foot: "</span>, ronaldo_lf_goals)</span><br><span class="line">print(<span class="string">"Ronaldo's goals with right foot: "</span>, ronaldo_rf_goals)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出：</span></span><br><span class="line">Ronaldo<span class="string">'s goals with left foot:  7</span></span><br><span class="line"><span class="string">Ronaldo'</span>s goals <span class="keyword">with</span> right foot:  <span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+<p>两个球员在球场上的有关数据都保存在了<code>messi_events_data_df</code>和<code>ronaldo_events_data_df</code>中，我们可以创建一个坐标写，两个坐标轴的范围都是[0, 100]，表示占进攻一方场上的百分比，下面用可视化方式展示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">messi_events_data_df[<span class="string">'positions'</span>].head()</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/f2_20200618111741.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> plots <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> bokeh.io <span class="keyword">import</span> output_notebook</span><br><span class="line"><span class="keyword">from</span> bokeh.plotting <span class="keyword">import</span> figure, show</span><br><span class="line">output_notebook()</span><br></pre></td></tr></table></figure>
+
+<p>在这里，使用了bokeh可视化模块，涉及到两个简单的函数：</p>
+<ul>
+<li><code>draw_pitch()</code>：绘制空图的函数</li>
+<li><code>plot_events(player_events, event_name, plot_color):</code>输入DataFrame的数据，实现数据可视化。</li>
+</ul>
+<p>函数的源码，可以通过连接得到（<a href="https://github.com/adilmoujahid/streamlit-messi-ronaldo/blob/master/plots.py）" target="_blank" rel="noopener">https://github.com/adilmoujahid/streamlit-messi-ronaldo/blob/master/plots.py）</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">messi_goals = messi_events_data_df[messi_events_data_df[<span class="string">'goal'</span>] == <span class="literal">True</span>][<span class="string">'positions'</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p_messi = plot_events(messi_goals, <span class="string">'Goals'</span>, <span class="string">'red'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show(p_messi)</span><br></pre></td></tr></table></figure>
+
+<p>注：如果在调试环境中，会得到动态图示，这里显示的是截图效果。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/bokeh_plot_20200618112432.png" alt=""></p>
+<h2 id="3-创建web应用"><a href="#3-创建web应用" class="headerlink" title="3. 创建web应用"></a>3. 创建web应用</h2><p>现在我们知道了如何读取、构造和绘制数据，下面可以开始创建web应用。这个应用的目标是比较梅西和罗纳尔多的比赛，集中在进球、助攻、射门、任意球和传球。</p>
+<p>每个动作类型都有一个标签，在选项卡中，我们将显示各种动作的统计数据和位置，分解按比赛计数。该应用还将有一个过滤器，可以使用它来选择左、右脚的动作。</p>
+<p>开发中，利用一个开源的框架Streamlit（<a href="https://www.streamlit.io/），它是Python中的一个库，可以用`pip" target="_blank" rel="noopener">https://www.streamlit.io/），它是Python中的一个库，可以用`pip</a> install`安装。Streamlit可以很容实现一个web应用，只需要使用Python，不需要HTML/CSS/JS等代码。</p>
+<p>你可以在本项目的代码仓库中下载应用源码，然后在本地执行<code>streamlit run app.py</code>将项目运行起来，并在浏览器打开<code>http://localhost:8501</code>查看效果。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/streamlit-messi-ronaldo_20200618113457.gif" alt=""></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本文，我们分析了梅西和罗纳尔多的有关数据，你其实可以参考本文内容，继续分析其他球员、球队或者每场比赛。</p>
+<p>原文链接：<a href="http://adilmoujahid.com/posts/2020/06/streamlit-messi-ronaldo/" target="_blank" rel="noopener">http://adilmoujahid.com/posts/2020/06/streamlit-messi-ronaldo/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/16/python-nonetype/">
+        <span class="nav-arrow">← </span>
+        
+          理解Python中的NoneType对象
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-数据准备"><span class="toc-nav-text">1. 数据准备</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-1-获取数据"><span class="toc-nav-text">1.1 获取数据</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-2-读入数据"><span class="toc-nav-text">1.2 读入数据</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-3-构造数据"><span class="toc-nav-text">1.3 构造数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-分析数据"><span class="toc-nav-text">2. 分析数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-创建web应用"><span class="toc-nav-text">3. 创建web应用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#最后"><span class="toc-nav-text">最后</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/06/18/football-data-analysis/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
