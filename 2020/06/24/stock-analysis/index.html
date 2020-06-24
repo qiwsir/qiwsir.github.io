@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      一个简单的股票数据分析及可视化库 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>一个简单的股票数据分析及可视化库</h2>
+    <p class="post-date">2020-06-24</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>与本文相关的图书推荐：<strong>《跟老齐学Python：数据分析》</strong></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<p>本书是数据分析、机器学习等数据科学方向的入门读物，主要介绍了Numpy、Pandas和数据可视化的内容，并且贯穿了大量实用案例，包括本文阐述的股票数据分析案例。</p>
+<hr>
+<p>在这篇文章中，我将利用<code>stocker</code>模块，演示如何进行数据分析的，你可以从Github仓库中获得这个模块的代码：<a href="https://github.com/WillKoehrsen/Data-Analysis/tree/master/stocker。" target="_blank" rel="noopener">https://github.com/WillKoehrsen/Data-Analysis/tree/master/stocker。</a></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s1_20200624093525.png" alt=""></p>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>安装好各种有关的库之后，首先要引入<code>stocker</code>，以下演示都是在Jupyter Notebook中进行的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">!pip install quandl</span><br><span class="line">!pip install fbprophet</span><br><span class="line">!pip install plotly</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> stocker <span class="keyword">import</span> Stocker</span><br></pre></td></tr></table></figure>
+
+<p>然后，就可以加载数据，创建股票数据对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">microsoft = Stocker(<span class="string">'MSFT'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="comment"># MSFT Stocker Initialized. Data covers 1986-03-13 00:00:00 to 2018-03-27 00:00:00.</span></span><br></pre></td></tr></table></figure>
+
+<p>现在我们创建了<code>microsoft</code>对象了。Stocker中包含了3000支美国股票的每个交易日的股票数据。</p>
+<p>通过<code>microsoft</code>的属性，可以得到历史数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">stock_history = microsoft.stock</span><br><span class="line">stock_history.head()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下表格是输出</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Date</th>
+<th>Open</th>
+<th>High</th>
+<th>Low</th>
+<th>Close</th>
+<th>Volume</th>
+<th>Ex-Dividend</th>
+<th>Split Ratio</th>
+<th>Adj. Open</th>
+<th>Adj. High</th>
+<th>Adj. Low</th>
+<th>Adj. Close</th>
+<th>Adj. Volume</th>
+<th>ds</th>
+<th>y</th>
+<th>Daily Change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>1986-03-13</td>
+<td>25.50</td>
+<td>29.25</td>
+<td>25.5</td>
+<td>28.00</td>
+<td>3582600.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.058941</td>
+<td>0.067609</td>
+<td>0.058941</td>
+<td>0.064720</td>
+<td>1.031789e+09</td>
+<td>1986-03-13</td>
+<td>0.064720</td>
+<td>0.005779</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1986-03-14</td>
+<td>28.00</td>
+<td>29.50</td>
+<td>28.0</td>
+<td>29.00</td>
+<td>1070000.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.064720</td>
+<td>0.068187</td>
+<td>0.064720</td>
+<td>0.067031</td>
+<td>3.081600e+08</td>
+<td>1986-03-14</td>
+<td>0.067031</td>
+<td>0.002311</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1986-03-17</td>
+<td>29.00</td>
+<td>29.75</td>
+<td>29.0</td>
+<td>29.50</td>
+<td>462400.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.067031</td>
+<td>0.068765</td>
+<td>0.067031</td>
+<td>0.068187</td>
+<td>1.331712e+08</td>
+<td>1986-03-17</td>
+<td>0.068187</td>
+<td>0.001156</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1986-03-18</td>
+<td>29.50</td>
+<td>29.75</td>
+<td>28.5</td>
+<td>28.75</td>
+<td>235300.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.068187</td>
+<td>0.068765</td>
+<td>0.065876</td>
+<td>0.066454</td>
+<td>6.776640e+07</td>
+<td>1986-03-18</td>
+<td>0.066454</td>
+<td>-0.001734</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1986-03-19</td>
+<td>28.75</td>
+<td>29.00</td>
+<td>28.0</td>
+<td>28.25</td>
+<td>166300.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.066454</td>
+<td>0.067031</td>
+<td>0.064720</td>
+<td>0.065298</td>
+<td>4.789440e+07</td>
+<td>1986-03-19</td>
+<td>0.065298</td>
+<td>-0.001156</td>
+</tr>
+</tbody></table>
+<p>这也体现了Python语言的特点。另外，通过执行对象的方法，能够实现某些操作，比如可视化图像。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">microsoft.plot_stock()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Maximum Adj. Close = <span class="number">96.77</span> on <span class="number">2018</span><span class="number">-03</span><span class="number">-12</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br><span class="line">Minimum Adj. Close = <span class="number">0.06</span> on <span class="number">1986</span><span class="number">-03</span><span class="number">-24</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br><span class="line">Current Adj. Close = <span class="number">89.47</span> on <span class="number">2018</span><span class="number">-03</span><span class="number">-27</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s2_20200624094620.png" alt=""></p>
+<p>默认是绘制收盘价的图示。这是最基本的操作，当然，也可以设置一些参数，比如开始日期、结束日期等。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">microsoft.plot_stock(start_date = <span class="string">'2000-01-03'</span>,  end_date = <span class="string">'2018-01-16'</span>,  stats = [<span class="string">'Daily Change'</span>, <span class="string">'Adj. Volume'</span>],  plot_type=<span class="string">'pct'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Maximum Daily Change = <span class="number">2.08</span> on <span class="number">2008</span><span class="number">-10</span><span class="number">-13</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br><span class="line">Minimum Daily Change = <span class="number">-3.34</span> on <span class="number">2017</span><span class="number">-12</span><span class="number">-04</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br><span class="line">Current Daily Change = <span class="number">-5.47</span> on <span class="number">2018</span><span class="number">-03</span><span class="number">-27</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br><span class="line"></span><br><span class="line">Maximum Adj. Volume = <span class="number">591052200.00</span> on <span class="number">2006</span><span class="number">-04</span><span class="number">-28</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br><span class="line">Minimum Adj. Volume = <span class="number">7425503.00</span> on <span class="number">2017</span><span class="number">-11</span><span class="number">-24</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br><span class="line">Current Adj. Volume = <span class="number">53704562.00</span> on <span class="number">2018</span><span class="number">-03</span><span class="number">-27</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s3_20200624095022.png" alt=""></p>
+<p>注意y轴，是相对平均值的变化的百分比。这是很有必要的，因为如果采用价格绝对值，更多时候变化可能不大。</p>
+<p>在股票投资方面，有的人搞长线，有的人搞短线，那么，如果长期持有微软的股票，会怎么样呢？有一个方法，可以显示出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">microsoft.buy_and_hold(start_date=<span class="string">'1986-03-13'</span>, end_date=<span class="string">'2018-01-16'</span>, nshares=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">SFT Total buy <span class="keyword">and</span> hold profit <span class="keyword">from</span> <span class="number">1986</span><span class="number">-03</span><span class="number">-13</span> to <span class="number">2018</span><span class="number">-01</span><span class="number">-16</span> <span class="keyword">for</span> <span class="number">100</span> shares = $<span class="number">8829.11</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s4_20200624095641.png" alt=""></p>
+<p>从1986年开始，如果长期持有100份微软股票，是不是收益满满呢？</p>
+<h2 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h2><p>股票数据时一种时间序列数据，可以通过一些模型对它进行分析。我们知道微软股票的长期趋势是稳定的增长，但也可能有每年或每天的模型，例如每周二的增长，这对投资会非常有利。分析时间序列数据，最常用的是Prophet库，它是由Facebook开发的。Stocker也使用Prophet来建模，下面用一个简单的方法来创建模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model, model_data = microsoft.create_prophet_model()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s5_20200624100342.png" alt=""></p>
+<p>上图用一条曲线，将原有图像平滑了，这就是一个新的模型。Prophet能够计算不确定性，这是建模的一个重要部分。对于波动性比较大的真实数据，是无法进行预测的。要通过以往的数据，创建模型，预测未来，就不得不将数据平滑化。注意，上面使用的方法返回了两个对象，一个模型和一些数据，然后可以绘制绘制时间序列中的某些部分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model.plot_components(model_data)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s6_20200624101308.png" alt=""></p>
+<p>通过图示中的trend，可以看到过去三年里的总体趋势是的增长。在yearly的年度图示中，9月和10月两月触底，11月和1月达到峰值。随着时间尺度的减小，数据的噪声也越来越大。在一个典型的月中，有价值的信号多于噪音。如果要查看以周为单位模型，可以通过更改Stocker的<code>weekly seasonalit</code>参数，将它添加到Prophet模型中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(microsoft.weekly_seasonality)</span><br><span class="line">microsoft.weekly_seasonality = <span class="literal">True</span></span><br><span class="line">print(microsoft.weekly_seasonality)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p><code>weekly_seasonality</code>的默认值是<code>False</code>，如果要在模型中包含每周的分析，就要将其修改为<code>True</code>。再次调用<code>create_prophet_model</code>，就可以得到下图所示效果。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s7_20200624102202.png" alt=""></p>
+<h2 id="拐点"><a href="#拐点" class="headerlink" title="拐点"></a>拐点</h2><p>对于时间序列的数据而言，拐点是我们关注的重点。在Stocker模块中，有非常简单地查看观点的方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">microsoft.changepoint_date_analysis()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Changepoints sorted by slope rate of change (<span class="number">2</span>nd derivative):</span><br><span class="line"></span><br><span class="line">          Date  Adj. Close     delta</span><br><span class="line"><span class="number">410</span> <span class="number">2016</span><span class="number">-09</span><span class="number">-08</span>   <span class="number">55.811396</span> <span class="number">-1.378093</span></span><br><span class="line"><span class="number">338</span> <span class="number">2016</span><span class="number">-05</span><span class="number">-26</span>   <span class="number">50.113453</span>  <span class="number">1.116720</span></span><br><span class="line"><span class="number">217</span> <span class="number">2015</span><span class="number">-12</span><span class="number">-02</span>   <span class="number">52.572008</span> <span class="number">-0.882359</span></span><br><span class="line"><span class="number">458</span> <span class="number">2016</span><span class="number">-11</span><span class="number">-15</span>   <span class="number">57.589819</span>  <span class="number">0.603127</span></span><br><span class="line"><span class="number">48</span>  <span class="number">2015</span><span class="number">-04</span><span class="number">-02</span>   <span class="number">37.612590</span>  <span class="number">0.442776</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s8_20200624102710.png" alt=""></p>
+<p>股价的拐点往往和某些时间关联起来，通过上面的操作，找到了拐点出现的日期，可以用搜索引擎搜一下，那一天有什么大事件。Prophet尚未能挑出所有拐点，目前只在前80%的数据中显示了拐点，但是已经足够了。</p>
+<p>Stoker提供了一些搜索比较的功能，比如，比较微软的利润搜搜量和股价关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">microsoft.changepoint_date_analysis(search = <span class="string">'Microsoft profit'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Top Related Queries: </span><br><span class="line"></span><br><span class="line">                  query  value</span><br><span class="line"><span class="number">0</span>  microsoft non profit    <span class="number">100</span></span><br><span class="line"><span class="number">1</span>      microsoft office     <span class="number">60</span></span><br><span class="line"><span class="number">2</span>          apple profit     <span class="number">40</span></span><br><span class="line"><span class="number">3</span>         microsoft <span class="number">365</span>     <span class="number">40</span></span><br><span class="line"><span class="number">4</span>                 apple     <span class="number">35</span></span><br><span class="line"></span><br><span class="line"> Rising Related Queries: </span><br><span class="line"></span><br><span class="line">           query  value</span><br><span class="line"><span class="number">0</span>    apple stock    <span class="number">170</span></span><br><span class="line"><span class="number">1</span>  microsoft <span class="number">365</span>    <span class="number">130</span></span><br><span class="line"><span class="number">2</span>   apple profit     <span class="number">50</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s9_20200624103321.png" alt=""></p>
+<p>即使找到了相关性，但也不要认为这是因果关系。我们不知道利润或者某些时间导致了股价变化，还是反之。</p>
+<p>下面再看看微软Office的搜索量会不会与股价相关？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">microsoft.changepoint_date_analysis(search = <span class="string">'Microsoft Office'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Top Related Queries: </span><br><span class="line"></span><br><span class="line">                       query  value</span><br><span class="line"><span class="number">0</span>  microsoft office download    <span class="number">100</span></span><br><span class="line"><span class="number">1</span>      microsoft office <span class="number">2010</span>     <span class="number">90</span></span><br><span class="line"><span class="number">2</span>                office <span class="number">2010</span>     <span class="number">85</span></span><br><span class="line"><span class="number">3</span>      microsoft office <span class="number">2013</span>     <span class="number">75</span></span><br><span class="line"><span class="number">4</span>                office <span class="number">2013</span>     <span class="number">70</span></span><br><span class="line"></span><br><span class="line"> Rising Related Queries: </span><br><span class="line"></span><br><span class="line">                            query  value</span><br><span class="line"><span class="number">0</span>       microsoft office <span class="number">2016</span> key  <span class="number">80300</span></span><br><span class="line"><span class="number">1</span>                     office <span class="number">2016</span>  <span class="number">73200</span></span><br><span class="line"><span class="number">2</span>  download microsoft office <span class="number">2016</span>  <span class="number">72150</span></span><br><span class="line"><span class="number">3</span>       microsoft office <span class="number">2016</span> mac  <span class="number">69350</span></span><br><span class="line"><span class="number">4</span>           microsoft office <span class="number">2016</span>  <span class="number">67650</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s10_20200624103857.png" alt=""></p>
+<p>这张图显示，微软股价上升的同时，Office的搜搜量下降。是不是因为这个原因股价上涨了呢？哈哈。告诉微软吧。</p>
+<h2 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h2><p>分析股票数据，最终的目的是期望能找到一个规律，从而预测未来股票价格趋势——虽然不一定准。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model, future = microsoft.create_prophet_model(days=<span class="number">180</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"></span><br><span class="line">Predicted Price on <span class="number">2018</span><span class="number">-07</span><span class="number">-21</span> = $<span class="number">102.40</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/s11_20200624104827.png" alt=""></p>
+<p>Stoker是一个非常简单好用的工具，是一个开源工具。以上做个简要介绍，希望能够对读者有用。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/23/python-keywords/">
+        <span class="nav-arrow">← </span>
+        
+          必须要了解的Python关键词
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#开始"><span class="toc-nav-text">开始</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建模型"><span class="toc-nav-text">创建模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#拐点"><span class="toc-nav-text">拐点</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预测"><span class="toc-nav-text">预测</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/06/24/stock-analysis/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

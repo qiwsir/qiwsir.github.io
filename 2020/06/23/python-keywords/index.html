@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      必须要了解的Python关键词 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>必须要了解的Python关键词</h2>
+    <p class="post-date">2020-06-23</p>
+    <section class="markdown-content"><p>作者：老齐</p>
+<p>与本文相关图书推荐：<strong>《Python大学实用教程》</strong></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<p>本书适合于零基础的初学者，书中详细介绍了Python语言，特别是配有相关练习题。</p>
+<hr>
+<p>每种编程语言都会有一些特殊的单词，称为关键词。对待关键词的基本要求是，你在命名的时候要避免与之重复。本文将介绍一下Python中的关键词。关键词不是内置函数或者内置对象类型，虽然在命名的时候同样也最好不要与这些重名，但是，毕竟你还可以使用与内置函数或者内置对象类型重名的名称来命名。关键词则不同，它是不允许你使用。</p>
+<p>在Python3.8中提供了35个关键词，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">False 	await 	  else 	    import  	pass</span><br><span class="line">None   	break 	  except 	  in    	  raise</span><br><span class="line">True 	  class 	  finally 	is    	  return</span><br><span class="line">and 	  continue 	for 	    lambda    try</span><br><span class="line">as 	    def 	    from    	nonlocal 	while</span><br><span class="line">assert 	del 	    global   	not 	    with</span><br><span class="line">async 	elif 	    if 	      or 	      yield</span><br></pre></td></tr></table></figure>
+
+<p>你可以通过下面的链接，查看官方文档对每个关键词的说明：<a href="https://docs.python.org/3.8/reference/lexical_analysis.html#keywords" target="_blank" rel="noopener">https://docs.python.org/3.8/reference/lexical_analysis.html#keywords</a></p>
+<p>如果打算在交互模式里面查看关键词，可以使用<code>help()</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>help(<span class="string">"keywords"</span>)</span><br><span class="line"></span><br><span class="line">Here <span class="keyword">is</span> a list of the Python keywords.  Enter any keyword to get more help.</span><br><span class="line"></span><br><span class="line"><span class="literal">False</span>               <span class="class"><span class="keyword">class</span>               <span class="title">from</span>                <span class="title">or</span></span></span><br><span class="line"><span class="class"><span class="title">None</span>                <span class="title">continue</span>            <span class="title">global</span>              <span class="title">pass</span></span></span><br><span class="line"><span class="class"><span class="title">True</span>                <span class="title">def</span>                 <span class="title">if</span>                  <span class="title">raise</span></span></span><br><span class="line"><span class="class"><span class="title">and</span>                 <span class="title">del</span>                 <span class="title">import</span>              <span class="title">return</span></span></span><br><span class="line"><span class="class"><span class="title">as</span>                  <span class="title">elif</span>                <span class="title">in</span>                  <span class="title">try</span></span></span><br><span class="line"><span class="class"><span class="title">assert</span>              <span class="title">else</span>                <span class="title">is</span>                  <span class="title">while</span></span></span><br><span class="line"><span class="class"><span class="title">async</span>               <span class="title">except</span>              <span class="title">lambda</span>              <span class="title">with</span></span></span><br><span class="line"><span class="class"><span class="title">await</span>               <span class="title">finally</span>             <span class="title">nonlocal</span>            <span class="title">yield</span></span></span><br><span class="line"><span class="class"><span class="title">break</span>               <span class="title">for</span>                 <span class="title">not</span></span></span><br></pre></td></tr></table></figure>
+
+<p>对每个关键词的详细说明，也可以用<code>help()</code>查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>help(<span class="string">'pass'</span>)    <span class="comment"># 敲回车后出现下面的内容</span></span><br><span class="line"></span><br><span class="line">The <span class="string">"pass"</span> statement</span><br><span class="line">********************</span><br><span class="line"></span><br><span class="line">   pass_stmt ::= <span class="string">"pass"</span></span><br><span class="line"></span><br><span class="line"><span class="string">"pass"</span> <span class="keyword">is</span> a null operation — when it <span class="keyword">is</span> executed, nothing happens. It</span><br><span class="line"><span class="keyword">is</span> useful <span class="keyword">as</span> a placeholder when a statement <span class="keyword">is</span> required syntactically,</span><br><span class="line">but no code needs to be executed, <span class="keyword">for</span> example:</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(arg)</span>:</span> <span class="keyword">pass</span>    <span class="comment"># a function that does nothing (yet)</span></span><br><span class="line"></span><br><span class="line">   <span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span> <span class="keyword">pass</span>       <span class="comment"># a class with no methods (yet)</span></span><br></pre></td></tr></table></figure>
+
+<p>除了上面的方法之外，还有一个标准库的模块<code>keyword</code>提供了关键词查询功能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> keyword</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>keyword.kwlist</span><br><span class="line">[<span class="string">'False'</span>, <span class="string">'None'</span>, <span class="string">'True'</span>, <span class="string">'and'</span>, <span class="string">'as'</span>, <span class="string">'assert'</span>, <span class="string">'async'</span>, ...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(keyword.kwlist)</span><br><span class="line"><span class="number">35</span></span><br></pre></td></tr></table></figure>
+
+<p>那么，这些关键词如何使用？在什么情景下应用？下面以示例的方式对部分关键词进行说明。</p>
+<h2 id="True、False和None"><a href="#True、False和None" class="headerlink" title="True、False和None"></a>True、False和None</h2><p><code>True</code>和<code>False</code>是布尔类型的两个值，注意必须首字母大写。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x <span class="keyword">is</span> <span class="literal">True</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = <span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y <span class="keyword">is</span> <span class="literal">False</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>如果我们要判断某个对象的布尔值是<code>True</code>还是<code>False</code>，可以使用<code>bool()</code>函数实现，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="string">"this is a truthy value"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x <span class="keyword">is</span> <span class="literal">True</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bool(x) <span class="keyword">is</span> <span class="literal">True</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = <span class="string">""</span>  <span class="comment"># 这个是假</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y <span class="keyword">is</span> <span class="literal">False</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bool(y) <span class="keyword">is</span> <span class="literal">False</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，如果向<code>bool()</code>传入的参数是<code>0, &quot;&quot;, {}, []</code>中的任何一个，返回值都是<code>False</code>。</p>
+<p>在条件语句中，本来是要判断条件是否为<code>True</code>，但是，通常不需要直接与<code>True</code>或者<code>False</code>进行比较，依靠Python解析器自动进行条件判断。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="string">"this is a truthy value"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> x <span class="keyword">is</span> <span class="literal">True</span>:  <span class="comment"># 不要这么做</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"x is True"</span>)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">if</span> x:  <span class="comment"># 应该如此写</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"x is truthy"</span>)</span><br><span class="line">...</span><br><span class="line">x <span class="keyword">is</span> truthy</span><br></pre></td></tr></table></figure>
+
+<p><code>None</code>这个关键词，在Python中表示没有值，其他语言中，同样的含义可能会用<code>null,nil,none,undef,undefined</code>等。<code>None</code>也是函数中没有<code>return</code>语句的时候默认返回值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"hello"</span>)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = func()</span><br><span class="line">hello</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(x)</span><br><span class="line"><span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="and、or、not、in、is"><a href="#and、or、not、in、is" class="headerlink" title="and、or、not、in、is"></a>and、or、not、in、is</h2><p>这几个关键词，其实都对应着数学中的操作符，如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>数学符号</th>
+<th>关键词</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AND, ∧</td>
+<td>and</td>
+</tr>
+<tr>
+<td>OR, ∨</td>
+<td>or</td>
+</tr>
+<tr>
+<td>NOT, ¬</td>
+<td>not</td>
+</tr>
+<tr>
+<td>CONTAINS, ∈</td>
+<td>in</td>
+</tr>
+<tr>
+<td>IDENTITY</td>
+<td>is</td>
+</tr>
+</tbody></table>
+<p>Python代码具有很强的可读性，通过关键词就能一目了然晓得是什么操作。</p>
+<p>这几个关键词比较好理解，这里仅提醒注意在Python中有一个著名的<strong>短路运算</strong>，例如<code>and</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;expr1&gt; and &lt;expr2&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>不要</strong>将上面的式子理解成两边都是真的时候返回<code>True</code>。对此，在<strong>《Python大学实用教程》</strong>一书中有非常详细的说明，请参阅。另外一个就是<code>or</code>，也存在短路运算。</p>
+<h2 id="break、continue和else"><a href="#break、continue和else" class="headerlink" title="break、continue和else"></a>break、continue和else</h2><p>这几个是经常用于循环语句的关键词。</p>
+<p><code>break</code> 的作用是终止当前循环，其使用的基本格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &lt;element&gt; <span class="keyword">in</span> &lt;container&gt;:</span><br><span class="line">    <span class="keyword">if</span> &lt;expr&gt;:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>举个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum = <span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line"><span class="meta">... </span>    sum += num</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">if</span> sum &gt; <span class="number">10</span>:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">break</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum</span><br><span class="line"><span class="number">15</span></span><br></pre></td></tr></table></figure>
+
+<p><code>continue</code>则是要跳过某些循环，然后让循环继续。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &lt;element&gt; <span class="keyword">in</span> &lt;container&gt;:</span><br><span class="line">    <span class="keyword">if</span> &lt;expr&gt;:</span><br><span class="line">        <span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+
+<p><code>else</code>在条件语句中有，这里提到它，是在循环语句中，它的作用是当循环结束后还要继续执行的代码。</p>
+<p>在for循环中，使用格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &lt;element&gt; <span class="keyword">in</span> &lt;container&gt;:</span><br><span class="line">    &lt;statements&gt;</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    &lt;statements&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在while循环中，使用格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> &lt;expr&gt;:</span><br><span class="line">    &lt;statements&gt;</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    &lt;statements&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例如，有时候我们要在循环语句中使用一个旗帜变量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">2</span>, <span class="number">10</span>):</span><br><span class="line"><span class="meta">... </span>    prime = <span class="literal">True</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>, n):</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">if</span> n % x == <span class="number">0</span>:</span><br><span class="line"><span class="meta">... </span>            prime = <span class="literal">False</span></span><br><span class="line"><span class="meta">... </span>            print(<span class="string">f"<span class="subst">&#123;n&#125;</span> is not prime"</span>)</span><br><span class="line"><span class="meta">... </span>            <span class="keyword">break</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">if</span> prime:</span><br><span class="line"><span class="meta">... </span>        print(<span class="string">f"<span class="subst">&#123;n&#125;</span> is prime!"</span>)</span><br><span class="line">...</span><br><span class="line"><span class="number">2</span> <span class="keyword">is</span> prime!</span><br><span class="line"><span class="number">3</span> <span class="keyword">is</span> prime!</span><br><span class="line"><span class="number">4</span> <span class="keyword">is</span> <span class="keyword">not</span> prime</span><br><span class="line"><span class="number">5</span> <span class="keyword">is</span> prime!</span><br><span class="line"><span class="number">6</span> <span class="keyword">is</span> <span class="keyword">not</span> prime</span><br><span class="line"><span class="number">7</span> <span class="keyword">is</span> prime!</span><br><span class="line"><span class="number">8</span> <span class="keyword">is</span> <span class="keyword">not</span> prime</span><br><span class="line"><span class="number">9</span> <span class="keyword">is</span> <span class="keyword">not</span> prime</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码中，<code>prime</code>就是一个旗帜变量，如果循环正常结束，<code>prime</code>的值就是<code>True</code>，否则，就是<code>False</code>。如果从循环中退出了，第8行判断这个变量的值，如果为<code>True</code>则打印相应内容。</p>
+<p>对于上面的代码，如果用<code>else</code>改写，可以更简洁，并且可读性更强。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; for n in range(2, 10):</span><br><span class="line">...     for x in range(2, n):</span><br><span class="line">...         if n % x &#x3D;&#x3D; 0:</span><br><span class="line">...             print(f&quot;&#123;n&#125; is not prime&quot;)</span><br><span class="line">...             break</span><br><span class="line">...     else:</span><br><span class="line">...         print(f&quot;&#123;n&#125; is prime!&quot;)</span><br><span class="line">...</span><br><span class="line">2 is prime!</span><br><span class="line">3 is prime!</span><br><span class="line">4 is not prime</span><br><span class="line">5 is prime!</span><br><span class="line">6 is not prime</span><br><span class="line">7 is prime!</span><br><span class="line">8 is not prime</span><br><span class="line">9 is not prime</span><br></pre></td></tr></table></figure>
+
+<p>其他一些关键词，本文不再赘述，可以参考《Python大学实用教程》中的有关内容。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/18/football-data-analysis/">
+        <span class="nav-arrow">← </span>
+        
+          分析梅西和罗纳尔多的比赛数据
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/06/24/stock-analysis/">
+        
+          一个简单的股票数据分析及可视化库
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#True、False和None"><span class="toc-nav-text">True、False和None</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#and、or、not、in、is"><span class="toc-nav-text">and、or、not、in、is</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#break、continue和else"><span class="toc-nav-text">break、continue和else</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/06/23/python-keywords/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
