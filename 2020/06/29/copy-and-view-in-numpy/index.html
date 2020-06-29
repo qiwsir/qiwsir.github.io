@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Pandas和Numpy的视图和拷贝 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Pandas和Numpy的视图和拷贝</h2>
+    <p class="post-date">2020-06-29</p>
+    <section class="markdown-content"><p>编译：老齐</p>
+<p>与本文相关的图书推荐：<strong>《跟老齐学Python：数据分析》</strong></p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<p>本书主要介绍Numpy、Pandas和数据可视化的有关知识，并且用实际案例贯穿于全书始终。本书适合于数据科学、机器学习、人工智能等方向的初学者。</p>
+<hr>
+<p>在Numpy和Pandas中，有两个重要概念，容易混淆，一个是浅拷贝，也称为视图，另外一个是深拷贝，或者就称为拷贝。如果操作不当，Pandas会爆出<code>SettingWithCopyWarning</code>的异常。</p>
+<p>本文我将就视图和拷贝问题，结合异常进行总结。</p>
+<p>本文的操作，是基于Python3.7及其以上版本，并且Numpy使用的是1.18版本，Pandas的版本号是1.0，其他在此之上的版本一般都能兼容。</p>
+<p>至于Pandas和Numpy的安装方法，请参阅《跟老齐学Python：数据分析》一书，书中有详细的说明。</p>
+<h2 id="异常的示例"><a href="#异常的示例" class="headerlink" title="异常的示例"></a>异常的示例</h2><p>首先，来看一看刚才说的Pandas中有可能爆出的<code>SettingWithCopyWarning</code>异常。按照下述方式创建DataFrame对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; data &#x3D; &#123;&quot;x&quot;: 2**np.arange(5),</span><br><span class="line">...         &quot;y&quot;: 3**np.arange(5),</span><br><span class="line">...         &quot;z&quot;: np.array([45, 98, 24, 11, 64])&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; index &#x3D; [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;]</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1  45</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9  24</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>DataFrame对象就好像一个二维表格一样，如下图所示，最上面一行中的x、y、z是列标签（Column labels），左侧的a/b/c/d/e是行标签（Row labels），中间的就是数据了。</p>
+<p><a href="https://files.realpython.com/media/fig-01.923689cf9afe.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-01.923689cf9afe.png" alt="mmst-pandas-vc-01"></a></p>
+<p>通过DataFrame对象的索引，可以很容易地实现各种操作，比如筛选出z列中所有小于50的记录，可以这样操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>mask = df[<span class="string">"z"</span>] &lt; <span class="number">50</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mask</span><br><span class="line">a     <span class="literal">True</span></span><br><span class="line">b    <span class="literal">False</span></span><br><span class="line">c     <span class="literal">True</span></span><br><span class="line">d     <span class="literal">True</span></span><br><span class="line">e    <span class="literal">False</span></span><br><span class="line">Name: z, dtype: bool</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[mask]</span><br><span class="line">   x   y   z</span><br><span class="line">a  <span class="number">1</span>   <span class="number">1</span>  <span class="number">45</span></span><br><span class="line">c  <span class="number">4</span>   <span class="number">9</span>  <span class="number">24</span></span><br><span class="line">d  <span class="number">8</span>  <span class="number">27</span>  <span class="number">11</span></span><br></pre></td></tr></table></figure>
+
+<p><code>mask</code> 是一个有布尔值构成的Series对象，然后用它作为<code>df</code>的索引，就得到了按照筛选条件返回的记录。本来返回的也是一个DataFrame对象，即<code>df[mast]</code>，但是，如果你要对这个对象进行操作，比如试图将所有的<code>z</code>列的值修改为0，按照一般的理解就应该是<code>df[mask][&quot;z&quot;]=0</code>，如果这样做了，就会爆出异常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[mask][<span class="string">"z"</span>] = <span class="number">0</span></span><br><span class="line">__main__:<span class="number">1</span>: SettingWithCopyWarning:</span><br><span class="line">A value <span class="keyword">is</span> trying to be set on a copy of a slice <span class="keyword">from</span> a DataFrame.</span><br><span class="line">Try using .loc[row_indexer,col_indexer] = value instead</span><br><span class="line"></span><br><span class="line">See the caveats <span class="keyword">in</span> the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html<span class="comment">#returning-a-view-versus-a-copy</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df</span><br><span class="line">    x   y   z</span><br><span class="line">a   <span class="number">1</span>   <span class="number">1</span>  <span class="number">45</span></span><br><span class="line">b   <span class="number">2</span>   <span class="number">3</span>  <span class="number">98</span></span><br><span class="line">c   <span class="number">4</span>   <span class="number">9</span>  <span class="number">24</span></span><br><span class="line">d   <span class="number">8</span>  <span class="number">27</span>  <span class="number">11</span></span><br><span class="line">e  <span class="number">16</span>  <span class="number">81</span>  <span class="number">64</span></span><br></pre></td></tr></table></figure>
+
+<p>代码的执行结果显示，操作失败，没有能够将筛选出来的记录中的<code>z</code>列数值修改为0。这是为什么？</p>
+<p>还是用图示的方式展现一下上面的操作——虽然失败了，目的是与后面的操作进行对比：</p>
+<p><a href="https://files.realpython.com/media/fig-02.494ca4d6f8c3.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-02.494ca4d6f8c3.png" alt="mmst-pandas-vc-02"></a></p>
+<p>其实，一般情况下，你不用这么做，只需要按照下面的方式做就能够达到目的了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df.loc[mask, &quot;z&quot;] &#x3D; 0</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1   0</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9   0</span><br><span class="line">d   8  27   0</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>还有别的方式，也能实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[&quot;z&quot;]</span><br><span class="line">a    45</span><br><span class="line">b    98</span><br><span class="line">c    24</span><br><span class="line">d    11</span><br><span class="line">e    64</span><br><span class="line">Name: z, dtype: int64</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[&quot;z&quot;][mask] &#x3D; 0</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1   0</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9   0</span><br><span class="line">d   8  27   0</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>是不是感觉有点奇怪了。还是看看上面的操作流程：</p>
+<p><a href="https://files.realpython.com/media/fig-03.8a314d168d47.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-03.8a314d168d47.png" alt="mmst-pandas-vc-03"></a></p>
+<p>这张图和前面的图对比一下，似乎也只是下标的顺序不同罢了。是不是感觉有点复杂？还有呢，继续看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df.loc[mask][&quot;z&quot;] &#x3D; 0</span><br><span class="line">__main__:1: SettingWithCopyWarning:</span><br><span class="line">A value is trying to be set on a copy of a slice from a DataFrame.</span><br><span class="line">Try using .loc[row_indexer,col_indexer] &#x3D; value instead</span><br><span class="line"></span><br><span class="line">See the caveats in the documentation: https:&#x2F;&#x2F;pandas.pydata.org&#x2F;pandas-docs&#x2F;stable&#x2F;user_guide&#x2F;indexing.html#returning-a-view-versus-a-copy</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1  45</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9  24</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>前面使用<code>.loc[]</code>没有问题，这里就又报异常了。</p>
+<p>先简单总结一下，为了避免上面的问题，一定要：</p>
+<ul>
+<li>避免使用链式下表表达式，比如<code>df[&quot;z&quot;][mask] = 0</code>，不管是不是会报异常，都要避免，因为把握不好就容易出问题。</li>
+<li>使用单个的下表，比如<code>df.loc[mask, &#39;z&#39;] = 0</code>，这样不仅意义明确，而且简单可行。</li>
+</ul>
+<p>当然，对于上面问题的理解，就涉及到下面要说的视图（浅拷贝）和拷贝（深拷贝）问题了。</p>
+<h2 id="视图和拷贝"><a href="#视图和拷贝" class="headerlink" title="视图和拷贝"></a>视图和拷贝</h2><p>理解Numpy和Pandas中的视图和拷贝，是非常有必要的。因为我们有时候需要从内存中的数据中拷贝一份，有时候则需要把数据的一部分连同原数据集同时保存。</p>
+<h3 id="Numpy中的视图和拷贝"><a href="#Numpy中的视图和拷贝" class="headerlink" title="Numpy中的视图和拷贝"></a>Numpy中的视图和拷贝</h3><p>创建一个Numpy数组：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr &#x3D; np.array([1, 2, 4, 8, 16, 32])</span><br><span class="line">&gt;&gt;&gt; arr</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br></pre></td></tr></table></figure>
+
+<p>用<code>arr</code>再创建一个数组，但是这里采切片和以列表作为索引两种方法创建，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr[1:4:2]</span><br><span class="line">array([2, 8])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; arr[[1, 3]]</span><br><span class="line">array([2, 8]))</span><br></pre></td></tr></table></figure>
+
+<p>如果你还不了解数组的索引，也不用担心，可以参考《跟老齐学Python：数据分析》，书里有非常详细的讲解。</p>
+<p>然而，用上面两种方法所得到的数组，还是有差别的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr[1:4:2].base</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br><span class="line">&gt;&gt;&gt; arr[1:4:2].flags.owndata</span><br><span class="line">False</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; arr[[1, 3]].base</span><br><span class="line">&gt;&gt;&gt; arr[[1, 3]].flags.owndata</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p>上面的操作显示，<code>arr[1:4:2]</code>实现的是浅拷贝，或者得到的是原数组的视图，而<code>arr[[1, 3]]</code>则是深拷贝（即常说的拷贝）。这就两种操作的差异。</p>
+<p>Numpy中的浅拷贝或者视图，意思是它本身并没有数据，看起来像它的哪些数据，其实是原始数组中的数据，或者说，与原始数据共享内存（也称为共享视图）。如果更直观地，用数组的<code>.view()</code>可以创建数组的视图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; view_of_arr &#x3D; arr.view()</span><br><span class="line">&gt;&gt;&gt; view_of_arr</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; view_of_arr.base</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; view_of_arr.base is arr</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p><code>view_of_arr</code>引用的数组就是原始数组<code>arr</code>的一个视图，或者浅拷贝，<code>view_of_arr</code>的属性<code>.base</code>就是指原始数组<code>arr</code>，或者说，<code>view_of_arr</code>没有自己的数据，它的数据都是<code>arr</code>的。你可以通过属性<code>.flags</code>来验证：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; view_of_arr.flags.owndata</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，<code>view_of_arr.flags.owndata</code>返回了<code>False</code>，这意味着它没有自己的数据，它使用的是<code>.base</code>返回的对象的数据。</p>
+<p><a href="https://files.realpython.com/media/fig-04.8f5b35e398f4.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-04.8f5b35e398f4.png" alt="mmst-pandas-vc-04"></a></p>
+<p>上图所说明的就是<code>arr</code>和<code>view_of_arr</code>指向了同样的数据对象。</p>
+<p>Numpy数组的深拷贝，简称拷贝，就是要单独再创建一个拥有自己数据的数组。相对于原数组，经过深拷贝之后所得到的数组，虽然数据内容来自原数组，但它相对于原数组是独立的。我们可以使用<code>.copy()</code>方法来演示这种深拷贝：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; copy_of_arr &#x3D; arr.copy()</span><br><span class="line">&gt;&gt;&gt; copy_of_arr</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; copy_of_arr.base is None</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; copy_of_arr.flags.owndata</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，<code>copy_of_arr</code>没有<code>.base</code>属性，如果判断其该熟悉的的布尔值，跟<code>None</code>一样。而属性<code>.flags.owndata</code>的返回值是<code>True</code>。</p>
+<p><a href="https://files.realpython.com/media/fig-05.b2935843218e.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-05.b2935843218e.png" alt="mmst-pandas-vc-05"></a></p>
+<p>图中显示，两个数组各有一套数据。</p>
+<p>那么，视图和拷贝有什么区别呢？其实，前面的演示你已经看出来了。</p>
+<ul>
+<li>视图没有自己的单独存储的数据，但是拷贝有</li>
+<li>如果修改原始数组，会影响视图，但是不影响拷贝</li>
+</ul>
+<p>数组的属性<code>.nbytes</code>能返回该数组的字节数，下面就用它比较<code>arr, view_of_arr, copy_of_arr</code>三个数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr.nbytes</span><br><span class="line">48</span><br><span class="line">&gt;&gt;&gt; view_of_arr.nbytes</span><br><span class="line">48</span><br><span class="line">&gt;&gt;&gt; copy_of_arr.nbytes</span><br><span class="line">48</span><br></pre></td></tr></table></figure>
+
+<p>目前，它们具有相同的字节：48字节。注意，看起来好像每个数组应该是8字节（64比特），其实不然，是48字节。</p>
+<p>然而，如果使用<code>sys.getsizeof()</code>函数，则能够直接得到每个数组所占用的内存空间大小，这就能看出它们的区别了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from sys import getsizeof</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; getsizeof(arr)</span><br><span class="line">144</span><br><span class="line">&gt;&gt;&gt; getsizeof(view_of_arr)</span><br><span class="line">96</span><br><span class="line">&gt;&gt;&gt; getsizeof(copy_of_arr)</span><br><span class="line">144</span><br></pre></td></tr></table></figure>
+
+<p><code>arr</code> and <code>copy_of_arr</code> hold 144 bytes each. As you’ve seen previously, 48 bytes out of the 144 total are for the data  elements. The remaining 96 bytes are for other attributes. <code>view_of_arr</code> holds only those 96 bytes because it doesn’t have its own data elements.</p>
+<p><code>arr</code>和<code>copy_of_arr</code>占用了144字节，注意，其中的48字节用于保存数据元素，而<code>view_of_arr</code>只占用了96字节，因为它自己没有数据元素，所以就少了48字节。</p>
+<p>此外，原数组修改，对视图和拷贝的数组影响各异，请看下面操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr[1] &#x3D; 64</span><br><span class="line">&gt;&gt;&gt; arr</span><br><span class="line">array([ 1,  64,   4,   8,  16,  32])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; view_of_arr</span><br><span class="line">array([ 1,  64,   4,   8,  16,  32])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; copy_of_arr</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br></pre></td></tr></table></figure>
+
+<p>视图中的元素修改了，但是拷贝的数组中并未修改。上面代码可以用下图演示：</p>
+<p><a href="https://files.realpython.com/media/fig-06.568dfcf1521d.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-06.568dfcf1521d.png" alt="mmst-pandas-vc-06"></a></p>
+<h3 id="Pandas中的视图和拷贝"><a href="#Pandas中的视图和拷贝" class="headerlink" title="Pandas中的视图和拷贝"></a>Pandas中的视图和拷贝</h3><p>Pandas中也有视图和拷贝，用DataFrame对象的<code>.copy()</code>方法，可以分别创建视图和拷贝，区别在于参数的配置，如果<code>deep=False</code>，则为视图，如果<code>deep=True</code>则为拷贝，并且这种设置是默认值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1  45</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9  24</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; view_of_df &#x3D; df.copy(deep&#x3D;False)</span><br><span class="line">&gt;&gt;&gt; view_of_df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1  45</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9  24</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; copy_of_df &#x3D; df.copy()</span><br><span class="line">&gt;&gt;&gt; copy_of_df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1  45</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9  24</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>视图和拷贝，看起来是一样的，如果把它们分别转化为Numpy的数组，就会发现差别了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; view_of_df.to_numpy().base is df.to_numpy().base</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; copy_of_df.to_numpy().base is df.to_numpy().base</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+
+<p><code>.to_numpy()</code>返回一个数组，<code>df</code>和<code>view_of_df</code>的<code>.base</code>属性值相同，它们共享相同的数据。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df[&quot;z&quot;] &#x3D; 0</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y  z</span><br><span class="line">a   1   1  0</span><br><span class="line">b   2   3  0</span><br><span class="line">c   4   9  0</span><br><span class="line">d   8  27  0</span><br><span class="line">e  16  81  0</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; view_of_df</span><br><span class="line">    x   y  z</span><br><span class="line">a   1   1  0</span><br><span class="line">b   2   3  0</span><br><span class="line">c   4   9  0</span><br><span class="line">d   8  27  0</span><br><span class="line">e  16  81  0</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; copy_of_df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1  45</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9  24</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>将<code>df</code>的<code>z</code>列数组设置为0，<code>view_of_df</code>也跟着变化，但是<code>copy_of_df</code>中的元素没有修改。</p>
+<p>此外，行标签和列标签也都如此：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>view_of_df.index <span class="keyword">is</span> df.index</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>view_of_df.columns <span class="keyword">is</span> df.columns</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>copy_of_df.index <span class="keyword">is</span> df.index</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>copy_of_df.columns <span class="keyword">is</span> df.columns</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="索引和切片"><a href="#索引和切片" class="headerlink" title="索引和切片"></a>索引和切片</h2><p>Numpy中的一维数组的切片方法，与Python中的列表、元组的操作一样。但是，对Numpy数组进行切片，得到的是一个视图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr &#x3D; np.array([1, 2, 4, 8, 16, 32])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a &#x3D; arr[1:3]</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">array([2, 4])</span><br><span class="line">&gt;&gt;&gt; a.base</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br><span class="line">&gt;&gt;&gt; a.base is arr</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; a.flags.owndata</span><br><span class="line">False</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; b &#x3D; arr[1:4:2]</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">array([2, 8])</span><br><span class="line">&gt;&gt;&gt; b.base</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br><span class="line">&gt;&gt;&gt; b.base is arr</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; b.flags.owndata</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+
+<p><code>arr</code>是原始数组，<code>a</code>和<code>b</code>是通过切片操作得到的数组，这两个数组与与<code>arr</code>共享同样的数据，它们没有自己的独立数据，如下图所示：</p>
+<p><a href="https://files.realpython.com/media/fig-07.e944c8736991.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-07.e944c8736991.png" alt="mmst-pandas-vc-07"></a></p>
+<p>当你有一个很大的原始数组，但只需要其中的一小部分时，你可以在切片后调用’ .copy() ‘，并用’ del ‘语句删除指向原始数组的变量。通过这种方式，您保留了副本，并从内存中删除了原始数组。</p>
+<p>注意：如果原始数组很大，但是你只需要其中的一小部分时，可以先用切片得到一个小数组，然后它的<code>.copy()</code>，并用<code>del</code>删除引用原始数组的变量。通过这种方式，您保留了副本，并从内存中删除了原始数组，可以尽可能节省内存。</p>
+<p>切片返回的是视图，但是，索引则不同了。下面演示，使用列表作为索引，得到了原始数组的拷贝。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; c &#x3D; arr[[1, 3]]</span><br><span class="line">&gt;&gt;&gt; c</span><br><span class="line">array([2, 8])</span><br><span class="line">&gt;&gt;&gt; c.base is None</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; c.flags.owndata</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p>数组<code>c</code>中包含了原始数组中索引是<code>1</code>和<code>3</code>的两个元素，并且它是原始数组的一个拷贝。</p>
+<p><a href="https://files.realpython.com/media/fig-08.c2a65031a90d.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-08.c2a65031a90d.png" alt="mmst-pandas-vc-08"></a></p>
+<p>拷贝之后，<code>c</code>和<code>arr</code>是两个相互独立的数组。下面的例子中，列表中是布尔值，还是以这个列表为下标，获得<code>True</code>所对应的索引的值。所返回的值，还是原数组的拷贝。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; mask &#x3D; [False, True, False, True, False, False]</span><br><span class="line">&gt;&gt;&gt; d &#x3D; arr[mask]</span><br><span class="line">&gt;&gt;&gt; d</span><br><span class="line">array([2, 8])</span><br><span class="line">&gt;&gt;&gt; d.base is None</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; d.flags.owndata</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p>以上代码，可以用下图演示：</p>
+<p><a href="https://files.realpython.com/media/fig-09.75e65f7fc3c6.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/fig-09.75e65f7fc3c6.png" alt="mmst-pandas-vc-09"></a></p>
+<p>除了可以用列表作为下标，也可以使用Numpy的数组，但是不能用元组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># &#96;arr&#96; 是原始数组:</span><br><span class="line">arr &#x3D; np.array([1, 2, 4, 8, 16, 32])</span><br><span class="line"></span><br><span class="line"># 切片获得了&#96;a&#96; 和 &#96;b&#96;视图：</span><br><span class="line">a &#x3D; arr[1:3]</span><br><span class="line">b &#x3D; arr[1:4:2]</span><br><span class="line"></span><br><span class="line"># 以列表为下标得到了&#96;c&#96; and &#96;d&#96;拷贝：</span><br><span class="line">c &#x3D; arr[[1, 3]]</span><br><span class="line">d &#x3D; arr[[False, True, False, True, False, False]]</span><br></pre></td></tr></table></figure>
+
+<p>跟前面对视图和拷贝的说明一样，视图都会受到原始数组变化的影响，拷贝不会：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr[1] &#x3D; 64</span><br><span class="line">&gt;&gt;&gt; arr</span><br><span class="line">array([  1, 64,   4,   8,  16,  32])</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">array([64,   4])</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">array([64,   8])</span><br><span class="line">&gt;&gt;&gt; c</span><br><span class="line">array([2, 8])</span><br><span class="line">&gt;&gt;&gt; d</span><br><span class="line">array([2, 8])</span><br></pre></td></tr></table></figure>
+
+<p>如果用链式操作，比如下面的，注意比较视图和拷贝的不同结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr &#x3D; np.array([1, 2, 4, 8, 16, 32])</span><br><span class="line">&gt;&gt;&gt; arr[1:4:2][0] &#x3D; 64</span><br><span class="line">&gt;&gt;&gt; arr</span><br><span class="line">array([ 1, 64,  4,  8, 16, 32])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; arr &#x3D; np.array([1, 2, 4, 8, 16, 32])</span><br><span class="line">&gt;&gt;&gt; arr[[1, 3]][0] &#x3D; 64</span><br><span class="line">&gt;&gt;&gt; arr</span><br><span class="line">array([ 1,  2,  4,  8, 16, 32])</span><br></pre></td></tr></table></figure>
+
+<p>This example illustrates the difference between copies and views when using chained indexing in NumPy.</p>
+<p><code>arr[1:4:2]</code>返回了视图，它引用了<code>arr</code>中的数据元素<code>2</code>和<code>8</code>，语句<code>arr[1:4:2][0] = 64</code>的意思是要将索引为1的元素的值设置为64，这个操作对<code>arr</code>和视图都会产生作用。</p>
+<p>而<code>arr[[1, 3]]</code>返回了拷贝，其中也包括<code>2</code>和<code>8</code>两个元素，但是，它们已经不是<code>arr</code>中的元素了，而是两个新的。<code>arr[[1, 3]][0] = 64</code>就不会影响<code>arr</code>了。</p>
+<p>以上以一维数组为例，说明了切片和通过索引（下标）返回的不同类型对象，前者是试图，后者是拷贝。那么，如果是多维数组会如何？与一维的情况一样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; arr &#x3D; np.array([[  1,   2,    4,    8],</span><br><span class="line">...                 [ 16,  32,   64,  128],</span><br><span class="line">...                 [256, 512, 1024, 2048]])</span><br><span class="line">&gt;&gt;&gt; arr</span><br><span class="line">array([[   1,    2,    4,    8],</span><br><span class="line">       [  16,   32,   64,  128],</span><br><span class="line">       [ 256,  512, 1024, 2048]])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; a &#x3D; arr[:, 1:3]  # Take columns 1 and 2</span><br><span class="line">&gt;&gt;&gt; a</span><br><span class="line">array([[   2,    4],</span><br><span class="line">       [  32,   64],</span><br><span class="line">       [ 512, 1024]])</span><br><span class="line">&gt;&gt;&gt; a.base</span><br><span class="line">array([[   1,    2,    4,    8],</span><br><span class="line">       [  16,   32,   64,  128],</span><br><span class="line">       [ 256,  512, 1024, 2048]])</span><br><span class="line">&gt;&gt;&gt; a.base is arr</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; b &#x3D; arr[:, 1:4:2]  # Take columns 1 and 3</span><br><span class="line">&gt;&gt;&gt; b</span><br><span class="line">array([[   2,    8],</span><br><span class="line">       [  32,  128],</span><br><span class="line">       [ 512, 2048]])</span><br><span class="line">&gt;&gt;&gt; b.base</span><br><span class="line">array([[   1,    2,    4,    8],</span><br><span class="line">       [  16,   32,   64,  128],</span><br><span class="line">       [ 256,  512, 1024, 2048]])</span><br><span class="line">&gt;&gt;&gt; b.base is arr</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; c &#x3D; arr[:, [1, 3]]  # Take columns 1 and 3</span><br><span class="line">&gt;&gt;&gt; c</span><br><span class="line">array([[   2,    8],</span><br><span class="line">       [  32,  128],</span><br><span class="line">       [ 512, 2048]])</span><br><span class="line">&gt;&gt;&gt; c.base</span><br><span class="line">array([[   2,   32,  512],</span><br><span class="line">       [   8,  128, 2048]])</span><br><span class="line">&gt;&gt;&gt; c.base is arr</span><br><span class="line">False</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; d &#x3D; arr[:, [False, True, False, True]]  # Take columns 1 and 3</span><br><span class="line">&gt;&gt;&gt; d</span><br><span class="line">array([[   2,    8],</span><br><span class="line">       [  32,  128],</span><br><span class="line">       [ 512, 2048]])</span><br><span class="line">&gt;&gt;&gt; d.base</span><br><span class="line">array([[   2,   32,  512],</span><br><span class="line">       [   8,  128, 2048]])</span><br><span class="line">&gt;&gt;&gt; d.base is arr</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+
+<p>Pandas中的拷贝和视图与Numpy类似。但是，要注意Pandas中的这样一种操作符： <code>.loc[]</code>, <code>.iloc[]</code>, <code>.at[]</code>, and <code>.iat</code></p>
+<p>还是列举几个示例，从中看看Pandas的拷贝和视图。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[&quot;a&quot;:&quot;c&quot;]</span><br><span class="line">   x  y   z</span><br><span class="line">a  1  1  45</span><br><span class="line">b  2  3  98</span><br><span class="line">c  4  9  24</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[&quot;a&quot;:&quot;c&quot;].to_numpy().base</span><br><span class="line">array([[ 1,  2,  4,  8, 16],</span><br><span class="line">       [ 1,  3,  9, 27, 81],</span><br><span class="line">       [45, 98, 24, 11, 64]])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[&quot;a&quot;:&quot;c&quot;].to_numpy().base is df.to_numpy().base</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[[&quot;x&quot;, &quot;y&quot;]]</span><br><span class="line">    x   y</span><br><span class="line">a   1   1</span><br><span class="line">b   2   3</span><br><span class="line">c   4   9</span><br><span class="line">d   8  27</span><br><span class="line">e  16  81</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[[&quot;x&quot;, &quot;y&quot;]].to_numpy().base</span><br><span class="line">array([[ 1,  2,  4,  8, 16],</span><br><span class="line">       [ 1,  3,  9, 27, 81]])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[[&quot;x&quot;, &quot;y&quot;]].to_numpy().base is df.to_numpy().base</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+
+<h2 id="拷贝和视图的应用"><a href="#拷贝和视图的应用" class="headerlink" title="拷贝和视图的应用"></a>拷贝和视图的应用</h2><p>在前面我们已经看到，Pandas有时候会抛出<code>SettingWithCopyWarning</code>异常。下面我们就看看如何避免这种现象。</p>
+<p>还是用前面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>df = pd.DataFrame(data=data, index=index)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mask = df[<span class="string">"z"</span>] &lt; <span class="number">50</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mask</span><br><span class="line">a     <span class="literal">True</span></span><br><span class="line">b    <span class="literal">False</span></span><br><span class="line">c     <span class="literal">True</span></span><br><span class="line">d     <span class="literal">True</span></span><br><span class="line">e    <span class="literal">False</span></span><br><span class="line">Name: z, dtype: bool</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df[mask][<span class="string">"z"</span>] = <span class="number">0</span></span><br><span class="line">__main__:<span class="number">1</span>: SettingWithCopyWarning:</span><br><span class="line">A value <span class="keyword">is</span> trying to be set on a copy of a slice <span class="keyword">from</span> a DataFrame.</span><br><span class="line">Try using .loc[row_indexer,col_indexer] = value instead</span><br><span class="line"></span><br><span class="line">See the caveats <span class="keyword">in</span> the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html<span class="comment">#returning-a-view-versus-a-copy</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>df</span><br><span class="line">    x   y   z</span><br><span class="line">a   <span class="number">1</span>   <span class="number">1</span>  <span class="number">45</span></span><br><span class="line">b   <span class="number">2</span>   <span class="number">3</span>  <span class="number">98</span></span><br><span class="line">c   <span class="number">4</span>   <span class="number">9</span>  <span class="number">24</span></span><br><span class="line">d   <span class="number">8</span>  <span class="number">27</span>  <span class="number">11</span></span><br><span class="line">e  <span class="number">16</span>  <span class="number">81</span>  <span class="number">64</span></span><br></pre></td></tr></table></figure>
+
+<p>之所以报异常，是因为<code>df[mask]</code>返回的是一个拷贝，更准确地说，赋值操作是针对拷贝对象而言的，对原对象<code>df</code>没有影响。从异常信息中，可以看到修改提示。但是，你不要认为这样就行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line">&gt;&gt;&gt; df.loc[mask][&quot;z&quot;] &#x3D; 0</span><br><span class="line">__main__:1: SettingWithCopyWarning:</span><br><span class="line">A value is trying to be set on a copy of a slice from a DataFrame.</span><br><span class="line">Try using .loc[row_indexer,col_indexer] &#x3D; value instead</span><br><span class="line"></span><br><span class="line">See the caveats in the documentation: https:&#x2F;&#x2F;pandas.pydata.org&#x2F;pandas-docs&#x2F;stable&#x2F;user_guide&#x2F;indexing.html#returning-a-view-versus-a-copy</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1  45</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9  24</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>因为<code>df.loc[mask]</code>返回的还是一个拷贝，跟前面的意思一样。</p>
+<p>如果这样做，就能成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df[&quot;z&quot;][mask] &#x3D; 0</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1   0</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9   0</span><br><span class="line">d   8  27   0</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>有的时候Pandas可能不会针对拷贝报错，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line">&gt;&gt;&gt; df.loc[[&quot;a&quot;, &quot;c&quot;, &quot;e&quot;]][&quot;z&quot;] &#x3D; 0  # 这么写也不能实现修改，但不抛出异常</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1  45</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9  24</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>另外，下面的操作是成立的，也会抛出异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line">&gt;&gt;&gt; df[:3][&quot;z&quot;] &#x3D; 0  # 操作成功，但是有异常抛出</span><br><span class="line">__main__:1: SettingWithCopyWarning:</span><br><span class="line">A value is trying to be set on a copy of a slice from a DataFrame.</span><br><span class="line">Try using .loc[row_indexer,col_indexer] &#x3D; value instead</span><br><span class="line"></span><br><span class="line">See the caveats in the documentation: https:&#x2F;&#x2F;pandas.pydata.org&#x2F;pandas-docs&#x2F;stable&#x2F;user_guide&#x2F;indexing.html#returning-a-view-versus-a-copy</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1   0</span><br><span class="line">b   2   3   0</span><br><span class="line">c   4   9   0</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line">&gt;&gt;&gt; df.loc[&quot;a&quot;:&quot;c&quot;][&quot;z&quot;] &#x3D; 0  # 操作成功，但是有异常抛出</span><br><span class="line">__main__:1: SettingWithCopyWarning:</span><br><span class="line">A value is trying to be set on a copy of a slice from a DataFrame.</span><br><span class="line">Try using .loc[row_indexer,col_indexer] &#x3D; value instead</span><br><span class="line"></span><br><span class="line">See the caveats in the documentation: https:&#x2F;&#x2F;pandas.pydata.org&#x2F;pandas-docs&#x2F;stable&#x2F;user_guide&#x2F;indexing.html#returning-a-view-versus-a-copy</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1   0</span><br><span class="line">b   2   3   0</span><br><span class="line">c   4   9   0</span><br><span class="line">d   8  27  11</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>通常，对于上述示例中的操作意图，使用<code>.loc</code>实现，并且是按照下面的方式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(data&#x3D;data, index&#x3D;index)</span><br><span class="line">&gt;&gt;&gt; df.loc[mask, &quot;z&quot;] &#x3D; 0</span><br><span class="line">&gt;&gt;&gt; df</span><br><span class="line">    x   y   z</span><br><span class="line">a   1   1   0</span><br><span class="line">b   2   3  98</span><br><span class="line">c   4   9   0</span><br><span class="line">d   8  27   0</span><br><span class="line">e  16  81  64</span><br></pre></td></tr></table></figure>
+
+<p>避免用链式索引，这种方法最有效了。</p>
+<h2 id="更改默认提示"><a href="#更改默认提示" class="headerlink" title="更改默认提示"></a>更改默认提示</h2><p>严格来说，<code>SettingWithCopyWarning</code>只是提示或者警告，不是错误，你的代码并不会因为它而中断，如果你看着它不爽，可以修改，利用下面的配置方法：</p>
+<ul>
+<li><strong><code>pd.set_option(&quot;mode.chained_assignment&quot;, &quot;raise&quot;)</code></strong> 抛出 <code>SettingWithCopyException</code>.</li>
+<li><strong><code>pd.set_option(&quot;mode.chained_assignment&quot;, &quot;warn&quot;)</code></strong> 抛出 <code>SettingWithCopyWarning</code>. 这是默认设置</li>
+<li><strong><code>pd.set_option(&quot;mode.chained_assignment&quot;, None)</code></strong> 包括警告和错误信息。</li>
+</ul>
+<p>例如，用下面的方式，就可以将<code>SettingWithCopyWarning</code>替换为<code>SettingWithCopyException</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; df &#x3D; pd.DataFrame(</span><br><span class="line">...     data&#x3D;&#123;(&quot;powers&quot;, &quot;x&quot;): 2**np.arange(5),</span><br><span class="line">...           (&quot;powers&quot;, &quot;y&quot;): 3**np.arange(5),</span><br><span class="line">...           (&quot;random&quot;, &quot;z&quot;): np.array([45, 98, 24, 11, 64], dtype&#x3D;float)&#125;,</span><br><span class="line">...     index&#x3D;[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;]</span><br><span class="line">... )</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; pd.set_option(&quot;mode.chained_assignment&quot;, &quot;raise&quot;)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; df[&quot;powers&quot;][&quot;x&quot;] &#x3D; 0</span><br></pre></td></tr></table></figure>
+
+<p>另外，你可以使用<code>get_option()</code>函数查看当前的警告等级。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; pd.get_option(&quot;mode.chained_assignment&quot;)</span><br><span class="line">&#39;raise&#39;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>本文讨论了Numpy和Pandas中的视图和拷贝，并且了解了<code>SettingWithCopyWarning</code>异常的有关问题。</p>
+<p>参考文献：<a href="https://realpython.com/pandas-settingwithcopywarning/" target="_blank" rel="noopener">https://realpython.com/pandas-settingwithcopywarning/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/24/stock-analysis/">
+        <span class="nav-arrow">← </span>
+        
+          一个简单的股票数据分析及可视化库
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#异常的示例"><span class="toc-nav-text">异常的示例</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#视图和拷贝"><span class="toc-nav-text">视图和拷贝</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Numpy中的视图和拷贝"><span class="toc-nav-text">Numpy中的视图和拷贝</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Pandas中的视图和拷贝"><span class="toc-nav-text">Pandas中的视图和拷贝</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引和切片"><span class="toc-nav-text">索引和切片</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#拷贝和视图的应用"><span class="toc-nav-text">拷贝和视图的应用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#更改默认提示"><span class="toc-nav-text">更改默认提示</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/06/29/copy-and-view-in-numpy/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

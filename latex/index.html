@@ -181,7 +181,7 @@
 <li>全称量词，对所有的，对每一个：<code>\forall</code>：$\forall$</li>
 <li>存在量词，表示存在，至少有一个：<code>\exists</code>：$\exists$</li>
 <li>蕴含符号，由A命题可以推出B命题：<code>\Rightarrow</code>：$\Rightarrow$</li>
-<li>等价符号，A与B命题等价：<code>\Leftrightarrow</code>：$\Leftrightarrow$，或者：<code>\Longleftrightarrow</code>：$\Longleftrightarrow$</li>
+<li>等价符号，A与B命题等价：<code>\Leftrightarrow</code>：$\Leftrightarrow$，或者：<code>\Longleftrightarrow</code>：$\Longleftrightarrow$，或者：<code>\leftrightarrow</code>：$\leftrightarrow$，或者：<code>\Longleftrightarrow</code>：$\longleftrightarrow$</li>
 </ul>
 <h2 id="集合关系"><a href="#集合关系" class="headerlink" title="集合关系"></a>集合关系</h2><ul>
 <li>真子集：<code>\subset</code>：$\subset$</li>
@@ -201,6 +201,21 @@
 <p>$$\begin{split} first line \ second line \end{split}$$</p>
 </li>
 </ul>
+<h2 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h2><ul>
+<li><p>分块矩阵和增广矩阵：这里的c表示数组中元素对其方式：</p>
+<ul>
+<li>c居中、r右对齐、l左对齐，竖线表示2、3列间插入竖线</li>
+<li><code>\hline</code>：插入横线，如果去掉\hline就是增广矩阵</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$$\<span class="keyword">left</span>[\begin&#123;array&#125;  &#123;<span class="built_in">c</span> <span class="built_in">c</span> | <span class="built_in">c</span>&#125; <span class="number">1</span> &amp; <span class="number">2</span> &amp; <span class="number">3</span> \\\hline <span class="number">4</span> &amp; <span class="number">5</span> &amp; <span class="number">6</span> \end&#123;array&#125;\<span class="keyword">right</span>]$$</span><br></pre></td></tr></table></figure>
+
+<p>效果：$\left[  \begin{array}  {c c | c} 1 &amp; 2 &amp; 3 \\hline 4 &amp; 5 &amp; 6 \end{array}\right]$</p>
+</li>
+</ul>
+<h2 id="表达式后面的标记"><a href="#表达式后面的标记" class="headerlink" title="表达式后面的标记"></a>表达式后面的标记</h2><p>使用<code>\tag{yourtag}</code> 来标记公式，</p>
+<p>$$a = x^2 - y^3 \tag{1}$$</p>
+<h2 id="符号上面的标记"><a href="#符号上面的标记" class="headerlink" title="符号上面的标记"></a>符号上面的标记</h2><p><code>$$a + y^3 \stackrel{a=2} \rightarrow x^2$$</code></p>
+<p>$$a + y^3 \stackrel{a=2} \rightarrow x^2$$</p>
 </section>
     <!-- Tags START -->
     
@@ -248,7 +263,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常用控制符"><span class="toc-nav-text">常用控制符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#比较运算"><span class="toc-nav-text">比较运算</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#逻辑运算"><span class="toc-nav-text">逻辑运算</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#集合关系"><span class="toc-nav-text">集合关系</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#括号"><span class="toc-nav-text">括号</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#顶部符号"><span class="toc-nav-text">顶部符号</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#多行"><span class="toc-nav-text">多行</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常用控制符"><span class="toc-nav-text">常用控制符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#比较运算"><span class="toc-nav-text">比较运算</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#逻辑运算"><span class="toc-nav-text">逻辑运算</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#集合关系"><span class="toc-nav-text">集合关系</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#括号"><span class="toc-nav-text">括号</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#顶部符号"><span class="toc-nav-text">顶部符号</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#多行"><span class="toc-nav-text">多行</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#矩阵"><span class="toc-nav-text">矩阵</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表达式后面的标记"><span class="toc-nav-text">表达式后面的标记</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#符号上面的标记"><span class="toc-nav-text">符号上面的标记</span></a></li></ol>
     
   </div>
 </aside>
