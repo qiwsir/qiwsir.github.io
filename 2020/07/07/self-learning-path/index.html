@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      AI工程师的自学之路 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>AI工程师的自学之路</h2>
+    <p class="post-date">2020-07-07</p>
+    <section class="markdown-content"><p>作者：Jerry Buaba</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<p>没有哪一个数据科学、人工智能（AI）或者机器学习（ML）工程师是在教室里面被老师教出来的，也没有哪一个人有那么多时间和经历在全日制的学校中学习所有的知识。</p>
+<p>所以，时间和成本是人们学习数据科学，人工智能或机器学习时面临的重大障碍。 自学是一门需要自我管理的艺术，如果掌握得当，它可以使你灵活地将学习与工作关系处理得非常好。但是，当开始学习数据科学，AI或ML时，起步阶段非常艰难，当我说这值得关注时，请相信我。 独自学习时取得良好进展的关键是按照自己的节奏学习。 本文中，我将分享一个寻求学习数据科学，人工智能和机器学习的人们可以遵循的道路，并在学习新知识方面取得巨大的进步。 我还将分享一些学习资源和资料。</p>
+<h1 id="学一些数学"><a href="#学一些数学" class="headerlink" title="学一些数学"></a>学一些数学</h1><p>这听起来很烦人，但是在这个领域中非常重要。 可以肯定地说，任何阅读本文的人都具有高中数学的一些基础知识或中级知识。 这是一个好的开始，但在数据科学、人工智能和机器学习领域还远远不够。 您需要进一步深入研究，并学习一些统计，代数和其他相关的概念。</p>
+<blockquote>
+<p>译者注：这方面虽然有很多资料，但是是不是适合需要经过选择。本微信公众号（老齐教室）将推出《机器学习的数学基础》系列文章，请关注。</p>
+</blockquote>
+<h1 id="学会编程"><a href="#学会编程" class="headerlink" title="学会编程"></a>学会编程</h1><p>作为初学者，不要直接进入学习编写用于机器学习的代码的过程，而应该学习一般的编程核心概念。了解编程的全部内容，了解现有代码的类型以及如何正确编写代码。 这一点非常重要，因为你将在该领域中学习许多基本概念，这些概念将用于你后面的工作。 在此步骤中花点时间，不要急于学习高级的东西，了解此步骤中的大多数内容将决定你在行业中的表现。 </p>
+<p>如今，数据科学家，人工智能和机器学习工程师使用多种语言来完成其工作，其中最常用的语言是Python，R，Java，Julia和SQL。当然，还可以使用许多其他语言，但出于多种原因，我列出的语言是最常用的语言。</p>
+<ul>
+<li>如果人们有足够的时间学习并保持一致，那么它们就易于学习并且发展迅速。</li>
+<li>上面这些编程语言能让您用更少的代码做更多的事情。</li>
+<li>这些编程语言都有一个良好而稳定的社区，可以在遇到任何问题时为你提供帮助和支持。</li>
+<li>这些编程语言几乎提供了一个数据科学家，AI或ML工程师所需的所有库和软件包。</li>
+<li>都是开源的，可以免费使用。</li>
+</ul>
+<p>学习一种以上的语言绝对没有错，一件好事。但是，你必须花时间学习编程语言。应该尽力避免同时学习一种以上的语言，因为这可能会使你感到困惑，甚至会暂时迷失方向。花时间，一次学习一种语言，并确保仅学习职业所需的。我建议你先学习python，因为它是一种相对容易理解的语言。我还建议你参考《跟老齐学Python：轻松入门》和《Python大学实用教程》这两本书（任选一本即可），是非常适合初学者的学习资料，将带你全面了解编程中的重要概念。花点时间，并确保你学会了，对后面的学习非常有帮助。</p>
+<h1 id="学会处理数据"><a href="#学会处理数据" class="headerlink" title="学会处理数据"></a>学会处理数据</h1><p>首先，就是要获得数据，否则就是无米之炊了。</p>
+<p>数据通常不会直接呈送给你，有时甚至根本没有数据供你使用，但是无论如何，必须找到一种获取可用数据的方法。你的合作机构可能有一个很好的数据收集系统，如果有的话，那么这对你来说是一个加分项。否则，必须找到一种获取数据的方法，不仅可以获取任何数据，还可以获取可以用来实现目标的良好数据。获取数据并不直接意味着挖掘数据，它是数据挖掘的一个环节。可以在Internet上的许多地方获得免费和开源的数据，有时可能不得不从网站上抓取数据。 爬虫是很重要的技能，建议大家学习它，因为在作为数据科学家，AI或ML工程师的职业生涯中可能会需要它。在本微信公众号（老齐教室）的菜单中，你能找到【公开课】，里面有很多关于网络爬虫的课程，推荐学习。此外，数据也可能保存在数据库中，因此作为数据科学家，AI或ML工程师，必须了解一些数据库管理知识，以便能够连接到数据库并直接从数据库进行工作。在此，SQL知识非常重要。你可以在本文开头推荐的书中看到相关资料。</p>
+<p>然后，就是数据清理。</p>
+<p>此过程可以通过对你拥有的数据执行一些探索性数据分析并删除数据中不需要的部分来完成。该过程还涉及将你拥有的数据构造为可以使用的形式。这个阶段是从事数据科学，人工智能或机器学习项目中最疲惫的部分。在学习过程中，你使用的大多数示例数据都已经过预处理，但是现实世界中的数据可能没有经过任何处理阶段。作为一个渴望在此领域做得很好的人，应该找到一些现实世界的数据并加以解决。</p>
+<p>几乎可以在任何地方找到真实世界的数据，但是[Kaggle]（<a href="https://www.kaggle.com/datasets）是获取真实世界数据的绝佳场所。数据整理或处理是一项非常艰巨的任务，但是由于始终如一的奉献精神和一致性，对你而言这可能是一件非常有趣的事情。您可以在《数据准备和特征工程》这本书里获得所有与数据处理相关的技能，特别推荐。" target="_blank" rel="noopener">https://www.kaggle.com/datasets）是获取真实世界数据的绝佳场所。数据整理或处理是一项非常艰巨的任务，但是由于始终如一的奉献精神和一致性，对你而言这可能是一件非常有趣的事情。您可以在《数据准备和特征工程》这本书里获得所有与数据处理相关的技能，特别推荐。</a></p>
+<h1 id="学习数据可视化"><a href="#学习数据可视化" class="headerlink" title="学习数据可视化"></a>学习数据可视化</h1><p>作为数据科学家，AI或ML工程师，不一定意味着你的工作场所或团队中的每个人都将能够理解你所在领域的技术或能够从原始格式的数据中进行推断。这就是为什么需要学习可视化数据的原因。数据可视化基本上是指以图形形式显示数据的过程，以便使任何人，无论他们在数据科学，人工智能或机器学习方面的知识如何，都可以理解数据的含义。有许多种可视化数据的方法。作为开发者，编写代码来实现可视化数据，应该是我们的首选方法，因为这是快速且无成本的。可以使用已经掌握的编程语言所附带的许多免费和开源库来编写代码实现可视化数据。 Matplotlib，Seaborn和Bokeh都是我们可以用来可视化数据的Python库。您可以在《跟老齐学Python：数据分析》这本书中学到实现可视化的常用方法，另外还有一个在线资料：案例上手 Python 数据可视化（<a href="https://gitbook.cn/gitchat/column/5c6cd09e7fa9074fde9c8909）也提供给大家参考。" target="_blank" rel="noopener">https://gitbook.cn/gitchat/column/5c6cd09e7fa9074fde9c8909）也提供给大家参考。</a></p>
+<p>可视化数据的另一种方法是使用诸如[Tableau]（<a href="https://www.tableau.com/）之类的闭源工具。它们可用于进行更优雅和复杂的可视化，但要付出一定的代价。" target="_blank" rel="noopener">https://www.tableau.com/）之类的闭源工具。它们可用于进行更优雅和复杂的可视化，但要付出一定的代价。</a> Tableau是最常见的工具。</p>
+<h1 id="人工智能和机器学习"><a href="#人工智能和机器学习" class="headerlink" title="人工智能和机器学习"></a>人工智能和机器学习</h1><p>人工智能和机器学习更像是数据科学的子集，因为它们由数据驱动，它们指的是训练机器或其他无生命物体所涉及的过程，即通过向它们提供经过良好处理的数据来使其表现得像人。通过逐步教授和指导机器，可以教机器去做人类可以做的许多事情。在这种情况下，将机器想象为完全没有知识，但逐渐学会识别物体、说话，从错误中学习并变得更好的婴儿。也可以用相同的方式教机器完成大多数这些事情。 AI和ML基本上是通过使用许多数学算法来赋予机器生命。人工智能和机器学习的全部潜力仍然未知，因为它是不断改进的领域之一。但是目前，AI和ML已广泛用于认知功能，例如对象检测和识别，面部识别，语音识别和自然语言处理，欺诈和垃圾邮件检测等。我将继续深入讨论AI和ML，但现在，我希望你了解AI和ML的一般应用，本微信公众号中的菜单【数据科学】有一系列相关文章，建议阅读。</p>
+<h1 id="学习如何把机器学习模型发布到网上"><a href="#学习如何把机器学习模型发布到网上" class="headerlink" title="学习如何把机器学习模型发布到网上"></a>学习如何把机器学习模型发布到网上</h1><p>通过使用机器学习构建的模型，可以将其提供给Internet上的每个人。为此，需要对Web开发有一个很好的了解，因为您必须创建一个网页或一组网页来容纳模型。网站的前端还需要与包含模型的后端进行通信。为此，还需要知道如何构建和集成API，以处理网站的前端与包含机器学习模型的后端之间的通信。如果你打算通过Docker容器在云服务器上部署机器学习模型，则可能需要对云计算和DevOPs有很好的了解。部署机器学习模型的方法有很多，但首先，我建议你学习如何使用Python网络框架Flask或者Django部署机器学习模型。可以参考《跟老齐学Python：Django实战》这本书。</p>
+<h1 id="找个导师"><a href="#找个导师" class="headerlink" title="找个导师"></a>找个导师</h1><p>自己学习是令人敬畏的，但是没有什么比直接向行业专业人士学习更好。 这是因为你要学习现实生活中的概念和其他只有实践经验才能教授的东西。 拥有一名导师有很多好处，但并不是每个导师都能对你的职业生涯或整个人生产生影响。 这就是为什么拥有一个良好的导师很重要。</p>
+<p>请注意，仅参加课程并从在线资源中学习不会使你成为数据科学家，AI或ML工程师。某些工作职位还需要你具有一定的学位。 花些时间学习，获得认证或学位，你就为将来好了准备。</p>
+<p>希望你喜欢这个故事，对你有所帮助。 感谢你抽出宝贵时间阅读本文。</p>
+<p>原文链接：<a href="https://towardsdatascience.com/the-self-learning-path-to-becoming-a-data-scientist-ai-or-ml-engineer-9ab3a97ca635" target="_blank" rel="noopener">https://towardsdatascience.com/the-self-learning-path-to-becoming-a-data-scientist-ai-or-ml-engineer-9ab3a97ca635</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/29/copy-and-view-in-numpy/">
+        <span class="nav-arrow">← </span>
+        
+          Pandas和Numpy的视图和拷贝
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#学一些数学"><span class="toc-nav-text">学一些数学</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#学会编程"><span class="toc-nav-text">学会编程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#学会处理数据"><span class="toc-nav-text">学会处理数据</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#学习数据可视化"><span class="toc-nav-text">学习数据可视化</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#人工智能和机器学习"><span class="toc-nav-text">人工智能和机器学习</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#学习如何把机器学习模型发布到网上"><span class="toc-nav-text">学习如何把机器学习模型发布到网上</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#找个导师"><span class="toc-nav-text">找个导师</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/07/07/self-learning-path/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
