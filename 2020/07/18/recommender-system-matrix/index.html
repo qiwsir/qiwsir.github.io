@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      基于矩阵分解原理的推荐系统 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>基于矩阵分解原理的推荐系统</h2>
+    <p class="post-date">2020-07-18</p>
+    <section class="markdown-content"><p>作者：Pytholabs</p>
+<p>翻译：老齐</p>
+<p>相关图书推荐：《跟老齐学Python：数据分析》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90_20200209114241.png" alt=""></p>
+<p>本书是数据科学、机器学习、深度学习等方向的入门读物，介绍了这些领域必用工具Numpy、Pandas和数据可视化方法，并且配有大量实例。</p>
+<hr>
+<p>本文，我们将创建一个电影推荐系统。</p>
+<h2 id="原理：矩阵分解"><a href="#原理：矩阵分解" class="headerlink" title="原理：矩阵分解"></a>原理：矩阵分解</h2><p>矩阵分解是推荐系统系列中的一种算法，顾名思义，就是将矩阵分解成两个（或多个）矩阵，它们相乘后得到原始矩阵。 在推荐系统中，我们通常从用户与项目之间的交互/评分矩阵开始，矩阵分解算法会将用户和项目特征矩阵分解，这也称为嵌入。下面以电影推荐中的评分，购买等矩阵为例。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/r1_20200718083343.png" alt=""></p>
+<p>通常，在数据集中，要挖掘用户和项目属性的潜在特征。 本质上，潜在特征是用户/项目在任意空间中的表示，表示用户如何评价电影。 在电影推荐系统的示例中，一个用户样本中包含了他所观看的多个电影，潜在特征的值越高，则表示他喜欢该类型的电影，那么就应该推荐此类型的电影。</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/0*R-6cGRwkOGUpRUMF_20200718084055.gif" alt=""></p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>本文所用数据来自kaggle（<a href="https://www.kaggle.com/CooperUnion/anime-recommendations-database），包含了76000个用户样本。" target="_blank" rel="noopener">https://www.kaggle.com/CooperUnion/anime-recommendations-database），包含了76000个用户样本。</a></p>
+<p>首先，导入数据和有关库。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> recsys <span class="keyword">import</span> * </span><br><span class="line"><span class="keyword">from</span> generic_preprocessing <span class="keyword">import</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> HTML <span class="comment">## 以Ipython Notebook显示</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd,numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">anime = pd.read_csv(<span class="string">'anime.csv'</span>)</span><br><span class="line">ratings = pd.read_csv(<span class="string">'rating.csv'</span>).iloc[:<span class="number">5000000</span>]</span><br></pre></td></tr></table></figure>
+
+<p>以上代码中的<code>recsys</code>模块来自：<a href="https://github.com/aayushmnit/cookbook/blob/master/recsys.py，`generic_preprocessing`模块来自：https://github.com/aayushmnit/cookbook/blob/master/generic_preprocessing.py" target="_blank" rel="noopener">https://github.com/aayushmnit/cookbook/blob/master/recsys.py，`generic_preprocessing`模块来自：https://github.com/aayushmnit/cookbook/blob/master/generic_preprocessing.py</a></p>
+<p>为了创建推荐系统，我们需要一个可交互的矩阵。为此，使用<code>recsys</code>模块中的<code>create_interaction_matrix</code>函数，这个眼熟要求以Pandas的DataFrame类型的数据为输入，输入数据的列必须有诸如用户id，项目id和评分等。此函数的中如果设置<code>norm=True</code>，则意味着任何评分的值都应该是正的。在这个示例中，没有必要设置，因为实际的购买数据和评分都是正的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 利用评分数据创建矩阵</span></span><br><span class="line">interactions = create_interaction_matrix(df = ratings,</span><br><span class="line">																				 user_col = ‘user_id’,</span><br><span class="line">																				 item_col = ‘anime_id’,</span><br><span class="line">																				 rating_col = ‘rating’)</span><br><span class="line">interactions.shape</span><br></pre></td></tr></table></figure>
+
+<p>然后用<code>create_user_dict</code>和<code>create_item_dict</code>函数（<code>recsys</code>模块）创建关于用户和项目的字典。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用户字典</span></span><br><span class="line">user_dict = create_user_dict(interactions=interactions)</span><br><span class="line"><span class="comment"># 项目字典</span></span><br><span class="line">movies_dict = create_item_dict(df = anime,</span><br><span class="line">                               id_col = <span class="string">'anime_id'</span>,</span><br><span class="line">                               name_col = <span class="string">'name'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="矩阵分解模型"><a href="#矩阵分解模型" class="headerlink" title="矩阵分解模型"></a>矩阵分解模型</h2><p>用<code>recsys</code>中的<code>runMF</code>函数来创建矩阵分解模型，这个函数的参数：</p>
+<ul>
+<li><code>interaction</code>：前面所创建的矩阵</li>
+<li><code>n_components</code>：对于每个用户和项目嵌入的数量</li>
+<li><code>loss</code>：定义一个损失函数，本例中我们使用warp损失函数（详见：<a href="https://making.lyst.com/lightfm/docs/examples/warp_loss.html），因为我们更关心矩阵的秩。" target="_blank" rel="noopener">https://making.lyst.com/lightfm/docs/examples/warp_loss.html），因为我们更关心矩阵的秩。</a></li>
+<li><code>epoch</code>：运行的次数</li>
+<li><code>n_jobs</code>：并行处理中使用的核数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mf_model = runMF(interactions = interactions,</span><br><span class="line">                 n_components = <span class="number">30</span>,</span><br><span class="line">                 loss = <span class="string">'warp'</span>,</span><br><span class="line">                 epoch = <span class="number">30</span>,</span><br><span class="line">                 n_jobs = <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<p>本系统的完整代码请参考：<a href="https://colab.research.google.com/drive/1qPA_t4O0KXHZY7fI8N69U5ikTDC9wpRy" target="_blank" rel="noopener">https://colab.research.google.com/drive/1qPA_t4O0KXHZY7fI8N69U5ikTDC9wpRy</a></p>
+<hr>
+<p>原文链接：<a href="https://medium.com/@pytholabs/anime-recommendation-with-matrix-factorization-pytholabs-a59f7ed05516" target="_blank" rel="noopener">https://medium.com/@pytholabs/anime-recommendation-with-matrix-factorization-pytholabs-a59f7ed05516</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/07/15/nan-vs-2/">
+        <span class="nav-arrow">← </span>
+        
+          比较NaN和整数
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/07/20/what-is-EOF/">
+        
+          EOF是不是字符
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#原理：矩阵分解"><span class="toc-nav-text">原理：矩阵分解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#准备"><span class="toc-nav-text">准备</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#矩阵分解模型"><span class="toc-nav-text">矩阵分解模型</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/07/18/recommender-system-matrix/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

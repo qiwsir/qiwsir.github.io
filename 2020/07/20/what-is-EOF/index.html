@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      EOF是不是字符 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>EOF是不是字符</h2>
+    <p class="post-date">2020-07-20</p>
+    <section class="markdown-content"><p>编译：老齐</p>
+<p>与本文相关的图书推荐：《Python大学实用教程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<p>本书是面向零基础学习者的Python入门读物，包含完整的Python语法知识、针对性的练习题，本书强调学习中的实战，案例和习题均从开发实践的角度进行设计。</p>
+<hr>
+<p>什么是 <code>EOF</code>？</p>
+<p>百度百科上这样解释：EOF是一个计算机术语，为End Of File的缩写，在操作系统中表示资料源无更多的资料可读取。资料源通常称为档案或串流。通常在文本的最后存在此字符表示资料结束。</p>
+<p>在这个解释中，认为<code>EOF</code>是表示文件结束的<strong>字符</strong>——这就是本文要重点讨论的，EOF是不是一个字符？</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/eofnotchar_notachar_20200720141041.png" alt=""></p>
+<p>在Unix、Linux系统上，用C语言读写文件，经常会遇到EOF。之所以很多人认为EOF是一个字符串，可能是因为在C语言的程序中，会用<code>getchar()</code>和<code>getc()</code>检查是否遇到了EOF。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">while</span> ((c = getchar()) != EOF)</span><br><span class="line">   <span class="built_in">putchar</span>(c);</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FILE *fp;</span><br><span class="line"><span class="keyword">int</span> c;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">while</span> ((c = getc(fp)) != EOF)</span><br><span class="line">  putc(c, <span class="built_in">stdout</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这样，<code>getchar()</code>或<code>getc()</code>都从输入中获取下一个字符。 因此，这可能导致我们对EOF的本质感到困惑。当然，这仅仅是一种猜测。下面看看另外的理由。</p>
+<p>什么是字符？字符可以看成是文本的最小组成党委，比如<code>A, b, B</code>等都是字符。在Unicode字符集中，每个字符都对应一个数字编码，例如大写字母<code>A</code>的字符编码是65（用十进制表示）。在Python 3中，可以这样查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>ord(<span class="string">'A'</span>)</span><br><span class="line"><span class="number">65</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chr(<span class="number">65</span>)</span><br><span class="line"><span class="string">'A'</span></span><br></pre></td></tr></table></figure>
+
+<p>或者，也可以在Unix/Linux中这样查看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> man ascii</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/eofnotchar_asciitable_20200720142511.png" alt=""></p>
+<p>下面用一下段C语言程序，来看看EOF。在ANSI C中，EOF在<code>&lt;stdio.h&gt;</code>标准库中，它的数字编码值一般是<code>-1</code>。将下面的程序保存为<code>printeof.c</code>，并运行：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"EOF value on my system: %d\n"</span>, EOF);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gcc -o printeof printeof.c</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./printeof</span></span><br><span class="line">EOF value on my system: -1</span><br></pre></td></tr></table></figure>
+
+<p>在Mac OS和Ubuntu系统上测试，都是输出<code>-1</code>。</p>
+<p>那么，那个“字符”的数字编码是<code>-1</code>呢？</p>
+<p>那就用前面演示的Python中的函数，来检索一下，看看<code>-1</code>对应的字符是什么。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在Python交互模式中</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chr(<span class="number">-1</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">ValueError: chr() arg <span class="keyword">not</span> <span class="keyword">in</span> range(<span class="number">0x110000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>没有！在ASCII字符集中没有任何一个字符的数字编码是<code>-1</code>。</p>
+<p>所以，现在可以断言：<strong>EOF不是一个字符</strong>。</p>
+<p>再换一个角度考察。</p>
+<p>如果EOF是字符，你就能在文件末尾“看”到它。下面检测一下文本文件helloworld.txt的内容，并且用<code>xxd</code>指令输出这个文件的二进制/十六进制形式。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat helloworld.txt</span></span><br><span class="line">Hello world!</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> xxd helloworld.txt</span></span><br><span class="line">00000000: 4865 6c6c 6f20 776f 726c 6421 0a         Hello world!.</span><br></pre></td></tr></table></figure>
+
+<p>在以十六进制表示的输出内容中，此文件是以<code>0a</code>结尾的，那么这个<code>0a</code>是什么呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Python交互模式</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chr(<span class="number">0x0a</span>)</span><br><span class="line"><span class="string">'\n'</span></span><br></pre></td></tr></table></figure>
+
+<p>事实再次说明，EOF不是字符。</p>
+<p>它是什么？</p>
+<p>EOF（end-of-file）是操作系统内核提供的一个条件，它可以被程序检测到。</p>
+<p>下面我们来看一下，几种不同的编程语言在通过高级I/O接口读一个文本文件的时候，是如何检测到这条件的（用于检测的所有程序，可以从代码仓库获得：<a href="https://github.com/rspivak/2x25/tree/master/eofnotchar）" target="_blank" rel="noopener">https://github.com/rspivak/2x25/tree/master/eofnotchar）</a></p>
+<ol>
+<li><p>C语言程序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/* mcat.c */</span><br><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">  FILE *fp;</span><br><span class="line">  int c;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ((fp = fopen(*++argv, <span class="string">"r"</span>)) == NULL) &#123;</span><br><span class="line">    printf(<span class="string">"mcat: can't open %s\n"</span>, *argv);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> ((c = getc(fp)) != EOF)</span><br><span class="line">    putc(c, stdout);</span><br><span class="line"></span><br><span class="line">  fclose(fp);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gcc -o mcat mcat.c</span></span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./mcat helloworld.txt</span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此程序通过命令行参数打开一个文件</li>
+<li><code>while</code>循环一次一个字节地将文件中的内容复制到标准输出，一直到文件末尾</li>
+<li>如果遇到EOF，则关闭文件，并返回客户端</li>
+</ul>
+</li>
+<li><p>Python 3 程序</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mcat.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(sys.argv[<span class="number">1</span>]) <span class="keyword">as</span> fin:</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        c = fin.read(<span class="number">1</span>) <span class="comment"># read max 1 char</span></span><br><span class="line">        <span class="keyword">if</span> c == <span class="string">''</span>:     <span class="comment"># EOF</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        print(c, end=<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> python mcat.py helloworld.txt</span></span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+
+<p>   在Python3.8+中，还可以用海象运算符，精简程序：</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mcat38.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(sys.argv[<span class="number">1</span>]) <span class="keyword">as</span> fin:</span><br><span class="line">    <span class="keyword">while</span> (c := fin.read(<span class="number">1</span>)) != <span class="string">''</span>:  <span class="comment"># read max 1 char at a time until EOF</span></span><br><span class="line">        print(c, end=<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> python3.8 mcat38.py helloworld.txt</span></span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Go 程序</p>
+   <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mcat.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"os"</span></span><br><span class="line">    <span class="string">"io"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    file, err := os.Open(os.Args[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Fprintf(os.Stderr, <span class="string">"mcat: %v\n"</span>, err)</span><br><span class="line">        os.Exit(<span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buffer := <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="number">1</span>)  <span class="comment">// 1-byte buffer</span></span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        bytesread, err := file.Read(buffer)</span><br><span class="line">        <span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Print(<span class="keyword">string</span>(buffer[:bytesread]))</span><br><span class="line">    &#125;</span><br><span class="line">    file.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> go run mcat.go helloworld.txt</span></span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>JavaScript（node.js）</p>
+   <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* mcat.js */</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> process = <span class="built_in">require</span>(<span class="string">'process'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fileName = process.argv[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> readable = fs.createReadStream(fileName, &#123;</span><br><span class="line">  encoding: <span class="string">'utf8'</span>,</span><br><span class="line">  fd: <span class="literal">null</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">readable.on(<span class="string">'readable'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> chunk;</span><br><span class="line">  <span class="keyword">while</span> ((chunk = readable.read(<span class="number">1</span>)) !== <span class="literal">null</span>) &#123;</span><br><span class="line">    process.stdout.write(chunk); <span class="comment">/* chunk is one byte */</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">readable.on(<span class="string">'end'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'\nEOF: There will be no more data.'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> node mcat.js helloworld.txt</span></span><br><span class="line">Hello world!</span><br><span class="line"></span><br><span class="line">EOF: There will be no more data.</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例中的高级I/O例程如何确定文件结束条件？ </p>
+</li>
+</ol>
+<p>在Linux系统上，例程直接或间接使用内核提供的<code>read()</code>系统调用，例如，C语言中的<code>getc()</code>使用<code>read()</code>系统调用，当指示到<code>end-of-file</code>条件，则返回EO<code>。</code>read()`系统调用返回0代表EOF条件。</p>
+<p>   <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/eofnotchar_stdsysio_20200720150522.png" alt=""></p>
+<p>下面把前面的C语言程序改写一下，注意观察：</p>
+   <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* syscat.c */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> fd;</span><br><span class="line">  <span class="keyword">char</span> c;</span><br><span class="line"></span><br><span class="line">  fd = <span class="built_in">open</span>(argv[<span class="number">1</span>], O_RDONLY, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (<span class="built_in">read</span>(fd, &amp;c, <span class="number">1</span>) != <span class="number">0</span>)</span><br><span class="line">    <span class="built_in">write</span>(STDOUT_FILENO, &amp;c, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gcc -o syscat syscat.c</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./syscat helloworld.txt</span></span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中，注意观察<code>read()</code>函数，返回的0就代表EOF，当然，Pytyon程序也可以改写。</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># syscat.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">fd = os.open(sys.argv[<span class="number">1</span>], os.O_RDONLY)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    c = os.read(fd, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> c:  <span class="comment"># EOF</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    os.write(sys.stdout.fileno(), c)</span><br></pre></td></tr></table></figure>
+
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> python syscat.py helloworld.txt</span></span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+
+<p>   Python3.8+的程序</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># syscat38.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">fd = os.open(sys.argv[<span class="number">1</span>], os.O_RDONLY)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> c := os.read(fd, <span class="number">1</span>):</span><br><span class="line">    os.write(sys.stdout.fileno(), c)</span><br></pre></td></tr></table></figure>
+
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 执行结果</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python3.8 syscat38.py helloworld.txt</span></span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+
+<p>至此，应该明确了一下几点：</p>
+<ul>
+<li>EOF不是Unicode字符集中的字符</li>
+<li>在Unix/Linux系统中，文件的最后找不到所谓的EOF字符，根本就没有这样一个字符</li>
+<li>EOF是程序能够检测到的Unix/Linux内核提供的一个条件</li>
+</ul>
+<p>参考资料：<a href="https://ruslanspivak.com/eofnotchar/" target="_blank" rel="noopener">https://ruslanspivak.com/eofnotchar/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/07/18/recommender-system-matrix/">
+        <span class="nav-arrow">← </span>
+        
+          基于矩阵分解原理的推荐系统
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/07/20/what-is-EOF/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
