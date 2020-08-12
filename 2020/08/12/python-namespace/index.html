@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中的命名空间和作用域 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中的命名空间和作用域</h2>
+    <p class="post-date">2020-08-12</p>
+    <section class="markdown-content"><p>编译：老齐</p>
+<p>本文将介绍Python命名空间和作用域，它们用于分配Python程序中的对象。Python语言是一种能够实现面向对象编程的高级语言，或者说，在Python中，“万物皆对象”。</p>
+<p>例如，<code>x = &#39;foo&#39;</code>中的<code>x</code>是一个变量，它应用了字符串对象<code>&#39;foo&#39;</code>。</p>
+<p>在一个复杂的程序中，会创建成百上千个这样的变量名称或者函数名称、类名称等，每个名称都指向特定的对象。Python如何跟踪所有这些名称，以便它们不会相互干扰呢？</p>
+<p>接下来就解决这个问题。</p>
+<h2 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h2><p>命名空间是当前定义的符号名称以及每个符号名称所引用的对象的信息的集合。可以将命名空间视为字典，其中键是对象名称，值是对象本身。每个键值对将一个名称映射到它所对应的对象。</p>
+<p>正如《Python之禅》中所说的那样：命名空间是一个很棒的创意，让我们多做些这样的创意！</p>
+<p>何止很棒，简直是绝妙。</p>
+<p>在Python中，一共有三种类型的命名空间：</p>
+<ul>
+<li>内置（built-in），Python语言内置的名称，比如函数名<code>abs</code>、<code>char</code>和异常名称<code>BaseException</code>、<code>Exception</code>等等。</li>
+<li>全局（global），模块中定义的名称，记录了模块的变量，包括函数、类、其它导入的模块、模块级的变量和常量。</li>
+<li>局部（local），函数中定义的名称，记录了函数的变量，包括函数的参数和局部定义的变量。（类中定义的也是）</li>
+</ul>
+<p><img src="https://www.runoob.com/wp-content/uploads/2014/05/types_namespace-1.png" alt=""></p>
+<p>每个命名空间有不同的声明周期，当Python执行一个程序时，会根据需要创建命名空间，并在不需要时删除。通常，在任何给定的时间都会存在许多命名空间。</p>
+<h3 id="内置命名空间"><a href="#内置命名空间" class="headerlink" title="内置命名空间"></a>内置命名空间</h3><p>内置命名空间包含Python所有内置对象的名称。当Python运行时，这些可以直接使用。你可以用以下命令列出内置命名空间中的对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; dir(__builtins__)</span><br><span class="line">[&#39;ArithmeticError&#39;, &#39;AssertionError&#39;, &#39;AttributeError&#39;, &#39;BaseException&#39;,&#39;BlockingIOError&#39;, &#39;BrokenPipeError&#39;, &#39;BufferError&#39;, &#39;BytesWarning&#39;, &#39;ChildProcessError&#39;, &#39;ConnectionAbortedError&#39;, &#39;ConnectionError&#39;, &#39;ConnectionRefusedError&#39;, &#39;ConnectionResetError&#39;, &#39;DeprecationWarning&#39;, &#39;EOFError&#39;, &#39;Ellipsis&#39;, &#39;EnvironmentError&#39;, &#39;Exception&#39;, &#39;False&#39;, &#39;FileExistsError&#39;, &#39;FileNotFoundError&#39;, &#39;FloatingPointError&#39;, &#39;FutureWarning&#39;, &#39;GeneratorExit&#39;, &#39;IOError&#39;, &#39;ImportError&#39;, &#39;ImportWarning&#39;, &#39;IndentationError&#39;, &#39;IndexError&#39;, &#39;InterruptedError&#39;, &#39;IsADirectoryError&#39;, &#39;KeyError&#39;, &#39;KeyboardInterrupt&#39;, &#39;LookupError&#39;, &#39;MemoryError&#39;, &#39;ModuleNotFoundError&#39;, &#39;NameError&#39;, &#39;None&#39;, &#39;NotADirectoryError&#39;, &#39;NotImplemented&#39;, &#39;NotImplementedError&#39;, &#39;OSError&#39;, &#39;OverflowError&#39;, &#39;PendingDeprecationWarning&#39;, &#39;PermissionError&#39;, &#39;ProcessLookupError&#39;, &#39;RecursionError&#39;, &#39;ReferenceError&#39;, &#39;ResourceWarning&#39;, &#39;RuntimeError&#39;, &#39;RuntimeWarning&#39;, &#39;StopAsyncIteration&#39;, &#39;StopIteration&#39;, &#39;SyntaxError&#39;, &#39;SyntaxWarning&#39;, &#39;SystemError&#39;, &#39;SystemExit&#39;, &#39;TabError&#39;, &#39;TimeoutError&#39;, &#39;True&#39;, &#39;TypeError&#39;, &#39;UnboundLocalError&#39;, &#39;UnicodeDecodeError&#39;, &#39;UnicodeEncodeError&#39;, &#39;UnicodeError&#39;, &#39;UnicodeTranslateError&#39;, &#39;UnicodeWarning&#39;, &#39;UserWarning&#39;, &#39;ValueError&#39;, &#39;Warning&#39;, &#39;ZeroDivisionError&#39;, &#39;_&#39;, &#39;__build_class__&#39;, &#39;__debug__&#39;, &#39;__doc__&#39;, &#39;__import__&#39;, &#39;__loader__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;__spec__&#39;, &#39;abs&#39;, &#39;all&#39;, &#39;any&#39;, &#39;ascii&#39;, &#39;bin&#39;, &#39;bool&#39;, &#39;bytearray&#39;, &#39;bytes&#39;, &#39;callable&#39;, &#39;chr&#39;, &#39;classmethod&#39;, &#39;compile&#39;, &#39;complex&#39;, &#39;copyright&#39;, &#39;credits&#39;, &#39;delattr&#39;, &#39;dict&#39;, &#39;dir&#39;, &#39;divmod&#39;, &#39;enumerate&#39;, &#39;eval&#39;, &#39;exec&#39;, &#39;exit&#39;, &#39;filter&#39;, &#39;float&#39;, &#39;format&#39;, &#39;frozenset&#39;, &#39;getattr&#39;, &#39;globals&#39;, &#39;hasattr&#39;, &#39;hash&#39;, &#39;help&#39;, &#39;hex&#39;, &#39;id&#39;, &#39;input&#39;, &#39;int&#39;, &#39;isinstance&#39;, &#39;issubclass&#39;, &#39;iter&#39;, &#39;len&#39;, &#39;license&#39;, &#39;list&#39;, &#39;locals&#39;, &#39;map&#39;, &#39;max&#39;, &#39;memoryview&#39;, &#39;min&#39;, &#39;next&#39;, &#39;object&#39;, &#39;oct&#39;, &#39;open&#39;, &#39;ord&#39;, &#39;pow&#39;, &#39;print&#39;, &#39;property&#39;, &#39;quit&#39;, &#39;range&#39;, &#39;repr&#39;, &#39;reversed&#39;, &#39;round&#39;, &#39;set&#39;, &#39;setattr&#39;, &#39;slice&#39;, &#39;sorted&#39;, &#39;staticmethod&#39;, &#39;str&#39;, &#39;sum&#39;, &#39;super&#39;, &#39;tuple&#39;, &#39;type&#39;, &#39;vars&#39;, &#39;zip&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>Python解释器在启动时直接创建内置命名空间，并且这个命名空间一直存在，直到解释器终止。</p>
+<h3 id="全局命名空间"><a href="#全局命名空间" class="headerlink" title="全局命名空间"></a>全局命名空间</h3><p>全局命名空间包含主程序级别定义的任何名称。Python在主程序启动时创建全局命名空间，它一直存在，直到解释器终止。</p>
+<p>严格地说，这可能不是唯一存在的全局命名空间。解释器还为程序使用<code>import</code>语句加载的任何模块创建一个全局命名空间。</p>
+<h3 id="局部命名空间"><a href="#局部命名空间" class="headerlink" title="局部命名空间"></a>局部命名空间</h3><p>局部命名空间，也可以翻译为“本地命名空间”。比如函数，每一个函数一旦运行，就创建了一个新的命名空间，这个命名空间是函数的本地命名空间，它的存在一直持续到函数终止。</p>
+<p>函数并非彼此独立存在的，而且这种关联不限于主程序级别的函数，你也可以在另一个函数中定义一个函数，即嵌套函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">&gt;&gt;&gt; def f(): </span><br><span class="line">...     print(&#39;Start f()&#39;)</span><br><span class="line">... </span><br><span class="line">...     def g():</span><br><span class="line">...         print(&#39;Start g()&#39;)</span><br><span class="line">...         print(&#39;End g()&#39;)</span><br><span class="line">...         return</span><br><span class="line">... </span><br><span class="line">...     g()</span><br><span class="line">...</span><br><span class="line">...     print(&#39;End f()&#39;)</span><br><span class="line">...     return</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; f()</span><br><span class="line"> Start f()</span><br><span class="line"> Start g()</span><br><span class="line"> End g()</span><br><span class="line"> End f()</span><br></pre></td></tr></table></figure>
+
+<p>在本例中，函数<code>g()</code>是在<code>f()</code>的内定义的，这种方式所定义的函数称为嵌套函数，也称为“闭包”——更详细解释，请参阅《Python大学实用教程》一书的有关章节。</p>
+<p>当主程序调用<code>f()</code>时，Python会为<code>f()</code>创建一个新的命名空间。类似地，当<code>f()</code>调用<code>g()</code>时， <code>g()</code>将获得自己独立的命名空间。为<code>g()</code>创建的命名空间是本地命名空间，为<code>f()</code>创建的命名空间是闭包命名空间——与<code>g()</code>的命名空间名称区分，也可以认为两个都是局部命名空间。</p>
+<p>局部命名空间的声明周期是自其建立开始，到它们各自的函数执行完毕终止。当这些命名空间的函数终止时，Python可能不会立即回收分配给这些命名空间的内存，但是对其中对象的所有引用都将失效。</p>
+<h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>有多个不同命名空间，这就意味着允许Python程序中可以在不同的命名空间中有几个不同实例同时存在——但是这些实例的名称相同。只要每个实例在不同的命名空间，它们都是单独维护的，不会相互干扰。</p>
+<p>但这就产生了一个问题：假设你在代码中引用了名称<code>x</code>，并且<code>x</code>存在于多个命名空间中。Python怎么知道你指的是哪个命名空间？</p>
+<p>答案就是“作用域”。名称的作用域是某个程序的区域，而在这个区域中该名称具有意义。解释器在运行时根据名称定义的位置以及名称在代码中被引用的位置来确定这一点。</p>
+<p>例如代码中引用名称<code>x</code>，那么Python将按照以下的顺序搜索<code>x</code>:</p>
+<ol>
+<li>本地作用域：如果你在一个函数中引用<code>x</code>，那么解释器首先在该函数本地的最内部作用域内搜索它。</li>
+<li>闭包作用域：如果<code>x</code>不在本地作用域中，而是出现在另一个函数内部的函数中，则解释器将搜索闭包函数的作用域。</li>
+<li>全局作用域：如果以上两个搜索都没有结果，那么解释器接下来会查看全局作用域。</li>
+<li>内置作用域：如果在其他地方找不到<code>x</code>，那么解释器将尝试内置的作用域。</li>
+</ol>
+<p><img src="https://imgkr2.cn-bj.ufileos.com/91ecb61e-223b-416b-8744-6488f3e27b09.png?UCloudPublicKey=TOKEN_8d8b72be-579a-4e83-bfd0-5f6ce1546f13&Signature=N1udfqxlwg5B443WuIJxVbPvKn8%253D&Expires=1597022094" alt=""></p>
+<p>这是Python文献中通常所称的LEGB规则（尽管Python文档中并没有实际出现这个术语）。解释器从内到外搜索名称，查找本地、闭包、全局，最后是内置作用域。</p>
+<p>如果解释器在这些位置中找不到名称，那么Python将抛出NameError异常。</p>
+<p>下面是LEGB规则的几个例子。在每种情况下，最里面的闭包函数<code>g()</code> 都试图向控制台显示名为<code>x</code>的变量的值。注意每个示例如何根据<code>x</code>的作用域打印<code>x</code>不同的值。</p>
+<p><strong>例1：单一定义</strong></p>
+<p>在第一个例子中，<code>x</code>只定义在<code>f()</code>和<code>g()</code>之外，因此它位于全局作用域：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; x &#x3D; &#39;global&#39; </span><br><span class="line">2  </span><br><span class="line">3 &gt;&gt;&gt; def f(): </span><br><span class="line">4 ... </span><br><span class="line">5 ...     def g(): </span><br><span class="line">6 ...         print(x) </span><br><span class="line">7 ... </span><br><span class="line">8 ...     g() </span><br><span class="line">9 ...</span><br><span class="line">10 </span><br><span class="line">11 &gt;&gt;&gt; f()</span><br><span class="line">12 global</span><br></pre></td></tr></table></figure>
+
+<p>第6行的<code>print()</code>语句只能引用一个可能的<code>x</code>，它显然是在全局命名空间中定义的<code>x</code>对象，即字符串<code>“global”</code>。</p>
+<p><strong>例2：双重定义</strong></p>
+<p>在这个例子中，<code>x</code>的定义出现在两个地方，一个在<code>f()</code>之外；一个在<code>f()</code>内部，但在<code>g()</code>之外：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; x &#x3D; &#39;global&#39; </span><br><span class="line">2  </span><br><span class="line">3 &gt;&gt;&gt; def f(): </span><br><span class="line">4 ...     x &#x3D; &#39;enclosing&#39; </span><br><span class="line">5 ... </span><br><span class="line">6 ...     def g(): </span><br><span class="line">7 ...         print(x) </span><br><span class="line">8 ... </span><br><span class="line">9 ...     g()</span><br><span class="line">10 ...</span><br><span class="line">11 </span><br><span class="line">12 &gt;&gt;&gt; f()</span><br><span class="line">13 enclosing</span><br></pre></td></tr></table></figure>
+
+<p>与上一个示例一样，<code>g()</code>引用了<code>x</code>。但这一次，它有两个定义可供选择：</p>
+<ul>
+<li>第1行定义了全局作用域内的<code>x</code>。</li>
+<li>第4行在闭包作用域内再次定义了<code>x</code>。</li>
+</ul>
+<p>根据LEGB规则，解释器在查找全局作用域之前，先从闭包作用域中找到值。所以第7行的<code>print()</code>语句显示<code>“enclosing”</code>而不是<code>“global”</code>。</p>
+<p><strong>例3：三重定义</strong></p>
+<p>本示例中展示了关于<code>x</code>的三重定义。一个定义在<code>f()</code>之外；另一个定义在<code>f()</code>内部，但在<code>g()</code>之外；第三个定义在<code>g()</code>内部：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; x &#x3D; &#39;global&#39; </span><br><span class="line">2  </span><br><span class="line">3 &gt;&gt;&gt; def f(): </span><br><span class="line">4 ...     x &#x3D; &#39;enclosing&#39; </span><br><span class="line">5 ... </span><br><span class="line">6 ...     def g(): </span><br><span class="line">7 ...         x &#x3D; &#39;local&#39; </span><br><span class="line">8 ...         print(x) </span><br><span class="line">9 ...</span><br><span class="line">10 ...     g()</span><br><span class="line">11 ...</span><br><span class="line">12 </span><br><span class="line">13 &gt;&gt;&gt; f()</span><br><span class="line">14 local</span><br></pre></td></tr></table></figure>
+
+<p>现在第8行的<code>print()</code>语句必须区分三种不同的可能性：</p>
+<ul>
+<li>第1行定义了全局作用域内的<code>x</code>。</li>
+<li>第4行在闭包作用域内再次定义了<code>x</code>。</li>
+<li>第7行在<code>g()</code>的本地作用域内又一次定义了<code>x</code>。</li>
+</ul>
+<p>在这里，根据LEGB规则规定，<code>g()</code>首先看到自己在本地定义的<code>x</code>值。因此<code>print()</code> 语句显示<code>“local”</code>。</p>
+<p><strong>例4：无定义</strong></p>
+<p>最后的一个例子中， <code>g()</code>试图打印<code>x</code>的值，但是<code>x</code>在任何地方都没有定义。这种情况根本行不通：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; def f(): </span><br><span class="line">2 ... </span><br><span class="line">3 ...     def g(): </span><br><span class="line">4 ...         print(x) </span><br><span class="line">5 ... </span><br><span class="line">6 ...     g() </span><br><span class="line">7 ... </span><br><span class="line">8  </span><br><span class="line">9 &gt;&gt;&gt; f()</span><br><span class="line">10 Traceback (most recent call last):</span><br><span class="line">11   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">12   File &quot;&lt;stdin&gt;&quot;, line 6, in f</span><br><span class="line">13   File &quot;&lt;stdin&gt;&quot;, line 4, in g</span><br><span class="line">14 NameError: name &#39;x&#39; is not defined</span><br></pre></td></tr></table></figure>
+
+<p>这一次，Python在任何命名空间中都找不到<code>x</code>，因此第4行的<code>print()</code>语句抛出<code>NameError</code>异常。</p>
+<h2 id="Python命名空间词典"><a href="#Python命名空间词典" class="headerlink" title="Python命名空间词典"></a>Python命名空间词典</h2><p>前面提到，当首次介绍命名空间时，可以将命名空间视为字典，其中键是对象名称，值是对象本身。事实上，对于全局和本地命名空间，正是它们的本质！Python确实将这些命名空间作为字典实现。</p>
+<p>注意：内置命名空间的用法不同于字典。Python将其作为一个模块来实现。</p>
+<p>Python提供了名为<code>globals()</code>和<code>locals()</code>的内置函数。这些内置函数允许你访问全局和本地的命名空间字典。</p>
+<h3 id="globals-函数"><a href="#globals-函数" class="headerlink" title="globals()函数"></a><code>globals()</code>函数</h3><p>内置函数<code>globals()</code>返回对当前全局命名空间的字典，你可以使用它来访问全局命名空间中的对象。下面的示例体现了主程序启动时的情形：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; type(globals())</span><br><span class="line">&lt;class &#39;dict&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; globals()</span><br><span class="line">&#123;&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: None, &#39;__package__&#39;: None,&#39;__loader__&#39;: &lt;class &#39;_frozen_importlib.BuiltinImporter&#39;&gt;, &#39;__spec__&#39;: None,&#39;__annotations__&#39;: &#123;&#125;, &#39;__builtins__&#39;: &lt;module &#39;builtins&#39; (built-in)&gt;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，解释器已经在<code>globals()</code>中默认放置了一些内容，根据Python版本和操作系统的不同，它在你的环境中看起来可能会有所不同。但应该是相似的。</p>
+<p>现在看看在全局作用域内定义变量时会发生什么：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x &#x3D; &#39;foo&#39;</span><br><span class="line">&gt;&gt;&gt; globals()</span><br><span class="line">&#123;&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: None, &#39;__package__&#39;: None,&#39;__loader__&#39;: &lt;class &#39;_frozen_importlib.BuiltinImporter&#39;&gt;, &#39;__spec__&#39;: None,&#39;__annotations__&#39;: &#123;&#125;, &#39;__builtins__&#39;: &lt;module &#39;builtins&#39; (built-in)&gt;,&#39;x&#39;: &#39;foo&#39;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在赋值语句<code>x = &#39;foo&#39;</code>之后，一个新的项出现在全局命名空间字典中。键是对象的名称<code>x</code>，值是对象的值<code>“foo”</code>。</p>
+<p>通常，你可以通过引用对象的符号名<code>x</code>，以常规的方式访问该对象。但是，你也可以通过全局命名空间字典间接访问它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; x </span><br><span class="line">2 &#39;foo&#39; </span><br><span class="line">3 &gt;&gt;&gt; globals()[&#39;x&#39;] </span><br><span class="line">4 &#39;foo&#39; </span><br><span class="line">5  </span><br><span class="line">6 &gt;&gt;&gt; x is globals()[&#39;x&#39;] </span><br><span class="line">7 True</span><br></pre></td></tr></table></figure>
+
+<p>第6行的比较证实了这些实际上是同一个对象。</p>
+<p>还可以使用<code>globals()</code>函数在全局命名空间中创建和修改条目：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; globals()[&#39;y&#39;] &#x3D; 100 </span><br><span class="line">2  </span><br><span class="line">3 &gt;&gt;&gt; globals() </span><br><span class="line">4 &#123;&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: None, &#39;__package__&#39;: None, </span><br><span class="line">5 &#39;__loader__&#39;: &lt;class &#39;_frozen_importlib.BuiltinImporter&#39;&gt;, &#39;__spec__&#39;: None, </span><br><span class="line">6 &#39;__annotations__&#39;: &#123;&#125;, &#39;__builtins__&#39;: &lt;module &#39;builtins&#39; (built-in)&gt;, </span><br><span class="line">7 &#39;x&#39;: &#39;foo&#39;, &#39;y&#39;: 100&#125; </span><br><span class="line">8  </span><br><span class="line">9 &gt;&gt;&gt; y</span><br><span class="line">10 100</span><br><span class="line">11 </span><br><span class="line">12 &gt;&gt;&gt; globals()[&#39;y&#39;] &#x3D; 3.1415913 </span><br><span class="line">14 &gt;&gt;&gt; y</span><br><span class="line">15 3.14159</span><br></pre></td></tr></table></figure>
+
+<p>第1行的语句与赋值语句<code>y = 100</code>具有相同的效果。第12行的语句相当于<code>y = 3.14159</code>。</p>
+<p>当简单的赋值语句就可以奏效时，就不要用<code>globals()</code>来修改了，但它确实有效，而且很好地说明了这个概念。</p>
+<h3 id="locals-函数"><a href="#locals-函数" class="headerlink" title="locals()函数"></a><code>locals()</code>函数</h3><p>Python还提供了一个相应的内置函数<code>locals()</code>。它类似于<code>globals()</code>，但它访问的是本地命名空间中的对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def f(x, y):</span><br><span class="line">...     s &#x3D; &#39;foo&#39;</span><br><span class="line">...     print(locals())...</span><br><span class="line">&gt;&gt;&gt; f(10, 0.5)</span><br><span class="line">&#123;&#39;s&#39;: &#39;foo&#39;, &#39;y&#39;: 0.5, &#39;x&#39;: 10&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>f()</code>中调用<code>locals()</code>时，<code>locals()</code>返回表示函数的本地命名空间的字典。注意，除了本地定义的变量<code>s</code>之外，本地命名空间还包括函数参数<code>x</code>和<code>y</code>，因为它们也是<code>f()</code>的本地参数。</p>
+<p>如果在函数外部调用<code>locals()</code> ，那么它与<code>globals()</code>用法相同。</p>
+<h3 id="深入探究"><a href="#深入探究" class="headerlink" title="深入探究"></a>深入探究</h3><p><code>globals()</code>和<code>locals()</code>之间有一个小的区别，了解这个区别是很有用的。</p>
+<p><code>globals()</code>返回包含全局命名空间的字典的实际引用。这意味着，如果调用<code>globals()</code>，保存返回值，然后定义其他变量，那么这些新变量将显示在保存的返回值所指向的字典中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; g &#x3D; globals() </span><br><span class="line">2 &gt;&gt;&gt; g </span><br><span class="line">3 &#123;&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: None, &#39;__package__&#39;: None, </span><br><span class="line">4 &#39;__loader__&#39;: &lt;class &#39;_frozen_importlib.BuiltinImporter&#39;&gt;, &#39;__spec__&#39;: None, </span><br><span class="line">5 &#39;__annotations__&#39;: &#123;&#125;, &#39;__builtins__&#39;: &lt;module &#39;builtins&#39; (built-in)&gt;, </span><br><span class="line">6 &#39;g&#39;: &#123;...&#125;&#125; </span><br><span class="line">7  </span><br><span class="line">8 &gt;&gt;&gt; x &#x3D; &#39;foo&#39; </span><br><span class="line">9 &gt;&gt;&gt; y &#x3D; 29</span><br><span class="line">10 &gt;&gt;&gt; g</span><br><span class="line">11 &#123;&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: None, &#39;__package__&#39;: None,</span><br><span class="line">12 &#39;__loader__&#39;: &lt;class &#39;_frozen_importlib.BuiltinImporter&#39;&gt;, &#39;__spec__&#39;: None,</span><br><span class="line">13 &#39;__annotations__&#39;: &#123;&#125;, &#39;__builtins__&#39;: &lt;module &#39;builtins&#39; (built-in)&gt;,</span><br><span class="line">14 &#39;g&#39;: &#123;...&#125;, &#39;x&#39;: &#39;foo&#39;, &#39;y&#39;: 29&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里，<code>g</code>是对全局命名空间字典的引用。在第8行和第9行上的赋值语句之后，<code>x</code>和<code>y</code>出现在<code>g</code>所指向的字典中。</p>
+<p>与上述不同，<code>locals()</code>虽然也返回一个字典，而该字典是本地命名空间的当前副本，而不是对它的引用。对本地命名空间的进一步添加不会影响以前从<code>locals()</code>返回的值，除非你再次调用它。此外，不能使用<code>locals()</code>的返回值来修改实际的本地命名空间中的对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> 1 &gt;&gt;&gt; def f(): </span><br><span class="line"> 2 ...     s &#x3D; &#39;foo&#39; </span><br><span class="line"> 3 ...     loc &#x3D; locals() </span><br><span class="line"> 4 ...     print(loc) </span><br><span class="line"> 5 ... </span><br><span class="line"> 6 ...     x &#x3D; 20 </span><br><span class="line"> 7 ...     print(loc) </span><br><span class="line"> 8 ... </span><br><span class="line"> 9 ...     loc[&#39;s&#39;] &#x3D; &#39;bar&#39;</span><br><span class="line">10 ...     print(s)</span><br><span class="line">11 ...</span><br><span class="line">12 </span><br><span class="line">13 &gt;&gt;&gt; f()</span><br><span class="line">14 &#123;&#39;s&#39;: &#39;foo&#39;&#125;</span><br><span class="line">15 &#123;&#39;s&#39;: &#39;foo&#39;&#125;</span><br><span class="line">16 foo</span><br></pre></td></tr></table></figure>
+
+<p>在本例中，<code>loc</code>指向<code>local()</code>的返回值，它是本地命名空间的一个副本。第6行上的语句<code>x = 20</code>将<code>x</code>添加到本地名称空间，但不添加到<code>loc</code>指向的副本。类似地，第9行上的语句修改了<code>loc</code>所指向的副本中的键<code>‘s&#39;</code>的值，但这对实际本地名称空间中的``s的值没有影响。</p>
+<p>这是一个微妙的区别，但如果你不记住的话，可能会给你带来麻烦。</p>
+<h2 id="修改作用域之外的变量"><a href="#修改作用域之外的变量" class="headerlink" title="修改作用域之外的变量"></a>修改作用域之外的变量</h2><p>如果你已经读过《Python大学实用教程》这本书，一定已经知道Python中函数的参数，有的是按位置引用，有的是按值引用；有的参数值能够修改，有的不能修改。</p>
+<p>下面代码演示了函数试图在其本地作用域之外修改变量时出现的问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; x &#x3D; 20 </span><br><span class="line">2 &gt;&gt;&gt; def f(): </span><br><span class="line">3 ...     x &#x3D; 40 </span><br><span class="line">4 ...     print(x) </span><br><span class="line">5 ... </span><br><span class="line">6  </span><br><span class="line">7 &gt;&gt;&gt; f() </span><br><span class="line">8 40 </span><br><span class="line">9 &gt;&gt;&gt; x</span><br><span class="line">10 20</span><br></pre></td></tr></table></figure>
+
+<p>当<code>f()</code>在第3行执行<code>x=40</code>时，它会创建一个新的本地引用，该引用指向一个值为<code>40</code>的整数对象。此时，<code>f()</code>将丢失对全局命名空间中名为<code>x</code>的对象的引用。因此该赋值语句不影响全局对象。</p>
+<p>请注意，当<code>f()</code>在第4行执行<code>print(x)</code>时，显示结果为<code>40</code>，即它自己的本地<code>x</code>的值。但是在<code>f()</code> 终止后，全局作用域内的<code>x</code>仍然是<code>20</code>。</p>
+<p>如果函数就地修改对象，它可以修改其本地作用域之外的可变类型的对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; my_list &#x3D; [&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;]</span><br><span class="line">&gt;&gt;&gt; def f():</span><br><span class="line">...     my_list[1] &#x3D; &#39;quux&#39;</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; f()</span><br><span class="line">&gt;&gt;&gt; my_list</span><br><span class="line">[&#39;foo&#39;, &#39;quux&#39;, &#39;baz&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>在本例中，<code>my_list</code>是一个列表，并且列表是可变的。在<code>f()</code>内部可以对<code>my_list</code>进行更改，尽管<code>my_list</code>在本地作用域之外。</p>
+<p>但是，如果<code>f()</code>试图重新对<code>my_list</code>赋值，那么它将创建一个新的本地对象，并且不会修改全局的<code>my_list</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; my_list &#x3D; [&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;]</span><br><span class="line">&gt;&gt;&gt; def f():</span><br><span class="line">...     my_list &#x3D; [&#39;qux&#39;, &#39;quux&#39;]</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; f()</span><br><span class="line">&gt;&gt;&gt; my_list</span><br><span class="line">[&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>这类似于<code>f()</code>试图修改可变函数参数时所发生的情况。</p>
+<h2 id="全局声明"><a href="#全局声明" class="headerlink" title="全局声明"></a>全局声明</h2><p>如果确实需要从<code>f()</code>中修改全局作用域中的值，该怎么办? 在Python中使用全局声明是可行的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x &#x3D; 20</span><br><span class="line">&gt;&gt;&gt; def f():</span><br><span class="line">...     global x</span><br><span class="line">...     x &#x3D; 40</span><br><span class="line">...     print(x)</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; f()</span><br><span class="line">40</span><br><span class="line">&gt;&gt;&gt; x</span><br><span class="line">40</span><br></pre></td></tr></table></figure>
+
+<p><code>global x</code>语句表明，当<code>f()</code>运行时，对名称<code>x</code>的引用将指向全局命名空间中的<code>x</code>。这意味着赋值<code>x = 40</code>不会创建一个新的引用。它在全局作用域内给<code>x</code>赋了一个新值:</p>
+<p>前面已经介绍过，<code>globals()</code>返回对全局命名空间字典的引用。如果你愿意，可以使用<code>globals()</code> 代替<code>global</code>语句来完成相同的任务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x &#x3D; 20</span><br><span class="line">&gt;&gt;&gt; def f():</span><br><span class="line">...     globals()[&#39;x&#39;] &#x3D; 40</span><br><span class="line">...     print(x)</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; f()</span><br><span class="line">40</span><br><span class="line">&gt;&gt;&gt; x</span><br><span class="line">40</span><br></pre></td></tr></table></figure>
+
+<p>完全没有必要这样做，因为全局声明已经较为明确地表达了这种做法的意图。但它确实为<code>globals()</code> 的应用提供了另一个例证。</p>
+<p>如果全局声明中指定的名称在函数启动时不存在于全局作用域中，则<code>global</code>语句和赋值的组合将创建这一名称：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> 1 &gt;&gt;&gt; y </span><br><span class="line"> 2 Traceback (most recent call last): </span><br><span class="line"> 3   File &quot;&lt;pyshell#79&gt;&quot;, line 1, in &lt;module&gt; </span><br><span class="line"> 4     y </span><br><span class="line"> 5 NameError: name &#39;y&#39; is not defined </span><br><span class="line"> 6  </span><br><span class="line"> 7 &gt;&gt;&gt; def g(): </span><br><span class="line"> 8 ...     global y </span><br><span class="line"> 9 ...     y &#x3D; 20</span><br><span class="line">10 ...</span><br><span class="line">11 </span><br><span class="line">12 &gt;&gt;&gt; g()</span><br><span class="line">13 &gt;&gt;&gt; y</span><br><span class="line">14 20</span><br></pre></td></tr></table></figure>
+
+<p>当<code>g()</code>开始运行时，在全局作用域内没有名为<code>y</code>的对象，但是<code>g()</code>在第8行使用<code>global y</code> 语句创建了一个这样的对象。</p>
+<p>你也可以在单个全局声明中指定用多个逗号分隔的名称：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; x, y, z &#x3D; 10, 20, 30 </span><br><span class="line">2  </span><br><span class="line">3 &gt;&gt;&gt; def f(): </span><br><span class="line">4 ...     global x, y, z </span><br><span class="line">5 ...</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们通过第4行的单个<code>global</code>语句，声明<code>x</code>、<code>y</code>和<code>z</code>引用全局作用域内的对象。</p>
+<p>全局声明中指定的名称不能出现在<code>global</code>语句之前的函数中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; def f(): </span><br><span class="line">2 ...     print(x) </span><br><span class="line">3 ...     global x </span><br><span class="line">4 ... </span><br><span class="line">5   File &quot;&lt;stdin&gt;&quot;, line 3 </span><br><span class="line">6 SyntaxError: name &#39;x&#39; is used prior to global declaration</span><br></pre></td></tr></table></figure>
+
+<p>第3行上的<code>global x</code>语句的目的是让对<code>x</code>的引用指向全局作用域中的一个对象。但是第2行的<code>print()</code>语句指向全局声明之前的<code>x</code>，这会引发SyntaxError异常。</p>
+<h2 id="非本地声明"><a href="#非本地声明" class="headerlink" title="非本地声明"></a>非本地声明</h2><p>嵌套函数的定义也存在类似的情况。全局声明允许函数访问和修改全局作用域中的对象。如果一个闭包函数需要修改闭包作用域的对象该怎么办?考虑一下这个例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> 1 &gt;&gt;&gt; def f(): </span><br><span class="line"> 2 ...     x &#x3D; 20 </span><br><span class="line"> 3 ... </span><br><span class="line"> 4 ...     def g(): </span><br><span class="line"> 5 ...         x &#x3D; 40 </span><br><span class="line"> 6 ... </span><br><span class="line"> 7 ...     g() </span><br><span class="line"> 8 ...     print(x) </span><br><span class="line"> 9 ...</span><br><span class="line">10 </span><br><span class="line">11 &gt;&gt;&gt; f()</span><br><span class="line">12 20</span><br></pre></td></tr></table></figure>
+
+<p>在本例中，<code>x</code>的第一个定义在闭包作用域中，而不是在全局作用域中。就像<code>g()</code>不能直接修改全局作用域中的变量一样，它也不能修改闭包函数作用域中的<code>x</code>。在第5行赋值<code>x = 40</code>之后，闭包作用域中的<code>x</code>值仍然是<code>20</code>。</p>
+<p><code>global</code>关键字不适用于解决这种情况:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def f():</span><br><span class="line">...     x &#x3D; 20</span><br><span class="line">...</span><br><span class="line">...     def g():</span><br><span class="line">...         global x</span><br><span class="line">...         x &#x3D; 40</span><br><span class="line">...</span><br><span class="line">...     g()</span><br><span class="line">...     print(x)</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; f()</span><br><span class="line">20</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>x</code>在闭包函数的作用域内，而不是全局作用域内，因此<code>global</code>关键字在这里不起作用。在<code>g()</code>终止后，闭包作用域中的<code>x</code>仍然是<code>20</code>。</p>
+<p>事实上，在本例中，<code>global x</code>语句不仅不能提供对闭包作用域内<code>x</code>的访问，而且还在全局范围内创建了一个名为<code>x</code>的对象，其值为<code>40</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def f():</span><br><span class="line">...     x &#x3D; 20</span><br><span class="line">...</span><br><span class="line">...     def g():</span><br><span class="line">...         global x</span><br><span class="line">...         x &#x3D; 40</span><br><span class="line">...</span><br><span class="line">...     g()</span><br><span class="line">...     print(x)</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; f()</span><br><span class="line">20</span><br><span class="line">&gt;&gt;&gt; x</span><br><span class="line">40</span><br></pre></td></tr></table></figure>
+
+<p>要从<code>g()</code>内部修改闭包作用域中的<code>x</code>，需要类似的关键字<code>nonlocal</code>。在关键字<code>nonlocal</code> 后边指定的名称引用最近的闭包作用域中的变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; def f(): </span><br><span class="line">2 ...     x &#x3D; 20 </span><br><span class="line">3 ... </span><br><span class="line">4 ...     def g(): </span><br><span class="line">5 ...         nonlocal x </span><br><span class="line">6 ...         x &#x3D; 40 </span><br><span class="line">7 ... </span><br><span class="line">8 ...     g() </span><br><span class="line">9 ...     print(x)</span><br><span class="line">10 ...</span><br><span class="line">11 </span><br><span class="line">12 &gt;&gt;&gt; f()</span><br><span class="line">13 40</span><br></pre></td></tr></table></figure>
+
+<p>在第5行<code>nonlocal x</code>语句之后，当<code>g()</code>引用<code>x</code>时，它指的是最近的闭包作用域内的<code>x</code>，其定义在<code>f()</code>中的第2行。</p>
+<p>第9行的<code>print()</code>语句确认对<code>g()</code>的调用已将闭包作用域内的<code>x</code>值更改为<code>40</code>。</p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><p>尽管Python提供了关键字<code>global</code>和<code>nonlocal</code>，但这些关键字的使用并不总是可取的。</p>
+<p>当函数在本地作用域之外修改数据时，无论是使用关键字<code>global</code>或<code>nonlocal</code>，还是直接就地修改可变类型，都会产生副作用。这种副作用类似于在函数中修改它的一个参数。一般认为修改全局变量是不明智的，不仅在Python中如此，在其他编程语言中也是如此。</p>
+<p>和许多事情一样，这个问题可以归结为风格和偏好。对全局变量进行审慎和明智的修改有时可以降低程序的复杂性。</p>
+<p>在Python中，使用关键字<code>global</code>至少可以明确表示函数正在修改一个全局变量。在许多语言中，函数只需赋值就可以修改全局变量，而不必以任何方式声明它。这使我们非常难以追踪全局数据修改的位置。</p>
+<p>总之，在本地作用域之外修改变量通常是不必要的。人们几乎总是有更好的方法，通常使用的是函数返回值。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/07/21/range-function/">
+        <span class="nav-arrow">← </span>
+        
+          range函数小应用
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#命名空间"><span class="toc-nav-text">命名空间</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#内置命名空间"><span class="toc-nav-text">内置命名空间</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#全局命名空间"><span class="toc-nav-text">全局命名空间</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#局部命名空间"><span class="toc-nav-text">局部命名空间</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#变量作用域"><span class="toc-nav-text">变量作用域</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python命名空间词典"><span class="toc-nav-text">Python命名空间词典</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#globals-函数"><span class="toc-nav-text">globals()函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#locals-函数"><span class="toc-nav-text">locals()函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#深入探究"><span class="toc-nav-text">深入探究</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#修改作用域之外的变量"><span class="toc-nav-text">修改作用域之外的变量</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#全局声明"><span class="toc-nav-text">全局声明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#非本地声明"><span class="toc-nav-text">非本地声明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#最佳实践"><span class="toc-nav-text">最佳实践</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/08/12/python-namespace/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
