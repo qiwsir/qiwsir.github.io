@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      根据条件增加DataFrame的列 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>根据条件增加DataFrame的列</h2>
+    <p class="post-date">2020-08-14</p>
+    <section class="markdown-content"><p>编译：老齐</p>
+<p>与本文有关的图书推荐：《跟老齐学Python：数据分析》</p>
+<hr>
+<p>当我们使用Python进行数据分析时，有时可能需要向DataFrame添加列，所添加的列要基于DataFrame的其他列的值。</p>
+<p>虽然这听起来很简单，但是，不少初学想到的是用<code>if-else</code>条件语句来实现，这就把问题搞复杂了。有一个简单又有效的方法，下面就来看看这种方法如何使用。</p>
+<p>加载一个数据集。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">df &#x3D; pd.read_csv(&#39;dataquest_tweets_csv.csv&#39;)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.dataquest.io/wp-content/uploads/2020/06/add-column-to-pandas-dataframe-768x201.png" alt=""></p>
+<p>数据集的各个特征含义是：</p>
+<ul>
+<li>date：推文的发布日期</li>
+<li>time：推文发布的时间</li>
+<li>tweet：推文的文本内容</li>
+<li>mentions：推文中提到的其他推特用户</li>
+<li>photos：推文中所有图像的网址</li>
+<li>replies_count：推文的回复数</li>
+<li>retweets_count：推文的转发次数</li>
+<li>likes_count：推文的点赞数</li>
+</ul>
+<p>注意，<code>photos</code>特征的数据格式有点怪。</p>
+<h2 id="添加一列"><a href="#添加一列" class="headerlink" title="添加一列"></a>添加一列</h2><p>在接下来的数据分析中，我们要看看带有图像的推文是否更吸引人，因此，实际上不需要图像文件的地址，只需要有一个特征，用以标明该样本是否含有图像即可。于是，创建一个名为<code>hasimage</code>的列，其中的值为：<code>True</code>——包含图像，<code>False</code>——不包含图像。</p>
+<p>为此，使用Numpy的内置<code>where()</code>函数。这个函数依次接受三个参数：条件；如果条件为真，分配给新列的值；如果条件为假，分配给新列的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.where(condition, value if condition is true, value if condition is false)</span><br></pre></td></tr></table></figure>
+
+<p>在数据集中，没有图像的推文在<code>photos</code>列中的值总是<code>[]</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[&#39;hasimage&#39;] &#x3D; np.where(df[&#39;photos&#39;]!&#x3D; &#39;[]&#39;, True, False)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.dataquest.io/wp-content/uploads/2020/06/column-added-to-pandas-dataframe-1-768x201.png" alt=""></p>
+<p>如此，在数据集中新增加了一列，并且它正确地将包含图像的推文标记为<code>True</code>，其他的标记为<code>False</code>。</p>
+<p>现在已经有了<code>hasimage</code>列。再将有图文和无图文的两种类型的样本分别筛选出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">image_tweets &#x3D; df[df[&#39;hasimage&#39;] &#x3D;&#x3D; True]</span><br><span class="line">no_image_tweets &#x3D; df[df[&#39;hasimage&#39;] &#x3D;&#x3D; False]</span><br></pre></td></tr></table></figure>
+
+<p>然后比较两类推文平均点赞数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">## LIKES</span><br><span class="line">print(&#39;Average likes, all tweets: &#39; + str(df[&#39;likes_count&#39;].mean()))</span><br><span class="line">print(&#39;Average likes, image tweets: &#39; + str(image_tweets[&#39;likes_count&#39;].mean()))</span><br><span class="line">print(&#39;Average likes, no image tweets: &#39; + str(no_image_tweets[&#39;likes_count&#39;].mean()))</span><br><span class="line">print(&#39;\n&#39;)</span><br><span class="line"></span><br><span class="line">## RETWEETS</span><br><span class="line">print(&#39;Average RTs, all tweets: &#39; + str(df[&#39;retweets_count&#39;].mean()))</span><br><span class="line">print(&#39;Average RTs, image tweets: &#39; + str(image_tweets[&#39;retweets_count&#39;].mean()))</span><br><span class="line">print(&#39;Average RTs, no image tweets: &#39; + str(no_image_tweets[&#39;retweets_count&#39;].mean()))</span><br><span class="line"></span><br><span class="line">Average likes, all tweets: 6.209759328770148</span><br><span class="line">Average likes, image tweets: 14.21042471042471</span><br><span class="line">Average likes, no image tweets: 5.176514584891549</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Average RTs, all tweets: 1.5553102230072864</span><br><span class="line">Average RTs, image tweets: 3.5386100386100385</span><br><span class="line">Average RTs, no image tweets: 1.2991772625280478</span><br></pre></td></tr></table></figure>
+
+<p>看来，有图像似乎可以让更多人来点赞。</p>
+<h2 id="再复杂一些"><a href="#再复杂一些" class="headerlink" title="再复杂一些"></a>再复杂一些</h2><p>如果我们根据点赞的数量，将样本划分出不同等级，如：</p>
+<ul>
+<li>tier_4 —  2个或更少的赞数</li>
+<li>tier_3 — 3-9个赞数</li>
+<li>tier_2 —  10-15个赞数</li>
+<li>tier_1 — 16个以上的赞数</li>
+</ul>
+<p>为此，使用一个名为<code>np.select()</code>的函数，给它提供两个参数：一个条件，另一个对应的等级列表。在<code>conditions</code>列表中的第一个条件得到满足，<code>values</code>列表中的第一个值将作为新特征中该样本的值，以此类推。具体代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># create a list of our conditions</span><br><span class="line">conditions &#x3D; [</span><br><span class="line">    (df[&#39;likes_count&#39;] &lt;&#x3D; 2),</span><br><span class="line">    (df[&#39;likes_count&#39;] &gt; 2) &amp; (df[&#39;likes_count&#39;] &lt;&#x3D; 9),</span><br><span class="line">    (df[&#39;likes_count&#39;] &gt; 9) &amp; (df[&#39;likes_count&#39;] &lt;&#x3D; 15),</span><br><span class="line">    (df[&#39;likes_count&#39;] &gt; 15)</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"># create a list of the values we want to assign for each condition</span><br><span class="line">values &#x3D; [&#39;tier_4&#39;, &#39;tier_3&#39;, &#39;tier_2&#39;, &#39;tier_1&#39;]</span><br><span class="line"></span><br><span class="line"># create a new column and use np.select to assign values to it using our lists as arguments</span><br><span class="line">df[&#39;tier&#39;] &#x3D; np.select(conditions, values)</span><br><span class="line"></span><br><span class="line"># display updated DataFrame</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.dataquest.io/wp-content/uploads/2020/06/add-column-complex-conditional-pandas-dataframe-768x213.png" alt=""></p>
+<p>这样，特征<code>tier</code>就标记了样本的等级，也可以理解为将样本离散化。于是，可以用它来回答与数据集有关的更多问题。例如：第1级和第4级有百分之多少的推文带有图像?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#tier 4 tweets</span><br><span class="line">df[(df[&#39;tier&#39;] &#x3D;&#x3D; &#39;tier_4&#39;)][&#39;hasimage&#39;].value_counts(normalize&#x3D;True)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">False    0.948784</span><br><span class="line">True     0.051216</span><br><span class="line">Name: hasimage, dtype: float64</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#tier 1 tweets</span><br><span class="line">df[(df[&#39;tier&#39;] &#x3D;&#x3D; &#39;tier_1&#39;)][&#39;hasimage&#39;].value_counts(normalize&#x3D;True)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">False    0.836842</span><br><span class="line">True     0.163158</span><br><span class="line">Name: hasimage, dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们可以看到，虽然图像似乎有助于吸引关注，但它们似乎不是成功的必要条件。超过83%的“一级”推文——有16个以上点赞的推文——没有附带图片。</p>
+<p>虽然这是一个非常肤浅的分析，但我们已经实现了真正的目标：根据已知数据的条件向DataFrame添加列。</p>
+<p>当然，这是一项可以通过多种方式来完成的任务。<code>np.where()</code>和<code>np.select()</code>只是其中的两种。这方面更多的内容，可以参考《跟老齐学Python：数据分析》一书。</p>
+<p>参考链接：<a href="https://www.dataquest.io/blog/tutorial-add-column-pandas-dataframe-based-on-if-else-condition/" target="_blank" rel="noopener">https://www.dataquest.io/blog/tutorial-add-column-pandas-dataframe-based-on-if-else-condition/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/08/12/python-namespace/">
+        <span class="nav-arrow">← </span>
+        
+          Python中的命名空间和作用域
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#添加一列"><span class="toc-nav-text">添加一列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#再复杂一些"><span class="toc-nav-text">再复杂一些</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/08/14/add-column-pandas/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
