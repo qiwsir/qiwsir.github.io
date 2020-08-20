@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      零基础学习梯度下降算法 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>零基础学习梯度下降算法</h2>
+    <p class="post-date">2020-08-20</p>
+    <section class="markdown-content"><p>作者：Philipp Muens</p>
+<p>翻译：老齐</p>
+<p>与本文相关的图书推荐：《数据准备和特征工程》<br><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<p>梯度下降法是机器学习中最基本的优化技术之一。那么，什么是梯度? 下降的是什么？我们要优化的是什么?</p>
+<p>这些可能是第一次接触梯度下降时想到的一些问题，本文就从零基础开始实现梯度下降，并在过程中回答这些问题。</p>
+<h2 id="优化和损失函数"><a href="#优化和损失函数" class="headerlink" title="优化和损失函数"></a>优化和损失函数</h2><p>许多机器学习问题需要某种形式的优化。通常，算法首先对正确答案进行初步猜测，然后慢慢地调整参数，使其在每次预测检验中的误差变小。</p>
+<p>这个学习过程反复进行，直到算法学会了“正确地”预测到结果为止。</p>
+<p>为了弄清楚算法在预测上的误差，我们需要定义一个损失函数的概念。损失函数将猜测值与实际值进行比较，并将两者之间的差异转化为一种度量标准，我们可以用它来量化算法的质量。重要的损失函数包括均方误差（MSE）、均方根误差（RMSE）或平方误差和（SSE）。</p>
+<p>想象这样一种情境：将算法所造成的误差放到一个平面上，然后找到误差最少的地方，这正是梯度下降发挥作用的地方。在梯度下降的情况下，我们遍历这个表面，以便找到这样一个地方。</p>
+<h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p>我们已经发现，在处理机器学习问题时，损失函数和优化通常是相互交织的。虽然把它们放在一起学习很有意义，但我个人认为：在探索核心思想时，更有价值的做法是保持简单和专注。因此，接下来，我们只专注于把梯度下降作为一种数学优化技术。这种技术可以应用于各种不同的领域(包括机器学习问题)。</p>
+<h3 id="抛物面"><a href="#抛物面" class="headerlink" title="抛物面"></a>抛物面</h3><p>我们要做的第一件事就是定义用来运行梯度下降算法的函数。大多数例子用单变量函数解释算法的核心概念，比如从抛物线类(例如 $x^2$)中获取的函数。单变量函数可以很容易地沿着 $x$ 和 $y$ 轴在二维空间中绘制出来。除了其他不错的性质，只处理二维会让复杂的数学变得容易很多。然而，现实世界的机器学习问题处理的数据的维数更高，虽然从2D到3D有一个稍微陡峭的学习曲线，但是从3D到nD没有什么新的东西需要学习。正因为如此，我们将选择含有2个变量的函数来研究梯度下降法。</p>
+<p>大多数人在学校都是通过抛物线来学习二次函数的性质的。我们可以在三维中绘制出一个等价的函数吗？假设你有一个抛物线，它像离心机一样沿着 $y$ 轴旋转，最终会得到一个被称为抛物面的曲面，一个“三维抛物线”。</p>
+<p>定义抛物面的方法有很多，但在这里我们使用”无限抛物面”，它的定义如下:</p>
+<p>$$x^2 + y^2$$</p>
+<p>将数学转化为代码，结果是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def paraboloid(x: float, y: float) -&gt; float:</span><br><span class="line">    return x ** 2 + y ** 2</span><br></pre></td></tr></table></figure>
+
+<p>很简单。接下来，我们应该生成一些测试数据，将其传到抛物面函数中，并绘制结果，看看是否一切都如预期的那样:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># Test data generation (only really necessary for the plotting below)</span><br><span class="line">xs_start &#x3D; ys_start &#x3D; -10</span><br><span class="line">xs_stop &#x3D; ys_stop &#x3D; 11</span><br><span class="line">xs_step &#x3D; ys_step &#x3D; 1</span><br><span class="line"></span><br><span class="line">xs: List[float] &#x3D; [i for i in range(xs_start, xs_stop, xs_step)]</span><br><span class="line">ys: List[float] &#x3D; [i for i in range(ys_start, ys_stop, ys_step)]</span><br><span class="line">zs: List[List[float]] &#x3D; []</span><br><span class="line"></span><br><span class="line">for x in xs:</span><br><span class="line">    temp_res: List[float] &#x3D; []</span><br><span class="line">    for y in ys:</span><br><span class="line">        result: float &#x3D; paraboloid(x, y)</span><br><span class="line">        temp_res.append(result)</span><br><span class="line">    zs.append(temp_res)</span><br><span class="line"></span><br><span class="line">print(f&#39;xs: &#123;xs&#125;\n&#39;)</span><br><span class="line"># xs: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span><br><span class="line"></span><br><span class="line">print(f&#39;ys: &#123;ys&#125;\n&#39;)</span><br><span class="line"># ys: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span><br><span class="line"></span><br><span class="line">print(f&#39;zs: &#123;zs[:5]&#125; ...\n&#39;)</span><br><span class="line"># zs: [[200, 181, 164, 149, 136, 125, 116, 109, 104, 101, 100, 101, 104, 109, 116, 125, 136, 149, 164, 181, 200], [181, 162, 145, 130, 117, 106, 97, 90, 85, 82, 81, 82, 85, 90, 97, 106, 117, 130, 145, 162, 181], [164, 145, 128, 113, 100, 89, 80, 73, 68, 65, 64, 65, 68, 73, 80, 89, 100, 113, 128, 145, 164], [149, 130, 113, 98, 85, 74, 65, 58, 53, 50, 49, 50, 53, 58, 65, 74, 85, 98, 113, 130, 149], [136, 117, 100, 85, 72, 61, 52, 45, 40, 37, 36, 37, 40, 45, 52, 61, 72, 85, 100, 117, 136]] ...</span><br></pre></td></tr></table></figure>
+
+<p>可以使用以下代码来绘制图形(使用Plotly库):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fig &#x3D; go.Figure(go.Surface(x&#x3D;xs, y&#x3D;ys, z&#x3D;zs, colorscale&#x3D;&#39;Viridis&#39;))</span><br><span class="line">fig.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://philippmuens.com/content/images/2020/02/Bildschirmfoto-2020-02-15-um-19.17.01.png" alt=""></p>
+<h2 id="梯度和导数"><a href="#梯度和导数" class="headerlink" title="梯度和导数"></a>梯度和导数</h2><p>根据维基百科，梯度的定义是：</p>
+<p>…… 向量值函数 $f$ …… 在点 $p$ 处的值是向量，该向量的分量是点 $p$ 处 $f$ 的偏导数。</p>
+<p>这个定义听起来很有道理，但梯度的核心概念真的很简单。上面这句话试图表达的是：对于函数绘制的曲面上的任意点，都有一个由偏导数组成的向量，该向量指向最大的递增方向。</p>
+<p>有了这样的解释，我们唯一需要理清的概念就是偏导数的概念。</p>
+<p>如果你学过微积分，你肯定会遇到过导数问题。快速回顾一下：导数测量的是函数输出方面的变化相对于其输入方面的变化的敏感度。</p>
+<p>导数可以是不同阶的。最重要的导数之一就是一阶导数，它是一条切线的斜率，它告诉我们函数在任意一点上是递增还是递减。</p>
+<p>微分过程遵循几个规则。我们将在遍历下面的示例时应用其中的一些规则，以便重新唤起我们对微积分基础的美好记忆。</p>
+<p>计算下列函数的一阶、二阶和三阶导数：</p>
+<p>$$x^3+2x^2−5$$</p>
+<p>根据微分规则，一阶导数为:</p>
+<p>$$\frac{d}{dx}(x^3 + 2x^2 - 5) =3x^2+4x$$</p>
+<p>二阶导数为:</p>
+<p>$$\frac{d}{dx}(3x^2 + 4x) = 6x + 4$$</p>
+<p>三阶导数为:</p>
+<p>$$\frac{d}{dx}(6x + 4) = 6$$</p>
+<p>我们为什么要这么做？通过上述内容，你可能还记得：梯度是函数$f$在点$p$处的偏导数向量。所以为了计算梯度，我们需要计算函数$f$的偏导数。</p>
+<p>上面展示了如何计算导数，但是我们如何计算偏导数呢？如果你知道如何计算导数，你就已经知道如何计算偏导数了。偏导数的奇妙之处在于：你在对一个变量求导的同时，把其他变量看成常数。</p>
+<p>让我们应用这个规则来计算抛物面函数$f(x,y)=x^2+y^2$的偏导数：</p>
+<p>我们计算的第一个偏导数是$f$相对于$x$的导数，将$y$视为常数：</p>
+<p>$$\frac{\partial}{\partial x}(x^2 + y^2) = 2x$$</p>
+<p>第二个偏导数的计算遵循同样的模式，即以$x$为常数，对$f$相对于$y$求导:</p>
+<p>$$\frac{\partial}{\partial y}(x^2 + y^2) = 2y$$</p>
+<p>注意:不要被这里的符号搞糊涂了。当你使用$\frac{d}{dx}$来表示“普通”导数时，你只需使用$\frac{\partial}{\partial x}$来表示偏导数。</p>
+<p>就是这样。有了这些偏导数，我们现在可以计算函数$f$的标绘表面上任意点ppp的任何梯度。让我们把我们的发现转化成代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def compute_gradient(vec: List[float]) -&gt; List[float]:</span><br><span class="line">    assert len(vec) &#x3D;&#x3D; 2</span><br><span class="line">    x: float &#x3D; vec[0]</span><br><span class="line">    y: float &#x3D; vec[1]</span><br><span class="line">    return [2 * x, 2 * y]</span><br></pre></td></tr></table></figure>
+
+<h3 id="梯度下降-1"><a href="#梯度下降-1" class="headerlink" title="梯度下降"></a>梯度下降</h3><p>让我们回顾一下迄今为止所取得的成就。首先，编写并绘制了一个名为“无限抛物面”的函数，在本篇文章中使用它来演示梯度下降算法。接下来，我们研究了梯度，重温了对微分的记忆。最后计算了抛物面函数的偏导数。</p>
+<p>我们将文字转化成心智图像，函数$f$ 在三维空间中生成一个面。取该面上的任意点 $p$，我们可以使用梯度（通过它的偏导数）找到一个向量，该向量指向增幅最大方向。</p>
+<p>做得很好，但是我们处理的是一个优化问题，对于许多这样的应用来说，通常需要找到全局或局部的最小值。现在，梯度向量向上指向增幅最大的方向。我们需要让这个向量指向相反的方向，这样它就指向减幅最大的方向。</p>
+<p>线性代数告诉我们，这样做就像梯度向量乘以 $-1$ 一样简单。另一个巧妙的线性代数技巧是将一个向量乘以 $1$ 以外的一个数，以改变其大小（长度）。举例来说，如果我们把梯度向量乘以 $0.25$，就会得到一个向量，它的长度是原来长度的$ \frac{1}{4}$。</p>
+<p>构成梯度下降算法的所有模块终于准备就绪了，该算法最终找到任何给定函数的最接近局部最小值的值。</p>
+<p>算法的工作原理如下。</p>
+<p>给定一个需要运行梯度下降的函数$f$：</p>
+<ul>
+<li>获取$f$上的起始位置$p$（以向量表示）</li>
+<li>计算点$p$处的梯度</li>
+<li>用梯度乘以负的“步长”（通常小于$1$）</li>
+<li>通过将重新缩放的梯度向量添加到向量$p$上，计算$p$在表面上的下一个位置</li>
+<li>使用新的$p$重复步骤2，直到收敛</li>
+</ul>
+<p>我们把上述操作变成代码。首先，我们应该定义一个<code>compute_step</code>函数，它以向量$p$和“步长”为参数（我们称之为<code>learning_rate</code>），并根据$f$函数梯度计算$p$的下一个位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def compute_step(curr_pos: List[float], learning_rate: float) -&gt; List[float]:</span><br><span class="line">    grad: List[float] &#x3D; compute_gradient(curr_pos)</span><br><span class="line">    grad[0] *&#x3D; -learning_rate</span><br><span class="line">    grad[1] *&#x3D; -learning_rate</span><br><span class="line">    next_pos: List[float] &#x3D; [0, 0]</span><br><span class="line">    next_pos[0] &#x3D; curr_pos[0] + grad[0]</span><br><span class="line">    next_pos[1] &#x3D; curr_pos[1] + grad[1]</span><br><span class="line">    return next_pos</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们应该定义一个随机的起始位置$p$:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">start_pos: List[float]</span><br><span class="line"></span><br><span class="line"># Ensure that we don&#39;t start at a minimum (0, 0 in our case)</span><br><span class="line">while True:</span><br><span class="line">    start_x: float &#x3D; randint(xs_start, xs_stop)</span><br><span class="line">    start_y: float &#x3D; randint(ys_start, ys_stop)</span><br><span class="line">    if start_x !&#x3D; 0 and start_y !&#x3D; 0:</span><br><span class="line">        start_pos &#x3D; [start_x, start_y]</span><br><span class="line">        break</span><br><span class="line"></span><br><span class="line">print(start_pos)</span><br><span class="line"># [6, -3]</span><br></pre></td></tr></table></figure>
+
+<p>最后，我们将<code>compute_step</code>函数封装到一个循环中，以迭代方式遍历表面，最终达到局部最小值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">epochs: int &#x3D; 5000</span><br><span class="line">learning_rate: float &#x3D; 0.001</span><br><span class="line">    </span><br><span class="line">best_pos: List[float] &#x3D; start_pos</span><br><span class="line"></span><br><span class="line">for i in range(0, epochs):</span><br><span class="line">    next_pos: List[float] &#x3D; compute_step(best_pos, learning_rate)</span><br><span class="line">    if i % 500 &#x3D;&#x3D; 0:</span><br><span class="line">        print(f&#39;Epoch &#123;i&#125;: &#123;next_pos&#125;&#39;)</span><br><span class="line">    best_pos &#x3D; next_pos    </span><br><span class="line"></span><br><span class="line">print(f&#39;Best guess for a minimum: &#123;best_pos&#125;&#39;)</span><br><span class="line"></span><br><span class="line"># Epoch 0: [5.988, -2.994]</span><br><span class="line"># Epoch 500: [2.2006573940846716, -1.1003286970423358]</span><br><span class="line"># Epoch 1000: [0.8087663604107433, -0.4043831802053717]</span><br><span class="line"># Epoch 1500: [0.2972307400008091, -0.14861537000040456]</span><br><span class="line"># Epoch 2000: [0.10923564223981955, -0.054617821119909774]</span><br><span class="line"># Epoch 2500: [0.04014532795468376, -0.02007266397734188]</span><br><span class="line"># Epoch 3000: [0.014753859853277982, -0.007376929926638991]</span><br><span class="line"># Epoch 3500: [0.005422209548664845, -0.0027111047743324226]</span><br><span class="line"># Epoch 4000: [0.0019927230353282872, -0.0009963615176641436]</span><br><span class="line"># Epoch 4500: [0.0007323481432962652, -0.0003661740716481326]</span><br><span class="line"># Best guess for a minimum: [0.00026968555624761565, -0.00013484277812380783]</span><br></pre></td></tr></table></figure>
+
+<p>大功告成了。我们已经成功地实现了从零基础开始的梯度下降算法！</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>梯度下降算法是一种广泛应用于机器学习的基本优化算法。它被用于算法预测中误差的最小化，因而成为算法“学习”的核心。</p>
+<p>在这篇文章中，我们剖析了梯度下降算法的所有不同的部分，研究了数学公式并将其用代码来表达。在我们的例子中，这些代码可以用来求抛物面函数$x^2+y^2$的全局最小值。请注意，这里的优化不是为了提高性能，而是为了可读性和学习的有用性。你可能不需要在生产中使用此代码。</p>
+<p>现代机器学习库，如TensorFlow或PyTorch，具有自动计算偏导数的内置微分功能，无需自己进行繁琐的数学运算。</p>
+<p>我希望这篇文章对你有所帮助，并揭示了你在日常项目中使用的机器学习库的内部工作原理。</p>
+<p>原文链接：<a href="https://philippmuens.com/gradient-descent-from-scratch/" target="_blank" rel="noopener">https://philippmuens.com/gradient-descent-from-scratch/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/08/17/convert-dictionary-to-dataframe/">
+        <span class="nav-arrow">← </span>
+        
+          将Python中的字典数据转化为DataFrame的方法
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#优化和损失函数"><span class="toc-nav-text">优化和损失函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#梯度下降"><span class="toc-nav-text">梯度下降</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#抛物面"><span class="toc-nav-text">抛物面</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#梯度和导数"><span class="toc-nav-text">梯度和导数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#梯度下降-1"><span class="toc-nav-text">梯度下降</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/08/20/grad-down/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
