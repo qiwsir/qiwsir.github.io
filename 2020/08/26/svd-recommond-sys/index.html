@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      初学者指南：利用SVD创建推荐系统 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>初学者指南：利用SVD创建推荐系统</h2>
+    <p class="post-date">2020-08-26</p>
+    <section class="markdown-content"><p>作者：Mayukh Bhattacharyya</p>
+<p>翻译：老齐</p>
+<p>推荐图书：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<p>在本微信公众号中回复“特征工程”，即可得到本书源码和部分视频课程。</p>
+<h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><p>你是否有过这样的经历：前一天晚上登录Netflix，观看了《星际穿越》，他们会建议你看《地心引力》。或者你在亚马逊上购买了东西，看到了网站推荐给你可能感兴趣的产品。你是否想知道在线广告代理商是如何根据我们的浏览习惯向我们推送广告的?这一切都归结为一种被称为推荐系统的东西，它根据我们与产品互动的历史，预测我们可能对哪些产品感兴趣。</p>
+<p>本文中，我们将建立一个很酷的推荐系统。我们将使用SVD（Sigular Vector Decomposition）技术，这比基于内容的基本推荐系统要高级得多。</p>
+<p>SVD是一种协同过滤算法，它能捕获志趣相投的用户的潜在兴趣模式，并根据相似用户的选择和偏好来推送新产品。</p>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>我们肯定需要一个数据集，本文中将使用著名的Movielens数据集，可以在 <a href="http://grouplens.org/datasets/movielens/" target="_blank" rel="noopener">http://grouplens.org/datasets/movielens/</a> 网页上下载 movielens100k 数据集。</p>
+<p>这个数据集包含了不同用户对各种电影的大约10万个评价。我们研究一下数据集。创建新<code>exploration.py</code>文件并添加以下代码块。注意：这里我们将使用脚本文件，你也可以在 IPython notebook 中运行下面的程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">data &#x3D; pd.read_csv(&#39;movielens100k.csv&#39;)</span><br><span class="line">data[&#39;userId&#39;] &#x3D; data[&#39;userId&#39;].astype(&#39;str&#39;)</span><br><span class="line">data[&#39;movieId&#39;] &#x3D; data[&#39;movieId&#39;].astype(&#39;str&#39;)</span><br><span class="line"></span><br><span class="line">users &#x3D; data[&#39;userId&#39;].unique()                # list of all users</span><br><span class="line">movies &#x3D; data[&#39;movieId&#39;].unique()          #list of all movies</span><br><span class="line"></span><br><span class="line">print(&quot;Number of users&quot;, len(users))</span><br><span class="line">print(&quot;Number of movies&quot;, len(movies))</span><br><span class="line">print(data.head())</span><br></pre></td></tr></table></figure>
+
+<p>做得不错！你将看到数据集中有718个用户和8915部电影。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Number of users 718</span><br><span class="line">Number of movies 8915</span><br><span class="line">+----+----------+-----------+----------+-------------+</span><br><span class="line">|    |   userId |   movieId |   rating |   timestamp |</span><br><span class="line">|----+----------+-----------+----------+-------------|</span><br><span class="line">|  0 |        1 |         1 |        5 |   847117005 |</span><br><span class="line">|  1 |        1 |         2 |        3 |   847642142 |</span><br><span class="line">|  2 |        1 |        10 |        3 |   847641896 |</span><br><span class="line">|  3 |        1 |        32 |        4 |   847642008 |</span><br><span class="line">|  4 |        1 |        34 |        4 |   847641956 |</span><br><span class="line">+----+----------+-----------+----------+-------------+</span><br></pre></td></tr></table></figure>
+
+<h2 id="划分训练集和测试集"><a href="#划分训练集和测试集" class="headerlink" title="划分训练集和测试集"></a>划分训练集和测试集</h2><p>我们本可以按通常的随机方式将数据集划分为训练集和测试集。但是既然数据集中有时间戳（<code>timestamp</code>特征），那就让我们做一些更奇特吧。创建一个新脚本<code>workspace.py</code> ，在脚本完成所有的工作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import scipy</span><br><span class="line"></span><br><span class="line">data &#x3D; pd.read_csv(&#39;movielens100k.csv&#39;)</span><br><span class="line">data[&#39;userId&#39;] &#x3D; data[&#39;userId&#39;].astype(&#39;str&#39;)</span><br><span class="line">data[&#39;movieId&#39;] &#x3D; data[&#39;movieId&#39;].astype(&#39;str&#39;)</span><br><span class="line"></span><br><span class="line">users &#x3D; data[&#39;userId&#39;].unique() #list of all users</span><br><span class="line">movies &#x3D; data[&#39;movieId&#39;].unique() #list of all moviestest &#x3D; pd.DataFrame(columns&#x3D;data.columns)</span><br><span class="line"></span><br><span class="line">train &#x3D; pd.DataFrame(columns&#x3D;data.columns)</span><br><span class="line">test_ratio &#x3D; 0.2           #fraction of data to be used as test set.</span><br><span class="line"></span><br><span class="line">for u in users:</span><br><span class="line">    temp &#x3D; data[data[&#39;userId&#39;] &#x3D;&#x3D; u]</span><br><span class="line">    n &#x3D; len(temp)</span><br><span class="line">    test_size &#x3D; int(test_ratio*n)</span><br><span class="line">    temp &#x3D; temp.sort_values(&#39;timestamp&#39;).reset_index()</span><br><span class="line"></span><br><span class="line">temp.drop(&#39;index&#39;, axis&#x3D;1, inplace&#x3D;True)</span><br><span class="line">    </span><br><span class="line">dummy_test &#x3D; temp.ix[n-1-test_size :]</span><br><span class="line">dummy_train &#x3D; temp.ix[: n-2-test_size]</span><br><span class="line">    </span><br><span class="line">test &#x3D; pd.concat([test, dummy_test])</span><br><span class="line">train &#x3D; pd.concat([train, dummy_train])</span><br></pre></td></tr></table></figure>
+<p>这样做的目的是，根据这些评级的时间戳对数据进行排序，以使最近的评级保持在底部，并且从底部开始对每个用户取20%的评级作为测试集。所以，我们用最近的评级作为测试集，而不是随机选择。这样更符合逻辑，因为推荐系统的目标是：以类似产品的历史评级为基础，然后对未遇到过的产品进行评级。</p>
+<h2 id="效用矩阵"><a href="#效用矩阵" class="headerlink" title="效用矩阵"></a>效用矩阵</h2><p>当前形式的数据集对我们毫无用处。为了将数据用于推荐系统，我们需要将数据集转换为一种效用矩阵（Utility Matrix）的形式。下面的脚本中创建了函数<code>create_utility_matrix</code>，并且把新脚本文件命名为<code>recsys.py</code>，使用此脚本中的函数来处理训练和测试集数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import pandas as pd</span><br><span class="line">from scipy.linalg import sqrtm</span><br><span class="line"></span><br><span class="line">def create_utility_matrix(data, formatizer &#x3D; &#123;&#39;user&#39;:0, &#39;item&#39;: 1, &#39;value&#39;: 2&#125;):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">        :param data:      Array-like, 2D, nx3</span><br><span class="line">        :param formatizer:pass the formatizer</span><br><span class="line">        :return:          utility matrix (n x m), n&#x3D;users, m&#x3D;items</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">        </span><br><span class="line">    itemField &#x3D; formatizer[&#39;item&#39;]</span><br><span class="line">    userField &#x3D; formatizer[&#39;user&#39;]</span><br><span class="line">    valueField &#x3D; formatizer[&#39;value&#39;]</span><br><span class="line">    userList &#x3D; data.ix[:,userField].tolist()</span><br><span class="line">    itemList &#x3D; data.ix[:,itemField].tolist()</span><br><span class="line">    valueList &#x3D; data.ix[:,valueField].tolist()</span><br><span class="line">    users &#x3D; list(set(data.ix[:,userField]))</span><br><span class="line">    items &#x3D; list(set(data.ix[:,itemField]))</span><br><span class="line">    users_index &#x3D; &#123;users[i]: i for i in range(len(users))&#125;</span><br><span class="line">    pd_dict &#x3D; &#123;item: [np.nan for i in range(len(users))] for item in items&#125;</span><br><span class="line">    for i in range(0,len(data)):</span><br><span class="line">        item &#x3D; itemList[i]</span><br><span class="line">        user &#x3D; userList[i]</span><br><span class="line">        value &#x3D; valueList[i]</span><br><span class="line">        pd_dict[item][users_index[user]] &#x3D; value</span><br><span class="line">        X &#x3D; pd.DataFrame(pd_dict)</span><br><span class="line">    X.index &#x3D; users</span><br><span class="line">        </span><br><span class="line">    itemcols &#x3D; list(X.columns)</span><br><span class="line">    items_index &#x3D; &#123;itemcols[i]: i for i in range(len(itemcols))&#125;</span><br><span class="line">    # users_index gives us a mapping of user_id to index of user</span><br><span class="line">    # items_index provides the same for items</span><br><span class="line">    </span><br><span class="line">    return X, users_index, items_index</span><br></pre></td></tr></table></figure>
+
+<p>函数中的参数<code>formatizer = {&#39;user&#39;:0, &#39;item&#39;: 1, &#39;value&#39;: 2}</code> 与数据集<code>data</code>参数之间建立列的对应关系，<code>data</code>中的列<code>userId</code>或列索引<code>0</code>对应的是<code>fromatizer</code>中的键<code>user</code>，列<code>movieId</code>或列索引<code>1</code>对应的是<code>formatizer</code>的键<code>item</code>，列<code>ratings</code>或列索引<code>2</code>对应的是<code>formatizer</code>键<code>value</code>。</p>
+<p>效用矩阵只是一个二维矩阵，其中一个轴属于用户，另一个轴属于项目（本例中是电影）。所以矩阵的 $(i,j)$ 处的值将是用户 $i$ 对电影 $j$ 的评级。</p>
+<p>通过一个例子更加透彻地理解这个问题。假设有5个样本的数据集。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+----+----------+-----------+----------+</span><br><span class="line">|    |   userId |   movieId |   rating |</span><br><span class="line">|----+----------+-----------+----------+</span><br><span class="line">|  0 |      mark|     movie1|        5 |</span><br><span class="line">|  1 |      lucy|     movie2|        2 |</span><br><span class="line">|  2 |      mark|     movie3|        3 |</span><br><span class="line">|  3 |     shane|     movie2|        1 |</span><br><span class="line">|  4 |      lisa|     movie3|        4 |</span><br><span class="line">+----+----------+-----------+----------+</span><br></pre></td></tr></table></figure>
+
+<p>如果将此数据集传到 <code>create_utility_matrix</code>函数，它将返回一个这样的效用矩阵以及辅助字典 <code>user_index</code> 和 <code>item_index</code>，如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+----+----+----+</span><br><span class="line">| 5  | nan| 3  |   # user_index &#x3D; &#123;mark: 0, lucy:1, shane:2, lisa:3&#125;</span><br><span class="line">+----+----+----+   # item_index &#x3D; &#123;movie1:0, movie2: 1, movie3:2&#125;</span><br><span class="line">| nan| 2  | nan|</span><br><span class="line">+----+----+----+</span><br><span class="line">| nan| 1  | nan|   # The nan values are for user-item combinations</span><br><span class="line">+----+----+----+   # where the ratings are unavailable.</span><br><span class="line">| nan| nan| 4  |</span><br><span class="line">+----+----+----+</span><br></pre></td></tr></table></figure>
+
+<h2 id="SVD-计算"><a href="#SVD-计算" class="headerlink" title="SVD 计算"></a>SVD 计算</h2><p>SVD是奇异向量分解，它的作用是将一个矩阵分解成特征向量的数组，这个数组对应着各行各列。继续编辑文件<code>recsys.py</code>，创建函数<code>svd</code>，这个函数将从<code>create_utility_matrix</code>函数和参数<code>k</code>中得到输出结果。参数<code>k</code>是每个用户和每部电影将被解析到的特征值。</p>
+<p>SVD 是由 Brandyn Webb 引入推荐系统领域的，他在Netflix Prize挑战赛中所用的名字 Simon Funk 更加著名。这里我们没有使用 Funk 的迭代版本的SVD或FunkSVD，而是使用numpy中提供的SVD函数实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def svd(train, k):</span><br><span class="line">    utilMat &#x3D; np.array(train)    # the nan or unavailable entries are masked</span><br><span class="line">    mask &#x3D; np.isnan(utilMat)</span><br><span class="line">    masked_arr &#x3D; np.ma.masked_array(utilMat, mask)</span><br><span class="line">    item_means &#x3D; np.mean(masked_arr, axis&#x3D;0)    # nan entries will replaced by the average rating for each item</span><br><span class="line">    utilMat &#x3D; masked_arr.filled(item_means)</span><br><span class="line">    x &#x3D; np.tile(item_means, (utilMat.shape[0],1))    # we remove the per item average from all entries.</span><br><span class="line">    # the above mentioned nan entries will be essentially zero now</span><br><span class="line">    </span><br><span class="line">    utilMat &#x3D; utilMat - x    # The magic happens here. U and V are user and item features</span><br><span class="line">    U, s, V&#x3D;np.linalg.svd(utilMat, full_matrices&#x3D;False)</span><br><span class="line">    s&#x3D;np.diag(s)    # we take only the k most significant features</span><br><span class="line">    s&#x3D;s[0:k,0:k]</span><br><span class="line">    U&#x3D;U[:,0:k]</span><br><span class="line">    V&#x3D;V[0:k,:]    s_root&#x3D;sqrtm(s)    Usk&#x3D;np.dot(U,s_root)</span><br><span class="line">    skV&#x3D;np.dot(s_root,V)</span><br><span class="line">    UsV &#x3D; np.dot(Usk, skV)    UsV &#x3D; UsV + x    print(&quot;svd done&quot;)</span><br><span class="line">    return UsV</span><br></pre></td></tr></table></figure>
+
+<h2 id="组合起来"><a href="#组合起来" class="headerlink" title="组合起来"></a>组合起来</h2><p>回到<code>workspace.py</code>文件， 在这个文件中引入上面的函数。我们将使用真实的评级，找出测试集预测评级的均方根误差。除了创建函数，我们还将创建一个列表来保存不同数量的特征，这将有助于后面的分析。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">from recsys import svd, create_utility_matrix</span><br><span class="line"></span><br><span class="line">def rmse(true, pred):</span><br><span class="line">    # this will be used towards the end</span><br><span class="line">    x &#x3D; true - pred</span><br><span class="line">    return sum([xi*xi for xi in x])&#x2F;len(x)  # to test the performance over a different number of features</span><br><span class="line"></span><br><span class="line">no_of_features &#x3D; [8,10,12,14,17]</span><br><span class="line">utilMat, users_index, items_index &#x3D; create_utility_matrix(train)</span><br><span class="line"></span><br><span class="line">for f in no_of_features: </span><br><span class="line">    svdout &#x3D; svd(utilMat, k&#x3D;f)</span><br><span class="line">    pred &#x3D; []           #to store the predicted ratings</span><br><span class="line">    for _,row in test.iterrows():</span><br><span class="line">        user &#x3D; row[&#39;userId&#39;]</span><br><span class="line">        item &#x3D; row[&#39;movieId&#39;]</span><br><span class="line">        u_index &#x3D; users_index[user]</span><br><span class="line">        if item in items_index:</span><br><span class="line">            i_index &#x3D; items_index[item]</span><br><span class="line">            pred_rating &#x3D; svdout[u_index, i_index]</span><br><span class="line">        else:</span><br><span class="line">            pred_rating &#x3D; np.mean(svdout[u_index, :])</span><br><span class="line">        pred.append(pred_rating)print(rmse(test[&#39;rating&#39;], pred))</span><br></pre></td></tr></table></figure>
+
+<p>对于 <code>test_size = 0.2</code>，RMSE分数约为<code>0.96</code></p>
+<p>这是 Movielens100k 的一个适度的分数。稍加调整，你也许可以超过0.945，但这取决于你。</p>
+<p>如果你喜欢这篇文章，请告诉我！以下是3个链接供您阅读：</p>
+<ul>
+<li><a href="https://github.com/mayukh18/reco（SVD的完整代码以及其他著名RecSys算法的实现）" target="_blank" rel="noopener">https://github.com/mayukh18/reco（SVD的完整代码以及其他著名RecSys算法的实现）</a></li>
+<li><a href="https://paperswithcode.com/sota/collaborative-filtering-on-movielens-100k（Movielens100k的最新结果。这些结果在官方测试集上得到验证）" target="_blank" rel="noopener">https://paperswithcode.com/sota/collaborative-filtering-on-movielens-100k（Movielens100k的最新结果。这些结果在官方测试集上得到验证）</a></li>
+<li><a href="https://sifter.org/~simon/journal/20061211.html（Simon" target="_blank" rel="noopener">https://sifter.org/~simon/journal/20061211.html（Simon</a> Funk最著名的博客，详细介绍了他的SVD方法）</li>
+</ul>
+<p>原文链接：<a href="https://towardsdatascience.com/beginners-guide-to-creating-an-svd-recommender-system-1fd7326d1f65" target="_blank" rel="noopener">https://towardsdatascience.com/beginners-guide-to-creating-an-svd-recommender-system-1fd7326d1f65</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/08/20/grad-down/">
+        <span class="nav-arrow">← </span>
+        
+          零基础学习梯度下降算法
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#序言"><span class="toc-nav-text">序言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据集"><span class="toc-nav-text">数据集</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#划分训练集和测试集"><span class="toc-nav-text">划分训练集和测试集</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#效用矩阵"><span class="toc-nav-text">效用矩阵</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SVD-计算"><span class="toc-nav-text">SVD 计算</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#组合起来"><span class="toc-nav-text">组合起来</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/08/26/svd-recommond-sys/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
