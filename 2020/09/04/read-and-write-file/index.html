@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用Python读写文件的方法 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用Python读写文件的方法</h2>
+    <p class="post-date">2020-09-04</p>
+    <section class="markdown-content"><p>在文中，我们将研习如何用Python读取文件，然后，向文件写入内容并再次保存它。使用Python读写某种特别类型的文件，例如：JSON、CSV、Excel等，一般会有专门的模块。但是，在这里，我们将用Python打开文本文件(.txt)。</p>
+<p>若使用Python的<code>open</code>函数，它将返回一个文件对象，此对象将包含一些方法和属性。我们可以使用这些方法和属性获得已打开文件的相关信息，并且，可以使用这些方法来更改所打开的文件。</p>
+<h2 id="用-open-读取文件"><a href="#用-open-读取文件" class="headerlink" title="用 open()读取文件"></a>用 <code>open()</code>读取文件</h2><p>在本节中，我们将学习如何使用<code>open()</code>函数在Python中加载文件，最简单的例子是打开一个文件并创建一个文件对象。</p>
+<p>当使用Python的<code>open()</code>函数打开一个文件时，有若干个参数可用。然而，最常用的参数只有前两个。注意，第一个是强制性的，其余的是可选的。如果不添加<code>mode</code>参数，文件将在Python中以只读模式打开。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open(file, mode&#x3D;&#39;r&#39;, buffering&#x3D;-1, encoding&#x3D;None, errors&#x3D;None, newline&#x3D;None, closefd&#x3D;True, opener&#x3D;None)</span><br></pre></td></tr></table></figure>
+
+<h3 id="mode参数"><a href="#mode参数" class="headerlink" title="mode参数"></a><code>mode</code>参数</h3><p>读取文件有不同模式。如前所述，如果不带有<code>mode</code>参数，文件就会以只读方式打开，如下所示，列出了常用的几种打开模式。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598926360596-file01.jpg" alt=""></p>
+<p>其中，<code>mode=&#39;r&#39;</code>表示制度；<code>mode=&#39;w&#39;</code>表示只写；<code>mode=&#39;a&#39;</code>表示追加。<code>mode=&#39;r+&#39;</code>表示可读写，但是文件必须存在，否则报错。</p>
+<h3 id="一个简单的示例"><a href="#一个简单的示例" class="headerlink" title="一个简单的示例"></a>一个简单的示例</h3><p>在下面的代码示例中使用<code>open()</code>代开一个文件，此处假设文件与Python脚本在同一个目录中，否则要增加路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exfile &#x3D; open(&#39;example_file&#39;)</span><br><span class="line">print(exfile)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598926533962-file02.jpg" alt=""></p>
+<p>在上图中，很明显我们有一个以只读模式打开的文件对象，在<code>open()</code>中除了文件名之外没有任何其他参数。因此，无法向该文件写入任何内容。如果要打印文件名，只需键入<code>print(exfile.name)</code>。</p>
+<h3 id="创建文本文件并写入内容"><a href="#创建文本文件并写入内容" class="headerlink" title="创建文本文件并写入内容"></a>创建文本文件并写入内容</h3><p>下面使用<code>open()</code>创建一个新文件。现在，要使用<code>mode=&#39;w&#39;</code>参数，这样能够打开一个文件对象，并可以使用“文件对象写入”方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exfile &#x3D; open(&#39;example_file2&#39;, &#39;w&#39;)</span><br><span class="line">print(exfile)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598926597909-file03.jpg" alt=""></p>
+<p>在上图中，可以当前文件对象是写入模式(‘ w ‘)，在下面的代码块中，我们将向这个文件中添加一行文本:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exfile.write(&#39;This is example file 2 \n&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>当然，也可以添加更多的行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exfile.write(&#39;Line number 2, in example file 2&#39;)</span><br><span class="line">exfile.close()</span><br></pre></td></tr></table></figure>
+
+<p>注意，在最后一行务必要使用<code>close()</code> 关闭文件。在下图中，我们可以看到用Python创建的示例文件。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598926726878-file04.jpg" alt=""></p>
+<p>如何使用open()读取Python中的文本文件</p>
+<p>在下一个用Python读取文件的示例中，我们将学习如何在Python中打开文本文件（.txt）。当然，这很简单，我们基本上已经掌握了如何使用Python实现这一目的。也就是说，如果我们只想在Python中读取.txt文件，我们可以使用open函数和read模式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">txtfile &#x3D; open(&#39;example_file.txt&#39;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="read-示例"><a href="#read-示例" class="headerlink" title="read()示例"></a>read()示例</h3><p>这个操作很简单。现在，如果我们想打印文本文件的内容，可以有三个方法。第一个，使用文件对象的<code>read()</code>方法，读取整个文件内容。也就是说，用<code>txtfile.read()</code>可以得到以下输出:</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598926871330-file05.jpg" alt=""></p>
+<p>第二个是用<code>readlines()</code>将文件读取到列表中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">txtfile &#x3D; open(&#39;example_file.txt&#39;)  </span><br><span class="line">print(txtfile.readlines())</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598926958528-file06.jpg" alt=""></p>
+<p>在这个方法中，还可以使用通过提供参数，说明读取某些行。例如，下面的代码将把前两行读入，然后将其打印出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">txtfile &#x3D; open(&#39;example_file.txt&#39;)</span><br><span class="line">line &#x3D; txtfile.readlines(1)</span><br><span class="line">print(line)</span><br><span class="line"></span><br><span class="line">line2 &#x3D; txtfile.readlines(2)</span><br><span class="line">print(line2)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598927028854-file07.jpg" alt=""></p>
+<p>最后一个方法，通过循环方式，把文件的内容逐行打印出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">txtfile &#x3D; open(&#39;example_file.txt&#39;)</span><br><span class="line">for line in txtfile:</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598927101308-file08.jpg" alt=""></p>
+<h2 id="写入文件内容"><a href="#写入文件内容" class="headerlink" title="写入文件内容"></a>写入文件内容</h2><p>在示例中，打开一个<code>.txt</code>文件，并向其中以追加的方式增加内容，故需要用<code>&#39;a&#39;</code>模式打开。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open(&#39;example_file2.txt&#39;, &#39;a&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>接下来，使用<code>write()</code>向其追加内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">txtfile.write(&#39;\n More text here.&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>在添加文本时，至少在Windows 10中，必须在行前添加<code>\n</code>。否则，新的一行将添加到最后一个字符的后面（在文件的最后一行）。如果我们要添加更多的行，也必须记住这样操作；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">txtfile.write(‘\nLast line of text, I promise.)</span><br><span class="line">txtfile.close()</span><br></pre></td></tr></table></figure>
+
+
+<p>可以使用文本编辑器(例如，Notepad, Gedit)打开文本文件，会看到添加的最后两行:</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598927206346-file09.jpg" alt=""></p>
+<h2 id="使用with语句"><a href="#使用with语句" class="headerlink" title="使用with语句"></a>使用with语句</h2><p>使用with语句打开文件是一个非常好的习惯，这样就不必记住关闭文件，并且使用with语句的语法清晰易读：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with open(&#39;example_file2.txt&#39;) as txtfile2:</span><br><span class="line">    print(txtfile2.read())</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598927307211-f1.jpg" alt=""></p>
+<p>现在，如果我们使用<code>read()</code>方法，Python会抛出ValueError:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">txtfile2.read()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-1/1598927364414-f2.jpg" alt=""></p>
+<h2 id="分词和统计"><a href="#分词和统计" class="headerlink" title="分词和统计"></a>分词和统计</h2><p>在读取文件后，可以使用字符串的<code>split()</code>方法将文本文件中的句子分割成单词，然后用collections模块中的<code>Counter</code>类来统计打开的文件中的单词数量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from collections import Counter</span><br><span class="line"></span><br><span class="line">with open(&#39;example_file2.txt&#39;) as txtfile2:</span><br><span class="line">    wordcount &#x3D; Counter(txtfile2.read().split())</span><br><span class="line">    </span><br><span class="line">print(len(wordcount))</span><br><span class="line"># Output: 43</span><br></pre></td></tr></table></figure>
+
+<p>现在，<code>Counter</code>类返回了一个字典，该字典包含所有单词和每个单词出现的次数。因此，可以这样来打印所有单词和单词总数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for k in sorted(wordcount, key&#x3D;wordcount.get, reverse&#x3D;True):</span><br><span class="line">    print(k, wordcount[k])</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码示例中，我们循环遍历字典中的键并对它们进行排序。这样，就把最常见的词排在最上面。当然，如果用Python读取包含多个单词的文件、并像这样打印结果，这种操作就是不可行的。</p>
+<p>以上介绍了以不同的模式读取文件、创建和写入文件、将数据追加到文件的方法，以及如何使用with语句读取文件。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/08/26/svd-recommond-sys/">
+        <span class="nav-arrow">← </span>
+        
+          初学者指南：利用SVD创建推荐系统
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用-open-读取文件"><span class="toc-nav-text">用 open()读取文件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mode参数"><span class="toc-nav-text">mode参数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一个简单的示例"><span class="toc-nav-text">一个简单的示例</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#创建文本文件并写入内容"><span class="toc-nav-text">创建文本文件并写入内容</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#read-示例"><span class="toc-nav-text">read()示例</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#写入文件内容"><span class="toc-nav-text">写入文件内容</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用with语句"><span class="toc-nav-text">使用with语句</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分词和统计"><span class="toc-nav-text">分词和统计</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/09/04/read-and-write-file/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
