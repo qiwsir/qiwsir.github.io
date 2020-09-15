@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python中5对必知的魔法方法 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python中5对必知的魔法方法</h2>
+    <p class="post-date">2020-09-15</p>
+    <section class="markdown-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在Python中，我们可以使用下划线、字母和数字来命名函数。单词之间的下划线并没有太大的意义——它们只是通过在单词之间创建空格来提高可读性。这就是众所周知的s蛇形命名风格。例如，<code>calculate_mean_score</code>比<code>calculatemeanscore</code>更容易阅读。你可能知道，除了这种使用下划线的常见方式，我们还在函数名之前加上一个或两个下划线(例如：<code>_func</code>，<code>__func</code>) 来表示类或模块内的私有化函数，那些没有以下划线为前缀的名称被认为是公共 API。</p>
+<p>下划线在方法命名中的另一用途就是定义“魔法方法”，也称为“特殊方法”。具体地说，我们在方法的名称前和后分别使用了两个下划线——类似于<code>__func__</code>。由于使用了两个下划线，一些人将特殊方法称为“dunder方法”或简单地称为“dunders”。在本文中，将介绍五对密切相关的常用魔法方法，每一对方法表示一个Python概念。</p>
+<h2 id="1-实例化：-new-和-init"><a href="#1-实例化：-new-和-init" class="headerlink" title="1. 实例化：__new__ 和 __init__"></a>1. 实例化：<code>__new__</code> 和 <code>__init__</code></h2><p>在学习了Python数据结构的基础知识(例如字典、列表)之后，你应该已经看到了一些自定义类的示例，其中肯定有一个神奇的方法：<code>__init__</code>。此方法用于对实例对象进行初始化。具体地说，在<code>__init__</code>方法中，你需要为创建的实例对象设置初始属性。下面是一个简单的例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Product:</span><br><span class="line">    def __init__(self, name, price):</span><br><span class="line">        self.name &#x3D; name</span><br><span class="line">        self.price &#x3D; price</span><br></pre></td></tr></table></figure>
+
+<p>我们不会直接调用类中的<code>__init__</code>方法时，它在类中担负着初始化实例的作用，例如，要创建一个新的<code>Product</code>实例，可以使用以下代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">product &#x3D; Product(&quot;Vacuum&quot;, 150.0)</span><br></pre></td></tr></table></figure>
+
+<p>与<code>__init__</code>方法密切相关的是<code>__new__</code>方法，我们通常不会在自定义类中实现<code>__new__</code>方法。实际上，<code>__new__</code>才是真正的构造方法，它构造了实例对象，该对象被传给<code>__init__</code>方法，以完成初始化过程。</p>
+<p>换句话说，构造一个新的实例对象(一个叫做实例化的过程)需要依次调用<code>__new__</code>和<code>__init__</code>方法。</p>
+<p>下面的代码展示了此连锁反应:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; class Product:</span><br><span class="line">...     def __new__(cls, *args):</span><br><span class="line">...         new_product &#x3D; object.__new__(cls)</span><br><span class="line">...         print(&quot;Product __new__ gets called&quot;)</span><br><span class="line">...         return new_product</span><br><span class="line">... </span><br><span class="line">...     def __init__(self, name, price):</span><br><span class="line">...         self.name &#x3D; name</span><br><span class="line">...         self.price &#x3D; price</span><br><span class="line">...         print(&quot;Product __init__ gets called&quot;)</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; product &#x3D; Product(&quot;Vacuum&quot;, 150.0)</span><br><span class="line">Product __new__ gets called</span><br><span class="line">Product __init__ gets called</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-字符串表示法：-repr-和-str"><a href="#2-字符串表示法：-repr-和-str" class="headerlink" title="2.字符串表示法：__repr__和__str__"></a>2.字符串表示法：<code>__repr__</code>和<code>__str__</code></h2><p>这两个方法都很重要，因为它们为能在自定义类中指定的字符串表示方法。在解释它们之前，我们先快速看一看下面的实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Product:</span><br><span class="line">    def __init__(self, name, price):</span><br><span class="line">        self.name &#x3D; name</span><br><span class="line">        self.price &#x3D; price</span><br><span class="line"></span><br><span class="line">    def __repr__(self):</span><br><span class="line">        return f&quot;Product(&#123;self.name!r&#125;, &#123;self.price!r&#125;)&quot;</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return f&quot;Product: &#123;self.name&#125;, $&#123;self.price:.2f&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p><code>__repr__</code> 方法应该返回一个字符串，该字符串的内容是创建实例对象。具体来说，字符串可以被传给<code>eval()</code>来创建实例对象。下面的代码片段展示了这样的操作:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; product &#x3D; Product(&quot;Vacuum&quot;, 150.0)</span><br><span class="line">&gt;&gt;&gt; repr(product)</span><br><span class="line">&quot;Product(&#39;Vacuum&#39;, 150.0)&quot;</span><br><span class="line">&gt;&gt;&gt; evaluated &#x3D; eval(repr(product))</span><br><span class="line">&gt;&gt;&gt; type(evaluated)</span><br><span class="line">&lt;class &#39;__main__.Product&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>__str__</code> 方法的返回结果对于实例对象的描述性更强。应该注意的是，<code>print()</code>函数使用<code>__str__</code> 方法来显示与实例相关的信息，如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; print(product)</span><br><span class="line">Product: Vacuum, $150.00</span><br></pre></td></tr></table></figure>
+
+<p>虽然两种方法都应该返回字符串，但是<code>__repr__</code>方法通常是面向开发人员的，主要显示实例化信息；而<code>__str__</code>方法是面向普通用户的，通常要显示更多的信息内容。</p>
+<h2 id="3-迭代：-iter-和-next"><a href="#3-迭代：-iter-和-next" class="headerlink" title="3. 迭代： __iter__ 和 __next__"></a>3. 迭代： <code>__iter__</code> 和 <code>__next__</code></h2><p>用代码自动重复执行的某个作业，称为迭代，对此可以用for循环实现。我们将可以用于for循环的对象称为可迭代对象。for循环的基本形式如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for item in iterable:</span><br><span class="line">    # Operations go here</span><br></pre></td></tr></table></figure>
+
+<p>在后台，可迭代对象被转换为迭代器对象，它为每次循环提供可迭代对象中的项。一般来说，迭代器是Python对象，可用于实现项的迭代。转换过程是通过实现 <code>__iter__</code>特殊方法来完成的。此外，检索迭代器的下一项涉及到<code>__next__</code> 特殊方法的实现。现在我们继续前面的例子，把<code>Product</code>类用作for循环的迭代器:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; class Product:</span><br><span class="line">...     def __init__(self, name, price):</span><br><span class="line">...         self.name &#x3D; name</span><br><span class="line">...         self.price &#x3D; price</span><br><span class="line">... </span><br><span class="line">...     def __str__(self):</span><br><span class="line">...         return f&quot;Product: &#123;self.name&#125;, $&#123;self.price:.2f&#125;&quot;</span><br><span class="line">... </span><br><span class="line">...     def __iter__(self):</span><br><span class="line">...         self._free_samples &#x3D; [Product(self.name, 0) for _ in range(3)]</span><br><span class="line">...         print(&quot;Iterator of the product is created.&quot;)</span><br><span class="line">...         return self</span><br><span class="line">... </span><br><span class="line">...     def __next__(self):</span><br><span class="line">...         if self._free_samples:</span><br><span class="line">...             return self._free_samples.pop()</span><br><span class="line">...         else:</span><br><span class="line">...             raise StopIteration(&quot;All free samples have been dispensed.&quot;)</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; product &#x3D; Product(&quot;Perfume&quot;, 5.0)</span><br><span class="line">&gt;&gt;&gt; for i, sample in enumerate(product, 1):</span><br><span class="line">...     print(f&quot;Dispense the next sample #&#123;i&#125;: &#123;sample&#125;&quot;)</span><br><span class="line">... </span><br><span class="line">Iterator of the product is created.</span><br><span class="line">Dispense the next sample #1: Product: Perfume, $0.00</span><br><span class="line">Dispense the next sample #2: Product: Perfume, $0.00</span><br><span class="line">Dispense the next sample #3: Product: Perfume, $0.00</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，我们用<code>__iter__</code>方法创建了一些样本数据，并创建了一个迭代器实例。为了实现迭代行为，在循环过程中调用了<code>__next__</code>方法，从而将实例中的样本都显示出来。当样本读取完毕时，迭代结束。</p>
+<h2 id="4-上下文管理器：-enter-和-exit"><a href="#4-上下文管理器：-enter-和-exit" class="headerlink" title="4. 上下文管理器：__enter__ 和 __exit__"></a>4. 上下文管理器：<code>__enter__</code> 和 <code>__exit__</code></h2><p>在Python中处理文件对象时，最常见的语法可能是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with open(&#39;filename.txt&#39;) as file:</span><br><span class="line">    # Your file operations go here</span><br></pre></td></tr></table></figure>
+
+<p><code>with</code>语句的使用被称为上下文管理器。具体来说，在上面的文件操作示例中，<code>with</code>语句将为<code>file</code>对象创建一个上下文管理器，在文件操作之后，上下文管理器将帮助我们关闭文件对象，以便共享资源（即文件）可以用于其他进程。</p>
+<p>因此，一般来说，上下文管理器是Python对象，用于管理共享资源，例如<code>open</code>和<code>close</code>。没有上下文管理器，我们必须手动管理这些资源，这很容易出错。</p>
+<p>为了用一个自定义类实现这样的行为，需要实现<code>__enter__</code>和 <code>__exit__</code>方法。<code>__enter__</code> 方法设置上下文管理器，为我们准备操作所需的资源，而<code>__exit__</code> 方法则是清理应释放的任何已用资源，使其可用。我们来思考与前面的<code>Product</code>类有关的一个简单示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; class Product:</span><br><span class="line">...     def __init__(self, name, price):</span><br><span class="line">...         self.name &#x3D; name</span><br><span class="line">...         self.price &#x3D; price</span><br><span class="line">... </span><br><span class="line">...     def __str__(self):</span><br><span class="line">...         return f&quot;Product: &#123;self.name&#125;, $&#123;self.price:.2f&#125;&quot;</span><br><span class="line">... </span><br><span class="line">...     def _move_to_center(self):</span><br><span class="line">...         print(f&quot;The product (&#123;self&#125;) occupies the center exhibit spot.&quot;)</span><br><span class="line">... </span><br><span class="line">...     def _move_to_side(self):</span><br><span class="line">...         print(f&quot;Move &#123;self&#125; back.&quot;)</span><br><span class="line">... </span><br><span class="line">...     def __enter__(self):</span><br><span class="line">...         print(&quot;__enter__ is called&quot;)</span><br><span class="line">...         self._move_to_center()</span><br><span class="line">... </span><br><span class="line">...     def __exit__(self, exc_type, exc_val, exc_tb):</span><br><span class="line">...         print(&quot;__exit__ is called&quot;)</span><br><span class="line">...         self._move_to_side()</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; product &#x3D; Product(&quot;BMW Car&quot;, 50000)</span><br><span class="line">&gt;&gt;&gt; with product:</span><br><span class="line">...     print(&quot;It&#39;s a very good car.&quot;)</span><br><span class="line">... </span><br><span class="line">__enter__ is called</span><br><span class="line">The product (Product: BMW Car, $50000.00) occupies the center exhibit spot.</span><br><span class="line">It&#39;s a very good car.</span><br><span class="line">__exit__ is called</span><br><span class="line">Move Product: BMW Car, $50000.00 back.</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，当实例对象嵌入到with语句中时，将调用<code>__enter__</code>方法。在with语句中完成操作后，将调用<code>__exit__</code>方法。</p>
+<p>但是，需要注意的是，我们可以用<code>__enter__</code>和<code>__exit__</code>方法来创建上下文管理器。使用上下文管理器的装饰器函数可以更容易地完成这项工作。</p>
+<h2 id="5-属性访问控制：-getattr-和-setattr"><a href="#5-属性访问控制：-getattr-和-setattr" class="headerlink" title="5. 属性访问控制：__getattr__ 和 __setattr__"></a>5. 属性访问控制：<code>__getattr__</code> 和 <code>__setattr__</code></h2><p>如果你有其他语言的编程经验，可能为实例属性设置过显式的<code>getters</code>（访问属性）和<code>setters</code>（设置属性）。在Python中，我们不需要对每个属性使用这些访问控制技术。但是，我们可以通过实现<code>__getattr__</code> 和 <code>__setattr__</code>方法来实现某种控制。具体地说，当访问实例对象的属性时，调用<code>__getattr__</code> 方法；而在设置实例对象的属性时，调用<code>__setattr__</code> 方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; class Product:</span><br><span class="line">...     def __init__(self, name):</span><br><span class="line">...         self.name &#x3D; name</span><br><span class="line">... </span><br><span class="line">...     def __getattr__(self, item):</span><br><span class="line">...         if item &#x3D;&#x3D; &quot;formatted_name&quot;:</span><br><span class="line">...             print(f&quot;__getattr__ is called for &#123;item&#125;&quot;)</span><br><span class="line">...             formatted &#x3D; self.name.capitalize()</span><br><span class="line">...             setattr(self, &quot;formatted_name&quot;, formatted)</span><br><span class="line">...             return formatted</span><br><span class="line">...         else:</span><br><span class="line">...             raise AttributeError(f&quot;no attribute of &#123;item&#125;&quot;)</span><br><span class="line">... </span><br><span class="line">...     def __setattr__(self, key, value):</span><br><span class="line">...         print(f&quot;__setattr__ is called for &#123;key!r&#125;: &#123;value!r&#125;&quot;)</span><br><span class="line">...         super().__setattr__(key, value)</span><br><span class="line">... </span><br><span class="line">&gt;&gt;&gt; product &#x3D; Product(&quot;taBLe&quot;)</span><br><span class="line">__setattr__ is called for &#39;name&#39;: &#39;taBLe&#39;</span><br><span class="line">&gt;&gt;&gt; product.name</span><br><span class="line">&#39;taBLe&#39;</span><br><span class="line">&gt;&gt;&gt; product.formatted_name</span><br><span class="line">__getattr__ is called for formatted_name</span><br><span class="line">__setattr__ is called for &#39;formatted_name&#39;: &#39;Table&#39;</span><br><span class="line">&#39;Table&#39;</span><br><span class="line">&gt;&gt;&gt; product.formatted_name</span><br><span class="line">&#39;Table&#39;</span><br></pre></td></tr></table></figure>
+
+<p>每次尝试设置对象的属性时，都会调用 <code>__setattr__</code>方法。要正确使用它，你必须借助<code>super()</code>来使用超类方法。否则，它将陷入无限递归。</p>
+<p>设置<code>formatted_name</code>属性后，该属性将成为 <code>__dict__</code>对象的一部分，因此不会调用<code>__getattr__</code>。</p>
+<p>另外，还有一种与访问控制密切相关的特殊方法叫做<code>__getattribute__</code>。它类似于<code>__getattr__</code>，但每次访问属性时都会调用它。在这一点上，它类似于<code>__setattr__</code>。同样，你应该使用<code>super()</code>来实现<code>__getattribute__</code>方法，以避免无限递归的错误。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在本文中，回顾了五对重要的特殊方法。通过这些方法，我们了解了与之相关的五个Python概念。我希望你能够更好地理解这些概念、更好地理解如何在自己的Python项目中使用特殊方法。</p>
+<p>原文链接：<a href="https://medium.com/better-programming/5-pairs-of-magic-methods-in-python-you-should-know-f98f0e5356d6" target="_blank" rel="noopener">https://medium.com/better-programming/5-pairs-of-magic-methods-in-python-you-should-know-f98f0e5356d6</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/09/11/data-science-enginerring/">
+        <span class="nav-arrow">← </span>
+        
+          数据科学的软件工程技巧和最佳实践
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#引言"><span class="toc-nav-text">引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-实例化：-new-和-init"><span class="toc-nav-text">1. 实例化：__new__ 和 __init__</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-字符串表示法：-repr-和-str"><span class="toc-nav-text">2.字符串表示法：__repr__和__str__</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-迭代：-iter-和-next"><span class="toc-nav-text">3. 迭代： __iter__ 和 __next__</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-上下文管理器：-enter-和-exit"><span class="toc-nav-text">4. 上下文管理器：__enter__ 和 __exit__</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-属性访问控制：-getattr-和-setattr"><span class="toc-nav-text">5. 属性访问控制：__getattr__ 和 __setattr__</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/09/15/python-magic-method/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
