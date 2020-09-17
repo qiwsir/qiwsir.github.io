@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      不写爬虫，也能读取网页的表格数据 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Books</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">Resources</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Books</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">Resources</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>不写爬虫，也能读取网页的表格数据</h2>
+    <p class="post-date">2020-09-17</p>
+    <section class="markdown-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>pandas中的<code>read_html()</code>函数是将HTML的表格转换为DataFrame的一种快速方便的方法，这个函数对于快速合并来自不同网页上的表格非常有用。 在合并时，不需要用爬虫获取站点的HTML。但是，在分析数据之前，数据的清理和格式化可能会遇到一些问题。在本文中，我将讨论如何使用pandas的<code>read_html()</code>来读取和清理来自维基百科的多个HTML表格，以便对它们做进一步的数值分析。</p>
+<h2 id="基本方法"><a href="#基本方法" class="headerlink" title="基本方法"></a>基本方法</h2><p>在第一个例子中，我们将尝试解析一个表格。这个表格来自维基百科页面中明尼苏达州的政治部分(<a href="https://en.wikipedia.org/wiki/Minnesota)。" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Minnesota)。</a></p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-16/1600236785993-r1.png" alt=""></p>
+<p><code>read_html</code>的基本用法非常简单，在许多维基百科页面上都能运行良好，因为表格并不复杂。首先，要导入一些库 ，在后面的数据清理中都会用到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">from unicodedata import normalize</span><br><span class="line"></span><br><span class="line">table_MN &#x3D; pd.read_html(&#39;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Minnesota&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>特别注意，上面代码中得到的<code>table_MN</code>是页面上所有表格的列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(f&#39;Total tables: &#123;len(table_MN)&#125;&#39;)</span><br><span class="line"></span><br><span class="line">Total tables: 38</span><br></pre></td></tr></table></figure>
+
+<p>很难在38张表格中找到你需要的那张，要想容易地找出来，可以设置<code>match</code>参数，如下面的代码所示，用<code>mathch</code>参数指明要选择标题为“Election results from statewide races”的那张表格。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">table_MN &#x3D; pd.read_html(&#39;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Minnesota&#39;, match&#x3D;&#39;Election results from statewide races&#39;)</span><br><span class="line">len(table_MN)</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df &#x3D; table_MN[0]</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-16/1600237073054-r2.png" alt=""></p>
+<p>显然，用Pandas能够很容易地读取到了表格，此外，从上面的输出结果可以看出，跨多行的<code>Year</code>列也得到了很好地处理，这要比自己写爬虫工具专门收集数据简单多了。</p>
+<p>总的来说，这样的操作看起来还不错，然而，如果用<code>df.info()</code>来查看数据类型:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span><br><span class="line">RangeIndex: 24 entries, 0 to 23</span><br><span class="line">Data columns (total 5 columns):</span><br><span class="line">#   Column  Non-Null Count  Dtype</span><br><span class="line">---  ------  --------------  -----</span><br><span class="line">0   Year    24 non-null     int64</span><br><span class="line">1   Office  24 non-null     object</span><br><span class="line">2   GOP     24 non-null     object</span><br><span class="line">3   DFL     24 non-null     object</span><br><span class="line">4   Others  24 non-null     object</span><br><span class="line">dtypes: int64(1), object(4)</span><br><span class="line">memory usage: 1.1+ KB</span><br></pre></td></tr></table></figure>
+
+<p>如果想对这些数据进行分析，需要将<code>GOP</code>、<code>DFL</code>和其他类型为<code>object</code>的列转换为数值。</p>
+<p>如果这么操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[&#39;GOP&#39;].astype(&#39;float&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>系统就会报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ValueError: could not convert string to float: &#39;42.4%&#39;</span><br></pre></td></tr></table></figure>
+
+<p>最有可能的罪魁祸首是<code>%</code>，下面用pandas的<code>replace()</code>函数删除它。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[&#39;GOP&#39;].replace(&#123;&#39;%&#39;:&#39;&#39;&#125;, regex&#x3D;True).astype(&#39;float&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>效果看起来不错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0     42.4</span><br><span class="line">1     36.2</span><br><span class="line">2     42.4</span><br><span class="line">3     44.9</span><br><span class="line">&lt;...&gt;</span><br><span class="line">21    63.3</span><br><span class="line">22    49.1</span><br><span class="line">23    31.9</span><br><span class="line">Name: GOP, dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>注意，必须使用参数<code>regex=True</code>才能完美地删除，因为<code>%</code>是字符串的一部分，而不是完整的字符串值。</p>
+<p>现在，我们可以用<code>pd.to_numeric()</code>和<code>apply()</code>替换所有的<code>%</code>值，并将其转换为数字。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">df &#x3D; df.replace(&#123;&#39;%&#39;: &#39;&#39;&#125;, regex&#x3D;True)</span><br><span class="line">df[[&#39;GOP&#39;, &#39;DFL&#39;, &#39;Others&#39;]] &#x3D; df[[&#39;GOP&#39;, &#39;DFL&#39;, &#39;Others&#39;]].apply(pd.to_numeric)</span><br><span class="line">df.info()</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span><br><span class="line">RangeIndex: 24 entries, 0 to 23</span><br><span class="line">Data columns (total 5 columns):</span><br><span class="line">#   Column  Non-Null Count  Dtype</span><br><span class="line">---  ------  --------------  -----</span><br><span class="line">0   Year    24 non-null     int64</span><br><span class="line">1   Office  24 non-null     object</span><br><span class="line">2   GOP     24 non-null     float64</span><br><span class="line">3   DFL     24 non-null     float64</span><br><span class="line">4   Others  24 non-null     float64</span><br><span class="line">dtypes: float64(3), int64(1), object(1)</span><br><span class="line">memory usage: 1.1+ KB</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-16/1600237869486-r3.png" alt=""></p>
+<p>这个基本过程进展顺利，下面看一个有点难度的。</p>
+<h2 id="高级的数据清理方法"><a href="#高级的数据清理方法" class="headerlink" title="高级的数据清理方法"></a>高级的数据清理方法</h2><p>前面的例子展示了基本概念，数据清理是任何数据科学项目都不可或缺的，下面看一个有点难度的示例。在接下来的示例中继续使用维基百科，但是这些方法同样适用于其他含有表格的HTML页面。</p>
+<p>例如读取美国GDP的数据表：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-16/1600237927753-us_gdp.png" alt=""></p>
+<p>现在，就不能用<code>match</code>参数指定要获得的那个表格标题——因为这表格没有标题，但是可以将其值设置为“Nominal GDP”，这样依然能匹配到我们想要的表格。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">table_GDP &#x3D; pd.read_html(&#39;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Economy_of_the_United_States&#39;, match&#x3D;&#39;Nominal GDP&#39;)</span><br><span class="line">df_GDP &#x3D; table_GDP[0]</span><br><span class="line">df_GDP.info()</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span><br><span class="line">RangeIndex: 41 entries, 0 to 40</span><br><span class="line">Data columns (total 9 columns):</span><br><span class="line">#   Column                                            Non-Null Count  Dtype</span><br><span class="line">---  ------                                            --------------  -----</span><br><span class="line">0   Year                                              41 non-null     object</span><br><span class="line">1   Nominal GDP(in bil. US-Dollar)                    41 non-null     float64</span><br><span class="line">2   GDP per capita(in US-Dollar)                      41 non-null     int64</span><br><span class="line">3   GDP growth(real)                                  41 non-null     object</span><br><span class="line">4   Inflation rate(in percent)                        41 non-null     object</span><br><span class="line">5   Unemployment (in percent)                         41 non-null     object</span><br><span class="line">6   Budget balance(in % of GDP)[107]                  41 non-null     object</span><br><span class="line">7   Government debt held by public(in % of GDP)[108]  41 non-null     object</span><br><span class="line">8   Current account balance(in % of GDP)              41 non-null     object</span><br><span class="line">dtypes: float64(1), int64(1), object(7)</span><br><span class="line">memory usage: 3.0+ KB</span><br></pre></td></tr></table></figure>
+
+<p>不出所料，数据清理是避免不了得了。根据前面的经验，先删除<code>%</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_GDP[&#39;GDP growth(real)&#39;].replace(&#123;&#39;%&#39;: &#39;&#39;&#125;, regex&#x3D;True).astype(&#39;float&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>很遗憾，报错了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ValueError: could not convert string to float: &#39;−5.9\xa0&#39;</span><br></pre></td></tr></table></figure>
+
+<p>问题的根源在于有一个隐藏字符<code>xa0</code>，它导致了错误，它是一个特殊字符，即“non-breaking Latin1 (ISO 8859-1) space”，对应的实体是 <code>&amp;nbsp</code>，即空格。</p>
+<p>我所使用的一个方法是使用<code>replace</code>直接替换，这种方法奏效了，但我担心它将来是否会与其他字符产生冲突。</p>
+<p>在深入研究了Unicode这个坑之后，我决定使用<code>normalize</code>来清理这个值。</p>
+<p>我还发现，在其他的一些表格的数据中也有多余的空格。于是编写了一个函数，对所有文本进行清理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from unicodedata import normalize</span><br><span class="line"></span><br><span class="line">def clean_normalize_whitespace(x):</span><br><span class="line">    if isinstance(x, str):</span><br><span class="line">        return normalize(&#39;NFKC&#39;, x).strip()</span><br><span class="line">    else:</span><br><span class="line">        return x</span><br></pre></td></tr></table></figure>
+
+<p>用<code>applymap</code>将这个函数用于整个DataFrame上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_GDP &#x3D; df_GDP.applymap(clean_normalize_whitespace)</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是：<code>applymap</code>函数非常慢，所以在使用<code>applymap</code>时应该慎重。</p>
+<p><code>applymap</code>函数是一个非常低效的pandas函数，不推荐你经常使用它。但在本例中，DataFrame很小，像这样的清理又很棘手，所以我认为这是一个有用的权衡。</p>
+<p><code>applymap</code>不能处理列名称，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df_GDP.columns[7]</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">&#39;Government debt held by public(in\xa0% of GDP)[108]&#39;</span><br></pre></td></tr></table></figure>
+
+<p>在列的名称中有可怕的<code>xa0%</code>。解决此问题的方法有多种，在这里还是继续使用<code>clean_normalize_whitespace()</code>函数，将列转换为Series对象，并使用<code>apply</code>来调用这个函数。有点麻烦了，不知道pandas在以后的版本是否会考虑到这里的问题，让操作简化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df_GDP.columns &#x3D; df_GDP.columns.to_series().apply(clean_normalize_whitespace)</span><br><span class="line">df_GDP.columns[7]</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">&#39;Government debt held by public(in % of GDP)[108]&#39;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们清理掉了一些隐藏的字符。下一步会怎样呢？</p>
+<p>再试一次：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df_GDP[&#39;GDP growth(real)&#39;].replace(&#123;&#39;%&#39;: &#39;&#39;&#125;, regex&#x3D;True).astype(&#39;float&#39;)</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">ValueError: could not convert string to float: &#39;−5.9 &#39;</span><br></pre></td></tr></table></figure>
+
+<p>真的很棘手。如果你仔细观察，你可能会发现：<code>−</code>和<code>-</code>看起来有点不同，但真的很难看出，在Unicode中，破折号和减号之间实际上是有区别的。</p>
+<p>幸运的是，我们也可以使用<code>replace</code>来清理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">df_GDP[&#39;GDP growth(real)&#39;].replace(&#123;&#39;%&#39;: &#39;&#39;, &#39;−&#39;: &#39;-&#39;&#125;, regex&#x3D;True).astype(&#39;float&#39;)</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">0    -5.9</span><br><span class="line">1     2.2</span><br><span class="line">2     3.0</span><br><span class="line">3     2.3</span><br><span class="line">4     1.7</span><br><span class="line">&lt;...&gt;</span><br><span class="line">38   -1.8</span><br><span class="line">39    2.6</span><br><span class="line">40   -0.2</span><br><span class="line">Name: GDP growth(real), dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>现在来关注列<code>Year</code>，例如表示“2020年”的值是<code>2020(est)</code>，需要去掉其中的<code>(est)</code>，还要将列转换为整数型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">df[&#39;Year&#39;].replace(&#123;&#39;%&#39;: &#39;&#39;, &#39;−&#39;: &#39;-&#39;, &#39;\(est\)&#39;: &#39;&#39;&#125;, regex&#x3D;True).astype(&#39;int&#39;)</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">0     2020</span><br><span class="line">1     2019</span><br><span class="line">2     2018</span><br><span class="line">3     2017</span><br><span class="line">4     2016</span><br><span class="line">&lt;...&gt;</span><br><span class="line">40    1980</span><br><span class="line">Name: Year, dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>在DataFrame中的各列的值，除了整数型之外，其他的是浮点数型，在转化的时候，如果使用<code>pd.numeric()</code>虽然能够实现，但略显笨拙。我们可以使用<code>astype()</code>同时又不需要为每一列手动输入类型信息。</p>
+<p><code>astype()</code>函数可以接受含有列名和数据类型的字典。这真的很有用，直到我写了这篇文章我才知道这一点。下面是对列与其数据类型映射字典：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">col_type &#x3D; &#123;</span><br><span class="line">    &#39;Year&#39;: &#39;int&#39;,</span><br><span class="line">    &#39;Nominal GDP(in bil. US-Dollar)&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;GDP per capita(in US-Dollar)&#39;: &#39;int&#39;,</span><br><span class="line">    &#39;GDP growth(real)&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Inflation rate(in percent)&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Unemployment (in percent)&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Budget balance(in % of GDP)[107]&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Government debt held by public(in % of GDP)[108]&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Current account balance(in % of GDP)&#39;: &#39;float&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你觉得键入上面这个词典很慢，可以用下面的快捷方法。要注意，这样建立的字典，默认值为<code>float</code>，还需要手动将<code>Year</code>对应的值修改为<code>int</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">dict.fromkeys(df_GDP.columns, &#39;float&#39;)</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">&#123;&#39;Year&#39;: &#39;float&#39;,</span><br><span class="line">&#39;Nominal GDP(in bil. US-Dollar)&#39;: &#39;float&#39;,</span><br><span class="line">&#39;GDP per capita(in US-Dollar)&#39;: &#39;float&#39;,</span><br><span class="line">&#39;GDP growth(real)&#39;: &#39;float&#39;,</span><br><span class="line">&#39;Inflation rate(in percent)&#39;: &#39;float&#39;,</span><br><span class="line">&#39;Unemployment (in percent)&#39;: &#39;float&#39;,</span><br><span class="line">&#39;Budget balance(in % of GDP)[107]&#39;: &#39;float&#39;,</span><br><span class="line">&#39;Government debt held by public(in % of GDP)[108]&#39;: &#39;float&#39;,</span><br><span class="line">&#39;Current account balance(in % of GDP)&#39;: &#39;float&#39;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再创建了一个字典，其中包含要替换的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clean_dict &#x3D; &#123;&#39;%&#39;: &#39;&#39;, &#39;−&#39;: &#39;-&#39;, &#39;\(est\)&#39;: &#39;&#39;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以调用这个DataFrame的<code>replace</code>方法，转换为所需的类型，并获得干净的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">df_GDP &#x3D; df_GDP.replace(clean_dict, regex&#x3D;True).replace(&#123;&#39;-n&#x2F;a &#39;: np.nan&#125;).astype(col_type)</span><br><span class="line">df_GDP.info()</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span><br><span class="line">RangeIndex: 41 entries, 0 to 40</span><br><span class="line">Data columns (total 9 columns):</span><br><span class="line">#   Column                                            Non-Null Count  Dtype</span><br><span class="line">---  ------                                            --------------  -----</span><br><span class="line">0   Year                                              41 non-null     int64</span><br><span class="line">1   Nominal GDP(in bil. US-Dollar)                    41 non-null     float64</span><br><span class="line">2   GDP per capita(in US-Dollar)                      41 non-null     int64</span><br><span class="line">3   GDP growth(real)                                  41 non-null     float64</span><br><span class="line">4   Inflation rate(in percent)                        41 non-null     float64</span><br><span class="line">5   Unemployment (in percent)                         41 non-null     float64</span><br><span class="line">6   Budget balance(in % of GDP)[107]                  40 non-null     float64</span><br><span class="line">7   Government debt held by public(in % of GDP)[108]  41 non-null     float64</span><br><span class="line">8   Current account balance(in % of GDP)              40 non-null     float64</span><br><span class="line">dtypes: float64(7), int64(2)</span><br><span class="line">memory usage: 3.0 KB</span><br></pre></td></tr></table></figure>
+
+<p>结果如下所示：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-16/1600238907819-r4.png" alt=""></p>
+<p>为了证明上述操作的效果，我们可以把这些数据绘制成图表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.style.use(&#39;seaborn-whitegrid&#39;)</span><br><span class="line">df_clean.plot.line(x&#x3D;&#39;Year&#39;, y&#x3D;[&#39;Inflation rate(in percent)&#39;, &#39;Unemployment (in percent)&#39;])</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-16/1600238986033-us_gdp_chart.png" alt=""></p>
+<p>如果你紧跟我的思路，可能已经注意到链式方式调用<code>replace</code>的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.replace(&#123;&#39;-n&#x2F;a &#39;: np.nan&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>我这样做的原因是我不知道如何使用第一个字典<code>replace</code>来清理<code>n/a</code>。我认为问题的症结在于：我无法预测这些数据的清理顺序，所以不得不分两个阶段来执行替换。</p>
+<p>如果读者有更好的方法，请不吝赐教。</p>
+<h2 id="完整的代码"><a href="#完整的代码" class="headerlink" title="完整的代码"></a>完整的代码</h2><p>最后，把上面的过程，集中用下面的代码实现。从HTML网页上的表格获取数据，并把这些数据转化为DataFrame对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line">from unicodedata import normalize</span><br><span class="line"></span><br><span class="line">def clean_normalize_whitespace(x):</span><br><span class="line">    &quot;&quot;&quot; </span><br><span class="line">    Normalize unicode characters and strip trailing spaces</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    if isinstance(x, str):</span><br><span class="line">        return normalize(&#39;NFKC&#39;, x).strip()</span><br><span class="line">    else:</span><br><span class="line">        return x</span><br><span class="line"></span><br><span class="line"># Read in the Wikipedia page and get the DataFrame</span><br><span class="line">table_GDP &#x3D; pd.read_html(</span><br><span class="line">    &#39;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Economy_of_the_United_States&#39;,</span><br><span class="line">    match&#x3D;&#39;Nominal GDP&#39;)</span><br><span class="line">df_GDP &#x3D; table_GDP[0]</span><br><span class="line"></span><br><span class="line"># Clean up the DataFrame and Columns</span><br><span class="line">df_GDP &#x3D; df_GDP.applymap(clean_normalize_whitespace)</span><br><span class="line">df_GDP.columns &#x3D; df_GDP.columns.to_series().apply(clean_normalize_whitespace)</span><br><span class="line"></span><br><span class="line"># Determine numeric types for each column</span><br><span class="line">col_type &#x3D; &#123;</span><br><span class="line">    &#39;Year&#39;: &#39;int&#39;,</span><br><span class="line">    &#39;Nominal GDP(in bil. US-Dollar)&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;GDP per capita(in US-Dollar)&#39;: &#39;int&#39;,</span><br><span class="line">    &#39;GDP growth(real)&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Inflation rate(in percent)&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Unemployment (in percent)&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Budget balance(in % of GDP)[107]&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Government debt held by public(in % of GDP)[108]&#39;: &#39;float&#39;,</span><br><span class="line">    &#39;Current account balance(in % of GDP)&#39;: &#39;float&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># Values to replace</span><br><span class="line">clean_dict &#x3D; &#123;&#39;%&#39;: &#39;&#39;, &#39;−&#39;: &#39;-&#39;, &#39;\(est\)&#39;: &#39;&#39;&#125;</span><br><span class="line"></span><br><span class="line"># Replace values and convert to numeric values</span><br><span class="line">df_GDP &#x3D; df_GDP.replace(clean_dict, regex&#x3D;True).replace(&#123;</span><br><span class="line">    &#39;-n&#x2F;a &#39;: np.nan</span><br><span class="line">&#125;).astype(col_type)</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>pandas的<code>read_html()</code>函数对于快速解析页面中的 HTML表格非常有用，尤其是维基百科页面。从HTML页面直接获得的数据，通常不会像你所需要的那样干净，并且清理各种Unicode字符可能会非常耗时。本文展示的几种技术可以用于清理数据、并将其转换为正确的数字格式。如果你需要从维基百科或其他HTML表格中获取数据，这些技巧应该可以为你节省一些时间。</p>
+<p>参考: <a href="https://pbpython.com/pandas-html-table.html" target="_blank" rel="noopener">https://pbpython.com/pandas-html-table.html</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/09/15/python-magic-method/">
+        <span class="nav-arrow">← </span>
+        
+          Python中5对必知的魔法方法
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#引言"><span class="toc-nav-text">引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本方法"><span class="toc-nav-text">基本方法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#高级的数据清理方法"><span class="toc-nav-text">高级的数据清理方法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#完整的代码"><span class="toc-nav-text">完整的代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/09/17/pandas-readhtml/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
