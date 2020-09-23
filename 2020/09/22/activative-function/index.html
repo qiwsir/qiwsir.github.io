@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      激活函数的“3W” | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>激活函数的“3W”</h2>
+    <p class="post-date">2020-09-22</p>
+    <section class="markdown-content"><p>图书推荐：《数据准备和特征工程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B2_20200114135935.png" alt=""></p>
+<hr>
+<p>学习神经网络，必然会遇到激活函数，那么：</p>
+<ul>
+<li>什么是激活函数？What</li>
+<li>为什么要用激活函数？Why</li>
+<li>应该选择哪个激活函数？Which</li>
+</ul>
+<p>本文尝试对此进行探讨。</p>
+<h2 id="神经网络的基本思想"><a href="#神经网络的基本思想" class="headerlink" title="神经网络的基本思想"></a>神经网络的基本思想</h2><p>人工神经网络是仿照了大脑的神经网络系统来处理数据的，它由节点组成了层，通常一个网络又有多个层（除了输入层和输出层之外，有多个隐藏层），每个节点就是一个神经元。信息从输入层进入，传到隐藏层（如图所示），按照简化的模型，输入数据乘以权重（weight）加上一个偏置（bias），然后应用激活函数得到该神经元的输出，再将此输出传给下一层的神经元。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-22/1600766047128-ac01.png" alt=""></p>
+<p>此流程在各个层的神经元中不断重复，直到最后一层输出层。寻找隐藏层的权重参数和偏置的过程，就是常说的“学习”过程，其遵循的基本原则就是使得网络最终的输出误差最小化。</p>
+<h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p>可以将激活函数理解为控制当前层的神经元与下一层的神经元之间的信息传递的“门”，它决定当前的神经元是否被激活，可以用下图帮助理解。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-22/1600766331939-ac02.png" alt=""></p>
+<h2 id="为什么要用激活函数"><a href="#为什么要用激活函数" class="headerlink" title="为什么要用激活函数"></a>为什么要用激活函数</h2><p>参考上面的图示，如果没有激活函数，该神经元的输入和输出之间就是线性变换。线性函数虽然容易求解，但是它所能解决的问题有限，特别是针对复杂问题的时候。由此推广，如果神经网络没有激活函数，它也就变成了线性回归模型。所以，需要一个激活函数。</p>
+<p>那么，需要什么样的激活函数呢？</p>
+<h2 id="激活函数的类型"><a href="#激活函数的类型" class="headerlink" title="激活函数的类型"></a>激活函数的类型</h2><p>激活函数可以分为两种类型：</p>
+<ul>
+<li>线性激活函数</li>
+<li>非线性激活函数</li>
+</ul>
+<h3 id="线性激活函数"><a href="#线性激活函数" class="headerlink" title="线性激活函数"></a>线性激活函数</h3><p>图示的是一个线性激活函数和一个常函数，通过线性激活函数所得到的输出，相对于输入而言，只是比例的变化。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-22/1600768239516-ac03.png" alt=""></p>
+<ul>
+<li>函数式：$f(x) = x$</li>
+<li>导数：$f’(x) = 1$</li>
+<li>值域：$(-\infty, +\infty)$</li>
+</ul>
+<p>从上面的函数示例可知，线性函数求导数之后得到了常数，也就是与输入数据无关，这样就无法通过反向传播算法更新权重参数。另外，如果用线性函数作为激活函数，不论网络有多少层，最后的输出与第一层的输入都是线性关系。</p>
+<h3 id="非线性激活函数"><a href="#非线性激活函数" class="headerlink" title="非线性激活函数"></a>非线性激活函数</h3><p>现代神经网络使用的都是非线性激活函数，这样可以创建输入与输出键的复杂映射关系，网络也能通过“学习”来更新参数。并且，因为非线性函数的导数与输入有关，从而可以通过向后传播算法计算梯度，也可以构建多层神经网络，以处理复杂问题。</p>
+<h2 id="常用的非线性激活函数"><a href="#常用的非线性激活函数" class="headerlink" title="常用的非线性激活函数"></a>常用的非线性激活函数</h2><h3 id="Sigmoid函数-Logistic函数"><a href="#Sigmoid函数-Logistic函数" class="headerlink" title="Sigmoid函数/Logistic函数"></a>Sigmoid函数/Logistic函数</h3><p>Sigmoid函数是S形函数，当以概率形式表示预测值时，我们使用这个函数。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-22/1600769340277-ac04.png" alt=""></p>
+<ul>
+<li>函数式：$f(x)=\sigma = \frac{1}{1+e^{-x}}$</li>
+<li>导数：$f’(x) = \sigma(1-\sigma)$</li>
+<li>值域：$(0, 1)$</li>
+</ul>
+<p>Sigmoid函数的优点在于它可导，并且值域在0到1之间，使得神经元的输出标准化。也正是这些优点，让它成为了神经网络最早采用的激活函数。它的不足也很明显，首先就是在 $x$ 增加或减少到一定程度时，函数值变化很小，这就是所谓的“梯度消失”，致使网络的收敛速度变慢，进而耗费更多的计算资源。另外，输出值不是以 $0$ 为中心，而是 $0.5$。</p>
+<h3 id="Tanh-双曲正切函数"><a href="#Tanh-双曲正切函数" class="headerlink" title="Tanh/双曲正切函数"></a>Tanh/双曲正切函数</h3><p>Tanh函数，即双曲正切函数，也是“S”形，但是Sigmoid函数仅冠名给了上面的那个函数。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-23/1600822326277-ac05.png" alt=""></p>
+<ul>
+<li>函数式：$f(x) = a =tanh(x) = \frac{e^x-e^{-x}}{e^x+e^{-x}}$</li>
+<li>导数：$1-a^2$</li>
+<li>值域：$(-1, 1)$</li>
+</ul>
+<p>Tanh函数的最大优点是输出值以 $0$ 为中心，分属为正数和负数两大类别，另外此函数及其导数都是单调的，这使得它具有了Sigmoid函数的优势，又克服了某些不足。当然，Tanh的不足与Sigmoid一样，“梯度消失”的问题都还存在，进而导致收敛速度变慢。</p>
+<h3 id="ReLU-Rectified-Linear-Unit"><a href="#ReLU-Rectified-Linear-Unit" class="headerlink" title="ReLU ( Rectified Linear Unit)"></a>ReLU ( Rectified Linear Unit)</h3><p>Rectified Linear Unit，译为“线性整流函数”或者“修正线性单元”，通常我们就直接称为 ReLU 函数。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-23/1600822832321-ac6.png" alt=""></p>
+<ul>
+<li>函数式：$f(x)=a=max(0, x)$</li>
+<li>导数：$f’(x)=\begin{cases}1,\quad&amp;(x \ge 0)\0, \quad&amp;(x \lt0)\end{cases}$</li>
+<li>值域：$(0, +\infty)$</li>
+</ul>
+<p>ReLU函数的明显优点在于收敛速度快，当然，不要觉得它看起来是线性的（在大于 $0$ 的部分），这个函数其实是非线性函数，它可导，因此可以用于反向传播算法。它的不足在于当输入趋近于零或为负时，函数的梯度变为零，网络无法执行反向传播，无法学习。</p>
+<h3 id="Leaky-ReLU"><a href="#Leaky-ReLU" class="headerlink" title="Leaky ReLU"></a>Leaky ReLU</h3><p>Leaky ReLU函数式 ReLU函数的特殊化，就如同名称中的 Leaky（漏水）那样，如图所示，当 $x \lt 0$ 时，其函数值不再等于 $0$，而是有一个小小的坡度（水可以沿着斜坡流下去）。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-23/1600823992435-ac07.png" alt=""></p>
+<ul>
+<li>函数式：$f(x)=a=max(0.01x, x)$</li>
+<li>导数：$f’(x)=\begin{cases}0.01,\quad &amp;(x\lt 0)\1, \quad &amp;(x\ge 0)\end{cases}$</li>
+<li>值域：$(0.01, +\infty)$</li>
+</ul>
+<p>Leaky ReLU函数相对于ReLU函数而言，变化的主要是 $x \lt 0$ 区域，其值不再是一个固定数值，导数也不为0了，于是就可以应用于反向传播算法。也是因为这个修正，使得Leaky ReLU函数不再针对输入值小于零的时候有固定的值了，从而会导致正向传播的时候，如果学习率设置的比较大，会出现较大数量的神经元未激活现象，真乃“成也萧何败萧何”。</p>
+<p>Leaky ReLU函数的这种思想，还可以进一步扩展，比如不将 $x$ 与常数项相乘，可以将其与超参数相乘，所得到的的函数称为“参数ReLU”函数。</p>
+<h3 id="Softmax"><a href="#Softmax" class="headerlink" title="Softmax"></a>Softmax</h3><p>Softmax函数比较适合作为多分类模型的激活函数，一般会与交叉熵损失函数相配。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-23/1600827858355-ac08.png" alt=""></p>
+<ul>
+<li>函数式：$f(y_i)=\frac{e^{y_i}}{\sum_{i=0}^n e^{y_i}}$</li>
+<li>概率解释：$S_j = P(y=j|x)$</li>
+<li>值域：$(0, 1)$</li>
+</ul>
+<p>Softmax函数的输出结果是0到1之间的概率值，对应着输入数据属于某个类别的概率，因此适合于多分类模型。通常，Softmax函数只应用于输出层。</p>
+<h2 id="选用激活函数"><a href="#选用激活函数" class="headerlink" title="选用激活函数"></a>选用激活函数</h2><p>以上介绍的几个不同的激活函数，各有优缺点，那么，在神经网络中，应该选择哪个函数作为激活函数呢？</p>
+<p>首先要建立一个观念：不存在普遍适用各种神经网络的万能的激活函数。在选择激活函数的时候，要考虑很多条件限制：</p>
+<ul>
+<li><p>如果函数可导，求导数的计算难度如何？</p>
+</li>
+<li><p>网络的收敛速度如何？</p>
+</li>
+<li><p>函数光滑程度如何？</p>
+</li>
+<li><p>是否满足通用的逼近定理条件？</p>
+</li>
+<li><p>输出是否保持标准化？</p>
+<p>等等，不一而足。</p>
+</li>
+</ul>
+<p>所以，要结合具体问题以及激活函数的特点，恰当地选择。下面是一些经验，供参考：</p>
+<ul>
+<li>Sigmoid函数比较适合于分类模型。</li>
+<li>使用Sigmoid函数和tanh函数，要注意梯度消失问题。</li>
+<li>ReLU函数是应用比较广泛的激活函数，可以作为你的默认选项。</li>
+<li>如果网络中存在大量未激活神经元，可以考虑leaky ReLU函数。</li>
+<li>ReLU函数应该只用于隐藏层。</li>
+<li>如果是回归模型，在输出层上可以使用线性激活函数。</li>
+</ul>
+<p>本文讨论了激活函数的问题，在神经网络中，上述讨论都不是唯一确定的，比如激活函数的类型，这里罗列出来的是目前常见的，是不是在未来针对某个问题，研究者还会找到新的函数呢？完全有可能。至于如何选择激活函数，更是仁者见仁智者见智的了。</p>
+<p>参考链接：<a href="https://medium.com/@snaily16/what-why-and-which-activation-functions-b2bf748c0441" target="_blank" rel="noopener">https://medium.com/@snaily16/what-why-and-which-activation-functions-b2bf748c0441</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/09/17/pandas-readhtml/">
+        <span class="nav-arrow">← </span>
+        
+          不写爬虫，也能读取网页的表格数据
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#神经网络的基本思想"><span class="toc-nav-text">神经网络的基本思想</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#激活函数"><span class="toc-nav-text">激活函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么要用激活函数"><span class="toc-nav-text">为什么要用激活函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#激活函数的类型"><span class="toc-nav-text">激活函数的类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#线性激活函数"><span class="toc-nav-text">线性激活函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#非线性激活函数"><span class="toc-nav-text">非线性激活函数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常用的非线性激活函数"><span class="toc-nav-text">常用的非线性激活函数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Sigmoid函数-Logistic函数"><span class="toc-nav-text">Sigmoid函数&#x2F;Logistic函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Tanh-双曲正切函数"><span class="toc-nav-text">Tanh&#x2F;双曲正切函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ReLU-Rectified-Linear-Unit"><span class="toc-nav-text">ReLU ( Rectified Linear Unit)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Leaky-ReLU"><span class="toc-nav-text">Leaky ReLU</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Softmax"><span class="toc-nav-text">Softmax</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#选用激活函数"><span class="toc-nav-text">选用激活函数</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/09/22/activative-function/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
