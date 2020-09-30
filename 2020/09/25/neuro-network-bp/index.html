@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      反向传播算法的工作原理 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>反向传播算法的工作原理</h2>
+    <p class="post-date">2020-09-25</p>
+    <section class="markdown-content"><p>图书推荐：《数据准备和特征工程》</p>
+<p>tu</p>
+<hr>
+<p>反向传播算法是神经网络中的重要算法，通过它能够快速计算梯度，进而通过梯度下降实现权重和偏置参数的更新</p>
+<p>反向传播算法最初是在20世纪70年代被引入的，但直到1986年大卫·鲁梅尔哈特、杰弗里·辛顿和罗纳德·威廉姆斯合作的一篇著名论文问世后，人们才充分认识到它的重要性。这篇论文描述了几种神经网络，其中反向传播比以前的方法快得多，使人们有可能利用神经网络来解决以前无法解决的问题。如今，反向传播算法是神经网络中所要学习的主要内容。</p>
+<p>本文的内容中涉及到更多的数学问题。如果你对数学不感兴趣，可以把反向传播当作一个黑匣子，忽略其中的细节。但是，如果想深入理解神经网络，还是有必要花时间研究这些细节的。</p>
+<p>反向传播的核心思想是代价函数 $C$ 相对于网络中任何权重 $w$（或偏置 $b$）的偏导数 $\partial C/\partial w$ ，此式说明，更新权重和偏差时，代价函数的变化程度。虽然表达式有点复杂，但它的每一个元素都有一个自然的、直观的解释。所以反向传播不仅仅是一种可供学习的快速算法，它也为我们详细解释了权重和偏置的改变，从而提升网络的整体预测能力。这很值得详细研究。</p>
+<h2 id="基于矩阵的计算"><a href="#基于矩阵的计算" class="headerlink" title="基于矩阵的计算"></a>基于矩阵的计算</h2><p>在讨论反向传播之前，让我们先用一个基于矩阵的快速算法来计算神经网络的输出。</p>
+<p>首先要明确一些符号的意义，文中会用 $w^l_{jk}$ 表示从  $(l-1)^{th}$ 层的第 $k^{th}$ 个神经元到 $l^{th}$ 层的第 $j^{th}$ 个神经元的连接权重参数。下图显示的是从网络第二层的第四个神经元到第三层的第二个神经元的连接的权重：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600394056849-bp1.png" alt=""></p>
+<p>这种记法一开始很麻烦，要掌握它确实需要费些功夫。但只要稍加努力，你就会发现这种记法变得简单而自然。它的一个奇怪之处是 $j$ 和 $k$ 的顺序。你可能认为更合理的操作是：使用 $j$ 表示输入神经元、 $k$ 表示输出神经元，反之就不成立了，是这样。下面将解释这个奇怪现象的原因。</p>
+<p>我们使用类似的符号来表示网络的偏置和激活结果。$b^l_j$ 表示 $l^{th}$ 层中的 $j^{th}$ 神经元的偏差；用 $a^l_j$ 来表示激活 $l^{th}$ 层中的 $j^{th}$ 神经元。下面的图表展示了这些符号的应用：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600394289494-bp2.png" alt=""></p>
+<p>有了这些符号，$l^{th}$ 层中的 $j^{th}$ 神经元的激活 $a^l_j$ 与 $(l−1)^{th}$ 层中的激活产生了关联，公式如下：</p>
+<p>$$a^l_j=\sigma(\sum_k w^l_{jk}a^{l-1}_k+b_j^l) \tag{23}$$</p>
+<p>其中，求和表示的是 $(l−1)^{th}$ 层中所有神经元共计 $k$ 个。为了以矩阵形式重写这个表达式，我们为每个层 $l$ 定义一个权重矩阵 $w^l$，权重矩阵 $w^l$ 的各项是连接到神经元的 $l^{th}$ 层的权重，也就是说，$j^{th}$ 行和 $k^{th}$ 列中的项是 $w^l_{jk}$。类似地，对于每个层 $l$，我们定义一个偏差向量，$b^l$。你也许可以猜出这样操作的原理 —— 偏差向量的元素 $b^l_j$ ，是 $l^{th}$ 层中每个神经元的一个分量。最后，我们定义了一个激活函数的输出向量 $a^l$，它的分量是 $a^l_j$。</p>
+<p>将（23）式用矩阵形式重写，不过，这里还需要将激活函数（ $\sigma$ ）向量化。基本想法是函数（$\sigma$）应用于向量 $\mathbf v$ 中的每个元素，于是用符号 $\sigma (\mathbf v)$ 来表示函数的这种应用，也就是说， $\sigma (\mathbf v)$ 的分量只是 $\sigma (\mathbf v)_j = \sigma (\mathbf v_j)$。举个例子，对于函数 $f(x)=x^2$，$f$ 矢量化形式的效果如下：</p>
+<p>$$f(\begin{bmatrix}2\3\end{bmatrix})=\begin{bmatrix}f(2)\f(3)\end{bmatrix}=\begin{bmatrix}4\9\end{bmatrix}$$</p>
+<p>也就是说，矢量化的 $f$ 只是对矢量的每个元素求平方。</p>
+<p>有了这些符号，我们就可以把式（23）改写成漂亮而紧凑的矢量化形式：</p>
+<p>$$a^l = \sigma (w^la^{l-1} + b^l) \tag{25}$$</p>
+<p>这个表达式使我们可以从全局的角度来思考问题：一个层里的激活函数是如何与前一层里的激活输出相关联的。我们只需将权重矩阵应用于激活函数，然后添加偏置向量，最后应用 $\sigma$ 函数（顺便说一下，正是这个表达式激活了前面提到的 $w^l_{jk}$ 符号中的怪现象。如果我们用 $j$ 来表示输入的神经元，用 $k$ 来表示输出的神经元，那么，我们需要用权重矩阵的转置来代替方程（25）中的权重矩阵。这是一个很小的改变，但是很烦人，我们将失去简单易懂的说法（和想法）：“将权重矩阵应用于激活函数”。与我们现在所采用的逐神经元观点相比，这种全局观点通常更简单、更简洁（涉及的指数更少！）。这种方法可以使我们逃离“角标地狱”，同时仍然精确地表述所发生的情况。该表达式在实践中也很有用，因为大多数矩阵库提供了实现矩阵乘法、矢量加法和矢量化的快速方法。</p>
+<p>当使用方程（25）计算 $a^l$ 时，我们计算中间量 $z^l≡ w^l a^{l−1}+b^l$。把 $z^l$ 称为层 $l$ 中的神经元的加权输入。我们将在后半部分大量使用加权输入 $z^l$。方程(25) 有时用加权输入来表示，如：$a^l=\sigma (z^l)$。同样值得注意的是，$z^l$ 包含 $z^l_j=\sum_k w^l_{jk}a^{l−1}_k+b^l_j$，也就是说，$z^l_j$ 只是层 $l$ 中神经元 $j$ 的激活函数的加权输入。</p>
+<h2 id="代价函数的两个假设"><a href="#代价函数的两个假设" class="headerlink" title="代价函数的两个假设"></a>代价函数的两个假设</h2><p>反向传播的目标是计算代价函数 $C$ 相对于网络中任何权重 $w$ 或偏置 $b$ 的偏导数 $\partial C/ \partial w$ 和 $\partial C/ \partial b$ 。为了使反向传播有效，我们需要对代价函数的形式做两个主要的假设。不过，在陈述这些假设之前，先考虑以示例说明代价函数。</p>
+<p>以下是二次代价函数的形式：</p>
+<p>$$C=\frac{1}{2n}\sum_x \begin{Vmatrix}y(x)-a^L(x)\end{Vmatrix}^2$$</p>
+<p>其中，$n$ 是训练示例的总数；$\sum_x$ 是对所有单个训练示例求和； $y=y(x)$ 是相应的真实输出；$L$ 表示网络中的层数；$a^L=a^L(x)$ 是输入 $x$ 时从网络输出的激活向量（即网络的预测值）。</p>
+<p>那么，为了应用反向传播，我们需要对代价函数 $C$ 做什么样的假设呢？</p>
+<p>第一个假设是，对于单个训练示例 $x$，可以把代价函数写成一个平均值 $C=\frac{1}{n}\sum_xC_x$，而不是 $C_x$ 。对于二次代价函数来说，情况就是如此。其中单个训练示例的代价为 $C_x=\frac{1}{2}\begin{Vmatrix}y−a^L\end{Vmatrix}2$。这个假设也适用于所有其他的代价函数。</p>
+<p>之所以需要这个假设，是因为反向传播实际上允许我们计算一个训练集的偏导数 $\partial C_x/ \partial w$ 和 $\partial C_x/ \partial b$。然后，我们通过对训练模型求平均值来恢复 $\partial C/ \partial w$ 和 $\partial C/ \partial b$。事实上，基于这个假设，我们认为训练示例 $x$ 已修复，并删除 $x$ 下标，将代价 $C_x$ 写成 $C$。我们最终会让 $x$ 回到原处，但目前它是一个令人讨厌的符号，最好还是隐式的。</p>
+<p>我们对代价的第二个假设是，它可以写成神经网络输出的函数：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600397793126-bp3.png" alt=""></p>
+<p>例如，二次代价函数满足这一要求，因为单个训练示例 $x$ 的二次代价可以写成：</p>
+<p>$$C=\frac{1}{2}\begin{Vmatrix}y-a^L\end{Vmatrix}^2=\frac{1}{2}\sum_j(y_j-a_j^L)^2 \tag{27}$$</p>
+<p>代价函数也取决于真实值 $y$。你可能感到疑惑：为什么我们不把代价也看作是 $y$ 的函数？不过，请记住，输入训练示例 $x$ 是固定的，因此输出 $y$ 也是一个固定参数。特别是，$y$ 不是我们可以通过改变权重和偏差来修改的。也就是说，它不是神经网络学习的东西。因此，将 $C$ 看作是 $a^L$ 的函数，而 $y$ 只是一个帮助定义该函数的参数。</p>
+<h2 id="矩阵的Hadamard积-s-bigodot-t"><a href="#矩阵的Hadamard积-s-bigodot-t" class="headerlink" title="矩阵的Hadamard积 $s \bigodot t$"></a>矩阵的Hadamard积 $s \bigodot t$</h2><p>反向传播算法基于常见的线性代数运算，如矢量加法、矢量乘矩阵等。但其中一种运算不太常用。</p>
+<p>假设 $s$ 和 $t$ 是同一维的两个矢量。然后我们使用 $s\bigodot t$ 来表示这两个矢量的对应元素的积。因此，$s\bigodot  t$ 的分量仅为$(s \bigodot t)_j=s_jt_j$。例如，</p>
+<p>$$\begin{bmatrix}1\2\end{bmatrix} \bigodot \begin{bmatrix}3\4\end{bmatrix} = \begin{bmatrix}1\times 3\2\times 4\end{bmatrix}=\begin{bmatrix}3\8\end{bmatrix}$$</p>
+<p>这种矩阵的对应元素相乘被称为矩阵的Hadamard积。很多支持矩阵计算的库通常提供了Hadamard积的函数或算式，这在实现反向传播时非常有用。</p>
+<h2 id="反向传播幕后的四个基本方程"><a href="#反向传播幕后的四个基本方程" class="headerlink" title="反向传播幕后的四个基本方程"></a>反向传播幕后的四个基本方程</h2><p>反向传播能够让网络中的权重和偏置参数更新，从而最小化代价函数，这意味着计算偏导数 $\partial C/ \partial w^l_{jk}$ 和 $\partial C/ \partial b^l_j$。但是为了便于计算，我们首先引入一个中间量 $\delta^l_j$，它表示 $l^{th}$ 层的 $j^{th}$ 神经元误差。反向传播将为我们提供一个计算误差 $\delta^l_j$ 的过程，然后将 $\delta^l_j$ 与$\partial C/ \partial w^l_{jk}$ 和 $\partial C/ \partial b^l_j$关联起来。</p>
+<p>为了理解这个误差是如何定义的，我们想象在神经网络中有一个精灵：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600398820349-bp4.png" alt=""></p>
+<p>精灵坐在 $l$ 层的 $j^{th}$ 神经元上。当输入结果传给神经元时，精灵就会扰乱神经元的运作。它在神经元的加权输入中增加了一点变化 $\Delta z^l_j$，因此神经元输出的不是 $\delta (z^l_j)$，而是输出 $\delta (z^l_j+\Delta z^l_j)$。这种变化会在网络中的后续层传播，最终导致总代价发生变化，变化的幅度为：$\frac{\partial C}{\partial z^l_j}\Delta z^l_j$。</p>
+<p>现在，这个精灵表现很好，它试图帮助你减少代价。也就是说，他试图找到一个使代价更小的 $\Delta z^l_j$。假设 $\frac{\partial C}{\partial z^l_j}$ 有一个很大的值（正或负），精灵可以选择 $\Delta z^l_j$，获取与 $\frac{\partial C}{\partial z^l_j}$ 相反的符号，从而实现梯度下降。相比之下，如果 $\frac{\partial C}{\partial z^l_j}$ 接近于零，那么精灵无法通过扰动加权输入 $z^l_j$ 来减少代价。这是精灵会认为，神经元已经接近最佳状态（当然，这种情况只适合于小的改变 $\Delta z^l_j$。我们假设精灵会被迫做出这么小的改变）。所以，$\frac{\partial C}{\partial z^l_j}$ 是对神经元误差的度量。</p>
+<p>受此启发，我们在 $l$ 层中定义神经元 $j$ 的误差 $\delta^l_j$，其表达式为：</p>
+<p>$$\delta _j^l = \frac{\partial C}{\partial z_j^l} \tag{29}$$</p>
+<p>按照通常的约定，使用 $\delta^l$ 来表示与层 $l$ 相关的误差向量。反向传播将为我们提供一种计算每层的 $\delta^l$ 的方法，然后将这些误差与实际感兴趣的量 $\partial C/ \partial w^l_{jk}$ 和 $\partial C/ \partial b^l_j$相关联。</p>
+<p>你可能感到疑惑：为什么精灵要更改加权输入 $z^l_j$？或许，想象它更改输出激活 $a^l_j$ 会更自然，因为这样的更改使我们能够利用 $\frac{\partial C}{\partial a^l_j}$ 作为误差的度量标准。事实上，如果你这样做，结果会和下面的讨论非常相似。但这种做法使反向传播在代数表达上更为复杂。因此，我们将坚持使用 $\delta^l_j=\frac{\partial C}{\partial z^l_j}$ 作为误差度量标准。</p>
+<p><strong>制胜计划</strong>：反向传播基于四个基本方程。这些方程为我们提供了一种计算误差 $\delta^l$ 和代价函数梯度的方法。我讲到的是以下四个方程式。不过，需要注意的是：你不应该期望在瞬间就掌握这些方程式，期望越高失望越大。事实上，要理解反向传播，需要相当多的时间和耐心，需要逐渐深入研究这些方程。</p>
+<p>输出层 $\delta^L$ 中的误差方程式：<br>$$\delta_j^L = \frac{\partial C}{\partial a_j^L}\sigma’(z_j^L) \tag{BP1}$$<br>（BP1）给出了 $\delta^L$ 的分量。</p>
+<p>这是一个非常自然的表达。右边的第一项 $\partial C/ \partial a^L_j$ 是对 $j^{th}$ 输出激活的函数，代价的变化。例如，如果 $C$ 不太依赖于某个特定的输出神经元 $j$，那么 $\delta^L_j$ 的值将很小，这是我们所期望的。右边的第二项 $\sigma’(z^L_j)$ 是激活函数 $\sigma$ 在 $z^L_j$ 的导数。</p>
+<p>注意，（BP1）中的所有内容都很容易计算。特别是，我们计算 $z^L_j$，计算 $\sigma’(z^L_j)$ 只是简单的求导。当然，$\partial C/ \partial a^L_j$ 的确切形式取决于代价函数的形式。但是，如果代价函数已知，则计算 $\partial C/ \partial a^L_j$ 应该不会有什么问题。例如，如果我们使用二次代价函数 $C=\frac{1}{2}\sum_j(y_j−a^L_j)^2$，容易得出 $\partial C/ \partial aL_j=(aL_j−y_j)$，这显然是很容易计算的。</p>
+<p>式（BP1）是 $\delta^L$ 的分量式表达式。这是一个非常好的表达式，但不是反向传播所需要的基于矩阵的形式。然而，我们很容易将这个方程改写为基于矩阵的形式，如：</p>
+<p>$$\delta^L=\nabla_a C \bigodot \sigma’(z^L) \tag{BP1a}$$</p>
+<p>在这里，$\nabla_a C$ 是一个矢量，其分量是偏导数 $\partial C/ \partial a^L_j$。你可以将 $\nabla_a C$ 看作是 $C$ 相对于输出激活的变化率。显然（BP1a）和（BP1）是等价的，因此从现在起，我们将交替使用（BP1）。例如，在二次代价的情况下，得到 $\nabla_a C=(a^L−y)$。因此，完全基于矩阵的（BP1）就变成这种形式：</p>
+<p>$$\delta^L = (a^L-y)\bigodot \sigma’(z^L) \tag{30}$$</p>
+<p>如你所见，此表达式中的所有内容都有一个很好的矢量形式，并且可以使用诸如Numpy之类的库轻松地进行计算。</p>
+<p>关于下一层 $\delta^{l+1}$ 的误差 $\delta^l$ 的方程是</p>
+<p>$$\delta^l = ((w^{l+1})^T \delta^{l+1})\bigodot \sigma’(z^l) \tag{BP2}$$</p>
+<p>其中， $(w^{l+1})T$ 是 $(l+1)^{th}$ 层的权重矩阵 $w^{l+1}$ 的转置。这个方程看起来很复杂，但每个元素都很好解释。假设我们知道 $(l+1)^{th}$ 层的误差 $\delta^{l+1}$ 。当我们应用转置权重矩阵$(w^{l+1})T$ 时，可以直观地认为：这是在网络中反向移动误差，使我们可以对第 $l$ 层输出处的误差进行某种衡量。 然后，我们取Hadamard积  $\bigodot \sigma’(z^l)$。这就通过层 $l$ 中的激活函数反向移动误差，从而使我们得出层 $l$ 的加权输入中的误差 $\delta^l$。</p>
+<p>将（BP2）与（BP1）相结合，我们可以计算网络中任何层的误差 $\delta^l$。首先使用（BP1）来计算 $\delta^L$，再应用方程（BP2）来计算 $\delta^{L−1}$，然后再次使用方程（BP2）来计算 $\delta^{L−2}$，在网络中依此类推。</p>
+<p>与网络中任何偏置相关的、代价变化率的方程是：</p>
+<p>$$\frac{\partial C}{\partial b_j^l}=\delta_j^l \tag{BP3}$$</p>
+<p>也就是说，误差 $\delta^l_j$ 正好等于变化率 $\partial C/ \partial b^l_j$。这是一个好消息，因为（BP1）和（BP2）已经告诉我们如何计算 $\delta^l_j$。我们可以将（BP3）简写为：</p>
+<p>$$\frac{\partial C}{\partial b} = \delta \tag{31}$$</p>
+<p>我们知道 $\delta$ 和偏差 $b$ 是在同一个神经元上评估的。</p>
+<p>与网络中任何权重相关的、代价变化率的方程是：</p>
+<p>$$\frac{\partial C}{\partial w^l_{jk}}=a^{l−1}_k \delta^l_j \tag{BP4}$$</p>
+<p>这告诉我们如何计算与 $\delta^l$ 和 $a^{l−1}$ 相关的偏导数 $\partial C/ \partial w^l_{jk}$，而我们已经知道如何计算 $\delta^l$ 和 $a^{l−1}$了。可以用角标较少的符号改写方程，如下所示：</p>
+<p>$$\frac{\partial C}{\partial w}=a_{in}\delta_{out} \tag{32}$$</p>
+<p>其中，$a_{in}$ 是对权重 $w$ 的神经元输入的激活，$\delta_{out}$ 是权重 $w$ 的神经元输出的误差。放大查看权重 $w$，以及由该权重连接的两个神经元，我们可以将其描述为：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600422844383-bp5.png" alt=""></p>
+<p>方程（32）的一个很好的结果是：当激活 $a_{in}$ 很小的时候，也就是 $a_{in} \approx 0$，梯度项 $\partial C/ \partial w$ 也将趋于很小。在这种情况下，权重学习缓慢，这意味着它在梯度下降过程中变化不大。换句话说，（BP4）的一个结果是低激活神经元输出的权重学习缓慢。</p>
+<p>从（BP1）到（BP4）中可以得到其他关于这些方面的理解。我们首先着眼于输出层。考虑一下（BP1）中的 $\sigma’(z^L_j)$，可以使用S型函数。当 $\sigma(z^L_j)$ 大约为0或1时，$\sigma$ 函数变得非常平坦。当这种情况发生时，我们就得到 $\sigma’(z^L_j) \approx 0$。因此，要吸取的教训是：如果输出神经元是低激活度（$\approx 0$）或高激活度（$\approx 1$），最后一层中的权重将缓慢学习。在这种情况下，通常会说：输出神经元已经饱和，因此权重停止学习（或学习缓慢）。类似的情况也适用于输出神经元的偏置。</p>
+<p>我们可以对早期的层获得类似的结果。特别要注意（BP2）中的 $\sigma’(z^l)$ 项。这意味着：如果神经元接近饱和，$\delta^l_j$ 可能会变小。这也意味着：输入到饱和神经元的任何权重都将学习缓慢（如果$(w^{l+1})^T \delta^{l+1}$ 有足够大的项来补偿 $\delta’(z^l_j)$ 的小值，这个推理就不成立了。但我说的是总体趋势）。</p>
+<p>综上所述，我们已经了解到：如果输入神经元的激活度很低，或者输出神经元已经饱和，也就是说，无论是高激活还是低激活，权重学习都会很慢。</p>
+<p>这些观察结果都不太令人惊讶。尽管如此，它们仍有助于改进我们的心理模型。这些模型反应了神经网络学习过程中所发生的情况。此外，我们可以优化这种推理方式。这四个基本方程对任何激活函数都适用，而不仅仅是标准的S型函数。记住这四个方程(BP1)-(BP4) 可以帮助解释：为什么要尝试这样的修改？以及，它们会产生什么样的影响？</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600423426873-bp6.png" alt=""></p>
+<h2 id="换个表述方式"><a href="#换个表述方式" class="headerlink" title="换个表述方式"></a>换个表述方式</h2><p>在（BP1）和（BP2）中使用了Hadamard积，如果不熟悉它，可以换一种方式表述，利用矩阵乘法：（BP1）可以改写为：</p>
+<p>$$\delta^L=\sum’(z^L)\nabla_a C \tag{33}$$</p>
+<p>其中 $\sum’(z^L)$ 是一个方阵，其对角线是 $\sigma’(z^L_j)$，非对角线项为零。请注意，此矩阵通过矩阵乘法作用于 $\nabla_a C$。</p>
+<p>$$\delta^l=\sum’(z^l)(w^{l+1})^T \delta^{l+1} \tag{34}$$</p>
+<p>有上面粮食，可得：</p>
+<p>$$\delta^l=\sum’(z^l)(w^{l+1})^T \cdots \sum’(z^{L−1})(w^L)^T\sum’(z^L)\nabla_a C \tag{35}$$</p>
+<p>对于熟悉矩阵乘法的读者来说，这个方程可能比（BP1）和（BP2）更容易理解。我之所以关注（BP1）和（BP2），是因为这种方法在数值上的实现速度更快。</p>
+<h2 id="四个基本方程的证明"><a href="#四个基本方程的证明" class="headerlink" title="四个基本方程的证明"></a>四个基本方程的证明</h2><p>现在我们将证明（BP1）—（BP4）四个基本方程，它们都是多元微积分链式法则的结果。</p>
+<p>让我们从方程（BP1）开始，它给出了输出误差的表达式 $\delta^L$。为了证明这个方程，根据定义回想一下</p>
+<p>$$\delta^L_j=\frac{\partial C}{\partial z^L_j} \tag{36}$$</p>
+<p>应用链式法则，我们可以根据输出激活的偏导数来重新表示上面的偏导数，</p>
+<p>$$\delta^L_j=\sum_k \frac{\partial C}{\partial a^L_k} \frac{\partial a^L_k}{\partial z^L_j} \tag{37}$$</p>
+<p>其中，$\sum$ 是对输出层中所有 $k$ 个神经元的求和。当 $k=j$ 时，$k^{th}$ 神经元的激活函数输 $a^L_k$ 只依赖于 $j^{th}$ 神经元的加权输入 $z^L_j$ 。因此，当 $k \ne j$ 时，$\partial a^L_k/ \partial z^L_j$ 将会消失。所以，我们可以将（37）简化为</p>
+<p>$$\delta^L_j=\frac{\partial C}{\partial a^L_j} \frac{\partial a^L_j}{\partial z^L_j} \tag{38}$$</p>
+<p>（38）的右边第二项 $a^L_j=\sigma (z^L_j)$ 可以写成 $\sigma’ (z^L_j)$，然后方程变成</p>
+<p>$$\delta^L_j=\frac{\partial C}{\partial a^L_j}\sigma’(z^L_j) \tag{39}$$</p>
+<p>这是（BP1）的分量形式。</p>
+<p>接下来，我们将证明（BP2），它给出了 $\delta^l$ 的误差方程式，这个误差与下一层的误差 $\delta^{l+1}$ 相关。为此，我们需要重写 $\delta^l_j=\partial C/ \partial z^l_j$, 而这个方程式与$\delta^{l+1}_k=\partial C/ \partial z^{l+1}_k$ 相关。我们可以采用链式法则：</p>
+<p>$$\begin{split}\delta^l_j &amp;= \frac{\partial C}{\partial z^l_j} \ &amp;= \sum_k \frac{\partial C}{\partial z^{l+1}}_k \frac{\partial z^{l+1}_k}{\partial z^l_j} \ &amp;= \sum_k \frac{\partial z^{l+1}_k}{\partial z^l_j} \delta^{l+1}_k \end{split} \tag{42}$$</p>
+<p>在最后一行中，交换了右侧的两项的位置，并用了 $\delta^{l+1}_k$ 替换 $\frac{\partial C}{\partial z^{l+1}}$ 。要计算 $\frac{\partial z^{l+1}_k}{\partial z^l_j}$ ，请注意</p>
+<p>$$z^{l+1}<em>k=\sum_j w^{l+1}</em>{kj}a^l_j+b^{l+1}<em>k=\sum_j w^{l+1}</em>{kj} \sigma (z^l_j) + b^{l+1}_k \tag{43}$$</p>
+<p>通过求微分，我们得到</p>
+<p>$$\frac{\partial z^{l+1}<em>k}{\partial z^l_j} = w^{l+1}</em>{kj}\sigma’ (z^l_j) \tag{44}$$</p>
+<p>代入（42），得：</p>
+<p>$$\delta^l_j=\sum_k w^{l+1}_{kj} \delta^{l+1}_k \sigma’(z^l_j) \tag{45}$$</p>
+<p>这就得到了（BP2）的分量形式。</p>
+<p>其它两个方程（BP3）和（BP4），也可以遵循链式法则进行证明。此处从略。</p>
+<h2 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h2><p>根据前述方程，下面以算法的形式，显示地写出反向传播算法：</p>
+<ol>
+<li>输入 $x$： 为输入层设置相应的激活 $a^1$。</li>
+<li>前向传播：对于每个 $l=2,3,\cdots,L$，计算 $z^l= wla{l−1}+b^l$ 和 $a^l=\sigma (z^l)$。</li>
+<li>输出误差:  $\delta^L$：计算向量 $\delta^L=\nabla_a C \bigodot \sigma’ (z^L)$. </li>
+<li>反向传播误差: 对于每个 $l=L−1,L−2,\cdots,2$，计算 $\delta =((w{l+1})^T\delta^{l+1}) \bigodot \sigma ‘(z^l)$. </li>
+<li>输出: 代价函数梯度的是：$\frac{\partial C}{\partial wl_{jk}}=a^{l−1}_k\delta^l_j$ 和 $\frac{\partial C}{\partial bl_j}=\delta_j$.</li>
+</ol>
+<p>研究一下这个算法，你就会明白为什么它被称为反向传播。我们从最后一层开始，反向计算误差向量 $\delta^l$。在网络中反向操作似乎很奇怪，但是如果你考虑反向传播的证据，反向传播源于这样一个事实：代价函数是网络输出的函数。为了了解代价是如何随先前的权重和偏差而变化的，我们需要反复应用链式规则，在各个层中反向操作以获得可用的表达式。</p>
+<h2 id="为什么说反向传播是一种快速算法？"><a href="#为什么说反向传播是一种快速算法？" class="headerlink" title="为什么说反向传播是一种快速算法？"></a>为什么说反向传播是一种快速算法？</h2><p>为什么说反向传播是一种快速算法？为了回答这个问题，我们思考一下计算梯度的另一种方法。想象一下神经网络研究的早期。也许是上世纪五六十年代，你是世界上第一个想到用梯度下降来学习的人！但要使这个想法奏效，你需要一种计算代价函数梯度的方法。回想一下你的微积分知识，决定看看是否可以用链式法则来计算梯度。但是在尝试了一段时间后，所用的代数知识看起来很复杂，你变得灰心丧气。所以你试着找到另一种方法。你决定把代价仅仅看作是权重 $C=C(w)$ 的函数(稍后我们会回到偏差问题)。你给权重$w1,w2,\cdots,$ 编号，并希望计算某个特定的权重 $w_j$ 的 $\partial C/ \partial w_j$ 。一个很明显的方法就是使用近似法：</p>
+<p>$$\frac{\partial C}{\partial w_j} \approx \frac{C(w+\epsilon e_j)−C(w)}{ϵ} \tag{46}$$</p>
+<p>其中，$\epsilon\gt 0$是一个小正数，$e_j$ 是在 $j^{th}$ 方向上的单位矢量。换句话说，我们可以对 $w_j$ 的两个稍微不同的值的代价 $C$ 进行计算，然后应用方程（46），以此来估算 $\partial C/ \partial w_j$——求极限。我们可以用同样的思路来计算与偏差相关的偏导数 $\partial C/ \partial b$。</p>
+<p>这种方法看起来非常具有可行性。它在概念上很简单，而且非常容易实现，只需要几行代码。当然，它看起来比用链式法则计算梯度的想法更可取！</p>
+<p>遗憾的是，虽然这种方法看起来很可取，但是当你实现代码时，运行过程却是非常缓慢的。为了理解原因，假设我们的网络中有一百万个权重。对于每个不同的权重 $w_j$，我们需要计算 $C(w+\epsilon e_j)$，以便对 $\partial C/\partial w_j$ 进行计算。这意味着：要计算梯度，我们需要对代价函数进行一百万次不同的计算，需要通过网络（每个训练示例）进行一百万次的正向传递。我们还需要计算 $C(w)$ ，所以总共需要通过网络进行一百万零一次的传递。</p>
+<p>而反向传播则不同，它使我们能够同时计算所有的偏导数 $\partial C/ \partial w_j$，只需通过网络正向传递一次，然后通过网络反向传递。粗略地说，反向传递的计算代价与正向传递的计算代价大致相同。这种说法貌似合理，但需要进行一些分析才能做出仔细的陈述。之所以“貌似合理”，是因为在正向传递的过程中，主要的计算代价是乘以权重矩阵；而在反向过程中，主要的计算代价是乘以权重矩阵的转置。这些操作的计算代价显然是相似的。因此，反向传播的总代价与仅仅通过网络进行两次正向传播的代价大致相同。把这个代价与我们在（46）的方法中所需的一百万零一次的正向传递的代价进行比较，两种方法的高下不言而喻！因此，尽管反向传播看起来比基于（46）的方法更复杂，但实际上它的速度要快得多。</p>
+<p>这种提速在1986年首次得到充分的重视，它大大扩展了神经网络能够解决的问题的范围。这进而引起了人们使用神经网络的热潮。当然，反向传播不是灵丹妙药。即使在20世纪80年代后期，人们也遇到了一些限制，尤其是当人们试图用反向传播来训练深层神经网络（即具有许多隐藏层的网络）的时候。</p>
+<h2 id="总括反向传播"><a href="#总括反向传播" class="headerlink" title="总括反向传播"></a>总括反向传播</h2><p>正如我所解释的，反向传播有两个谜团。首先，算法到底在做什么？我们已经绘制出了从输出反向传播的误差图片。但是当我们做这些矩阵和矢量乘法的时候，我们能不能更深入一点，建立起更多的直觉来理解到底发生了什么？第二个谜团是，一开始人们是怎样发现反向传播的？遵循算法中的步骤，甚至理解对于算法有效性的证明是一回事。但这并不意味着：你对问题的理解深度足以让你在第一时间发现算法。有没有一条合理的推理思路可以让你发现反向传播算法？在本节中，我将解决这两个谜团。</p>
+<p>为了提高对算法的直觉，让我们想象一下，用 $\Delta w^l_{jk}$ 更新网络中的某个权重 $w^l_{jk}$：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600427744708-bp7.png" alt=""></p>
+<p>权重的变化会导致相应神经元的输出激活发生变化：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600427830616-bp8.png" alt=""></p>
+<p>这又会导致下一层的所有激活发生变化：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600427887539-bp9.png" alt=""></p>
+<p>这些变化又会导致下一层的变化，再下一层的变化，以此类推，直到最后一层发生变化，然后是代价函数的变化：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-18/1600427937364-bp10.png" alt=""></p>
+<p>代价中的变化 $\Delta C$ 与权重中的变化 $\Delta w^l_{jk}$ 有关，如下所示</p>
+<p>$$\Delta C \approx \frac{\partial C}{\partial w^l_{jk}} \Delta w^l_{jk} \tag{47}$$</p>
+<p>这表明，计算$\frac{\partial C}{\partial w^l_{jk}}$ 的一个可能的方法是：仔细研究 $w^l_{jk}$ 中的一个小变化是如何传播的，从而导致 $C$ 的微小变化。如果我们能做到这一点，小心地用易于计算的量来表示所有的东西，那么我们应该能够计算 $\partial C/ \partial w^l_{jk}$。</p>
+<p>试一下。更改 $\Delta w^l_{jk}$ 会在 $l^{th}$ 层的 $j^{th}$ 神经元激活中引起一个小的变化$\Delta a^l$。带来这一更改的是：</p>
+<p>$$\Delta a^l_j \approx \frac{\partial a^l_j}{\partial w^l_{jk}} \Delta w^l_{jk} \tag{48}$$</p>
+<p>在激活 $\Delta a^l_j$ 中的更改将导致下一层中所有激活的改变，即 $(l+1)^{th}$ 层的改变。我们将专注于其中某一个激活（比如 $a^{l+1}_q$）受到影响的方式。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-19/1600510333995-bp1.png" alt=""></p>
+<p>事实上，它会导致以下变化：</p>
+<p>$$\Delta a^{l+1}_q \approx \frac{\partial a^{l+1}_q}{\partial a^l_j} \Delta a^l_j \tag{49}$$</p>
+<p>代入式（48）中的表达式，我们得到：</p>
+<p>$$\Delta a^{l+1}<em>q \approx \frac{\partial a^{l+1}_q}{\partial a^l_j} \frac{\partial a^l_j}{\partial w^l</em>{jk}}\Delta w^l_{jk} \tag{50}$$</p>
+<p>当然，$\Delta a^{l+1}q$ 将导致下一层的激活发生变化。事实上，我们可以想象一条从 $w^l{jk}$ 到 $C$ 的整个网络路径。每次激活的变化都会导致下一次激活的变化，最后是输出代价的变化。如果路径经过激活 $a^l_j,a^{l+1}_q, \cdots, a^{L−1}_n,a^L_m$，则得到的表达式是：</p>
+<p>$$\Delta C \approx \frac{\partial C}{\partial a^L_m} \frac{\partial a^L_m}{\partial a^{L−1}<em>n} \frac{\partial a^{L−1}_n}{\partial a^{L−2}_p} \cdots \frac{\partial a^{l+1}_q}{\partial a^l_j}\frac{\partial a^l_j}{\partial w^l</em>{jk}}\Delta w^l_{jk} \tag{51}$$</p>
+<p>也就是说，我们为所经过的每一个额外的神经元选择了一个 $\partial a/ \partial a$ 类型项，以及末尾的 $\partial C/ \partial a^L_m$ 项。这表示 $C$ 的变化，而变化的原因是：网络的这条特定路径上的激活发生了变化。当然，$w^l_{jk}$中的更改可以通过多种路径传播，从而影响代价，但我们只考虑一条路径。为了计算 $C$ 的总变化，一种貌似合理的做法是：将权重和最终代价之间的所有可能的路径相加，即：</p>
+<p>$$\Delta C \approx \sum_{mnp\cdots q} \frac{\partial C}{\partial a^L_m} \frac{\partial a^L_m}{\partial a^{L−1}<em>n} \frac{\partial a^{L−1}_n}{\partial a^{L−2}_p} \cdots \frac{\partial a^{l+1}_q}{\partial a^l_j} \frac{\partial a^l_j}{\partial w^l</em>{jk}}\Delta w^l_{jk} \tag{52}$$</p>
+<p>总结了路径上的中间神经元的所有可能的选择，与（47）相比，我们看到</p>
+<p>$$\frac{\partial C}{\partial w^l_{jk}=\sum_{mnp\cdots q} \frac{\partial C}{\partial a^L_m} \frac{\partial a^L_m}{\partial a^{L−1}<em>n} \frac(\partial a^{L−1}_n}{\partial a^{L−2}_p} \cdots \frac{\partial a^{l+1}_q}{\partial a^l_j} \frac{\partial a^l_j}{\partial w^l</em>{jk}} \tag{53}$$</p>
+<p>Now, Equation (53) looks complicated. However, it has a nice intuitive interpretation. We’re computing the rate of change of $C$ with respect to a weight in the network. What the equation tells us is that every edge between two neurons in the network is associated with a rate factor which is just the partial derivative of one neuron’s activation with respect to the other neuron’s activation. The edge from the first weight to the first neuron has a rate factor $\partial a^l_j/ \partial w^l_{jk}$. The rate factor for a path is just the product of the rate factors along the path. And the total rate of change $\partial C/ \partial w^l_{jk} is just the sum of the rate factors of all paths from the initial weight to the final cost. This procedure is illustrated here, for a single path:</p>
+<p>现在，方程（53）看起来很复杂。然而，它有一个很好的直观解释，（53）是 $C$ 对网络中某个权重的变化率。这个方程告诉我们的是：网络中两个神经元之间的每一条边都与一个变化因子有关；这个变化因子只是一个神经元的激活相对于另一个神经元的激活的偏导数。从第一个权重到第一个神经元的边有一个变化因子 $\partial a^l_j/ \partial w^l_{jk}$。一条路径的变化因子就是路径上所有变化因子的乘积。总变化率 $\partial C/ \partial w^l_{jk}$ 是从初始权重到最终代价的所有路径的速率因子之和。对于单个路径，此过程如下所示：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2020-9-19/1600516124145-bp2.png" alt=""></p>
+<p>到目前为止，我所提供的是一个启发性的论证，这也是一种思维方式，考虑网络中的权重受到干扰时，会发生什么情况。我只是概述了一个思路，你可以沿着这个思路进一步进行论证。首先，你可以导出方程（53）中所有单个偏导数的显式表达式。这一点用微积分很容易做到。做完这些之后，你可以试着把所有的指数之和写成矩阵乘法的形式。结果证明这是乏味的，需要一些毅力，但不需要非凡的洞察力。写完之后还要尽可能地简化，你会发现：你最终得到的正是反向传播算法！所以你可以把反向传播算法看作是：一种计算所有这些路径的变化因子之和的方法。或者，换个角度说，反向传播算法是一种巧妙的方法，它可以追踪权重(和偏差)的小扰动，这些扰动通过网络传播，到达输出，然后影响代价。</p>
+<p><a href="http://www.math.hkbu.edu.hk/~mhyipa/nndl/chap2.pdf" target="_blank" rel="noopener">http://www.math.hkbu.edu.hk/~mhyipa/nndl/chap2.pdf</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/09/22/activative-function/">
+        <span class="nav-arrow">← </span>
+        
+          激活函数的“3W”
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基于矩阵的计算"><span class="toc-nav-text">基于矩阵的计算</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#代价函数的两个假设"><span class="toc-nav-text">代价函数的两个假设</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#矩阵的Hadamard积-s-bigodot-t"><span class="toc-nav-text">矩阵的Hadamard积 $s \bigodot t$</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#反向传播幕后的四个基本方程"><span class="toc-nav-text">反向传播幕后的四个基本方程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#换个表述方式"><span class="toc-nav-text">换个表述方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#四个基本方程的证明"><span class="toc-nav-text">四个基本方程的证明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#反向传播算法"><span class="toc-nav-text">反向传播算法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么说反向传播是一种快速算法？"><span class="toc-nav-text">为什么说反向传播是一种快速算法？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总括反向传播"><span class="toc-nav-text">总括反向传播</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/09/25/neuro-network-bp/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
