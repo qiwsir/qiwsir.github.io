@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      如何实现四元数的运算 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>如何实现四元数的运算</h2>
+    <p class="post-date">2020-10-12</p>
+    <section class="markdown-content"><p>与本文相关图书：《Python大学实用教程》</p>
+<p><img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/my_book4_20200116132005.png" alt=""></p>
+<hr>
+<p>在前面的一篇文章《Python中的5对必知的魔法方法》中所介绍的“魔法方法”，或者说是特殊方法，其命名均是双下划线开始和结束。英文中称为“dunder methods”。为了更充分理解这类方法，本文通过一个示例，专门介绍此类方法的特点。</p>
+<h2 id="构建四元数对象"><a href="#构建四元数对象" class="headerlink" title="构建四元数对象"></a>构建四元数对象</h2><p>四元数是一个代数概念，通常用于描述旋转，特别是在3D建模和游戏中有广泛的应用。</p>
+<p>$$Q = w + x\hat i + y\hat j + z\hat k$$</p>
+<p>其中 $w,x, y, z \in \mathbb R，\hat i^2 + \hat j^2 +\hat k^2 = -1$ 。</p>
+<p>下面就一步一步演示此对象的创建方法，特别要关注双下划线开始和结束的那些特殊方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quaternion</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, w, x, y, z)</span>:</span></span><br><span class="line">        self.w = w</span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        self.z = z</span><br></pre></td></tr></table></figure>
+
+<p>这是首先定义了<code>__init__</code>初始化方法，通过这个方法，在创建实例时将 $w,x,y,x$ 分别定义为实数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>q1 = Quaternion(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q1</span><br><span class="line">&lt;__main__.Quaternion at <span class="number">0x7f4210f483c8</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>貌似一个四元数对象定义了。但是，它没有友好的输出。接下来可以通过定义<code>__repr__</code>和<code>__str__</code>，让它对机器或者开发者都更友好。继续在类中增加如下方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quaternion</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, w, x, y, z)</span>:</span></span><br><span class="line">        self.w = w</span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        self.z = z</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Quaternion(&#123;&#125;, &#123;&#125;, &#123;&#125;, &#123;&#125;)"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Q = &#123;:.2f&#125; + &#123;:.2f&#125;i + &#123;:.2f&#125;j + &#123;:.2f&#125;k"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br></pre></td></tr></table></figure>
+
+<p>对于这两方法，在前面的《Python中的5对必知的魔法方法》中已经有介绍，请参考。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>q1          <span class="comment"># calls q1.__repr__</span></span><br><span class="line">Quaternion(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(q1)   <span class="comment"># calls q1.__str__</span></span><br><span class="line">Q = <span class="number">1.00</span> + <span class="number">2.00</span>i + <span class="number">3.00j</span> + <span class="number">4.00</span>k</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现代数运算"><a href="#实现代数运算" class="headerlink" title="实现代数运算"></a>实现代数运算</h2><p>上述类已经能实现实例化了，但是，该对象还要参与计算，比如加、减法等。这类运算如何实现？</p>
+<h3 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quaternion</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, w, x, y, z)</span>:</span></span><br><span class="line">        self.w = w</span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        self.z = z</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Quaternion(&#123;&#125;, &#123;&#125;, &#123;&#125;, &#123;&#125;)"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Q = &#123;:.2f&#125; + &#123;:.2f&#125;i + &#123;:.2f&#125;j + &#123;:.2f&#125;k"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        w = self.w + other.w</span><br><span class="line">        x = self.x + other.x</span><br><span class="line">        y = self.y + other.y</span><br><span class="line">        z = self.z + other.z</span><br><span class="line">        <span class="keyword">return</span> Quaternion(w, x, y, z)</span><br></pre></td></tr></table></figure>
+
+<p><code>__add__</code>是用于实现对象的加法运算的特殊方法。这样就可以使用<code>+</code>运算符了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>q1 = Quaternion(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q2 = Quaternion(<span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q1 + q2</span><br><span class="line">Quaternion(<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="减法"><a href="#减法" class="headerlink" title="减法"></a>减法</h3><p>类似地，通过<code>__sub__</code>实现减法运算，不过，这次用一行代码实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quaternion</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, w, x, y, z)</span>:</span></span><br><span class="line">        self.w = w</span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        self.z = z</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Quaternion(&#123;&#125;, &#123;&#125;, &#123;&#125;, &#123;&#125;)"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Q = &#123;:.2f&#125; + &#123;:.2f&#125;i + &#123;:.2f&#125;j + &#123;:.2f&#125;k"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        w = self.w + other.w</span><br><span class="line">        x = self.x + other.x</span><br><span class="line">        y = self.y + other.y</span><br><span class="line">        z = self.z + other.z</span><br><span class="line">        <span class="keyword">return</span> Quaternion(w, x, y, z)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__sub__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> Quaternion(*list(map(<span class="keyword">lambda</span> i, j: i - j, self.__dict__.values(), other.__dict__.values())))</span><br></pre></td></tr></table></figure>
+
+<p>有点酷。这里使用了实例对象的<code>__dict__</code>属性，它以字典形式包含了实例的所有属性，请参考《Python大学实用教程》中的详细讲解。</p>
+<h3 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h3><p>乘法，如果了解一下线性代数，会感觉有点复杂。其中常见的一个是“点积”，自从Python3.5以后，用<code>@</code>符号调用<code>__matmul__</code>方法实现，对于四元数对象尔雅不能，就是元素与元素对应相乘。</p>
+<p>对于四元数而言——本质就是向量，也可以说是矩阵，其乘法就跟矩阵乘法类似，比如，同样不遵守互换率：$Q_1Q_2 \ne Q_2Q_1$  。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quaternion</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, w, x, y, z)</span>:</span></span><br><span class="line">        self.w = w</span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        self.z = z</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Quaternion(&#123;&#125;, &#123;&#125;, &#123;&#125;, &#123;&#125;)"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Q = &#123;:.2f&#125; + &#123;:.2f&#125;i + &#123;:.2f&#125;j + &#123;:.2f&#125;k"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        w = self.w + other.w</span><br><span class="line">        x = self.x + other.x</span><br><span class="line">        y = self.y + other.y</span><br><span class="line">        z = self.z + other.z</span><br><span class="line">        <span class="keyword">return</span> Quaternion(w, x, y, z)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__sub__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> Quaternion(*list(map(<span class="keyword">lambda</span> i, j: i - j, self.__dict__.values(), other.__dict__.values())))</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__mul__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(other, Quaternion):</span><br><span class="line">            w = self.w * other.w - self.x * other.x - self.y * other.y - self.z * other.z</span><br><span class="line">            x = self.w * other.x + self.x * other.w + self.y * other.z - self.z * other.y</span><br><span class="line">            y = self.w * other.y + self.y * other.w + self.z * other.x - self.x * other.z</span><br><span class="line">            z = self.w * other.z + self.z * other.w + self.x * other.y - self.y * other.x</span><br><span class="line">            <span class="keyword">return</span> Quaternion(w, x, y, z)</span><br><span class="line">        <span class="keyword">elif</span> isinstance(other, (int, float)):</span><br><span class="line">            <span class="keyword">return</span> Quaternion(*[other * i <span class="keyword">for</span> i <span class="keyword">in</span> self.__dict__.values()])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">"Operation undefined."</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在<code>__mul__</code>方法中，如果<code>other</code>引用一个四元数对象，那么就会计算Hamilton积，并返回一个新的对象；如果<code>other</code>是一个标量（比如整数），就会与四元数对象中的每个元素相乘。</p>
+<p>如前所述，四元数的乘法不遵循交换律，但是，如果执行<code>2 * q1</code>这样的操作，按照上面的方式，会报错——在上面的<code>__mul__</code>方法中解决了<code>q1 * 2</code>的运算，而一般我们认为这两个计算是相同的。为此，定义了·<strong>rmul</strong>·来解决此问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quaternion</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, w, x, y, z)</span>:</span></span><br><span class="line">        self.w = w</span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        self.z = z</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Quaternion(&#123;&#125;, &#123;&#125;, &#123;&#125;, &#123;&#125;)"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Q = &#123;:.2f&#125; + &#123;:.2f&#125;i + &#123;:.2f&#125;j + &#123;:.2f&#125;k"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        w = self.w + other.w</span><br><span class="line">        x = self.x + other.x</span><br><span class="line">        y = self.y + other.y</span><br><span class="line">        z = self.z + other.z</span><br><span class="line">        <span class="keyword">return</span> Quaternion(w, x, y, z)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__sub__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> Quaternion(*list(map(<span class="keyword">lambda</span> i, j: i - j, self.__dict__.values(), other.__dict__.values())))</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__mul__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(other, Quaternion):</span><br><span class="line">            w = self.w * other.w - self.x * other.x - self.y * other.y - self.z * other.z</span><br><span class="line">            x = self.w * other.x + self.x * other.w + self.y * other.z - self.z * other.y</span><br><span class="line">            y = self.w * other.y + self.y * other.w + self.z * other.x - self.x * other.z</span><br><span class="line">            z = self.w * other.z + self.z * other.w + self.x * other.y - self.y * other.x</span><br><span class="line">            <span class="keyword">return</span> Quaternion(w, x, y, z)</span><br><span class="line">        <span class="keyword">elif</span> isinstance(other, (int, float)):</span><br><span class="line">            <span class="keyword">return</span> Quaternion(*[other * i <span class="keyword">for</span> i <span class="keyword">in</span> self.__dict__.values()])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">"Operation undefined."</span>)</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__rmul__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(other, (int, float)):</span><br><span class="line">            <span class="keyword">return</span> self.__mul__(other)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">"Operation undefined."</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="相等"><a href="#相等" class="headerlink" title="相等"></a>相等</h3><p>比较两个四元数是否相等，可以通过定义<code>__eq__</code>方法来实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quaternion</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, w, x, y, z)</span>:</span></span><br><span class="line">        self.w = w</span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">        self.z = z</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Quaternion(&#123;&#125;, &#123;&#125;, &#123;&#125;, &#123;&#125;)"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Q = &#123;:.2f&#125; + &#123;:.2f&#125;i + &#123;:.2f&#125;j + &#123;:.2f&#125;k"</span>.format(</span><br><span class="line">            self.w, self.x, self.y, self.z)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        w = self.w + other.w</span><br><span class="line">        x = self.x + other.x</span><br><span class="line">        y = self.y + other.y</span><br><span class="line">        z = self.z + other.z</span><br><span class="line">        <span class="keyword">return</span> Quaternion(w, x, y, z)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__sub__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> Quaternion(*list(map(<span class="keyword">lambda</span> i, j: i - j, self.__dict__.values(), other.__dict__.values())))</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__mul__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(other, Quaternion):</span><br><span class="line">            w = self.w * other.w - self.x * other.x - self.y * other.y - self.z * other.z</span><br><span class="line">            x = self.w * other.x + self.x * other.w + self.y * other.z - self.z * other.y</span><br><span class="line">            y = self.w * other.y + self.y * other.w + self.z * other.x - self.x * other.z</span><br><span class="line">            z = self.w * other.z + self.z * other.w + self.x * other.y - self.y * other.x</span><br><span class="line">            <span class="keyword">return</span> Quaternion(w, x, y, z)</span><br><span class="line">        <span class="keyword">elif</span> isinstance(other, (int, float)):</span><br><span class="line">            <span class="keyword">return</span> Quaternion(*[other * i <span class="keyword">for</span> i <span class="keyword">in</span> self.__dict__.values()])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">"Operation undefined."</span>)</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__rmul__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(other, (int, float)):</span><br><span class="line">            <span class="keyword">return</span> self.__mul__(other)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">"Operation undefined."</span>)</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__eq__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        r = list(map(<span class="keyword">lambda</span> i, j: abs(i) == abs(j), self.__dict__.values(), other.__dict__.values()))</span><br><span class="line">        <span class="keyword">return</span> sum(r) == len(r)</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他运算"><a href="#其他运算" class="headerlink" title="其他运算"></a>其他运算</h3><p>下面的方法，也可以接续到前面的类中，不过就不是特殊放方法了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">norm</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> sqrt(sum([i**<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> self.__dict__.values()))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conjugate</span><span class="params">(self)</span>:</span></span><br><span class="line">    x, y, z = -self.x, -self.y, -self.z</span><br><span class="line">    <span class="keyword">return</span> Quaterion(self.w, x, y, z)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalize</span><span class="params">(self)</span>:</span></span><br><span class="line">    norm = self.norm()</span><br><span class="line">    <span class="keyword">return</span> Quaternion(*[i / norm <span class="keyword">for</span> <span class="keyword">in</span> self.__dict__.values()])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inverse</span><span class="params">(self)</span>:</span></span><br><span class="line">    qconj = self.conjugate()</span><br><span class="line">    norm  = self.norm()</span><br><span class="line">    <span class="keyword">return</span> Quaternion(*[i / norm <span class="keyword">for</span> i <span class="keyword">in</span> qconj.__dict__.values()])</span><br></pre></td></tr></table></figure>
+
+<p>用这些方法实现了各自常见的操作。</p>
+<p>通过本文的这个示例，可以更深刻理解双下划线的方法为编程带来的便捷。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/09/25/neuro-network-bp/">
+        <span class="nav-arrow">← </span>
+        
+          反向传播算法的工作原理
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建四元数对象"><span class="toc-nav-text">构建四元数对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实现代数运算"><span class="toc-nav-text">实现代数运算</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#加法"><span class="toc-nav-text">加法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#减法"><span class="toc-nav-text">减法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#乘法"><span class="toc-nav-text">乘法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相等"><span class="toc-nav-text">相等</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#其他运算"><span class="toc-nav-text">其他运算</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/10/12/python-use-dunder-methods/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
