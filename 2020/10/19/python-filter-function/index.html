@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      如何使用Python的filter函数 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>如何使用Python的filter函数</h2>
+    <p class="post-date">2020-10-19</p>
+    <section class="markdown-content"><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Python内置的<code>filter()</code>函数能够从可迭代对象（如字典、列表）中筛选某些元素，并生成一个新的迭代器。可迭代对象是一个可以被“遍历”的Python对象，也就是说，它将按顺序返回各元素，这样我们就可以在<code>fo</code>r循环中使用它。</p>
+<p><code>filter()</code>函数的基本语法是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filter(function, iterable)</span><br></pre></td></tr></table></figure>
+
+<p>返回一个可迭代的filter对象，可以使用<code>list()</code>函数将其转化为列表，这个列表包含过滤器对象中返回的所有的项。</p>
+<p><code>filter()</code>函数所提供的过滤方法，通常比用列表解析更有效，特别是当我们处理更大的数据集时。例如，列表解析会生成一个新列表，这会增加该处理的运行时间。当列表解析执行完毕它的表达式后，内存中会有两个列表。但是，<code>filter()</code>将生成一个简单的对象，该对象包含对原始列表的引用、提供的函数以及原始列表中位置的索引，这样操作占用的内存更少。</p>
+<p>下面介绍<code>filter()</code>的四种不同用法：</p>
+<h2 id="在filter-中使用特殊函数"><a href="#在filter-中使用特殊函数" class="headerlink" title="在filter()中使用特殊函数"></a>在<code>filter()</code>中使用特殊函数</h2><p><code>filter()</code>的第一个参数是一个函数，用它来决定第二个参数所引用的可迭代对象中的每一项的去留。此函数被调用后，当返回<code>False</code>时，第二个参数中的可迭代对象里面相应的值就会被删除。针对这个函数，可以是一个普通函数，也可以使用<code>lambda</code>函数，特别是当表达式不那么复杂的时候。</p>
+<p>下面是<code>filter()</code>中使用<code>lambda</code>函数的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filter(lambda item: item[] expression, iterable)</span><br></pre></td></tr></table></figure>
+
+<p>将下面的列表，用于<code>lambda</code>函数，根据<code>lambda</code>函数表达式筛选列表中的元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">creature_names &#x3D; [&#39;Sammy&#39;, &#39;Ashley&#39;, &#39;Jo&#39;, &#39;Olly&#39;, &#39;Jackie&#39;, &#39;Charlie&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>要筛选此列表以元音开头的水族馆生物的名称，<code>lambda</code>函数如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(list(filter(lambda x: x[0].lower() in &#39;aeiou&#39;, creature_names)))</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们将列表中的一个项声明为<code>x</code>，并以<code>x[0]</code>的方式访问每个字符串的第一个字符，并且要将字母转化为小写，以确保将字母与<code>&#39;aeiou&#39;</code>中的字符匹配。</p>
+<p>最后，要提供可迭代对向<code>creature_name</code>。与上一节一样，用<code>list()</code>将返回结果转化为列表表。</p>
+<p>输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#39;Ashley&#39;, &#39;Olly&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>当然，写一个函数，也能够实现类似的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">creature_names &#x3D; [&#39;Sammy&#39;, &#39;Ashley&#39;, &#39;Jo&#39;, &#39;Olly&#39;, &#39;Jackie&#39;, &#39;Charlie&#39;]</span><br><span class="line"></span><br><span class="line">def names_vowels(x):</span><br><span class="line">    return x[0].lower() in &#39;aeiou&#39;</span><br><span class="line"></span><br><span class="line">filtered_names &#x3D; filter(names_vowels, creature_names)</span><br><span class="line"></span><br><span class="line">print(list(filtered_names))</span><br></pre></td></tr></table></figure>
+
+<p>在<code>names_vowels</code>函数中用一个表达式，完成了对<code>creature_names</code>的过滤。</p>
+<p>同样，输出如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#39;Ashley&#39;, &#39;Olly&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>总的来说，在<code>filter()</code>函数中使用lambda函数得到的结果与使用常规函数得到的结果相同。如果所要过滤数据更复杂了，还可能要使用正则表达式，这可能会提高代码的可读性。</p>
+<h2 id="在filter-中使用None"><a href="#在filter-中使用None" class="headerlink" title="在filter()中使用None"></a>在<code>filter()</code>中使用<code>None</code></h2><p>我们也可以将<code>None</code>作为<code>filter()</code>的第一个参数，让迭代器过滤掉Python中布尔值是<code>False</code>的对象，比如长度为0的对象（如空列表或空字符串）或在数字上等于0的对象。</p>
+<p>下面的示例中要过滤一个列表，去掉其中布尔值是<code>False</code>的元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">aquarium_tanks &#x3D; [11, False, 18, 21, &quot;&quot;, 12, 34, 0, [], &#123;&#125;]</span><br><span class="line"></span><br><span class="line">filtered_tanks &#x3D; filter(None, aquarium_tanks)</span><br></pre></td></tr></table></figure>
+
+<p>这段代码在<code>filter()</code>中使用了None，并将<code>aquarium_tanks</code>列表作为可迭代项传入。将<code>None</code>作为第一个参数，可以检查列表中的元素是否为<code>False</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(list(filtered_tanks))</span><br></pre></td></tr></table></figure>
+
+<p>然后再将<code>filtered_tanks</code>传给<code>list()</code>函数，这样就得到了一个列表。</p>
+<p>从输出结果中可以看出，我们得到了想要的整数，那些布尔值是<code>False</code>的项都筛选掉了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[11, 25, 18, 21, 12, 34]</span><br></pre></td></tr></table></figure>
+
+<p>注意：如果不使用<code>list()</code>并打印<code>filtered_tanks</code>，将得到一个类似于<code>&lt;filter object at 0x7fafd5903240&gt;</code>这样的filter对象。filter对象是可迭代的，因此我们可以使用for循环它，也可以使用<code>list()</code>将其转换为列表。</p>
+<p>借助<code>None</code>，用<code>filter()</code>快速地从列表中删除被认为<code>False</code>的项。</p>
+<h2 id="将filter-用于复杂场景"><a href="#将filter-用于复杂场景" class="headerlink" title="将filter()用于复杂场景"></a>将<code>filter()</code>用于复杂场景</h2><p>对于复杂的数据结构，<code>filter()</code>也可以胜任，例如，有一个由字典组成的列表，我们不仅要遍历列表中的每项（字典）， 还可能要遍历字典中的每个键值对，以便得到所有的数据。</p>
+<p>举个例子，假设我们有水族馆里每种生物的一个列表以及每种生物的不同细节，用下面的列表显示此数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">aquarium_creatures &#x3D; [</span><br><span class="line">  &#123;&quot;name&quot;: &quot;sammy&quot;, &quot;species&quot;: &quot;shark&quot;, &quot;tank number&quot;: &quot;11&quot;, &quot;type&quot;: &quot;fish&quot;&#125;,</span><br><span class="line">  &#123;&quot;name&quot;: &quot;ashley&quot;, &quot;species&quot;: &quot;crab&quot;, &quot;tank number&quot;: &quot;25&quot;, &quot;type&quot;: &quot;shellfish&quot;&#125;,</span><br><span class="line">  &#123;&quot;name&quot;: &quot;jo&quot;, &quot;species&quot;: &quot;guppy&quot;, &quot;tank number&quot;: &quot;18&quot;, &quot;type&quot;: &quot;fish&quot;&#125;,</span><br><span class="line">  &#123;&quot;name&quot;: &quot;jackie&quot;, &quot;species&quot;: &quot;lobster&quot;, &quot;tank number&quot;: &quot;21&quot;, &quot;type&quot;: &quot;shellfish&quot;&#125;,</span><br><span class="line">  &#123;&quot;name&quot;: &quot;charlie&quot;, &quot;species&quot;: &quot;clownfish&quot;, &quot;tank number&quot;: &quot;12&quot;, &quot;type&quot;: &quot;fish&quot;&#125;,</span><br><span class="line">  &#123;&quot;name&quot;: &quot;olly&quot;, &quot;species&quot;: &quot;green turtle&quot;, &quot;tank number&quot;: &quot;34&quot;, &quot;type&quot;: &quot;turtle&quot;&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>下面就写一个函数，用这个函数来过滤这些数据。为了让<code>filter()</code>访问每个字典和字典中的每个元素，这需要构造一个嵌套函数，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def filter_set(aquarium_creatures, search_string):</span><br><span class="line">    def iterator_func(x):</span><br><span class="line">        for v in x.values():</span><br><span class="line">            if search_string in v:</span><br><span class="line">                return True</span><br><span class="line">        return False</span><br><span class="line">    return filter(iterator_func, aquarium_creatures)</span><br></pre></td></tr></table></figure>
+
+<p>定义<code>filter_set()</code>函数，以<code>aquarium_creatures</code>和<code>search_string</code>作为参数。在<code>filter_set()</code>中，将内部函数<code>iterator_func()</code>作为<code>filter()</code>的参数。<code>filter_set()</code>函数将返回由<code>filter()</code>生成的迭代器。</p>
+<p><code>iterator_func()</code>以<code>x</code>作为参数，它代表列表中的一个项（即单个字典）。</p>
+<p>接下来，<code>for</code>循环访问字典中每个键值对，然后使用条件语句检查<code>search_string</code>是键值对中的值。</p>
+<p><code>iterator_func</code>函数作为<code>filter</code>函数的参数对象，用它对迭代对象进行筛选。例如：用<code>filter_set()</code>搜索字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filtered_records &#x3D; filter_set(aquarium_creatures, &quot;2&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>一旦函数执行完毕，过滤器对象存储在<code>filtered_records</code>变量中，我们将其转换为一个列表并打印：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(list(filtered_records))</span><br></pre></td></tr></table></figure>
+
+<p>输出内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;&#39;name&#39;: &#39;ashley&#39;, &#39;species&#39;: &#39;crab&#39;, &#39;tank number&#39;: &#39;25&#39;, &#39;type&#39;: &#39;shellfish&#39;&#125;, &#123;&#39;name&#39;: &#39;jackie&#39;, &#39;species&#39;: &#39;lobster&#39;, &#39;tank number&#39;: &#39;21&#39;, &#39;type&#39;: &#39;shellfish&#39;&#125;, &#123;&#39;name&#39;: &#39;charlie&#39;, &#39;species&#39;: &#39;clownfish&#39;, &#39;tank number&#39;: &#39;12&#39;, &#39;type&#39;: &#39;fish&#39;&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>刚才的示例中，我们用<code>filter()</code>实现了在字典组成的列表中过滤制定字符。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>本文中列举了<code>filter()</code>函数的不同使用方法。如果你打算深入了解，请阅读《Python大学实用教程》（电子工业出版社）一书，这是针对零起点读者，并特别注重工程实践的不可多得的读物。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/10/12/python-use-dunder-methods/">
+        <span class="nav-arrow">← </span>
+        
+          如何实现四元数的运算
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#介绍"><span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#在filter-中使用特殊函数"><span class="toc-nav-text">在filter()中使用特殊函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#在filter-中使用None"><span class="toc-nav-text">在filter()中使用None</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#将filter-用于复杂场景"><span class="toc-nav-text">将filter()用于复杂场景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/10/19/python-filter-function/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
