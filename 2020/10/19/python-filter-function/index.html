@@ -207,7 +207,7 @@
 
 <p>然后再将<code>filtered_tanks</code>传给<code>list()</code>函数，这样就得到了一个列表。</p>
 <p>从输出结果中可以看出，我们得到了想要的整数，那些布尔值是<code>False</code>的项都筛选掉了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[11, 25, 18, 21, 12, 34]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[11, 18, 21, 12, 34]</span><br></pre></td></tr></table></figure>
 
 <p>注意：如果不使用<code>list()</code>并打印<code>filtered_tanks</code>，将得到一个类似于<code>&lt;filter object at 0x7fafd5903240&gt;</code>这样的filter对象。filter对象是可迭代的，因此我们可以使用for循环它，也可以使用<code>list()</code>将其转换为列表。</p>
 <p>借助<code>None</code>，用<code>filter()</code>快速地从列表中删除被认为<code>False</code>的项。</p>
@@ -248,6 +248,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2020/10/24/python-type-vs-instance/">
+        
+          比较type和isinstance
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 

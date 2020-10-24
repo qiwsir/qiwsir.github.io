@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      比较type和isinstance | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>比较type和isinstance</h2>
+    <p class="post-date">2020-10-24</p>
+    <section class="markdown-content"><p>与本文相关图书推荐：《Python大学实用教程》</p>
+<hr>
+<p>Python是一种动态语言，比如创建一个变量，一开始引用的是字符串，随后就可以再引用整数或者浮点数，解释器对这种变换也接受。这与类似Java那样的语言就完全不同了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name &#x3D; &quot;Sebastian&quot;</span><br><span class="line"># 下面演示的就是动态语言特点</span><br><span class="line">name &#x3D; 42</span><br><span class="line">name &#x3D; None</span><br><span class="line">name &#x3D; Exception()    # 引用一个实例对象</span><br></pre></td></tr></table></figure>
+
+<p>在程序中，检查变量所引用的对象是什么类型，对于Python程序也是必要的。一般我们会实用<code>type()</code>或者<code>isinstance()</code>这两个内置函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; variable &#x3D; &quot;hello&quot;</span><br><span class="line">&gt;&gt;&gt; type(variable) is str</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; isinstance(variable, str)</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p>下面比较一下这两个函数的性能：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ python -m timeit -s &quot;variable &#x3D; &#39;hello&#39;&quot; &quot;type(variable) is int&quot;</span><br><span class="line">2000000 loops, best of 5: 102 nsec per loop</span><br><span class="line">$ python -m timeit -s &quot;variable &#x3D; &#39;hello&#39;&quot; &quot;isinstance(variable, str)&quot;</span><br><span class="line">5000000 loops, best of 5: 72.8 nsec per loop</span><br></pre></td></tr></table></figure>
+
+<p><code>type</code>比<code>instance</code>慢了 40% (102/72.8 = 1.40).</p>
+<p>有人也实用 <code>type(variable) == str</code>种方式判断某个对象的类型，虽然此方法是可行的，但不提倡，因为：</p>
+<p>•    == should be used when you want to check the value of a variable. We would use it to see if the value ofvariable is equal to “hello”. But when we want to check if variable is a string, is operator is more appropriate. For a more detailed explanation of when to use one or the other, check this article.<br>•    == is slower:</p>
+<ul>
+<li><code>==</code>应该用于检查对象是否与另外一个对象相等。我们可以用它来查看变量的值是否等于<code>hello</code>，但是想要检查变量是否是一个字符串时，不要用这个符号，而是改用<code>is</code>操作符更合适。</li>
+<li><code>==</code>的执行速度更慢，可以用下面的代码检验：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python -m timeit -s &quot;variable &#x3D; &#39;hello&#39;&quot; &quot;type(variable) &#x3D;&#x3D; str&quot;</span><br><span class="line">2000000 loops, best of 5: 114 nsec per loop</span><br></pre></td></tr></table></figure>
+
+<p><code>isinstance</code>和<code>type</code>之间除了前面演示的执行速度不同之外，还有别的区别吗？</p>
+<p>有！而且下面要说的区别，比执行速度还重要。</p>
+<ul>
+<li><code>type</code>的返回值是一个对象的类型（类），可以用它来检查<code>variable</code>的类型是否为<code>str</code>。</li>
+<li><code>isinstance</code>要检查第一个参数对象是不是第二个参数所指定的类的实例，例如<code>variable</code>是<code>str</code>类的一个实例吗？或者，检查是不是第二个参数所指定的类的子类的示例，例如<code>variable</code>是<code>str</code>子类的一个实例吗?</li>
+</ul>
+<p>这在实践很有用。假设自定义一个类，它类似于列表，但方法可以更多一些。所以我们可以把<code>list</code>作为这个类的父类，然后在这个类里面写其他的方法，基本样式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyAwesomeList(list):</span><br><span class="line">    # Add additional functions here</span><br><span class="line">&#96;</span><br></pre></td></tr></table></figure>
+
+<p>但是现在，如果我们将这个新类与一个列表进行比较，<code>type</code> 和<code>isinstance</code>会返回不同的结果！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; my_list &#x3D; MyAwesomeList()</span><br><span class="line">&gt;&gt;&gt; type(my_list) is list</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; isinstance(my_list, list)</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p>输出结果不同。</p>
+<p><code>isinstance</code>检查<code>my_list</code>是否是<code>list</code>的一个实例(它不是)、或者是否是<code>list</code>的一个子类的实例(它是，因为<code>MyAwesomeList</code>是<code>list</code>的一个子类)。这个细节，有时候会导致BUG。</p>
+<p><code>isinstance</code>通常是判断对象类型的首选方法。它不仅更快，而且还考虑了继承，这通常是我们所需要的。不过，在Python中，我们通常不需要检查某个对象的类型，只需要关注它能不能具备像字符串或列表那样的方法和属性，这就是著名的“鸭子检验”。因此，只需要使用<code>isinstance</code>即可。</p>
+<p>另一方面，如果想显式地检查给定对象是否属于某一特定类型(而不是它的子类)，可以使用<code>type</code>，但通常用这样的语句<code>type(var) is some_type</code>，而不是<code>type(var) == some_type</code>。</p>
+<p>记住，编写函数的时候，不检查对象类型，是Python的惯例，不要把Java的习惯带过来。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/10/19/python-filter-function/">
+        <span class="nav-arrow">← </span>
+        
+          如何使用Python的filter函数
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2020/10/24/python-type-vs-instance/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
