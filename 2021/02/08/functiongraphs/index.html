@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      函数及其图像 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>函数及其图像</h2>
+    <p class="post-date">2021-02-08</p>
+    <section class="markdown-content"><h1 id="b01-01-函数"><a href="#b01-01-函数" class="headerlink" title="b01.01 函数"></a>b01.01 函数</h1><p>从初中代数，就已经引入了函数这个概念，其英文单词是<strong>function</strong>，中文翻译为<strong>函数</strong>，这个词语是由大清朝数学家<a href="https://zh.wikipedia.org/wiki/李善兰" target="_blank" rel="noopener">李善兰</a>所翻译，他在所著的《代数学》书中解释：“凡此变数中函（包含）彼变数者，则此为彼之函数”（台湾省的有关资料中，常将变量称为“变数”）。</p>
+<p>函数这个数学名词是<a href="https://zh.wikipedia.org/wiki/莱布尼兹" target="_blank" rel="noopener">莱布尼兹</a>在1694年开始使用的，当时他用这个名词描述与曲线相关的量，如曲线的斜率等。现在，我们将莱布尼兹所说的函数称为函数的导数。此后，很多数学家对函数做了深入研究，并且给出了不同的定义，例如：</p>
+<ul>
+<li>1718年，<a href="https://zh.wikipedia.org/wiki/约翰·伯努利" target="_blank" rel="noopener">约翰·伯努利</a>把函数定义为“一个变量的函数是指由这个变量和常量以任何一种方式组成的一种量。”</li>
+<li>1748年，伯努利的学生<a href="https://zh.wikipedia.org/wiki/欧拉" target="_blank" rel="noopener">欧拉</a>在《无穷分析引论》一书中说：“一个变量的函数是由该变量和一些数或常量以任何一种方式构成的解析表达式”，例如 $f(x)=\sin(x)+x^{2}$ 。</li>
+<li>1775年，欧拉在《微分学原理》一书中又提出了函数的一个定义：“如果某些量以如下方式依赖于另一些量，即当后者变化时，前者本身也发生变化，则称前一些量是后一些量的函数。”</li>
+<li>到19世纪末，数学家开始尝试利用集合论来进行数学的形式化。他们试图将每一个数学对象都定义为集合。<a href="https://zh.wikipedia.org/wiki/狄利克雷" target="_blank" rel="noopener">狄利克雷</a>给出了现代正式的函数定义。</li>
+</ul>
+<h2 id="函数及其图像"><a href="#函数及其图像" class="headerlink" title="函数及其图像"></a>函数及其图像</h2><p>函数是一种用以描述世界的工具。一个函数，可以用表达式、图像、表格或者语言进行描述。</p>
+<h3 id="函数及其定义域和值域"><a href="#函数及其定义域和值域" class="headerlink" title="函数及其定义域和值域"></a>函数及其定义域和值域</h3><p><strong>定义</strong>  函数是从一个集合 $\mathbb{D}$ 到另一个集合 $\mathbb{Y}$ 间的对应法则，通常记作记作 $f:\mathbb{X}\to\mathbb{Y}$ ，其中 $f$ 表示对应法则。</p>
+<p>更一般的写法：</p>
+<p>$$y=f(x)$$</p>
+<p>符号 $f$ 表示<strong>函数</strong>；$x$ 叫做<strong>自变量</strong>（independent variable），是函数 $f$ 的输入；$y$ 是<strong>因变量</strong>（dependent variable），是函数 $f$ 关于 $x$ 的输出。如下图所示。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612776268302-function01.png" alt="函数"></p>
+<center>函数的执行过程</center>
+
+<p>显然，$x\in\mathbb{D}$ ，集合 $\mathbb{D}$ 中所有可以作为自变量的元素构成了函数的<strong>定义域</strong>（domain）；$f(x)$ 的所有输出所构成的集合称为<strong>值域</strong>（range），值域则必然是集合 $\mathbb{Y}$ 中的元素，即 $y\in\mathbb{Y}$ 。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612776673926-function02.png" alt="对应关系"></p>
+<center>函数中定义域集合与值域集合的元素对应关系</center>
+
+<p>例如函数 $y=\sqrt{x}$ 的定义域是 $[0,\infty)$ ，值域是 $[0,\infty)$ 。</p>
+<h3 id="函数图像"><a href="#函数图像" class="headerlink" title="函数图像"></a>函数图像</h3><p>除了用表达式表示函数之外，还会用图像表示函数。以二维的为例，函数的每个自变量与因变量可以构成笛卡尔直角坐标系中的一个点。</p>
+<p>$${(x,f(x)|x\in\mathbb{D}}$$</p>
+<p>按照上式，将所有点连成线，即为函数图像。例如函数 $y=x^2$ 的图像：</p>
+<img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612777430860-function03.png" alt="函数图像" style="zoom:50%;" />
+
+<center>函数图像</center>
+
+<h3 id="分段函数"><a href="#分段函数" class="headerlink" title="分段函数"></a>分段函数</h3><p>有时一个函数别划分为几部分，各个部分的函数形式不同，例如：</p>
+<p>$$f(x)=\begin{cases}-x,\quad&amp;{x\lt{0}}\x^2,\quad&amp;{0\le{x}\le{1}}\1,\quad&amp;{x\gt{1}}\end{cases}$$</p>
+<h3 id="增函数和减函数"><a href="#增函数和减函数" class="headerlink" title="增函数和减函数"></a>增函数和减函数</h3><p><strong>定义</strong>  令区间 $\mathbb{I}$ 上的函数为 $f$ ，$x_1$ 和 $x_2$ 是这个区间上两个不同的点，且 $x_1\lt{x_2}$ ：</p>
+<ul>
+<li>如果 $f(x_1)\gt{f(x_2)}$ ，则函数 $f$ 称为区间 $\mathbb{I}$ 上的<strong>减函数</strong>（decreasing function）</li>
+<li>如果 $f(x_1)\lt{f(x_2)}$ ，则函数 $f$ 称为区间 $\mathbb{I}$ 上的<strong>增函数</strong>（increasing function）</li>
+</ul>
+<h3 id="函数的奇偶性"><a href="#函数的奇偶性" class="headerlink" title="函数的奇偶性"></a>函数的奇偶性</h3><p><strong>定义</strong>  设函数 $y=f(x)$ ，$x$ 在函数定义域内：</p>
+<ul>
+<li>若 $f(-x)=f(x)$ ，则函数 $f$ 是<strong>偶函数</strong>（even function）</li>
+<li>若 $f(-x)=-f(x)$ ，则函数 $f$ 是<strong>奇函数</strong>（odd function）</li>
+</ul>
+<p>例如：函数 $f(x)=x^2+1$ ，$f(-x)=(-x)^2+1=x^2+1=f(x)$ ，故为偶函数。如果将 $y=x^2$ 与 $y=x^2+1$ 相比较，如下图所示，即是 $y=x^2$ 沿 $y$ 轴向上移动一个单位得到了 $y=x^2+1$ 。</p>
+<img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612784147149-function04.png" style="zoom:50%;" />
+
+<center>函数平移比较</center>
+
+<p>并且，从图像中可以看出来，偶函数是关于 $y$ 轴对称的函数，这个结论可以推广到所有的偶函数中。</p>
+<p>再如：函数 $f(x)=x$ ，显然是一个奇函数，如下图所示，奇函数的特点是关于坐标原点对称。但是，函数 $f(x)=x+1$ ，虽然也可以看做是函数 $f(x)=x$ 向上移动一个单位，但 $f(-x) = -x+1\ne-(x+1)=-f(x)$ ，故它不是奇函数，也不是偶函数——由此可知，函数并非是奇函数和偶函数的并集——“不是奇函数，就是偶函数”，这句话是错误的。</p>
+<img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612784648527-function05.png" style="zoom:50%;" />
+
+<center>奇函数和 y=x+1 比较</center>
+
+<h3 id="常见函数"><a href="#常见函数" class="headerlink" title="常见函数"></a>常见函数</h3><ol>
+<li><p>线性函数：$f(x)=mx+b$ （注意，要区分此处的“线性函数”和“线性空间”，具体请参阅《机器学习数学基础》一书中的详细内容）。</p>
+</li>
+<li><p>反比例函数：$f(x)=\frac{1}{x}$</p>
+</li>
+<li><p>指数函数：$f(x)=x^a$ ，其中 $a$ 是常数。</p>
+<ol>
+<li><p>$f(x)=x^n$ ，$n$ 是正整数，下图分别表示了 $n=1,2,3,4,5$ 的函数图像。</p>
+<img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612785489114-function06.png" style="zoom:50%;" />
+
+<center>指数是正整数的指数函数比较</center>
+</li>
+<li><p>$f(x)=x^a$ ，$a=-1$ 或 $a=-2$</p>
+<p>当 $a=-1$ 时，即 $f(x)=x^{-1}=\frac{1}{x}$ ，是反比例函数，其图像如下。此函数等效于 $xy=1$ ，注意 $x\ne{0}$ 。并且是奇函数。</p>
+<img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612785760316-function07.png" style="zoom:50%;" />
+
+<center>反比例函数</center>
+
+<p>当 $a=-2$ 时，即 $f(x)=x^{-2}=\frac{1}{x^2}$ ，且为偶函数。其图像如下所示：</p>
+<img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612786038223-function08.png" style="zoom:50%;" />
+
+<center>a=-2 时的函数图像</center>
+</li>
+<li><p>$a=\frac{1}{2},\frac{1}{3},\frac{3}{2},\frac{2}{3}$</p>
+<p>这几种结果，分别对应常用的函数，其图像如下所示：</p>
+<img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612786722428-function09.png" style="zoom:50%;" />
+
+<center>几种常见指数函数比较</center>
+</li>
+</ol>
+</li>
+<li><p>多项式：$p(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0$ ，其中 $n$ 为非负整数，$a_0,a_1,\cdots,a_n$ 是实数，称为多项式的系数。多项式的定义域为 $(-\infty,\infty)$ 。若系数 $a_n$ 不为零，则 $n$ 称为多项式的<strong>次</strong>或<strong>阶</strong>。前面所说的线性函数 $f(x)=mx+b$ ，若 $x\ne{0}$ ，则为 $1$ 次多项式；如果多项式的次数（阶数）是 $2$ ，即为二次函数，常表示为 $p(x)=ax^2+bx+c$ 。</p>
+</li>
+<li><p>有理函数：$f(x)=\frac{p(x)}{q(x)}$ ，其中 $p$ 和 $q$ 分别是多项式，$q(x)\ne{0}$ 。例如：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612788095280-function10.png" alt=""></p>
+<center>一个有理函数</center>
+</li>
+<li><p>代数函数：对多项式利用代数运算符（加减乘除和幂运算）进行组合。所有的有理函数都是代数函数，但代数函数的范畴比有理函数更大。例如下图所示就是代数函数 $y=x^{\frac{1}{3}}(x-4)$ 的图像。</p>
+<img src="https://gitee.com/qiwsir/images/raw/master/2021-2-8/1612788613181-function11.png" style="zoom:50%;" />
+
+<center>代数函数图像</center>
+</li>
+<li><p>三角函数：例如 $y=\sin(x)$ ，后续内容会专门介绍常用的6个三角函数。</p>
+</li>
+<li><p>幂函数：$f(x)=a^x$ ，其中 $a\gt{0}$ 且 $a\ne{1}$ ，称作底。定义域 $(-\infty,\infty)$ ，值域 $(0,\infty)$ 。后续会专门探讨幂函数。</p>
+</li>
+<li><p>对数函数：$f(x)=\log_ax$ ，其中 $a\ne{1}$ 是正数，它的反函数是幂函数。在后续内容中会专门对此进行探讨。</p>
+</li>
+<li><p>超越函数：其形式不是代数的，包括三角函数、反三角函数等。例如悬线就是一种超越函数。后续内容中也会专门对此进行研究。</p>
+</li>
+</ol>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/02/06/similarity-md/">
+        <span class="nav-arrow">← </span>
+        
+          计算相似度
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#b01-01-函数"><span class="toc-nav-text">b01.01 函数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#函数及其图像"><span class="toc-nav-text">函数及其图像</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#函数及其定义域和值域"><span class="toc-nav-text">函数及其定义域和值域</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#函数图像"><span class="toc-nav-text">函数图像</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分段函数"><span class="toc-nav-text">分段函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#增函数和减函数"><span class="toc-nav-text">增函数和减函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#函数的奇偶性"><span class="toc-nav-text">函数的奇偶性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常见函数"><span class="toc-nav-text">常见函数</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/02/08/functiongraphs/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
