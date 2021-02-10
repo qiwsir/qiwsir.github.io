@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      复合函数及图像变换 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>复合函数及图像变换</h2>
+    <p class="post-date">2021-02-10</p>
+    <section class="markdown-content"><p><strong>注：</strong> 本文是《机器学习数学基础》的补充资料，本书预计2021年5月由电子工业出版社出版。更多内容可以参考：<a href="https://qiwsir.gitee.io/mathmetics/" target="_blank" rel="noopener">https://qiwsir.gitee.io/mathmetics/</a></p>
+<h3 id="函数的加减乘除"><a href="#函数的加减乘除" class="headerlink" title="函数的加减乘除"></a>函数的加减乘除</h3><p>设 $f$ 和 $g$ 分别为两个函数，若自变量 $x$ 属于两个函数定义域的交集，即 $x\in\mathbb{D}(f)\cap\mathbb{D}(f)$ ，则定义：</p>
+<ul>
+<li>$(f+g)(x) = f(x)+g(x)$</li>
+<li>$(f-g)(x)=f(x)-g(x)$</li>
+<li>$(fg)(x)=f(x)g(x)$</li>
+<li>$\left(\frac{f}{g}\right)(x)=\frac{f(x)}{g(x)},\quad(g(x)\ne{0})$</li>
+</ul>
+<p>注意，在$(f+g)(x) = f(x)+g(x)$ 中，等号左边的加法符号，表示的是两个函数相加；等号右边的加法符号，表示的是 $f(x)$ 和 $g(x)$ 两个函数输出值相加。</p>
+<h3 id="复合函数"><a href="#复合函数" class="headerlink" title="复合函数"></a>复合函数</h3><p>设函数 $f$ 和 $g$ ，<strong>复合函数</strong>（composite function） $f\circ{g}$ 定义为：</p>
+<p>$(f\circ{g})(x)=f(g(x))$</p>
+<p>在复合函数中，$g(x)$ 是第一个函数 $g$ 的输出，也是第二个函数 $f$ 的输入，其运算流程如下图所示：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612856416704-function127.png" alt=""></p>
+<center>复合函数运算流程</center>
+
+<p>由此流程可知，复合函数的自变量 $x$ 首先在函数 $g$ 的定义域内，$g(x)$ 的值又在函数 $f$ 的定义域内，如此才能得到两者的符合函数 $(f\circ{g})(x)$ 的输出。定义域的演示如下图所示。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612856628205-f128.png" alt=""></p>
+<center>定义域关系</center>
+
+<p>一般情况，$f\circ{g}$ 和 $g\circ{f}$ 是两个不同的函数。</p>
+<h3 id="平移"><a href="#平移" class="headerlink" title="平移"></a>平移</h3><p>对一个已知的函数，通过加、减一个常数，就可以得到一个新的函数；或者让自变量加减一个常数，也可以得到新的函数。新函数相对于原来的函数，会在水平、竖直方向上发生平移。</p>
+<ul>
+<li>垂直平移：$y=f(x)+k$ <ul>
+<li>$k\gt{0}$ ，则向着 $y$ 轴正方向平移 $k$ 个单位</li>
+<li>$k\lt{0}$ ，则向着 $y$ 轴负方向平移 $|k|$ 个单位</li>
+</ul>
+</li>
+<li>水平平移：$y=f(x+h)$<ul>
+<li>$h\gt{0}$ ，则向着 $x$ 轴负方向平移 $h$ 个单位</li>
+<li>$h\lt{0}$ ，则向着 $x$ 轴正方向平移 $|h|$ 个单位</li>
+</ul>
+</li>
+</ul>
+<p>如下图所示，是基于函数 $$f(x)=x^2$$ ，按照上述原则进行平移，分别得到相应的函数。</p>
+<ul>
+<li>向着 $y$ 轴正方向平移 $$1$$ 个单位：$y=x^2+1$</li>
+<li>向着 $y$ 轴负方向平移 $$2$$ 个单位：$y=x^2-2$</li>
+<li>向着 $x$ 轴负方向平移 $$3$$ 个单位：$y=(x+3)^2$</li>
+</ul>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612858252085-f129.png" alt=""></p>
+<center>函数平移</center>
+
+<h3 id="压缩和拉伸"><a href="#压缩和拉伸" class="headerlink" title="压缩和拉伸"></a>压缩和拉伸</h3><p>如果对函数或者自变量乘以一个常数，能够实现函数图像的压缩和拉伸效果。</p>
+<p>设常数 $c\gt{1}$ ，对于函数 $f(x)$ ：</p>
+<ul>
+<li>$y=cf(x)$ ，将函数 $f$ 的图像沿 $y$ 轴拉伸为 $c$ 倍</li>
+<li>$y=\frac{1}{c}f(x)$ ，将函数 $f$ 的图像沿 $y$ 轴压缩为 $\frac{1}{c}$ 倍</li>
+<li>$y=f(cx)$ ，将函数 $f$ 的图像沿 $x$ 轴压缩为 $\frac{1}{c}$ 倍</li>
+<li>$y=f(x/c)$ ，将函数 $f$ 的图像沿 $x$ 轴拉伸为 $c$ 倍</li>
+</ul>
+<p>如果 $c=-1$ ，则：</p>
+<ul>
+<li>$y=-f(x)$ ，相对 $x$ 轴镜像变换</li>
+<li>$y=f(-x)$ ，相对 $y$ 轴镜像变换</li>
+</ul>
+<p>如下图所示，演示了图像压缩、拉伸和镜像变换。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612860414286-f134.png" alt=""></p>
+<center>函数图像变换</center></section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/02/09/deep-understand-for-loop/">
+        <span class="nav-arrow">← </span>
+        
+          深入理解for循环
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#函数的加减乘除"><span class="toc-nav-text">函数的加减乘除</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#复合函数"><span class="toc-nav-text">复合函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#平移"><span class="toc-nav-text">平移</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#压缩和拉伸"><span class="toc-nav-text">压缩和拉伸</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/02/10/function-graphs/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

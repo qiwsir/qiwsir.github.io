@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      深入理解for循环 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>深入理解for循环</h2>
+    <p class="post-date">2021-02-09</p>
+    <section class="markdown-content"><p>在Python语言中，<code>for</code>循环非常强大，乃至于通常都不怎么提倡使用递归，所有遇到递归的时候，最好都改为<code>for</code>循环。对于初学者而言，<code>for</code>循环理解起来并不难，一般的入门读物中也都这么解释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line"><span class="meta">... </span>    print(i)</span><br><span class="line">...</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>变量 <code>i</code>依次引用列表<code>list</code>中的每个元素。比如我在自己的两本书《Python大学实用教程》和《跟老齐学Python：轻松入门》中，都是用这种方法对<code>for</code>循环进行了说明。</p>
+<p><strong>但是</strong>——转折了，非常重要——<strong>这种解释仅仅是就表象上向初学者做的解释，并没有揭示<code>for</code>循环的内在运行机制</strong>。</p>
+<p>我在《Python大学实用教程》一书中，曾以下面的方式对<code>for</code>循环做了深入阐述（参阅190页）：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612839268110-WechatIMG1.jpeg" alt=""></p>
+<p>从这里我们知道，在进行 <code>for</code>循环的时候，其实是将被循环的对象转换为了可迭代对象——注意这个转换，非常重要。转换了之后，<code>for</code>循环是怎么运行的？在书中并没有深入讲解，下面我们就此给予介绍。</p>
+<p>首先说明，本文内容的最主要参考或者说根据，就是Python语言的官方文档：<a href="https://docs.python.org/3/reference/compound_stmts.html#for，在这里对`for`循环语句有非常详细的说明。" target="_blank" rel="noopener">https://docs.python.org/3/reference/compound_stmts.html#for，在这里对`for`循环语句有非常详细的说明。</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for_stmt ::&#x3D;  &quot;for&quot; target_list &quot;in&quot; expression_list &quot;:&quot; suite</span><br><span class="line">              [&quot;else&quot; &quot;:&quot; suite]</span><br></pre></td></tr></table></figure>
+
+<p>按照上述文档中的说明，对于前面的示例，将列表<code>lst=[0,1,2,3]</code>作为<code>for</code>循环语句中的<code>expression_list</code>，即将其转化为可迭代对象，并且只转化一次，不妨用<code>iter_lst</code>表示这个可迭代对象。然后就依次将这个可迭代对象的元素读入内存，并按照顺序，依次赋值给<code>target_list</code>。注意，不论<code>target_list</code>是什么，都是将所读入的可迭代对象匀速依次赋值。</p>
+<p>用上面循环语句示例理解这段话，其分解动作如下：</p>
+<ol>
+<li>将<code>lst=[0,1,2,3]</code>转换为可迭代对象，暂记作<code>iter_lst</code>。</li>
+<li>读入<code>iter_lst</code>的第一个元素<code>0</code>，并将它赋值给<code>i</code>（这里的<code>i</code>就对应着上面语法规则中的<code>target_list</code>）<ol>
+<li>于是有：<code>i=0</code></li>
+<li><code>pirnt(i)</code>，就打印出了<code>0</code></li>
+</ol>
+</li>
+<li>读入<code>iter_lst</code>的第二个元素<code>1</code>，并将它赋值给<code>i</code><ol>
+<li>于是有：<code>i=1</code></li>
+<li><code>print(i)</code>，就打印出了<code>1</code></li>
+</ol>
+</li>
+<li>$$\cdots$$ ，按照上面的过程不断重复，直到最后一个元素<code>4</code>为止——因为<code>for</code>循环语句能够自动捕获迭代到最后一个元素之后的异常，所以，<code>for</code>循环能够在到达最后一个元素之后，结束循环。</li>
+</ol>
+<p>如果用代码的方式表示上面的过程，可以这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>iter_lst=iter(lst)</span><br></pre></td></tr></table></figure>
+
+<p>用内置函数<code>iter()</code>，依据列表<code>lst</code>创建了一个可迭代对象<code>iter_lst</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>iter_lst=iter(lst)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>i = next(iter_lst)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(i)</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>这就完成了第一个循环。然后依次方式，向下循环：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第二个循环</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>i = next(iter_lst)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(i)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="comment"># 第三个循环</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>i = next(iter_lst)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(i)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="comment"># 第四个循环</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>i = next(iter_lst)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(i)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="comment"># 到最后一个元素后面，抛出异常</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>i = next(iter_lst)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>
+
+<p>上面的演示，如果连贯起来，就是<code>for</code>循环——貌似没有什么奇怪的。</p>
+<p>下面就要见证奇迹了。</p>
+<p>经过上述操作之后，列表<code>lst</code>并没有发生变化——好像是废话。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>勿要着急，伟大总是孕育在平凡之中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>iter_lst=iter(lst)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>i = next(iter_lst)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(i)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>完成第一循环，跟前面一样，并且在此时，查看了一下列表<code>lst</code>，没有变化。但是，我在这里做一个操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst[<span class="number">1</span>]=<span class="number">111</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst</span><br><span class="line">[<span class="number">0</span>, <span class="number">111</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>此时，将列表中序号为<code>1</code>的元素值修改为<code>111</code>，即<code>lst[1]=111</code>。如果按照读取可迭代对象的顺序，按照原来的流程，是要读取第二个元素<code>1</code>了，但是，在读取之间，我将列表中的第二个元素修改为<code>111</code>，那么，如果再进行下面的操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>i = next(iter_lst)</span><br></pre></td></tr></table></figure>
+
+<p>读取了可迭代对象的第二个元素，并把它赋值给变量<code>i</code>，此时，它是<code>1</code>还是<code>111</code>呢？</p>
+<p>看结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(i)</span><br><span class="line"><span class="number">111</span></span><br></pre></td></tr></table></figure>
+
+<p>不是<code>1</code>，而是<code>111</code>。再详细循环，就跟前述过程一样了。</p>
+<p>这说明，如果将列表<code>lst</code>转换为可迭代对象之后，这个可迭代对象中的元素是对<code>lst</code>中元素的引用，并不是在可迭代对象中建立一套新的对象。</p>
+<p>理解了上面的道理，看下面的操作，是不是能够解释？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="string">'python'</span>, <span class="string">'java'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>iter_a = iter(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">1</span>] = next(iter_a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'python'</span>, <span class="string">'python'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>关键的一句是<code>a[1] = next(iter_a)</code>。<code>next(iter_a)</code>得到了迭代器对象的第一个元素<code>&#39;python&#39;</code>，并且将它赋值给<code>a[1]</code>，这样，列表<code>a</code>中的索引是<code>1</code>的元素就变成了<code>&#39;python&#39;</code>，即原来的<code>&#39;java&#39;</code>被替换为<code>&#39;python&#39;</code>了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">1</span>] = next(iter_a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'python'</span>, <span class="string">'python'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>继续读取可迭代对象的第二个元素<code>&#39;python&#39;</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">1</span>] = next(iter_a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'python'</span>, <span class="string">'c'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>继续读取可迭代对象的第三个元素<code>&#39;c&#39;</code>，在赋值给<code>a[1]</code>，也就是列表<code>a</code>中的索引是<code>1</code>的元素变成了<code>&#39;c&#39;</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">1</span>] = next(iter_a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'python'</span>, <span class="string">'rust'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这次<code>a[1]=&#39;rust&#39;</code>，根据前面的说明，应该容易理解了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">1</span>] = next(iter_a)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>
+
+<p>最后报异常了。如果将上述过程，写成<code>for</code>循环，是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="string">'python'</span>, <span class="string">'java'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> a[<span class="number">1</span>] <span class="keyword">in</span> a:</span><br><span class="line"><span class="meta">... </span>    print(a, a[<span class="number">1</span>])</span><br><span class="line">...</span><br><span class="line">([<span class="string">'python'</span>, <span class="string">'python'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>], <span class="string">'python'</span>)</span><br><span class="line">([<span class="string">'python'</span>, <span class="string">'python'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>], <span class="string">'python'</span>)</span><br><span class="line">([<span class="string">'python'</span>, <span class="string">'c'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>], <span class="string">'c'</span>)</span><br><span class="line">([<span class="string">'python'</span>, <span class="string">'rust'</span>, <span class="string">'c'</span>, <span class="string">'rust'</span>], <span class="string">'rust'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上面循环语句中的<code>a[1]</code>就如同前面演示的<code>i</code>那样，都是循环语法结构中的<code>target_list</code>，只不过这里出了要完成赋值之外，还要同时实现对列表<code>a</code>中索引是<code>1</code>的元素修改，即实现上面分解动作中<code>a[1] = next(iter_a)</code>。</p>
+<p>似乎这里使用<code>a[1]</code>有点怪异。的确，在通常操作中很少这么做的。不过，上面的做法，倒是能让我们对<code>for</code>循环有了深刻理解。</p>
+<p>理解了本文所介绍的内容，就不难回答stackoverflow上的一个问题了（<a href="https://stackoverflow.com/questions/55644201/why-can-i-use-a-list-index-as-an-indexing-variable-in-a-for-loop）：" target="_blank" rel="noopener">https://stackoverflow.com/questions/55644201/why-can-i-use-a-list-index-as-an-indexing-variable-in-a-for-loop）：</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> b[<span class="number">-1</span>] <span class="keyword">in</span> b:</span><br><span class="line"><span class="meta">... </span>    print(b[<span class="number">-1</span>])</span><br><span class="line">...</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>是否能自己解释这个结果？</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/02/08/functiongraphs/">
+        <span class="nav-arrow">← </span>
+        
+          函数及其图像
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/02/10/function-graphs/">
+        
+          复合函数及图像变换
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/02/09/deep-understand-for-loop/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
