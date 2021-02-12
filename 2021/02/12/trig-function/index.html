@@ -10,7 +10,7 @@
   
   <title>
     
-      复合函数及图像变换 | 老齐教室
+      三角函数 | 老齐教室
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -166,66 +166,160 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <h2>复合函数及图像变换</h2>
-    <p class="post-date">2021-02-10</p>
-    <section class="markdown-content"><p><strong>注：</strong> 本文是《机器学习数学基础》的补充资料，本书预计2021年5月由电子工业出版社出版。更多内容可以参考：<a href="https://qiwsir.gitee.io/mathmetics/" target="_blank" rel="noopener">https://qiwsir.gitee.io/mathmetics/</a></p>
-<h3 id="函数的加减乘除"><a href="#函数的加减乘除" class="headerlink" title="函数的加减乘除"></a>函数的加减乘除</h3><p>设 $f$ 和 $g$ 分别为两个函数，若自变量 $x$ 属于两个函数定义域的交集，即 $x\in\mathbb{D}(f)\cap\mathbb{D}(f)$ ，则定义：</p>
+    <h2>三角函数</h2>
+    <p class="post-date">2021-02-12</p>
+    <section class="markdown-content"><p><strong>注：</strong> 本位是即将于2021年5月由电子工业出版社出版的《机器学习数学基础》一书的在线补充资料。供大家参考。</p>
+<h3 id="角和弧度"><a href="#角和弧度" class="headerlink" title="角和弧度"></a>角和弧度</h3><p>设 $s$ 为弧长，$r$ 为半径，$\theta$ 是以弧度为单位的角，则：</p>
+<p>$s=r\theta$</p>
+<p>弧度和角度之间的换算关系：$\pi=180^{\circ}$ 。</p>
+<p>下表对应着换算关系。</p>
+<table>
+<thead>
+<tr>
+<th>角度</th>
+<th>-180</th>
+<th>-135</th>
+<th>-90</th>
+<th>-45</th>
+<th>0</th>
+<th>30</th>
+<th>45</th>
+<th>60</th>
+<th>90</th>
+<th>120</th>
+<th>135</th>
+<th>150</th>
+<th>180</th>
+<th>270</th>
+<th>360</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>弧度</td>
+<td>$-\pi$</td>
+<td>$-\frac{3\pi}{3}$</td>
+<td>$-\frac{\pi}{2}$</td>
+<td>$-\frac{\pi}{4}$</td>
+<td>0</td>
+<td>$\frac{\pi}{6}$</td>
+<td>$\frac{\pi}{4}$</td>
+<td>$\frac{\pi}{3}$</td>
+<td>$\frac{\pi}{2}$</td>
+<td>$\frac{2\pi}{3}$</td>
+<td>$\frac{3\pi}{4}$</td>
+<td>$\frac{5\pi}{6}$</td>
+<td>$\pi$</td>
+<td>$\frac{3\pi}{2}$</td>
+<td>$2\pi$</td>
+</tr>
+</tbody></table>
+<h3 id="常用三角函数"><a href="#常用三角函数" class="headerlink" title="常用三角函数"></a>常用三角函数</h3><p>参考下图，列出常用的三角函数：</p>
 <ul>
-<li>$(f+g)(x) = f(x)+g(x)$</li>
-<li>$(f-g)(x)=f(x)-g(x)$</li>
-<li>$(fg)(x)=f(x)g(x)$</li>
-<li>$\left(\frac{f}{g}\right)(x)=\frac{f(x)}{g(x)},\quad(g(x)\ne{0})$</li>
+<li>$\sin\theta=\frac{y}{r}, \quad\csc\theta=\frac{r}{y}$</li>
+<li>$\cos\theta=\frac{x}{r}, \quad \sec\theta=\frac{r}{x}$</li>
+<li>$\tan\theta=\frac{y}{x},\quad \cot\theta=\frac{x}{y}$</li>
 </ul>
-<p>注意，在$(f+g)(x) = f(x)+g(x)$ 中，等号左边的加法符号，表示的是两个函数相加；等号右边的加法符号，表示的是 $f(x)$ 和 $g(x)$ 两个函数输出值相加。</p>
-<h3 id="复合函数"><a href="#复合函数" class="headerlink" title="复合函数"></a>复合函数</h3><p>设函数 $f$ 和 $g$ ，<strong>复合函数</strong>（composite function） $f\circ{g}$ 定义为：</p>
-<p>$(f\circ{g})(x)=f(g(x))$</p>
-<p>在复合函数中，$g(x)$ 是第一个函数 $g$ 的输出，也是第二个函数 $f$ 的输入，其运算流程如下图所示：</p>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612856416704-function127.png" alt=""></p>
-<center>复合函数运算流程</center>
-
-<p>由此流程可知，复合函数的自变量 $x$ 首先在函数 $g$ 的定义域内，$g(x)$ 的值又在函数 $f$ 的定义域内，如此才能得到两者的符合函数 $(f\circ{g})(x)$ 的输出。定义域的演示如下图所示。</p>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612856628205-f128.png" alt=""></p>
-<center>定义域关系</center>
-
-<p>一般情况，$f\circ{g}$ 和 $g\circ{f}$ 是两个不同的函数。</p>
-<h3 id="平移"><a href="#平移" class="headerlink" title="平移"></a>平移</h3><p>对一个已知的函数，通过加、减一个常数，就可以得到一个新的函数；或者让自变量加减一个常数，也可以得到新的函数。新函数相对于原来的函数，会在水平、竖直方向上发生平移。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612863500774-f140.png" alt=""></p>
+<p>三角函数之间的关系：</p>
 <ul>
-<li>垂直平移：$y=f(x)+k$ <ul>
-<li>$k\gt{0}$ ，则向着 $y$ 轴正方向平移 $k$ 个单位</li>
-<li>$k\lt{0}$ ，则向着 $y$ 轴负方向平移 $|k|$ 个单位</li>
+<li>$\tan\theta=\frac{\sin\theta}{\cos\theta},\quad \cot\theta=\frac{1}{\tan\theta}$</li>
+<li>$\sec\theta=\frac{1}{\cos\theta},\quad \csc\theta=\frac{1}{\sin\theta}$</li>
+</ul>
+<h3 id="三角函数的周期"><a href="#三角函数的周期" class="headerlink" title="三角函数的周期"></a>三角函数的周期</h3><p><strong>定义</strong> 设函数 $f(x)$ ，有正数 $p$ ，使得 $f(x+p)=f(x)$ 对任何 $x$ 成立，则其中最小的数值 $p$ 即为函数 $f(x)$ 的<strong>周期</strong>（period）。</p>
+<p>对于三角函数而言，有的周期是 $\pi$ ，有的周期是 $2\pi$ ，如下图所示，常用的三角函数图像，从中可以观察到其周期。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612920866335-trig01.png" alt=""></p>
+<center>常用三角函数图像和周期</center>
+
+<ul>
+<li>周期为 $\pi$ ：<ul>
+<li>$\tan(x+\pi)=\tan{x}$</li>
+<li>$\cot(x+\pi)=\cot{x}$</li>
 </ul>
 </li>
-<li>水平平移：$y=f(x+h)$<ul>
-<li>$h\gt{0}$ ，则向着 $x$ 轴负方向平移 $h$ 个单位</li>
-<li>$h\lt{0}$ ，则向着 $x$ 轴正方向平移 $|h|$ 个单位</li>
+<li>周期为 $2\pi$ ：<ul>
+<li>$\sin(x+2\pi)=\sin{x}$</li>
+<li>$\cos(x+2\pi)=\cos{x}$</li>
+<li>$\sec(x+2\pi)=\sec{x}$</li>
+<li>$\csc(x+2\pi)=\csc{x}$</li>
+</ul>
+</li>
+<li>偶函数：<ul>
+<li>$\cos(-x)=\cos{x}$</li>
+<li>$\sec(-x)=\sec{x}$</li>
+</ul>
+</li>
+<li>奇函数：<ul>
+<li>$\sin(-x)=-\sin{x}$</li>
+<li>$\tan(-x)=-\tan{x}$</li>
+<li>$\csc(-x)=-\csc{x}$</li>
+<li>$\cot(-x)=-\cot{x}$</li>
 </ul>
 </li>
 </ul>
-<p>如下图所示，是基于函数 $$f(x)=x^2$$ ，按照上述原则进行平移，分别得到相应的函数。</p>
+<h3 id="重要关系式和定理"><a href="#重要关系式和定理" class="headerlink" title="重要关系式和定理"></a>重要关系式和定理</h3><ul>
+<li><p>$\cos^2\theta + \sin^2\theta=1$</p>
 <ul>
-<li>向着 $y$ 轴正方向平移 $$1$$ 个单位：$y=x^2+1$</li>
-<li>向着 $y$ 轴负方向平移 $$2$$ 个单位：$y=x^2-2$</li>
-<li>向着 $x$ 轴负方向平移 $$3$$ 个单位：$y=(x+3)^2$</li>
+<li>$1+\tan^2\theta=\sec^2\theta$</li>
+<li>$1+\cot^2\theta=\csc^2\theta$</li>
 </ul>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612858252085-f129.png" alt=""></p>
-<center>函数平移</center>
+</li>
+<li><p>加法公式：</p>
+<ul>
+<li>$\cos(A+B)=\cos{A}\cos{B}-\sin{A}sin{B}$</li>
+<li>$\sin(A+B)=\sin{A}\cos{B}+\cos{A}\sin{B}$</li>
+</ul>
+</li>
+<li><p>二倍角公式：</p>
+<ul>
+<li>$\cos(2\theta)=\cos^2\theta-\sin^2\theta$</li>
+<li>$\sin(2\theta)=2\sin\theta\cos\theta$</li>
+</ul>
+</li>
+<li><p>半角公式：</p>
+<ul>
+<li>$\cos^2\theta=\frac{1+\cos(2\theta)}{2}$</li>
+<li>$\sin^2\theta=\frac{1-\cos(2\theta)}{2}$</li>
+</ul>
+</li>
+<li><p>余弦定理：</p>
+<ul>
+<li>$c^2=a^2+b^2-2ab\cos\theta$ ，其中 $a,b,c$ 为三角形三条边，$\theta$ 为边 $c$ 的对角。</li>
+</ul>
+</li>
+<li><p>特殊不等式：</p>
+<ul>
+<li><p>$-|\theta|\le\sin\theta\le|\theta|$</p>
+</li>
+<li><p>$-|\theta|\le1-\cos\theta\le|\theta|$</p>
+<p>证明：如下图所示，$P$ 是单位圆上的一点，$PO$ 与 $x$ 轴之间的夹角为 $\theta$ 。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612923562896-trig02.png" alt=""></p>
+<center>单位圆</center>
 
-<h3 id="压缩和拉伸"><a href="#压缩和拉伸" class="headerlink" title="压缩和拉伸"></a>压缩和拉伸</h3><p>如果对函数或者自变量乘以一个常数，能够实现函数图像的压缩和拉伸效果。</p>
-<p>设常数 $c\gt{1}$ ，对于函数 $f(x)$ ：</p>
-<ul>
-<li>$y=cf(x)$ ，将函数 $f$ 的图像沿 $y$ 轴拉伸为 $c$ 倍</li>
-<li>$y=\frac{1}{c}f(x)$ ，将函数 $f$ 的图像沿 $y$ 轴压缩为 $\frac{1}{c}$ 倍</li>
-<li>$y=f(cx)$ ，将函数 $f$ 的图像沿 $x$ 轴压缩为 $\frac{1}{c}$ 倍</li>
-<li>$y=f(x/c)$ ，将函数 $f$ 的图像沿 $x$ 轴拉伸为 $c$ 倍</li>
+<p>在直角三角形 $APQ$ 中，</p>
+<p>$QP=|\sin\theta|,\quad AQ=1-\cos\theta$</p>
+<p>因为单位圆的半径是 $1$ ，即弧长 $\overset{\frown}{AP}=\theta$ ，显然 $\overset{\frown}{AP}$ 大于线段 $AP$ 的长度，即 $AP\lt|\theta|$ 。由勾股定理可得：</p>
+<p>$\sin^2\theta+(1-\cos\theta)^2=(AP)^2\le\theta^2$</p>
+<p>上式等号左侧两项都大于 $0$ ，所以可得：</p>
+<p>$\sin^2\theta\le\theta^2, \quad{and}\quad (1-\cos\theta)^2\le\theta^2$</p>
+<p>$|\sin\theta|\le|\theta|, \quad{and}\quad |1-\cos\theta|\le|\theta|$</p>
+<p>故：</p>
+<p>$-|\theta|\le\sin\theta\le|\theta| \quad{and}\quad -|\theta|\le1-\cos\theta\le|\theta|$</p>
+</li>
 </ul>
-<p>如果 $c=-1$ ，则：</p>
-<ul>
-<li>$y=-f(x)$ ，相对 $x$ 轴镜像变换</li>
-<li>$y=f(-x)$ ，相对 $y$ 轴镜像变换</li>
+</li>
 </ul>
-<p>如下图所示，演示了图像压缩、拉伸和镜像变换。</p>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612860414286-f134.png" alt=""></p>
-<center>函数图像变换</center></section>
+<h3 id="三角函数图像变换"><a href="#三角函数图像变换" class="headerlink" title="三角函数图像变换"></a>三角函数图像变换</h3><p>根据前述函数图像变换知识，可以总结如下：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612925127331-trig03.png" alt=""></p>
+<p>以正弦为例，如下函数可以通过对 $y=\sin(x)$ 的变换得到：</p>
+<p>$f(x)=A\sin\left(\frac{2\pi}{B}(x-C)\right)+D$</p>
+<p>其中 $|A|$ 为振幅， $|B|$ 为周期，$C$ 为水平偏移， $D$ 为垂直偏移，最终图像为：</p>
+<p>  <img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612925450605-trig04.png" alt=""></p>
+<h2 id="用Python实现计算"><a href="#用Python实现计算" class="headerlink" title="用Python实现计算"></a>用Python实现计算</h2><p>  在Pyhton语言中，内置函数能够实现初等代数中的常见函数（具体用法，请参阅《Python大学实用教程》或《跟老齐学Python：轻松入门》，电子工业出版社出版）。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612926053292-trig05.png" alt=""></p>
+<center>Python内置函数</center>
+
+<p>此外，如果进行复杂的函数运算，还可以使用scipy库提供的各种函数，比如统计学或者线性代数中的函数，在《机器学习数学基础》中对此有较为详细的说明。</p>
+</section>
     <!-- Tags START -->
     
     <!-- Tags END -->
@@ -234,20 +328,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/02/09/deep-understand-for-loop/">
+      <a class="nav-left" href="/2021/02/10/function-graphs/">
         <span class="nav-arrow">← </span>
         
-          深入理解for循环
+          复合函数及图像变换
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/02/12/trig-function/">
-        
-          三角函数
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -292,7 +379,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#函数的加减乘除"><span class="toc-nav-text">函数的加减乘除</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#复合函数"><span class="toc-nav-text">复合函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#平移"><span class="toc-nav-text">平移</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#压缩和拉伸"><span class="toc-nav-text">压缩和拉伸</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#角和弧度"><span class="toc-nav-text">角和弧度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常用三角函数"><span class="toc-nav-text">常用三角函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#三角函数的周期"><span class="toc-nav-text">三角函数的周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#重要关系式和定理"><span class="toc-nav-text">重要关系式和定理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#三角函数图像变换"><span class="toc-nav-text">三角函数图像变换</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用Python实现计算"><span class="toc-nav-text">用Python实现计算</span></a>
     
   </div>
 </aside>
@@ -302,7 +389,7 @@
 
 <script>
   (function () {
-    var url = 'https://qiwsir.github.io/2021/02/10/function-graphs/';
+    var url = 'https://qiwsir.github.io/2021/02/12/trig-function/';
     var banner = ''
     /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
