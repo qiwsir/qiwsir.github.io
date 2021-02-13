@@ -10,7 +10,7 @@
   
   <title>
     
-      三角函数 | 老齐教室
+      交叉熵损失函数 | 老齐教室
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -166,159 +166,55 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <h2>三角函数</h2>
-    <p class="post-date">2021-02-12</p>
-    <section class="markdown-content"><p><strong>注：</strong> 本位是即将于2021年5月由电子工业出版社出版的《机器学习数学基础》一书的在线补充资料。供大家参考。</p>
-<h3 id="角和弧度"><a href="#角和弧度" class="headerlink" title="角和弧度"></a>角和弧度</h3><p>设 $s$ 为弧长，$r$ 为半径，$\theta$ 是以弧度为单位的角，则：</p>
-<p>$s=r\theta$</p>
-<p>弧度和角度之间的换算关系：$\pi=180^{\circ}$ 。</p>
-<p>下表对应着换算关系。</p>
-<table>
-<thead>
-<tr>
-<th>角度</th>
-<th>-180</th>
-<th>-135</th>
-<th>-90</th>
-<th>-45</th>
-<th>0</th>
-<th>30</th>
-<th>45</th>
-<th>60</th>
-<th>90</th>
-<th>120</th>
-<th>135</th>
-<th>150</th>
-<th>180</th>
-<th>270</th>
-<th>360</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>弧度</td>
-<td>$-\pi$</td>
-<td>$-\frac{3\pi}{3}$</td>
-<td>$-\frac{\pi}{2}$</td>
-<td>$-\frac{\pi}{4}$</td>
-<td>0</td>
-<td>$\frac{\pi}{6}$</td>
-<td>$\frac{\pi}{4}$</td>
-<td>$\frac{\pi}{3}$</td>
-<td>$\frac{\pi}{2}$</td>
-<td>$\frac{2\pi}{3}$</td>
-<td>$\frac{3\pi}{4}$</td>
-<td>$\frac{5\pi}{6}$</td>
-<td>$\pi$</td>
-<td>$\frac{3\pi}{2}$</td>
-<td>$2\pi$</td>
-</tr>
-</tbody></table>
-<h3 id="常用三角函数"><a href="#常用三角函数" class="headerlink" title="常用三角函数"></a>常用三角函数</h3><p>参考下图，列出常用的三角函数：</p>
+    <h2>交叉熵损失函数</h2>
+    <p class="post-date">2021-02-13</p>
+    <section class="markdown-content"><p><strong>注：</strong> 本文内容是对《机器学习数学基础》一书有关内容的补充资料。《机器学习数学基础》即将由电子工业出版社于2021年5月出版。与本书相关的更多资料，请查阅微信公众号：<strong>老齐教室</strong>，或者：<a href="https://qiwsir.gitee.io/mathmetics/" target="_blank" rel="noopener">https://qiwsir.gitee.io/mathmetics/</a> </p>
+<hr>
+<p>在研究机器学习或深度学习问题时，损失函数或者代价函数——关于两者的区别，请参阅《机器学习数学基础》中的详细说明——是必不可少的，它们主要用以优化训练模型。目标就是让损失函数最小化，损失越小的模型越好。交叉熵损失函数，就是众多损失函数中重要一员，它主要用与对分类模型的优化。为了理解交叉熵损失函数，以及为什么同时用Softmax作为激活函数，特别撰写本文。</p>
+<p>下面我们使用一个图像分类的示例，这个示例中包括狗、猫、马和豹。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-13/1613173338441-image1.png" alt=""></p>
+<p>如上图所示，以Softmax函数作为激活函数，交叉熵损失函数旨在度量预测值（$P$）与真实值之间的差距，如下图所示。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-13/1613173585431-image2.png" alt=""></p>
+<p>例如，如果输入图片是狗，其真实值为 $[1,0,0,0]$ ，但通过深度学习模型，得到的预测值为 $[0.775, 0.116, 0.039, 0.070]$ 。我们的目标就是要让输出的预测值与真实值之间尽可能地靠近。在模型训练过程中，将模型权重进行迭代调整，以最大程度地减少交叉熵损失。 权重的调整过程就是模型训练过程，并且随着模型的不断训练和损失的最小化，这就是机器学习中所说的学习过程。</p>
+<p>交叉熵的概念起源于信息论，香农（<a href="https://en.wikipedia.org/wiki/Claude_Shannon" target="_blank" rel="noopener">Claude Shannon</a>）在1948年创立了信息论，其中最重要的概念就是信息熵，所以，在学习交叉熵之前，要先了解信息熵——不过，下面仅仅是列出信息熵的基本概念，因为在《机器学习数学基础》一书中，有专门章节讨论信息熵的有关知识。</p>
+<h2 id="熵"><a href="#熵" class="headerlink" title="熵"></a>熵</h2><p>随机变量 $X$ 的熵定义：</p>
+<p>$H(X)=\begin{cases}-\sum_xp(x)\log(p(x)),\quad &amp;X是离散型随机变量\-\int_xp(x)\log(p(x)),&amp;X是连续型随机变量\end{cases}$</p>
+<p>关于熵的更多内容，请参阅《机器学习数学基础》（2021年5月，电子工业出版社出版）。</p>
+<h2 id="交叉熵损失函数"><a href="#交叉熵损失函数" class="headerlink" title="交叉熵损失函数"></a>交叉熵损失函数</h2><p>交叉熵损失函数，也称为对数损失或者logistic损失。当模型产生了预测值之后，将对类别的预测概率与真实值（由 $0$ 或 $1$ 组成）进行不比较，计算所产生的损失，然后基于此损失设置对数形式的惩罚项。</p>
+<p>在训练模型的时候，使用交缠上损失函数，目的是最小化损失，即损失越小的模型越好。最理想的就是交叉熵损失函数为 $0$ 。</p>
+<blockquote>
+<p><strong>定义</strong></p>
+<p>$L_{CE}=-\sum_{i=1}^nt_i\log(p_i)$</p>
+<p>其中，$n$ 是类别的数量，$t_i$ 是某个类别的真实值，$p_i$ 是该了别的预测概率。</p>
+</blockquote>
+<p>一般情况下，取以 $2$ 为底的对数进行计算。</p>
+<h3 id="二分类交叉熵损失函数"><a href="#二分类交叉熵损失函数" class="headerlink" title="二分类交叉熵损失函数"></a>二分类交叉熵损失函数</h3><p>对于二分类问题，由于分类结果服从伯努利分布（参阅《机器学习数学基础》），所以二分类交叉熵损失函数定义为：</p>
+<blockquote>
+<p><strong>定义</strong></p>
+<p>$L=-\sum_{i=1}^nt_i\log(p_i)=-[t\log(p)+(1-t)\log(1-p)]$</p>
+<p>其中，$t_i$ 是某类别的真实值，取值为 $0$ 或 $1$ ；$p_i$ 为某类别的预测概率。</p>
+</blockquote>
+<p>在二分类问题中，通常计算所有样本的平均交叉熵损失：</p>
+<p>$L=-\frac{1}{N}\left[\sum_{j=1}^Nt_j\log(p_j)+(1-t_j)\log(1-p_j)\right]$</p>
+<p>其中，$N$ 为样本数量，$t_j$ 为第 $j$ 个样本的真实类别值，$p_j$ 为相应样本的预测概率。</p>
+<p>以前面提到的图片识别为例，$S$ 表示预测结果，$T$ 表示真实标签，如下图所示。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-13/1613173585431-image2.png" alt=""></p>
+<p>根据上面的数据，计算两者之间的交叉熵：</p>
+<p>$\begin{split}L&amp;=-\sum_{i=1}^4T_i\log(S_i)\&amp;=-[1\log_2(0.775)+0\log_2(0.116)+0\log_2(0.039)+0\log_2(0.070)]\&amp;=-\log_2(0.775)\&amp;=0.3677\end{split}$</p>
+<p>在神经网络中，所使用的Softmax函数是连续可导函数，这使得可以计算出损失函数相对于神经网络中每个权重的导数（在《机器学习数学基础》中有对此的完整推导过程和案例，读者可以理解其深层含义，请参阅）。这样就可以相应地调整模型的权重以最小化损失函数（模型输出接近真实值）。</p>
+<p>假设经过权重调整之后，其输出值变为：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-13/1613176751441-image3.png" alt=""></p>
+<p>用上面方法，可以容易计算出，这次交叉熵损失比原来小了。</p>
+<p>在(Keras)[<a href="https://keras.io/zh/]（一种高级神经网络接口，Google的TensorFlow在其核心库中已经支持Keras[2]）中提供了多种交叉熵损失函数：" target="_blank" rel="noopener">https://keras.io/zh/]（一种高级神经网络接口，Google的TensorFlow在其核心库中已经支持Keras[2]）中提供了多种交叉熵损失函数：</a></p>
 <ul>
-<li>$\sin\theta=\frac{y}{r}, \quad\csc\theta=\frac{r}{y}$</li>
-<li>$\cos\theta=\frac{x}{r}, \quad \sec\theta=\frac{r}{x}$</li>
-<li>$\tan\theta=\frac{y}{x},\quad \cot\theta=\frac{x}{y}$</li>
+<li>二分类</li>
+<li>多分类</li>
+<li>稀疏类别</li>
 </ul>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-9/1612863500774-f140.png" alt=""></p>
-<p>三角函数之间的关系：</p>
-<ul>
-<li>$\tan\theta=\frac{\sin\theta}{\cos\theta},\quad \cot\theta=\frac{1}{\tan\theta}$</li>
-<li>$\sec\theta=\frac{1}{\cos\theta},\quad \csc\theta=\frac{1}{\sin\theta}$</li>
-</ul>
-<h3 id="三角函数的周期"><a href="#三角函数的周期" class="headerlink" title="三角函数的周期"></a>三角函数的周期</h3><p><strong>定义</strong> 设函数 $f(x)$ ，有正数 $p$ ，使得 $f(x+p)=f(x)$ 对任何 $x$ 成立，则其中最小的数值 $p$ 即为函数 $f(x)$ 的<strong>周期</strong>（period）。</p>
-<p>对于三角函数而言，有的周期是 $\pi$ ，有的周期是 $2\pi$ ，如下图所示，常用的三角函数图像，从中可以观察到其周期。</p>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612920866335-trig01.png" alt=""></p>
-<center>常用三角函数图像和周期</center>
-
-<ul>
-<li>周期为 $\pi$ ：<ul>
-<li>$\tan(x+\pi)=\tan{x}$</li>
-<li>$\cot(x+\pi)=\cot{x}$</li>
-</ul>
-</li>
-<li>周期为 $2\pi$ ：<ul>
-<li>$\sin(x+2\pi)=\sin{x}$</li>
-<li>$\cos(x+2\pi)=\cos{x}$</li>
-<li>$\sec(x+2\pi)=\sec{x}$</li>
-<li>$\csc(x+2\pi)=\csc{x}$</li>
-</ul>
-</li>
-<li>偶函数：<ul>
-<li>$\cos(-x)=\cos{x}$</li>
-<li>$\sec(-x)=\sec{x}$</li>
-</ul>
-</li>
-<li>奇函数：<ul>
-<li>$\sin(-x)=-\sin{x}$</li>
-<li>$\tan(-x)=-\tan{x}$</li>
-<li>$\csc(-x)=-\csc{x}$</li>
-<li>$\cot(-x)=-\cot{x}$</li>
-</ul>
-</li>
-</ul>
-<h3 id="重要关系式和定理"><a href="#重要关系式和定理" class="headerlink" title="重要关系式和定理"></a>重要关系式和定理</h3><ul>
-<li><p>$\cos^2\theta + \sin^2\theta=1$</p>
-<ul>
-<li>$1+\tan^2\theta=\sec^2\theta$</li>
-<li>$1+\cot^2\theta=\csc^2\theta$</li>
-</ul>
-</li>
-<li><p>加法公式：</p>
-<ul>
-<li>$\cos(A+B)=\cos{A}\cos{B}-\sin{A}sin{B}$</li>
-<li>$\sin(A+B)=\sin{A}\cos{B}+\cos{A}\sin{B}$</li>
-</ul>
-</li>
-<li><p>二倍角公式：</p>
-<ul>
-<li>$\cos(2\theta)=\cos^2\theta-\sin^2\theta$</li>
-<li>$\sin(2\theta)=2\sin\theta\cos\theta$</li>
-</ul>
-</li>
-<li><p>半角公式：</p>
-<ul>
-<li>$\cos^2\theta=\frac{1+\cos(2\theta)}{2}$</li>
-<li>$\sin^2\theta=\frac{1-\cos(2\theta)}{2}$</li>
-</ul>
-</li>
-<li><p>余弦定理：</p>
-<ul>
-<li>$c^2=a^2+b^2-2ab\cos\theta$ ，其中 $a,b,c$ 为三角形三条边，$\theta$ 为边 $c$ 的对角。</li>
-</ul>
-</li>
-<li><p>特殊不等式：</p>
-<ul>
-<li><p>$-|\theta|\le\sin\theta\le|\theta|$</p>
-</li>
-<li><p>$-|\theta|\le1-\cos\theta\le|\theta|$</p>
-<p>证明：如下图所示，$P$ 是单位圆上的一点，$PO$ 与 $x$ 轴之间的夹角为 $\theta$ 。</p>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612923562896-trig02.png" alt=""></p>
-<center>单位圆</center>
-
-<p>在直角三角形 $APQ$ 中，</p>
-<p>$QP=|\sin\theta|,\quad AQ=1-\cos\theta$</p>
-<p>因为单位圆的半径是 $1$ ，即弧长 $\overset{\frown}{AP}=\theta$ ，显然 $\overset{\frown}{AP}$ 大于线段 $AP$ 的长度，即 $AP\lt|\theta|$ 。由勾股定理可得：</p>
-<p>$\sin^2\theta+(1-\cos\theta)^2=(AP)^2\le\theta^2$</p>
-<p>上式等号左侧两项都大于 $0$ ，所以可得：</p>
-<p>$\sin^2\theta\le\theta^2, \quad{and}\quad (1-\cos\theta)^2\le\theta^2$</p>
-<p>$|\sin\theta|\le|\theta|, \quad{and}\quad |1-\cos\theta|\le|\theta|$</p>
-<p>故：</p>
-<p>$-|\theta|\le\sin\theta\le|\theta| \quad{and}\quad -|\theta|\le1-\cos\theta\le|\theta|$</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="三角函数图像变换"><a href="#三角函数图像变换" class="headerlink" title="三角函数图像变换"></a>三角函数图像变换</h3><p>根据前述函数图像变换知识，可以总结如下：</p>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612925127331-trig03.png" alt=""></p>
-<p>以正弦为例，如下函数可以通过对 $y=\sin(x)$ 的变换得到：</p>
-<p>$f(x)=A\sin\left(\frac{2\pi}{B}(x-C)\right)+D$</p>
-<p>其中 $|A|$ 为振幅， $|B|$ 为周期，$C$ 为水平偏移， $D$ 为垂直偏移，最终图像为：</p>
-<p>  <img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612925450605-trig04.png" alt=""></p>
-<h2 id="用Python实现计算"><a href="#用Python实现计算" class="headerlink" title="用Python实现计算"></a>用Python实现计算</h2><p>  在Pyhton语言中，内置函数能够实现初等代数中的常见函数（具体用法，请参阅《Python大学实用教程》或《跟老齐学Python：轻松入门》，电子工业出版社出版）。</p>
-<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-10/1612926053292-trig05.png" alt=""></p>
-<center>Python内置函数</center>
-
-<p>此外，如果进行复杂的函数运算，还可以使用scipy库提供的各种函数，比如统计学或者线性代数中的函数，在《机器学习数学基础》中对此有较为详细的说明。</p>
+<p>关于交叉熵损失函数的更多内容，建议参阅《机器学习数学基础》中的详细说明，本书于2021年5月由电子工业出版社出版。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. 齐伟.机器学习数学基础.北京：电子工业出版社，2021</p>
+<p>[2]. <a href="https://zh.wikipedia.org/wiki/Keras" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/Keras</a></p>
+<p>[3]. <a href="https://towardsdatascience.com/cross-entropy-loss-function-f38c4ec8643e" target="_blank" rel="noopener">https://towardsdatascience.com/cross-entropy-loss-function-f38c4ec8643e</a></p>
 </section>
     <!-- Tags START -->
     
@@ -328,20 +224,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2021/02/10/function-graphs/">
+      <a class="nav-left" href="/2021/02/12/trig-function/">
         <span class="nav-arrow">← </span>
         
-          复合函数及图像变换
+          三角函数
         
       </a>
     
-    
-      <a class="nav-right" href="/2021/02/13/cross-entropy/">
-        
-          交叉熵损失函数
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -386,7 +275,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#角和弧度"><span class="toc-nav-text">角和弧度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常用三角函数"><span class="toc-nav-text">常用三角函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#三角函数的周期"><span class="toc-nav-text">三角函数的周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#重要关系式和定理"><span class="toc-nav-text">重要关系式和定理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#三角函数图像变换"><span class="toc-nav-text">三角函数图像变换</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用Python实现计算"><span class="toc-nav-text">用Python实现计算</span></a>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#熵"><span class="toc-nav-text">熵</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#交叉熵损失函数"><span class="toc-nav-text">交叉熵损失函数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二分类交叉熵损失函数"><span class="toc-nav-text">二分类交叉熵损失函数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
     
   </div>
 </aside>
@@ -396,7 +285,7 @@
 
 <script>
   (function () {
-    var url = 'https://qiwsir.github.io/2021/02/12/trig-function/';
+    var url = 'https://qiwsir.github.io/2021/02/13/cross-entropy/';
     var banner = ''
     /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
