@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      如何提速机器学习模型训练 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>如何提速机器学习模型训练</h2>
+    <p class="post-date">2021-02-16</p>
+    <section class="markdown-content"><p><strong>注：</strong> 本文中有一些超链接，如果在微信中不能阅读，可以转到我的博客，地址：</p>
+<hr>
+<p>Scikit-Learn是一个非常简单的机器学习库，然而，有时候模型训练的时间会过长。对此，有没有改进的策略？下面列举几种，供参考。</p>
+<h2 id="选择合适的Slover"><a href="#选择合适的Slover" class="headerlink" title="选择合适的Slover"></a>选择合适的Slover</h2><p>更好的算法能够将硬件的性能发挥到极致，从而得到更好的模型。在Scikit-Learn提供的模型中，可以通过参数<code>slover</code>实现不同的算法，即不同的<strong>Slover</strong>（求解器）。例如，scikit-learn中的<a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html" target="_blank" rel="noopener">Logistic回归</a>，可以为<code>slover</code>设置的值为<code>newton-cg</code>、<code>lbfgs</code>、<code>liblinear</code>、<code>sag</code>和<code>saga</code>。</p>
+<p>要想了解不同求解器的工作方式，推荐观看scikit-learn核心贡献者<a href="https://youtu.be/1s8RzWwMdqg?t=671" target="_blank" rel="noopener">GaëlVaroquaux</a>的演讲。他在演讲中提到，梯度下降算法虽然收敛速度快，但是计算成本比较高，因为每次都需要针对所有数据进行计算。如果使用重采样方法，就可以降低每次迭代的计算成本，但收敛速度会变慢。注意，在实践中，并非总强调快速收敛[1]。以前面提到的Logistic回归为例，其中不同的Slover的计算速度有所不同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建数据集</span></span><br><span class="line">X, y = make_classification(n_samples=<span class="number">100000</span>, n_features=<span class="number">100</span>, n_classes=<span class="number">2</span>)</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Slovers</span></span><br><span class="line">solvers = [<span class="string">'liblinear'</span>, <span class="string">'saga'</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> sol <span class="keyword">in</span> solvers:</span><br><span class="line">    start = time.time()</span><br><span class="line">    logreg = LogisticRegression(solver=sol)</span><br><span class="line">    logreg.fit(X_train, y_train)</span><br><span class="line">    end = time.time()</span><br><span class="line">    print(sol + <span class="string">" Fit time: "</span> , end-start)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">liblinear Fit time:  <span class="number">1.4556050300598145</span></span><br><span class="line">saga Fit time:  <span class="number">2.8493809700012207</span></span><br></pre></td></tr></table></figure>
+
+<p>在具体问题中，要使用哪一个Slover，还需要根据具体情况而定，特别是要熟悉每个Slover的特点，请阅读<a href="https://scikit-learn.org/stable/modules/linear_model.html" target="_blank" rel="noopener">官方文档</a>。</p>
+<h2 id="超参数调优"><a href="#超参数调优" class="headerlink" title="超参数调优"></a>超参数调优</h2><p>在机器学习中，超参数是在训练开始之前设置的，不能通过训练进行更改。而其他普通参数，则不需要提前设定，是通过数据集，在模型训练过程中得到的，或者说，模型训练的过程就是得到普通参数的过程。</p>
+<p>下面的表格中列举了常见机器学习模型中超参数和普通参数[2]。</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>普通参数举例</th>
+<th>超参数举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>决策树</td>
+<td>在每个节点上选择的输入变量；每个节点上选择的阈值</td>
+<td>每个叶节点所应包括的最少数据量；训练后的剪枝（pruning）策略</td>
+</tr>
+<tr>
+<td>随机森林</td>
+<td>同上</td>
+<td>决策树的数量；输入变量的数量</td>
+</tr>
+<tr>
+<td>支持向量机</td>
+<td>支持向量（support vector）的选择；每个支持向量的拉格朗日乘数</td>
+<td>核（kernel）的选择；正则化常量C和核函数的超参数</td>
+</tr>
+<tr>
+<td>K近邻</td>
+<td></td>
+<td>近邻K的选择；距离函数的选择；初始化选择等</td>
+</tr>
+<tr>
+<td>朴素贝叶斯</td>
+<td>每一类的先验概率</td>
+<td>数值属性用核数密度估计量或正态分布；核密度估计量的窗口宽度</td>
+</tr>
+<tr>
+<td>神经网络</td>
+<td>每层的权重</td>
+<td>隐藏层的数量；每层的神经元数量；训练的epoch；学习率等</td>
+</tr>
+</tbody></table>
+<p>由于超参数不能训练，选择合适的超参数，就是成为机器学习中的研究重点，它影响着模型的性能。在Scikit-Learn中提供了一些常见的超参数优化方法，比如：</p>
+<ul>
+<li>网格搜索（grid search），又称参数扫描，它能穷尽所有的参数组合，通过<code>sklearn.model_selection.GridSearchCV</code>类实现。</li>
+<li>随机搜索（randomized search），从具有一定分布的参数空间抽样给定数量的参数，通过<code>sklearn.model_selection.RandomizedSearchCV</code>类实现。</li>
+<li>对以上两个两个的改进： <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.HalvingGridSearchCV.html#sklearn.model_selection.HalvingGridSearchCV" target="_blank" rel="noopener">HalvingGridSearchCV</a> 和 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.HalvingRandomSearchCV.html#sklearn.model_selection.HalvingRandomSearchCV" target="_blank" rel="noopener">HalvingRandomSearch</a>)。</li>
+</ul>
+<p>此外，还有其他一些工具能够实现超参数的优化，比如<a href="https://github.com/ray-project/tune-sklearn" target="_blank" rel="noopener">Tune-sklearn</a>，提供了更多超参数优化技术，如贝叶斯优化（bayesian optimization）、早停法（early stopping）、分布执行（distributed execution）等，在某种程度上，能够替代网格搜索和随机搜索方法，优化了模型的速度。</p>
+<p>下面列出Tune-sklearn的几个特点，供参阅：</p>
+<ul>
+<li><p>兼容 Scikit-learn：从Scikit-learn转向Tune-sklearn，只需要修改几行代码，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">An example training a RandomForestClassifier, performing</span></span><br><span class="line"><span class="string">randomized search using TuneSearchCV.</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tune_sklearn <span class="keyword">import</span> TuneSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> randint</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">digits = datasets.load_digits()</span><br><span class="line">x = digits.data</span><br><span class="line">y = digits.target</span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=<span class="number">.2</span>)</span><br><span class="line"></span><br><span class="line">clf = RandomForestClassifier()</span><br><span class="line">param_distributions = &#123;</span><br><span class="line">    <span class="string">"n_estimators"</span>: randint(<span class="number">20</span>, <span class="number">80</span>),</span><br><span class="line">    <span class="string">"max_depth"</span>: randint(<span class="number">2</span>, <span class="number">10</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">tune_search = TuneSearchCV(clf, param_distributions, n_trials=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">tune_search.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line">pred = tune_search.predict(x_test)</span><br><span class="line">accuracy = np.count_nonzero(np.array(pred) == np.array(y_test)) / len(pred)</span><br><span class="line">print(accuracy)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>具有多种现代超参数优化方法：贝叶斯优化，早停法和分布式执行等，都能很容易地在代码中实现。</p>
+</li>
+<li><p>支持多种框架：除了Scikit-learn，还支持<a href="https://github.com/ray-project/tune-sklearn/blob/master/examples/torch_nn.py" target="_blank" rel="noopener">Pytorch</a>、<a href="https://github.com/ray-project/tune-sklearn/blob/master/examples/keras_example.py" target="_blank" rel="noopener">Keras</a>、<a href="https://github.com/ray-project/tune-sklearn/blob/master/examples/xgbclassifier.py" target="_blank" rel="noopener">XGBoost</a>等（点击超链接，可以查看相应的代码示例）。</p>
+</li>
+<li><p>可扩展性强：Tune-sklearn基于Ray Tune——一种用于分布式超参数优化的库——来高效透明地实现在多核上，甚至在多台机器上进行并行计算，交叉验证。</p>
+</li>
+</ul>
+<p>下图来自《<a href="https://medium.com/distributed-computing-with-ray/gridsearchcv-2-0-new-and-improved-ee56644cbabf" target="_blank" rel="noopener">GridSearchCV 2.0 — New and Improved</a>》，比较了Tune-sklearn和Scikit-learn的训练时间。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-16/1613460918571-0*-Nx35rNv2e5ToNc1.png" alt=""></p>
+<h2 id="并行计算"><a href="#并行计算" class="headerlink" title="并行计算"></a>并行计算</h2><p>另外一种提升模型训练速度的方法是使用 <a href="https://joblib.readthedocs.io/en/latest/" target="_blank" rel="noopener">joblib</a> 和 <a href="https://docs.ray.io/en/master/index.html" target="_blank" rel="noopener">Ray</a> 实现并行计算，并将训练进行分发。默认情况下，Scikit-learn只用单核完成模型训练，但是，现在很多计算机都已经是多核了，比如我现在用的MacBook Pro具有4核。因此，在个人计算机上，就具备了提升模型训练速度的可能性。特别是当你的模型可以进行高度的并行计算时，比如随机森林模型（如下图所示）。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-16/1613461771039-forest.png" alt=""></p>
+<p>应用joblib，能让Scikit-Learn实现单个节点上并行训练，默认情况下joblib使用<code>loky</code>并行模式[4]，还可以选择其他模式，如：<code>multiprocessing</code>，<code>dask</code>和<code>ray</code>等。<code>loky</code>模式只能优化单个节点，不能实现分布式计算[5]。如果执行分布式计算，可能需要考虑更多东西，如：</p>
+<ul>
+<li>多台机器之间的任务调度</li>
+<li>数据的高效传输</li>
+<li>故障恢复</li>
+</ul>
+<p>幸运的是，如果设置为<code>joblib.parallel_backend(&#39;ray&#39;)</code>，即<code>ray</code>并行计算模式，能够自动将上面的各项要求都兼顾，让你操作起来更简单。下图分别比较了<code>ray</code>、<code>multiprocessing</code>、<code>dask</code>和<code>loky</code>四种并行计算模式对训练模型速度的影响[6]。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-16/1613463142266-ray.png" alt=""></p>
+<p>如果你对这种做法有兴趣，不妨查看参考文献[6]的内容。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>本文介绍了三种提升使用Scikit-learn库训练模型速度的方法，既可以使用scikit-learn中提供的一些方法，也可以用其他库，如Tune-sklearn和Ray。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. <a href="https://leon.bottou.org/publications/pdf/nips-2007.pdf" target="_blank" rel="noopener">https://leon.bottou.org/publications/pdf/nips-2007.pdf</a></p>
+<p>[2]. <a href="https://www.jiqizhixin.com/graph/technologies/5619ca3f-5d4e-48c1-824d-d2a0aea0c7d1" target="_blank" rel="noopener">https://www.jiqizhixin.com/graph/technologies/5619ca3f-5d4e-48c1-824d-d2a0aea0c7d1</a></p>
+<p>[3]. <a href="https://medium.com/distributed-computing-with-ray/how-to-speed-up-scikit-learn-model-training-aaf17e2d1e1" target="_blank" rel="noopener">https://medium.com/distributed-computing-with-ray/how-to-speed-up-scikit-learn-model-training-aaf17e2d1e1</a></p>
+<p>[4]. <a href="https://joblib.readthedocs.io/en/latest/parallel.html" target="_blank" rel="noopener">https://joblib.readthedocs.io/en/latest/parallel.html</a></p>
+<p>[5]. <a href="https://scikit-learn.org/stable/modules/generated/sklearn.utils.parallel_backend.html" target="_blank" rel="noopener">https://scikit-learn.org/stable/modules/generated/sklearn.utils.parallel_backend.html</a></p>
+<p>[6]. <a href="https://medium.com/distributed-computing-with-ray/easy-distributed-scikit-learn-training-with-ray-54ff8b643b33" target="_blank" rel="noopener">https://medium.com/distributed-computing-with-ray/easy-distributed-scikit-learn-training-with-ray-54ff8b643b33</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/02/14/python-packages/">
+        <span class="nav-arrow">← </span>
+        
+          Python第三方包的那些事
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#选择合适的Slover"><span class="toc-nav-text">选择合适的Slover</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#超参数调优"><span class="toc-nav-text">超参数调优</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#并行计算"><span class="toc-nav-text">并行计算</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/02/16/speed-up-sklearn/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
