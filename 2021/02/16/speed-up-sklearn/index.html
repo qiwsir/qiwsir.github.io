@@ -168,7 +168,7 @@
   <article class="post-article">
     <h2>如何提速机器学习模型训练</h2>
     <p class="post-date">2021-02-16</p>
-    <section class="markdown-content"><p><strong>注：</strong> 本文中有一些超链接，如果在微信中不能阅读，可以转到我的博客，地址：</p>
+    <section class="markdown-content"><p><strong>注：</strong> 本文中有一些超链接，如果在微信中不能阅读，可以转到我的博客，地址：<a href="https://qiwsir.github.io/2021/02/16/speed-up-sklearn/">https://qiwsir.github.io/2021/02/16/speed-up-sklearn/</a></p>
 <hr>
 <p>Scikit-Learn是一个非常简单的机器学习库，然而，有时候模型训练的时间会过长。对此，有没有改进的策略？下面列举几种，供参考。</p>
 <h2 id="选择合适的Slover"><a href="#选择合适的Slover" class="headerlink" title="选择合适的Slover"></a>选择合适的Slover</h2><p>更好的算法能够将硬件的性能发挥到极致，从而得到更好的模型。在Scikit-Learn提供的模型中，可以通过参数<code>slover</code>实现不同的算法，即不同的<strong>Slover</strong>（求解器）。例如，scikit-learn中的<a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html" target="_blank" rel="noopener">Logistic回归</a>，可以为<code>slover</code>设置的值为<code>newton-cg</code>、<code>lbfgs</code>、<code>liblinear</code>、<code>sag</code>和<code>saga</code>。</p>
@@ -272,6 +272,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2021/02/18/name-in-python/">
+        
+          Python中`__name__`有什么用
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
