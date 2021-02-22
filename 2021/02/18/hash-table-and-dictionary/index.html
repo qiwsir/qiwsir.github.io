@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通过散列表深入理解字典 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通过散列表深入理解字典</h2>
+    <p class="post-date">2021-02-18</p>
+    <section class="markdown-content"><p><strong>注：</strong> 本文是对《跟老齐学Python：轻松入门》和《Python大学实用教程》有关字典对象的学习补充和提升。更多有关这两本书的资料，请阅读如下链接：</p>
+<ul>
+<li>《跟老齐学Python：轻松入门》：<a href="http://www.itdiffer.com/learn_python.html" target="_blank" rel="noopener">http://www.itdiffer.com/learn_python.html</a></li>
+<li>《Python大学实用教程》：<a href="http://www.itdiffer.com/python_course.html" target="_blank" rel="noopener">http://www.itdiffer.com/python_course.html</a></li>
+</ul>
+<hr>
+<p>是否想过，为什么Python中的字典对象会那么快，而且可靠？先说答案，就是因为它依赖于一个重要的算法：散列表（hash table，也有译为“哈希表”）。</p>
+<p>理解散列表，有助于深入理解Python中字典的运行原理，这对理解Python编程语言是一个巨大的进步，因为字典在Python中几乎随处可见。</p>
+<h2 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h2><p>在介绍散列表以及它在Python中的实现之前，先简要说明散列函数及其工作原理。</p>
+<p>散列函数是一种可以将任何长度的数据映射到固定长度的值的函数，这个映射过程称为<strong>散列</strong>（hash）。</p>
+<p>散列函数具有以下三个特点：</p>
+<ol>
+<li>计算速度快：计算一条数据的散列值，必须要快。</li>
+<li>确定性：相同的字符串的散列值总相同。</li>
+<li>散列值长度固定：无论输入的是1个字节、10个字节还是1万个字节，生成的散列值始终是固定的预定长度。</li>
+<li>不可逆性：散列函数是一个“单向函数”，将字符串输入到散列函数，得到了散列值，但是不能反过来，不能从散列值得到原来的字符串。由于这个特性，它可以用于加密。</li>
+</ol>
+<p>常用的散列函数有：<a href="https://en.wikipedia.org/wiki/MD5" target="_blank" rel="noopener">MD5</a>, <a href="https://en.wikipedia.org/wiki/SHA-1" target="_blank" rel="noopener">SHA-1</a>, <a href="https://en.wikipedia.org/wiki/SHA-2" target="_blank" rel="noopener">SHA-2</a>, <a href="https://it.wikipedia.org/wiki/NTLM" target="_blank" rel="noopener">NTLM</a>.</p>
+<p>能够找到一些网站，能够自动生成字符串的散列值，如下图所示，是使用<a href="https://www.md5online.org提供的功能得到的。" target="_blank" rel="noopener">https://www.md5online.org提供的功能得到的。</a></p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-2-20/1613784151863-md5.png" alt=""></p>
+<h2 id="散列的应用"><a href="#散列的应用" class="headerlink" title="散列的应用"></a>散列的应用</h2><p>散列的应用范围比较广，散列表只是其一，其他方面诸如加密、安全等。</p>
+<p>比如用散列函数生成文件的摘要（digest），并应用于数字签名（digital signature）$^{[2]}$。</p>
+<p>再比如存储用户密码，这是散列的另一种常见应用。如果你在某个网站注册了用户，但是忘记密码了，在登录页面中常常会有“找回密码”或者“重置密码”的链接。如果点击“找回密码”，网站真的向你提供的邮箱中发送了你的密码，说明这个网站在存储密码的时候，根本没有加密，极有可能是“明码”保存了。这是非常危险的，一旦网站的用户个人数据出问题——时长会暴出网站的用户数据出问题的新闻——密码就赫然呈现在世人面前了。负责任的网站，都会用散列函数，将用户的密码加密，用户只能“重置密码”，而不能“找回”。所以，通常是给你预留的邮箱中发送重置密码的链接。</p>
+<h2 id="Python的内置散列函数"><a href="#Python的内置散列函数" class="headerlink" title="Python的内置散列函数"></a>Python的内置散列函数</h2><p>Python的内置函数<code>hash()</code>是一个散列函数，它能够返回输入对象的十进制整数形式的散列值。</p>
+<p>以数字为例，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(<span class="number">1</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(<span class="number">10</span>)</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(<span class="number">10.0</span>)</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(<span class="number">3.1415926</span>)</span><br><span class="line"><span class="number">326490306866391043</span></span><br></pre></td></tr></table></figure>
+
+<p>返回值即为输入数字的散列值。</p>
+<p>特别注意，Python的<code>hash()</code>函数返回的是整数对象，这些对象在标准的64位Python 3解释器中始终以24个字节表示。</p>
+<p>如上述代码，默认情况下，整数的散列值是其本身。 请注意，<code>hash(10)</code>和<code>hash(10.0)</code>的结果一样。显然，<code>10</code>和<code>10.0</code>是两个不同的对象（一个是整数，另外一个是浮点数），而它们的散列值相同。反过来，根据相同的散列值，无法唯一判定输入对象是哪一个。这就是可以用散列加密的原因。</p>
+<p>看一下<code>hash()</code>的文档——看文档，是一项重要的能力和习惯$^{[3]}$ 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hash(obj, /)</span><br><span class="line">    Return the hash value <span class="keyword">for</span> the given object.</span><br><span class="line"></span><br><span class="line">    Two objects that compare equal must also have the same hash value, but the  reverse <span class="keyword">is</span> <span class="keyword">not</span> necessarily true.</span><br></pre></td></tr></table></figure>
+
+<p>从文档中可知，如果两个对象相等，它们的散列值必须相等，或者说，如果两个对象已经通过<code>==</code>返回了<code>True</code>，就说明它们的散列值相等。反之，如果两个对象的散列值相等，这两个对象不一定相等，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(<span class="number">-1</span>)</span><br><span class="line"><span class="number">-2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(<span class="number">-2</span>)</span><br><span class="line"><span class="number">-2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">-1</span> == <span class="number">-2</span></span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>这更进一步说明，散列函数是“单向函数”。像上述示例这样，<code>-1</code>和<code>-2</code>的散列值相同，称为散列<strong>碰撞</strong>（collision），即两个对象的散列值产生了冲突。</p>
+<p>以上示例中，都是以数字作为<code>hash()</code>的参数，如果改用字符串，返回的也是整数形式的散列值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(<span class="string">"跟老齐学Python"</span>)</span><br><span class="line"><span class="number">-8625257969505844567</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，如果你在自己的计算机上重复上面的操作，注意字符串别输入错了，所得到的结果应该跟我这里演示的结果不同——前面参数为数字时，一定相同。</p>
+<p>这是因为，自从Python3.3之后，对于字符串和字节对象，在进行散列处理之前，先增加了一个随机值，形象地说就是“加了一小撮盐”。“加盐”之后的字符串就变成了随机值。如果想出现这种情况，可以更改<code>PYTHONHASHSEED</code>的值$^{[4]}$，将它设置为大于零的整数。</p>
+<h2 id="可散列类型"><a href="#可散列类型" class="headerlink" title="可散列类型"></a>可散列类型</h2><p>在Python内置的对象类型中，并非都是可散列的，只有那些不可变对象，比如整数、浮点数、字符串、元组等，才是可散列的。</p>
+<p>如果要将<code>hash()</code>用于不可散列的对象，结果会出现<code>TypeError</code>异常，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash([<span class="string">"R"</span>,<span class="string">"e"</span>,<span class="string">"a"</span>,<span class="string">"l"</span>,<span class="string">"P"</span>,<span class="string">"y"</span>,<span class="string">"t"</span>,<span class="string">"h"</span>,<span class="string">"o"</span>,<span class="string">"n"</span>])</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: unhashable type: <span class="string">'list'</span></span><br></pre></td></tr></table></figure>
+
+<p>然而，自定义的对象，默认是可散列的，并且默认情况下，是以对象的id值作为<code>hash()</code>的参数。这就意味着，用同一个类，创建了两个不同的实例对象，它们会有不同的散列值，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Laoqi</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = Laoqi()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = Laoqi()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(x)</span><br><span class="line"><span class="number">8777241446265</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(y)</span><br><span class="line"><span class="number">8777241446967</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(id(x)/<span class="number">16</span>)==hash(x)  <span class="comment"># 说明x的散列值是依据其id值得到的</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(id(y)/<span class="number">16</span>)==hash(y)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你所见，用同一个类创建了两个实例对象，它们的散列值不同，当然，如果执行<code>x==y</code>，返回的是<code>False</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x &#x3D;&#x3D; y</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+
+<p>这符合Python的习惯，毕竟<code>x</code>和<code>y</code>是两个实例，在通常情况下，都是给类提供不同的参数，只不过这里演示得太简单了。</p>
+<p>如果，由于某种需要，必须让两个实例具有相同的散列值，怎么办？可以在类里面重写<code>__hash__()</code>方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Laoqi</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__hash__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> <span class="number">728</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = Laoqi()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = Laoqi()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a == b</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(a)</span><br><span class="line"><span class="number">728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(b)</span><br><span class="line"><span class="number">728</span></span><br></pre></td></tr></table></figure>
+
+<p>这个示例进一步展示了前面提到的一种现象：散列值相同的对象不相等。并且，还说明，<code>hash()</code>函数其实是调用了对象中的<code>__hash__()</code>方法。如果检查一下，Python的内置对象类型中都有这个特殊方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'__hash__'</span> <span class="keyword">in</span> dir(int)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'__hash__'</span> <span class="keyword">in</span> dir(list)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'__hash__'</span> <span class="keyword">in</span> dir(dict)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'__hash__'</span> <span class="keyword">in</span> dir(str)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p>前面提到，Python中的对象分为可散列和不可散列两种类型，而这里检测之后，所有内置对象类型都具有<code>__hash__</code>方法，是不是意味着都能用于<code>hash()</code>函数呢？前面说过可变对象是不可散列类型。这又怎么理解？做如下操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(list.__hash__)</span><br><span class="line"><span class="literal">None</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(str.__hash__)</span><br><span class="line">&lt;slot wrapper <span class="string">'__hash__'</span> of <span class="string">'str'</span> objects&gt;</span><br></pre></td></tr></table></figure>
+
+<p>以列表（可变对象，不可散列）和字符串（不可变对象，可散列）为例，发现它们的<code>__hash__</code>返回值不同，列表返回的是<code>None</code>，而字符串返回的是一个对象。这就给我们启发了。如果这样定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Laoqi</span>:</span></span><br><span class="line"><span class="meta">... </span>    __hash__ = <span class="literal">None</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = Laoqi()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hash(c)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: unhashable type: <span class="string">'Laoqi'</span></span><br></pre></td></tr></table></figure>
+
+<p>现在用所定义的类<code>Laoqi</code>创建了一个实例<code>c</code>，它就变成了不可散列的对象。综上可知，对象是否可散列，主要看它的<code>__hash__</code>是什么，如果是<code>None</code>，则不可散列。</p>
+<hr>
+<h2 id="散列表"><a href="#散列表" class="headerlink" title="散列表"></a>散列表</h2><p>了解了散列函数之后，就可以看看散列表是什么了。散列表是一种数据结构，它存储的是键值对（key-value）。</p>
+<p>在散列表中，每个键值对的键必须是可散列的，这是因为存储的键值对通过使用其键的散列值进行索引。如果查询散列表中的某个元素，其查询速度与表中所存储的键值对数量无关，不论表的长度增加10倍还是10万倍，查询某个特定元素的速度都不会受到影响。</p>
+<p>散列表是怎么实现的呢？一种经典的做法是通过一个可变容器存储数据和索引，并通过键的散列值建立索引，借此可以查询到特定的数据。形象地说，是创建一个大桶（bucket），里面放很多小桶。每个小桶都由键的散列值建立索引，小桶中装的就是数据。</p>
+<p>在下面的示例中，演示用Python实现散列表，从中可以理解散列表的基本余力。当然，在真正的编程中，不需要自定义这种散列表对象，因为Python中的字典类型对象就能实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pprint</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hashtable</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, elements)</span>:</span></span><br><span class="line">        self.bucket_size = len(elements)</span><br><span class="line">        self.buckets = [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(self.bucket_size)]</span><br><span class="line">        self._assign_buckets(elements)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_assign_buckets</span><span class="params">(self, elements)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> elements:</span><br><span class="line">            hashed_value = hash(key)</span><br><span class="line">            index = hashed_value % self.bucket_size</span><br><span class="line">            self.buckets[index].append((key, value))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_value</span><span class="params">(self, input_key)</span>:</span></span><br><span class="line">        hashed_value = hash(input_key)</span><br><span class="line">        index = hashed_value % self.bucket_size</span><br><span class="line">        bucket = self.buckets[index]</span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> bucket:</span><br><span class="line">            <span class="keyword">if</span> key == input_key:</span><br><span class="line">                <span class="keyword">return</span>(value)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> pprint.pformat(self.buckets) <span class="comment"># 返回一个可打印的对象</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">     capitals = [</span><br><span class="line">        (<span class="string">'France'</span>, <span class="string">'Paris'</span>),</span><br><span class="line">        (<span class="string">'United States'</span>, <span class="string">'Washington D.C.'</span>),</span><br><span class="line">        (<span class="string">'Italy'</span>, <span class="string">'Rome'</span>),</span><br><span class="line">        (<span class="string">'Canada'</span>, <span class="string">'Ottawa'</span>)</span><br><span class="line">    ]</span><br><span class="line">hashtable = Hashtable(capitals)</span><br><span class="line">print(hashtable)</span><br><span class="line">print(<span class="string">f"The capital of Italy is <span class="subst">&#123;hashtable.get_value(<span class="string">'Italy'</span>)&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>注意观察第10行开始的<code>for</code>循环语句，在第11行，计算每个可散列元素的键的散列值，用它计算一个索引值（第12行），将此索引值作为<code>self.buckets</code>容器（bucket，也有直接译为“桶”）的索引（第13行），并向该索引对应的数据结构（列表）中增加数据<code>(key,value)</code>。</p>
+<p>如果将前面提到过的环境变量<code>PYTHONHASHSEED</code>的值设置为<code>46</code>$^{[5]}$，就会得到下面的输出结果。有两个空容器，另外两个容器中分别存储了两个键值对数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[(<span class="string">'United States'</span>, <span class="string">'Washington D.C.'</span>), (<span class="string">'Canada'</span>, <span class="string">'Ottawa'</span>)],</span><br><span class="line"> [],</span><br><span class="line"> [],</span><br><span class="line"> [(<span class="string">'France'</span>, <span class="string">'Paris'</span>), (<span class="string">'Italy'</span>, <span class="string">'Rome'</span>)]]</span><br><span class="line">The capital of Italy <span class="keyword">is</span> Rome</span><br></pre></td></tr></table></figure>
+
+<p>注意，如果不设置<code>PYTHONHASHSEED</code> 的值，会得到与上述显示不一样的值。</p>
+<p>在这个示例中，用Python创建了一个散列表，以元组为元素的列表作为输入。在初始化的时候，以输入对象的长度创建一个列表容器，然后将输入的数据存储到此容器中。</p>
+<p>然而，如你在输出中所见，在输出结果中，有两个空列表，有另外两个列表中分别存储了不同的两个数据，这是什么原因？是因为在这个Python散列表中出现了散列碰撞。</p>
+<p>使用Python标准库中的<code>hash()</code>函数计算散列值，出现碰撞是在所难免的。为此可以用扩大容器的容量（即长度），从而降低出现碰撞的概率，但是不能根本杜绝。</p>
+<p>另外，容器的数量扩大，也会浪费更多的空间。下面的示例做了一点修改，在第4行，将<code>self.bucket_size</code>变为原来的<code>2</code>倍了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hl_lines=”<span class="number">3</span>” </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hashtable</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, elements)</span>:</span> </span><br><span class="line">        self.bucket_size = len(elements) * <span class="number">2</span> </span><br><span class="line">        self.buckets = [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(self.bucket_size)] </span><br><span class="line">        self._assign_buckets(elements)</span><br></pre></td></tr></table></figure>
+
+<p>再次执行程序，得到了下面的结果，仍然没有解决碰撞问题，并且已经有五个空容器了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[[],</span><br><span class="line"> [],</span><br><span class="line"> [],</span><br><span class="line"> [(<span class="string">'Canada'</span>, <span class="string">'Ottawa'</span>)],</span><br><span class="line"> [],</span><br><span class="line"> [],</span><br><span class="line"> [(<span class="string">'United States'</span>, <span class="string">'Washington D.C.'</span>), (<span class="string">'Italy'</span>, <span class="string">'Rome'</span>)],</span><br><span class="line"> [(<span class="string">'France'</span>, <span class="string">'Paris'</span>)]]</span><br><span class="line">The capital of Italy <span class="keyword">is</span> Rome</span><br></pre></td></tr></table></figure>
+
+<p>如果有两个散列碰撞，它们会被放入同一个容易。既然碰撞在所难免，那么在实现哈希表的时候，就要解决这个问题。通常的解决方法有两种：</p>
+<ul>
+<li><strong>开放式寻址法（open addressing）</strong></li>
+<li><strong>分离链接法（separate chaining）</strong></li>
+</ul>
+<p>分离链接法在上面的示例中已经实现过了，在示例中，其实使用的是一个嵌套列表，如果要查询指定的值，需要对整个列表全部扫描。由此可见，分离链接法是在一个容器中用另外一种数据结构创建一系列的数据对象。</p>
+<p>使用开放式寻址方法，如果某个索引下的容易中已有数据，则只要找到一个新的容器即可，所以要判断容器中是否已经有数据，并且要能找到新的容易。在原有的<code>Hashtable</code>类中修改<code>_assign_buckets()</code>方法，代码如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_assign_buckets</span><span class="params">(self, elements)</span>:</span></span><br><span class="line">    self.buckets = [<span class="literal">None</span>] * self.bucket_size</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> key, value <span class="keyword">in</span> elements:</span><br><span class="line">        hashed_value = hash(key)</span><br><span class="line">        index = hashed_value % self.bucket_size</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> self.buckets[index] <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            print(<span class="string">f"The key <span class="subst">&#123;key&#125;</span> collided with <span class="subst">&#123;self.buckets[index]&#125;</span>"</span>)</span><br><span class="line">            index = (index + <span class="number">1</span>) % self.bucket_size</span><br><span class="line"></span><br><span class="line">        self.buckets[index] = ((key, value))</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，第2行，首先把大容器中设置了默认值<code>None</code>，然后在第8行用<code>while</code>循环，检查某索引的列表内是否已经存储了数据。</p>
+<p>之后，还需要修改<code>get_value</code>方法，有必要检查索引对应的数据是否为<code>None</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_value</span><span class="params">(self, input_key)</span>:</span></span><br><span class="line">    hashed_value = hash(input_key)</span><br><span class="line">    index = hashed_value % self.bucket_size</span><br><span class="line">    <span class="keyword">while</span> self.buckets[index] <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        key,value = self.buckets[index]</span><br><span class="line">        <span class="keyword">if</span> key == input_key:</span><br><span class="line">            <span class="keyword">return</span> value</span><br><span class="line">        index = (index + <span class="number">1</span>) % self.bucket_size</span><br></pre></td></tr></table></figure>
+
+<p>前面的示例中，“Italy”键与“France”键的散列值冲突，按照修改之后的方法，这两个键就不会存储到同一个容器（列表）中，而是将“Italy”为键的数据存储到下一个“桶”里面。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">The key Italy collided <span class="keyword">with</span> (<span class="string">'France'</span>, <span class="string">'Paris'</span>)</span><br><span class="line">[<span class="literal">None</span>,</span><br><span class="line"> <span class="literal">None</span>,</span><br><span class="line"> (<span class="string">'Canada'</span>, <span class="string">'Ottawa'</span>),</span><br><span class="line"> <span class="literal">None</span>,</span><br><span class="line"> (<span class="string">'France'</span>, <span class="string">'Paris'</span>),</span><br><span class="line"> (<span class="string">'Italy'</span>, <span class="string">'Rome'</span>),</span><br><span class="line"> <span class="literal">None</span>,</span><br><span class="line"> (<span class="string">'United States'</span>, <span class="string">'Washington D.C.'</span>)]</span><br><span class="line">The capital of Italy <span class="keyword">is</span> Rome</span><br></pre></td></tr></table></figure>
+
+<p>在开放式寻址法中，如果要删除散列表中的元素，只能执行逻辑删除，而不是物理删除。因为如果删除正好是发生了散列冲突的数据，那么与其对应的另外一个数据，就没办法找到了。</p>
+<p>例如，前面在示例中，“Italy”与先前插入的元素（“France”）冲突，于是将它存储到索引值加一后的下一个“桶”里面，如果物理删除“France”元素，将无法找到“Italy”无法访问。</p>
+<p>因此，在使用开放式寻址策略时，要删除元素，必须用一个哑值（dummy value，即虚拟数据）替换其存储区，这样解释器就可以根据冲突的这个位置检索到下一个位置。</p>
+<h2 id="字典：Python散列表的应用"><a href="#字典：Python散列表的应用" class="headerlink" title="字典：Python散列表的应用"></a>字典：Python散列表的应用</h2><p>现在，我们已经了解了哈希表的基本含义，下面来看一下它在Python语言中最重要的应用：字典。Python中的字典是使用散列表和“开放式寻址”冲突解决方法构建的。</p>
+<p>在Python的基本知识中，我们知道字典是“键-值对”的集合$^{[3]}$ ，因此要定义字典，必须提供一个用逗号括起来的大括号内的键-值对列表，如以下示例所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>chess_players = &#123;</span><br><span class="line"><span class="meta">... </span>   <span class="string">"Carlsen"</span>: <span class="number">2863</span>,</span><br><span class="line"><span class="meta">... </span>   <span class="string">"Caruana"</span>: <span class="number">2835</span>,</span><br><span class="line"><span class="meta">... </span>   <span class="string">"Ding"</span>: <span class="number">2791</span>,</span><br><span class="line"><span class="meta">... </span>   <span class="string">"Nepomniachtchi"</span>: <span class="number">2784</span>,</span><br><span class="line"><span class="meta">... </span>   <span class="string">"Vachier-Lagrave"</span>: <span class="number">2778</span>,</span><br><span class="line"><span class="meta">... </span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里所创建的字典<code>chess_players</code>中包括五个键值对：世界排名前五的国际象棋棋手名称及其得分。</p>
+<p>要检索特定值，只需要使用方括号指定键即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; chess_players[&quot;Nepomniachtchi&quot;]</span><br><span class="line">2784</span><br></pre></td></tr></table></figure>
+
+<p>If you try to access a non existing element, the Python interpreter throws a <code>Key Error</code> exception:</p>
+<p>如果访问不存在的元素，Python解释器将抛出<code>Key Error</code>异常：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>chess_players[<span class="string">"Mastromatteo"</span>]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">KeyError: <span class="string">'Mastromatteo'</span></span><br></pre></td></tr></table></figure>
+
+<p>字典内的元素，可以用<code>.items()</code>方法生成可迭代对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> (k, v) <span class="keyword">in</span> chess_players.items():</span><br><span class="line"><span class="meta">... </span>    print(k,v)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line">Carlsen <span class="number">2863</span></span><br><span class="line">Caruana <span class="number">2835</span></span><br><span class="line">Ding <span class="number">2791</span></span><br><span class="line">Nepomniachtchi <span class="number">2784</span></span><br><span class="line">Vachier-Lagrave <span class="number">2778</span></span><br></pre></td></tr></table></figure>
+
+<p>另外，如果使用字典的<code>.keys()</code>和<code>.values()</code>两个方法，可以分别得到字典的键和值所生成的对象（在参考文献[3]中，对这类对象有特别说明），也是可迭代的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>chess_players.keys()</span><br><span class="line">dict_keys([<span class="string">"Carlsen"</span>, <span class="string">"Caruana"</span>, <span class="string">"Ding"</span>, <span class="string">"Nepomniachtchi"</span>, <span class="string">"Vachier-Lagrave"</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chess_players.values()</span><br><span class="line">dict_values([<span class="number">2863</span>, <span class="number">2835</span>, <span class="number">2791</span>, <span class="number">2784</span>, <span class="number">2778</span>])</span><br></pre></td></tr></table></figure>
+
+<p>字典是可变对象，可以增加键值对。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>chess_players[<span class="string">"Grischuk"</span>] = <span class="number">2777</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chess_players</span><br><span class="line">&#123;<span class="string">'Carlsen'</span>: <span class="number">2863</span>, <span class="string">'Caruana'</span>: <span class="number">2835</span>, <span class="string">'Ding'</span>: <span class="number">2791</span>, <span class="string">'Nepomniachtchi'</span>: <span class="number">2784</span>, <span class="string">'Vachier-Lagrave'</span>: <span class="number">2778</span>, <span class="string">'Grischuk'</span>: <span class="number">2777</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意，字典中键值对的键，必须是可散列对象，因为字典是基于散列表而创建的。如果键不是可散列的，Python会爆出<code>TypeError</code>异常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list = [<span class="string">"Giri"</span>, <span class="string">"Mamedyarov"</span>]</span><br><span class="line">chess_players[my_list] = <span class="number">2764</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line"> File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: unhashable type: <span class="string">'list'</span></span><br></pre></td></tr></table></figure>
+
+<p>如果要删除字典的键值对，可以使用<code>del</code>语句，注意，这不是函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> chess_players[<span class="string">"Grischuk"</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chess_players</span><br><span class="line">&#123;<span class="string">'Carlsen'</span>: <span class="number">2863</span>, <span class="string">'Caruana'</span>: <span class="number">2835</span>, <span class="string">'Ding'</span>: <span class="number">2791</span>, <span class="string">'Nepomniachtchi'</span>: <span class="number">2784</span>, <span class="string">'Vachier-Lagrave'</span>: <span class="number">2778</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Deleting an entry doesn’t delete the actual value into the dictionary, it just replaces the key with a dummy value so that the <strong>open addressing</strong> collision resolution method will continue to work, but the interpreter handles all this complexity for you, ignoring the deleted element.</p>
+<p>删除元素的语句，并不不会执行物理删除，它只是将语句中的“键”替换为虚拟值，这就是前面提到的开放寻址法所起的作用。但是，在实际操作总，由于解释器会为处理所有这些复杂问题，我们不用去关心，给我们的感觉就是“删除”了那个指定的键值对。</p>
+<h2 id="探寻所以然"><a href="#探寻所以然" class="headerlink" title="探寻所以然"></a>探寻所以然</h2><p>字典是散列表，那么它在后台是如何运行的？下面就在前面“知其然”基础上，了解一些“所以然”的内容。</p>
+<p>特别提醒，此处我们的所有讨论，都是基于Python的最新版本，因为Python 3.6开始，字典已经发生了很大变化，并且变得更小，更快，甚至功能更强大，因为它现在已经能够实现“插入排序”了$^{[6]}$。</p>
+<p>下面创建一个空字典，并检查它的大小，会发现这个空字典占据了<code>240bytes</code>的内存。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import sys</span><br><span class="line">&gt;&gt;&gt; my_dict &#x3D; &#123;&#125;</span><br><span class="line">&gt;&gt;&gt; sys.getsizeof(my_dict)</span><br><span class="line">240</span><br></pre></td></tr></table></figure>
+
+<p>空字典占据<code>240bytes</code>的内存，但是，如果增加了数据，会发现，它所占内存并没有变化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; my_dict[&quot;a&quot;] &#x3D; 100</span><br><span class="line">&gt;&gt;&gt; sys.getsizeof(my_dict)</span><br><span class="line">240</span><br></pre></td></tr></table></figure>
+
+<p>这是为什么呢？因为从Python 3.6开始，字典中值存储在不同的数据结构中，而字典仅包含指向实际值存储位置的指针。此外，当创建一个空字典时，它同时创建一个Python散列表，其中包含8个存储容器，长度只有240个字节，因此字典中增加了第一个元素后，根本没有改变其大小。</p>
+<p>下面尝试增加更多的元素，会发现字典所占内存空间（即字典大小）在增长。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>):</span><br><span class="line"><span class="meta">... </span>    my_dict[i] = <span class="number">100</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">f"elements = <span class="subst">&#123;i+<span class="number">1</span>&#125;</span> size = <span class="subst">&#123;sys.getsizeof(my_dict)&#125;</span>"</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line">elements = <span class="number">1</span> size = <span class="number">240</span></span><br><span class="line">elements = <span class="number">2</span> size = <span class="number">240</span></span><br><span class="line">elements = <span class="number">3</span> size = <span class="number">240</span></span><br><span class="line">elements = <span class="number">4</span> size = <span class="number">240</span></span><br><span class="line">elements = <span class="number">5</span> size = <span class="number">240</span></span><br><span class="line">elements = <span class="number">6</span> size = <span class="number">368</span></span><br><span class="line">elements = <span class="number">7</span> size = <span class="number">368</span></span><br><span class="line">elements = <span class="number">8</span> size = <span class="number">368</span></span><br><span class="line">elements = <span class="number">9</span> size = <span class="number">368</span></span><br><span class="line">elements = <span class="number">10</span> size = <span class="number">368</span></span><br><span class="line">elements = <span class="number">11</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">12</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">13</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">14</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">15</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">16</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">17</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">18</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">19</span> size = <span class="number">648</span></span><br><span class="line">elements = <span class="number">20</span> size = <span class="number">648</span></span><br></pre></td></tr></table></figure>
+
+<p>如上运行结果所示，在插入第六个元素（第10行）和第十一元素（第15行）之后，字典变大了，并非连续变大。这又是什么原因呢？这是为了使Python散列表更快并减少冲突，所以当字典充满三分之二时，解释器会调整字典的大小$^{[7]}$ 。</p>
+<p>现在，将上面所创建字典中的元素都删除了，再看一看该字典的大小。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>keys = list(my_dict.keys())</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> key <span class="keyword">in</span> keys:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">del</span> my_dict[key]</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_dict</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.getsizeof(my_dict)</span><br><span class="line"><span class="number">648</span></span><br></pre></td></tr></table></figure>
+
+<p>与没有删除前比较，发现居然大小没变。之所以如此，就是由于字典的内存占用非常小，并且在使用字典时删除操作并不频繁，因此与每次删除后动态调整字典大小，解释器更愿意浪费一点空间。但是，如果通过调用<code>.clear()</code>方法清空字典，由于它是批量删除，因此释放了空间，并且最小达到72个字节。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_dict.clear()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.getsizeof(my_dict)</span><br><span class="line"><span class="number">72</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>本文主要介绍了Python散列表及其在字典对象类型中的具体应用，从而更深入了解了字典的特点。</p>
+<p>这篇文章的内容重点参考了<a href="https://pyvideo.org/pycon-us-2017/modern-python-dictionaries-a-confluence-of-a-dozen-great-ideas.html" target="_blank" rel="noopener">Raymond Hettinger在2017年Pycon大会上的演讲</a>$^{[8]}$，<a href="https://twitter.com/raymondh" target="_blank" rel="noopener">Raymond Hettinger</a> 是Python的核心开发者，为Python的发展做出了重大贡献。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. <a href="http://thepythoncorner.com/dev/hash-tables-understanding-dictionaries/" target="_blank" rel="noopener">http://thepythoncorner.com/dev/hash-tables-understanding-dictionaries/</a></p>
+<p>[2]. <a href="https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html</a></p>
+<p>[3]. Python大学实用教程. 齐伟. 北京：电子工业出版社</p>
+<p>[4]. <a href="https://docs.python.org/3.3/using/cmdline.html#envvar-PYTHONHASHSEED" target="_blank" rel="noopener">https://docs.python.org/3.3/using/cmdline.html#envvar-PYTHONHASHSEED</a></p>
+<p>[5]. <a href="https://stackoverflow.com/questions/30585108/disable-hash-randomization-from-within-python-program" target="_blank" rel="noopener">https://stackoverflow.com/questions/30585108/disable-hash-randomization-from-within-python-program</a></p>
+<p>[6]. “插入顺序”在Python 3.6中实现，被Guido在Python 3.7中正式认可：<a href="https://mail.python.org/pipermail/python-dev/2017-December/151283.html" target="_blank" rel="noopener">https://mail.python.org/pipermail/python-dev/2017-December/151283.html</a></p>
+<p>[7]. <a href="https://mail.python.org/pipermail/python-list/2000-March/048085.html" target="_blank" rel="noopener">https://mail.python.org/pipermail/python-list/2000-March/048085.html</a></p>
+<p>[8]. <a href="https://pyvideo.org/pycon-us-2017/modern-python-dictionaries-a-confluence-of-a-dozen-great-ideas.html" target="_blank" rel="noopener">https://pyvideo.org/pycon-us-2017/modern-python-dictionaries-a-confluence-of-a-dozen-great-ideas.html</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/02/18/name-in-python/">
+        <span class="nav-arrow">← </span>
+        
+          Python中`__name__`有什么用
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#散列函数"><span class="toc-nav-text">散列函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#散列的应用"><span class="toc-nav-text">散列的应用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python的内置散列函数"><span class="toc-nav-text">Python的内置散列函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#可散列类型"><span class="toc-nav-text">可散列类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#散列表"><span class="toc-nav-text">散列表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#字典：Python散列表的应用"><span class="toc-nav-text">字典：Python散列表的应用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#探寻所以然"><span class="toc-nav-text">探寻所以然</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/02/18/hash-table-and-dictionary/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
