@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      合并Pandas的DataFrame方法汇总 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>合并Pandas的DataFrame方法汇总</h2>
+    <p class="post-date">2021-03-02</p>
+    <section class="markdown-content"><p>Pandas是数据分析、机器学习等常用的工具，其中的DataFrame又是最常用的数据类型，对它的操作，不得不数量。在《跟老齐学Python：数据分析》一书中，对DataFrame对象的各种常用操作都有详细介绍。本文根据书中介绍的内容，并参考其他文献，专门汇总了合并操作的各种方法。</p>
+<p>Pandas提供好几种方法和函数来实现合并DataFrame的操作，一般的操作结果是创建一个新的DataFrame，而对原始数据没有任何影响。</p>
+<h2 id="方法1：merge"><a href="#方法1：merge" class="headerlink" title="方法1：merge()"></a>方法1：merge()</h2><p>先创建一个DataFrame对象，后面也会用到它。如下所示，<code>df1</code>包括姓名、电子邮件和用户id。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df1 = pd.DataFrame(&#123;<span class="string">'user_id'</span>: [<span class="string">'id001'</span>, <span class="string">'id002'</span>, <span class="string">'id003'</span>, <span class="string">'id004'</span>, <span class="string">'id005'</span>, <span class="string">'id006'</span>, <span class="string">'id007'</span>],</span><br><span class="line">                    <span class="string">'first_name'</span>: [<span class="string">'Rivi'</span>, <span class="string">'Wynnie'</span>, <span class="string">'Kristos'</span>, <span class="string">'Madalyn'</span>, <span class="string">'Tobe'</span>, <span class="string">'Regan'</span>, <span class="string">'Kristin'</span>],</span><br><span class="line">                    <span class="string">'last_name'</span>: [<span class="string">'Valti'</span>, <span class="string">'McMurty'</span>, <span class="string">'Ivanets'</span>, <span class="string">'Max'</span>, <span class="string">'Riddich'</span>, <span class="string">'Huyghe'</span>, <span class="string">'Illis'</span>],</span><br><span class="line">                    <span class="string">'email'</span>: [<span class="string">'rvalti0@example.com'</span>, <span class="string">'wmcmurty1@example.com'</span>, <span class="string">'kivanets2@example.com'</span>,</span><br><span class="line">                              <span class="string">'mmax3@example.com'</span>, <span class="string">'triddich4@example.com'</span>, <span class="string">'rhuyghe@example.com'</span>, <span class="string">'killis4@example.com'</span>]</span><br><span class="line">                    &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>为了能够进行合并的操作，还需要再创建一个<code>df2</code>，如下所示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df2 = pd.DataFrame(&#123;<span class="string">'user_id'</span>: [<span class="string">'id001'</span>, <span class="string">'id002'</span>, <span class="string">'id003'</span>, <span class="string">'id004'</span>, <span class="string">'id005'</span>],</span><br><span class="line">                    <span class="string">'image_url'</span>: [<span class="string">'http://example.com/img/id001.png'</span>, <span class="string">'http://example.com/img/id002.jpg'</span>,</span><br><span class="line">                                  <span class="string">'http://example.com/img/id003.bmp'</span>, <span class="string">'http://example.com/img/id004.jpg'</span>,</span><br><span class="line">                                  <span class="string">'http://example.com/img/id005.png'</span>]</span><br><span class="line">                    &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>所创建的两个DataFrame数据如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># df1</span></span><br><span class="line">  user_id first_name last_name                  email</span><br><span class="line"><span class="number">0</span>   id001       Rivi     Valti    rvalti0@example.com</span><br><span class="line"><span class="number">1</span>   id002     Wynnie   McMurty  wmcmurty1@example.com</span><br><span class="line"><span class="number">2</span>   id003    Kristos   Ivanets  kivanets2@example.com</span><br><span class="line"><span class="number">3</span>   id004    Madalyn       Max      mmax3@example.com</span><br><span class="line"><span class="number">4</span>   id005       Tobe   Riddich  triddich4@example.com</span><br><span class="line"><span class="number">5</span>   id006      Regan    Huyghe    rhuyghe@example.com</span><br><span class="line"><span class="number">6</span>   id007    Kristin     Illis    killis4@example.com</span><br><span class="line"></span><br><span class="line"><span class="comment">#df2</span></span><br><span class="line">  user_id                         image_url</span><br><span class="line"><span class="number">0</span>   id001  http://example.com/img/id001.png</span><br><span class="line"><span class="number">1</span>   id002  http://example.com/img/id002.jpg</span><br><span class="line"><span class="number">2</span>   id003  http://example.com/img/id003.bmp</span><br><span class="line"><span class="number">3</span>   id004  http://example.com/img/id004.jpg</span><br><span class="line"><span class="number">4</span>   id005  http://example.com/img/id005.png</span><br></pre></td></tr></table></figure>
+
+<p>用<code>merge()</code>函数将<code>df1</code>和<code>df2</code>合并。首先，看一下这个函数可以接受的参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pd.merge(left, right, how=<span class="string">'inner'</span>, on=<span class="literal">None</span>, left_on=<span class="literal">None</span>, right_on=<span class="literal">None</span>,</span><br><span class="line">         left_index=<span class="literal">False</span>, right_index=<span class="literal">False</span>, sort=<span class="literal">True</span>,</span><br><span class="line">         suffixes=(<span class="string">'_x'</span>, <span class="string">'_y'</span>), copy=<span class="literal">True</span>, indicator=<span class="literal">False</span>,</span><br><span class="line">         validate=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>除 <code>left</code>和 <code>right</code>外，大多数参数都有默认值，这两个参数是我们要合并的DataFrames的名称。函数本身将返回一个新的DataFrame，用变量<code>df3_merged</code>引用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df3_merged = pd.merge(df1, df2)</span><br></pre></td></tr></table></figure>
+
+<p>两个DataFrames都有一个同名的列<code>user_id</code>，所以 <code>merge()</code>函数会自动根据此列合并两个对象——此种情景可以称为在键<code>user_id</code>上合并。</p>
+<p>如果有两个DataFrame没有相同名称的列，可以使用<code>left_on=&#39;left_column_name&#39;</code>和<code>right_on=&#39;right_column_name&#39;</code>显式地指定两个DataFrames上的键。</p>
+<p>打印<code>df3_merged</code> ，看看它的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  user_id first_name last_name                  email                         image_url</span><br><span class="line">0   id001       Rivi     Valti    rvalti0@example.com  http://example.com/img/id001.png</span><br><span class="line">1   id002     Wynnie   McMurty  wmcmurty1@example.com  http://example.com/img/id002.jpg</span><br><span class="line">2   id003    Kristos   Ivanets  kivanets2@example.com  http://example.com/img/id003.bmp</span><br><span class="line">3   id004    Madalyn       Max      mmax3@example.com  http://example.com/img/id004.jpg</span><br><span class="line">4   id005       Tobe   Riddich  triddich4@example.com  http://example.com/img/id005.png</span><br></pre></td></tr></table></figure>
+
+<p>你会注意到， <code>df3_merged</code>只有5行，而原来的<code>df1</code>有7行。为什么会这样？</p>
+<p>当<code>how</code>参数的默认值设置为<code>inner</code>时，将从左DataFrame和右DataFrame的<em>交集</em>生成一个新的DataFrame。因此，如果其中一个表中缺少<code>user_id</code> ，它就不会在合并的DataFrame中。</p>
+<p>即使交换了左右行的位置，结果仍然如此。</p>
+<p>解决方法，就是在使用<code>merge()</code>时，将参数 <code>how</code>的值设置为<code>left</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_left_merge = pd.merge(df1, df2, how=<span class="string">'left'</span>)</span><br><span class="line"></span><br><span class="line">print(df_left_merge)</span><br></pre></td></tr></table></figure>
+
+<p>这就是所谓的“左联接”，这样得到了包含左DataFrame  (<code>df1</code>) 和右DataFrame (<code>df2</code>)的所有元素的DataFrame。运行上述代码显示以下内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  user_id first_name last_name                  email                         image_url</span><br><span class="line"><span class="number">0</span>   id001       Rivi     Valti    rvalti0@example.com  http://example.com/img/id001.png</span><br><span class="line"><span class="number">1</span>   id002     Wynnie   McMurty  wmcmurty1@example.com  http://example.com/img/id002.jpg</span><br><span class="line"><span class="number">2</span>   id003    Kristos   Ivanets  kivanets2@example.com  http://example.com/img/id003.bmp</span><br><span class="line"><span class="number">3</span>   id004    Madalyn       Max      mmax3@example.com  http://example.com/img/id004.jpg</span><br><span class="line"><span class="number">4</span>   id005       Tobe   Riddich  triddich4@example.com  http://example.com/img/id005.png</span><br><span class="line"><span class="number">5</span>   id006      Regan    Huyghe    rhuyghe@example.com                               NaN</span><br><span class="line"><span class="number">6</span>   id007    Kristin     Illis    killis4@example.com                               NaN</span><br></pre></td></tr></table></figure>
+
+<p>与左DataFrame没有任何匹配值的单元被填充为<code>NaN</code>。</p>
+<p>再试试“右联接”，创建以下的合并DataFrame：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_right_merge = pd.merge(df1, df2, how=<span class="string">'right'</span>)</span><br><span class="line"></span><br><span class="line">print(df_right_merge)</span><br></pre></td></tr></table></figure>
+
+<p>如你所料，“右联接”将返回左DataFrame中与右DataFrame匹配的所有值:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  user_id first_name last_name                  email                         image_url</span><br><span class="line">0   id001       Rivi     Valti    rvalti0@example.com  http://example.com/img/id001.png</span><br><span class="line">1   id002     Wynnie   McMurty  wmcmurty1@example.com  http://example.com/img/id002.jpg</span><br><span class="line">2   id003    Kristos   Ivanets  kivanets2@example.com  http://example.com/img/id003.bmp</span><br><span class="line">3   id004    Madalyn       Max      mmax3@example.com  http://example.com/img/id004.jpg</span><br><span class="line">4   id005       Tobe   Riddich  triddich4@example.com  http://example.com/img/id005.png</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>df2</code> 中的每一行在<code>df1</code>中都有一个值，所以在本例中，<code>right</code>联接类似于<code>inner</code>联接。</p>
+<p>让我们看一下 <code>outer</code> 联接。为了更好地说明它们是如何工作的，需要交换DataFrames的位置，并为“左联接”和“外联接”创建两个新变量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df_left = pd.merge(df2, df1, how=<span class="string">'left'</span>, indicator=<span class="literal">True</span>)</span><br><span class="line">df_outer = pd.merge(df2, df1, how=<span class="string">'outer'</span>, indicator=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">print(df_left)</span><br><span class="line">print(df_outer)</span><br></pre></td></tr></table></figure>
+
+<p>请记住，左边的DataFrame是<code>df2</code>，右边的DataFrame是<code>df1</code>。使用<code>how=&#39;outer&#39;</code> 合并在键<em>上匹配的DataFrames，但也</em>包括丢失或不匹配的值。</p>
+<p>在上面的示例中，还设置了参数 <code>indicator</code>为<code>True</code>，以便Pandas在DataFrame的末尾添加一个额外的<code>_merge</code> 列。此列告诉我们是否在左、右DataFrame或两个DataFrames中都找到相应的那一行。</p>
+<p> <code>df_left</code> 如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  user_id                         image_url first_name last_name                  email _merge</span><br><span class="line"><span class="number">0</span>   id001  http://example.com/img/id001.png       Rivi     Valti    rvalti0@example.com   both</span><br><span class="line"><span class="number">1</span>   id002  http://example.com/img/id002.jpg     Wynnie   McMurty  wmcmurty1@example.com   both</span><br><span class="line"><span class="number">2</span>   id003  http://example.com/img/id003.bmp    Kristos   Ivanets  kivanets2@example.com   both</span><br><span class="line"><span class="number">3</span>   id004  http://example.com/img/id004.jpg    Madalyn       Max      mmax3@example.com   both</span><br><span class="line"><span class="number">4</span>   id005  http://example.com/img/id005.png       Tobe   Riddich  triddich4@example.com   both</span><br></pre></td></tr></table></figure>
+
+<p>然而， <code>df_outer</code> 有这些数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  user_id                         image_url first_name last_name                  email      _merge</span><br><span class="line"><span class="number">0</span>   id001  http://example.com/img/id001.png       Rivi     Valti    rvalti0@example.com        both</span><br><span class="line"><span class="number">1</span>   id002  http://example.com/img/id002.jpg     Wynnie   McMurty  wmcmurty1@example.com        both</span><br><span class="line"><span class="number">2</span>   id003  http://example.com/img/id003.bmp    Kristos   Ivanets  kivanets2@example.com        both</span><br><span class="line"><span class="number">3</span>   id004  http://example.com/img/id004.jpg    Madalyn       Max      mmax3@example.com        both</span><br><span class="line"><span class="number">4</span>   id005  http://example.com/img/id005.png       Tobe   Riddich  triddich4@example.com        both</span><br><span class="line"><span class="number">5</span>   id006                               NaN      Regan    Huyghe    rhuyghe@example.com  right_only</span><br><span class="line"><span class="number">6</span>   id007                               NaN    Kristin     Illis    killis4@example.com  right_only</span><br></pre></td></tr></table></figure>
+
+<p>请注意，在 <code>df_outer</code>中，“id006”和“id007”只存在于右DataFrame中（在本例中是<code>df1</code>）。如果在不交换位置的情况下比较左联接和外联接，最终会得到两个相同的结果。</p>
+<h2 id="方法2：join"><a href="#方法2：join" class="headerlink" title="方法2：join()"></a>方法2：join()</h2><p>与Pandas函数<code>merge()</code> 不同，<code>join()</code>是DataFrame本身的方法，即：<code>DataFrame.join(other, on=None, how=&#39;left&#39;, lsuffix=&#39;&#39;, rsuffix=&#39;&#39;, sort=False)</code>。</p>
+<p>用来调用<code>join()</code> 方法的DataFrame是左DataFrame。<code>other</code>参数中的DataFrame是右DataFrame。</p>
+<p>参数 <code>on</code> 参数的值可以用 <code>[&#39;key1&#39;, &#39;key2&#39; ...]</code> 来定义匹配的键；<code>how</code> 参数的值是 <code>left</code>，<code>right</code>，<code>outer</code>，<code>inner</code> 等，默认为 <code>left</code> 。</p>
+<p>下面将 <code>df2</code> 并入  <code>df1</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_join = df1.join(df2, rsuffix=<span class="string">'_right'</span>)</span><br><span class="line"></span><br><span class="line">print(df_join)</span><br></pre></td></tr></table></figure>
+
+<p>像 <code>merge()</code>函数一样，<code>join()</code> 方法自动尝试匹配具有相同名称的键(列)。在上述示例中，它是<code>user_id</code>键。</p>
+<p>上面的代码执行结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  user_id first_name last_name                  email user_id_right                         image_url</span><br><span class="line"><span class="number">0</span>   id001       Rivi     Valti    rvalti0@example.com         id001  http://example.com/img/id001.png</span><br><span class="line"><span class="number">1</span>   id002     Wynnie   McMurty  wmcmurty1@example.com         id002  http://example.com/img/id002.jpg</span><br><span class="line"><span class="number">2</span>   id003    Kristos   Ivanets  kivanets2@example.com         id003  http://example.com/img/id003.bmp</span><br><span class="line"><span class="number">3</span>   id004    Madalyn       Max      mmax3@example.com         id004  http://example.com/img/id004.jpg</span><br><span class="line"><span class="number">4</span>   id005       Tobe   Riddich  triddich4@example.com         id005  http://example.com/img/id005.png</span><br><span class="line"><span class="number">5</span>   id006      Regan    Huyghe    rhuyghe@example.com           NaN                               NaN</span><br><span class="line"><span class="number">6</span>   id007    Kristin     Illis    killis4@example.com           NaN                               NaN</span><br></pre></td></tr></table></figure>
+
+<p>你可能注意到一个名为<code>user_id_right</code>的“复制列”。如果不想显示该列，可以将<code>user_id</code> 列设置为两列上的索引，以便在联接时不带后缀：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_join_no_duplicates = df1.set_index(<span class="string">'user_id'</span>).join(df2.set_index(<span class="string">'user_id'</span>))</span><br><span class="line"></span><br><span class="line">print(df_join_no_duplicates)</span><br></pre></td></tr></table></figure>
+
+<p>这样做可以让我们摆脱<code>user_id</code>列，并将其设置为索引列，从而产生了一个更清晰的DataFrame:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">        first_name last_name                  email                         image_url</span><br><span class="line">user_id                                                                              </span><br><span class="line">id001         Rivi     Valti    rvalti0@example.com  http://example.com/img/id001.png</span><br><span class="line">id002       Wynnie   McMurty  wmcmurty1@example.com  http://example.com/img/id002.jpg</span><br><span class="line">id003      Kristos   Ivanets  kivanets2@example.com  http://example.com/img/id003.bmp</span><br><span class="line">id004      Madalyn       Max      mmax3@example.com  http://example.com/img/id004.jpg</span><br><span class="line">id005         Tobe   Riddich  triddich4@example.com  http://example.com/img/id005.png</span><br><span class="line">id006        Regan    Huyghe    rhuyghe@example.com                               NaN</span><br><span class="line">id007      Kristin     Illis    killis4@example.com                               NaN</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法3：append"><a href="#方法3：append" class="headerlink" title="方法3：append()"></a>方法3：append()</h2><p>正如Pandas官方文档所指出的，由于<code>concat()</code>和<code>append()</code> 方法返回DataFrames的新副本，过度使用它可能会影响程序的性能。</p>
+<p>这种追加的操作，比较适合于将一个DataFrame的每行合并到另外一个DataFrame的尾部，即得到一个新的DataFrame，它包含2个DataFrames的所有的行，而不是在它们的列上匹配数据。</p>
+<p>将<code>df2</code> 追加到 <code>df1</code> 并打印结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_append = df1.append(df2, ignore_index=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">print(df_append)</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>append()</code>将不匹配任何键上的DataFrames ，它只将另一个DataFrame添加到第一个DataFrame并返回它的副本。如果这两个DataFrames 的形状不匹配，Pandas将用NaN替换任何不匹配的单元格。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">   user_id first_name last_name                  email                         image_url</span><br><span class="line"><span class="number">0</span>    id001       Rivi     Valti    rvalti0@example.com                               NaN</span><br><span class="line"><span class="number">1</span>    id002     Wynnie   McMurty  wmcmurty1@example.com                               NaN</span><br><span class="line"><span class="number">2</span>    id003    Kristos   Ivanets  kivanets2@example.com                               NaN</span><br><span class="line"><span class="number">3</span>    id004    Madalyn       Max      mmax3@example.com                               NaN</span><br><span class="line"><span class="number">4</span>    id005       Tobe   Riddich  triddich4@example.com                               NaN</span><br><span class="line"><span class="number">5</span>    id006      Regan    Huyghe    rhuyghe@example.com                               NaN</span><br><span class="line"><span class="number">6</span>    id007    Kristin     Illis    killis4@example.com                               NaN</span><br><span class="line"><span class="number">7</span>    id001        NaN       NaN                    NaN  http://example.com/img/id001.png</span><br><span class="line"><span class="number">8</span>    id002        NaN       NaN                    NaN  http://example.com/img/id002.jpg</span><br><span class="line"><span class="number">9</span>    id003        NaN       NaN                    NaN  http://example.com/img/id003.bmp</span><br><span class="line"><span class="number">10</span>   id004        NaN       NaN                    NaN  http://example.com/img/id004.jpg</span><br><span class="line"><span class="number">11</span>   id005        NaN       NaN                    NaN  http://example.com/img/id005.png</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法4：concat"><a href="#方法4：concat" class="headerlink" title="方法4：concat()"></a>方法4：concat()</h2><p><code>concat()</code> 与 <code>merge()</code> 和<code>join()</code>相比，更灵活，因为它允许按行或按列组合DataFrames 。</p>
+<p>以下是带参数的完整函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pandas.concat(objs, axis=<span class="number">0</span>, join=<span class="string">'outer'</span>, ignore_index=<span class="literal">False</span>, keys=<span class="literal">None</span>,</span><br><span class="line">              levels=<span class="literal">None</span>, names=<span class="literal">None</span>, verify_integrity=<span class="literal">False</span>, sort=<span class="literal">False</span>, copy=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>下面是 <code>concat()</code>函数最常用的参数：</p>
+<ul>
+<li><p><code>objs</code>：将要连接的DataFrame 对象（<code>[df1，df2，…]</code>）的列表</p>
+</li>
+<li><p><code>axis</code>： 定义连接的方向，<code>0</code> 表示0轴方向，即以行为单位链接；<code>1</code> 1轴方向，即以列为单位连接</p>
+</li>
+<li><p><code>join</code> 的值可以是 <code>inner</code> （交集）或 <code>outer</code>（并集）</p>
+</li>
+<li><p><code>ignore_index</code>： 默认设置为 <code>False</code> ，即索引值为原有DataFrames中的状态，这可能会导致索引值重复。如果设置为 <code>True</code> ，它将忽略原始值并按顺序重新创建索引值</p>
+</li>
+<li><p><code>keys</code>：用于设置多级索引，可以将它看作附加在DataFrame左外侧的索引的另一个层级的索引，它可以帮助我们在值不唯一时区分索引</p>
+</li>
+</ul>
+<p>用与 <code>df2</code> 相同的列类型创建一个新的DataFrame，但这个DataFrame包含<code>id006</code>和<code>id007</code>的<code>image_url</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df2_addition = pd.DataFrame(&#123;<span class="string">'user_id'</span>: [<span class="string">'id006'</span>, <span class="string">'id007'</span>],</span><br><span class="line">                             <span class="string">'image_url'</span>: [<span class="string">'http://example.com/img/id006.png'</span>,</span><br><span class="line">                                           <span class="string">'http://example.com/img/id007.jpg'</span>]</span><br><span class="line">                             &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>为了按行联接<code>df2</code>和<code>df2_addition</code>，可以将它们作为<code>objs</code>参数传递到一个列表中，并将结果DataFrame赋给一个新变量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_row_concat = pd.concat([df2, df2_addition])</span><br><span class="line"></span><br><span class="line">print(df_row_concat)</span><br></pre></td></tr></table></figure>
+
+<p>成功地填充了缺少的值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  user_id                         image_url</span><br><span class="line">0   id001  http://example.com/img/id001.png</span><br><span class="line">1   id002  http://example.com/img/id002.jpg</span><br><span class="line">2   id003  http://example.com/img/id003.bmp</span><br><span class="line">3   id004  http://example.com/img/id004.jpg</span><br><span class="line">4   id005  http://example.com/img/id005.png</span><br><span class="line">0   id006  http://example.com/img/id006.png</span><br><span class="line">1   id007  http://example.com/img/id007.jpg</span><br></pre></td></tr></table></figure>
+
+<p>不过，请看最左边一栏中的索引，存在索引“0”和“1”的重复。为了获得全新的唯一索引值，将<code>True</code>传给<code>ignore_index</code>参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_row_concat = pd.concat([df2, df2_addition], ignore_index=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>现在，<code>df_row_concat</code>具有唯一的索引值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  user_id                         image_url</span><br><span class="line">0   id001  http://example.com/img/id001.png</span><br><span class="line">1   id002  http://example.com/img/id002.jpg</span><br><span class="line">2   id003  http://example.com/img/id003.bmp</span><br><span class="line">3   id004  http://example.com/img/id004.jpg</span><br><span class="line">4   id005  http://example.com/img/id005.png</span><br><span class="line">5   id006  http://example.com/img/id006.png</span><br><span class="line">6   id007  http://example.com/img/id007.jpg</span><br></pre></td></tr></table></figure>
+
+<p>正如前面提到的，<code>concat()</code>可以在水平和竖直（0轴和1轴）方向上合并，要按列（即在1轴方向上合并）将两个DataFrames连接在一起，要将<code>axis</code>值从默认值<code>0</code>更改为<code>1</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_column_concat = pd.concat([df1, df_row_concat], axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">print(df_column_concat)</span><br></pre></td></tr></table></figure>
+
+<p>你会注意到，它的工作方式与merge不同，在一个键上匹配两个表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  user_id first_name last_name                  email user_id                         image_url</span><br><span class="line">0   id001       Rivi     Valti    rvalti0@example.com   id001  http://example.com/img/id001.png</span><br><span class="line">1   id002     Wynnie   McMurty  wmcmurty1@example.com   id002  http://example.com/img/id002.jpg</span><br><span class="line">2   id003    Kristos   Ivanets  kivanets2@example.com   id003  http://example.com/img/id003.bmp</span><br><span class="line">3   id004    Madalyn       Max      mmax3@example.com   id004  http://example.com/img/id004.jpg</span><br><span class="line">4   id005       Tobe   Riddich  triddich4@example.com   id005  http://example.com/img/id005.png</span><br><span class="line">5   id006      Regan    Huyghe    rhuyghe@example.com   id006  http://example.com/img/id006.png</span><br><span class="line">6   id007    Kristin     Illis    killis4@example.com   id007  http://example.com/img/id007.jpg</span><br></pre></td></tr></table></figure>
+
+<p>甚至于右边的DataFrame可以没有<code>user_id</code>列，也会得到类似上面的相同结果。函数<code>concat()</code>将两个DataFrames粘在一起，同时考虑DataFrames索引值和表格形状。它不会像<code>merge()</code> 或<code>join()</code>那样按键匹配。有兴趣的话，可以通过更改<code>join</code>参数的值尝试不同形式的组合，从而了解其差异！</p>
+<h2 id="方法5：combine-first-和update"><a href="#方法5：combine-first-和update" class="headerlink" title="方法5：combine_first()和update()"></a>方法5：combine_first()和update()</h2><p>假设有一个DataFrame，但是它存在缺失数据，希望能够从另一个DataFrame中讲丢失的数据填充进来。这样，就要保留第一个DataFrame中的所有非缺失值，同时用第二个DataFrame可用的非缺失值（如果有这样的非缺失值）替换第一个DataFrame中的所有<code>NaN</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">df_first = pd.DataFrame(&#123;<span class="string">'COL 1'</span>: [<span class="string">'X'</span>, <span class="string">'X'</span>, np.nan],</span><br><span class="line">                         <span class="string">'COL 2'</span>: [<span class="string">'X'</span>, np.nan, <span class="string">'X'</span>],</span><br><span class="line">                         <span class="string">'COL 3'</span>: [np.nan, <span class="string">'X'</span>, <span class="string">'X'</span>]&#125;,</span><br><span class="line">                        index=range(<span class="number">0</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">df_second = pd.DataFrame(&#123;<span class="string">'COL 1'</span>: [np.nan, <span class="string">'O'</span>, <span class="string">'O'</span>],</span><br><span class="line">                          <span class="string">'COL 2'</span>: [<span class="string">'O'</span>, <span class="string">'O'</span>, <span class="string">'O'</span>]&#125;,</span><br><span class="line">                         index=range(<span class="number">0</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">print(df_first)</span><br><span class="line">print(df_second)</span><br></pre></td></tr></table></figure>
+
+<p><code>df_first</code> 有3列，每列中有1个缺失值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  COL 1 COL 2 COL 3</span><br><span class="line">0     X     X   NaN</span><br><span class="line">1     X   NaN     X</span><br><span class="line">2   NaN     X     X</span><br></pre></td></tr></table></figure>
+
+<p><code>df_second</code>只有2列，第一列中缺少一个值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  COL 1 COL 2</span><br><span class="line">0   NaN     O</span><br><span class="line">1     O     O</span><br><span class="line">2     O     O</span><br></pre></td></tr></table></figure>
+
+<p>下面用<code>df_second</code>中所有对应的值来填充df_first` 中缺失值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_tictactoe = df_first.combine_first(df_second)</span><br><span class="line"></span><br><span class="line">print(df_tictactoe)</span><br></pre></td></tr></table></figure>
+
+<p><code>combine_first()</code> 方法只会按索引顺序替换<code>NaN</code>值，并且会保留第一个DataFrame中所有非缺失的值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  COL 1 COL 2 COL 3</span><br><span class="line">0     X     X   NaN</span><br><span class="line">1     X     O     X</span><br><span class="line">2     O     X     X</span><br></pre></td></tr></table></figure>
+
+<p>另一方面，如果想用 <code>df_second</code>中相应的值（不管它们是否为NaN）覆盖<code>df_first</code>中的值，可以使用 <code>update()</code>方法。</p>
+<p>再创建另一个DataFrame：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_third = pd.DataFrame(&#123;<span class="string">'COL 1'</span>: [<span class="string">'O'</span>], <span class="string">'COL 2'</span>: [<span class="string">'O'</span>], <span class="string">'COL 3'</span>: [<span class="string">'O'</span>]&#125;)</span><br><span class="line"></span><br><span class="line">print(df_third)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  COL 1 COL 2 COL 3</span><br><span class="line">0     O     O     O</span><br></pre></td></tr></table></figure>
+
+<p>现在用<code>df_third</code>中的值更新<code>df_first</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_first.update(df_third)</span><br><span class="line"></span><br><span class="line">print(df_first)</span><br></pre></td></tr></table></figure>
+
+<p>请记住，与<code>combine_first()</code>不同，<code>update()</code>不会返回新的DataFrame，它原地修改<code>df_first</code>，更改相应的值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  COL 1 COL 2 COL 3</span><br><span class="line">0     O     O     O</span><br><span class="line">1     X   NaN     X</span><br><span class="line">2   NaN     X     X</span><br></pre></td></tr></table></figure>
+
+<p> <code>update()</code> 函数的 <code>overwrite</code>参数默认设置为<code>True</code>，这就是为什么它会更改所有相应的值，而不是只更改<code>NaN</code>值。如果将其更改为<code>False</code>，就仅替换<code>NaN</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df_tictactoe.update(df_first, overwrite=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">print(df_tictactoe)</span><br></pre></td></tr></table></figure>
+
+<p>以下是<code>df_tictactoe</code>DataFrame的最终状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  COL 1 COL 2 COL 3</span><br><span class="line">0     X     X     O</span><br><span class="line">1     X     O     X</span><br><span class="line">2     O     X     X</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Pandas为合并DataFrames提供了强大的工具，但很难确定死板的条条框框，来决定什么时候用什么函数。虽然大多数情况下，<code>merge()</code> 已经足够了，但在某些情况下，可能需要使用<code>concat()</code>来按行合并，或者使用<code>join()</code>，或者使用<code>combine_first()</code> 和 <code>update()</code>来填充缺失值。甚至可以使用<code>append()</code>添加数据行。</p>
+<p>总之，具体问题具体分析。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. <a href="https://stackabuse.com/how-to-merge-dataframes-in-pandas/" target="_blank" rel="noopener">https://stackabuse.com/how-to-merge-dataframes-in-pandas/</a></p>
+<p>[2]. 跟老齐学Python：数据分析. 齐伟. 北京：电子工业出版社</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/02/27/upgrade-pip/">
+        <span class="nav-arrow">← </span>
+        
+          必须升级pip，为什么？！
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法1：merge"><span class="toc-nav-text">方法1：merge()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法2：join"><span class="toc-nav-text">方法2：join()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法3：append"><span class="toc-nav-text">方法3：append()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法4：concat"><span class="toc-nav-text">方法4：concat()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法5：combine-first-和update"><span class="toc-nav-text">方法5：combine_first()和update()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/03/02/merge-dataframes/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
