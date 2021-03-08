@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      virtual environments | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>virtual environments</h2>
+    <p class="post-date">2021-03-08</p>
+    <section class="markdown-content"><h1 id="Python-Virtual-Environments-Masterclass"><a href="#Python-Virtual-Environments-Masterclass" class="headerlink" title="Python Virtual Environments Masterclass"></a>Python Virtual Environments Masterclass</h1><h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>When working on Python, or teaching Python to others, an area that I am an  advocate for is the use of Virtual Environments for projects.  Whilst  many online training resources skip or leave such context until later  on, personally, I feel that it is an area that is best covered at the  earliest opportunity.  From a simplistic viewpoint, it provides a  convenient environment for individuals to experiment with the plethora  of modules available in the python ecosystem, and, mitigates the need  for root privileges when installing modules on Linux based systems.   There are also a variety of other benefits that this post will aim to  cover.</p>
+<h4 id="Creating-Virtual-Environments"><a href="#Creating-Virtual-Environments" class="headerlink" title="Creating Virtual Environments"></a>Creating Virtual Environments</h4><p>In Both Python 2 and Python 3, virtual environments are available, however the creation of which varies between the two major languages and in  version 3, there is both a preferred and legacy method.  Given the  future of Python 3 this post emphasises more on this version of Python,  however, much of which in the post will apply to both versions.</p>
+<h4 id="Creating-A-Virtual-Environment-in-Python-3-Preferred-Approach"><a href="#Creating-A-Virtual-Environment-in-Python-3-Preferred-Approach" class="headerlink" title="Creating A Virtual Environment in Python 3 (Preferred Approach)"></a>Creating A Virtual Environment in Python 3 (Preferred Approach)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -mvenv python3venv</span><br></pre></td></tr></table></figure>
+
+<p>Breaking this down, the -m option on the command line, tells the  interpreter to run the venv module that is provided as part of the core  Python3 distribution.  The second parameter of ‘python3venv’ is the name of the virtual environment.  The execution of this command should give  you a virtual environment in the directory of python3venv.</p>
+<p>If you’re inquisitive, you can understand more on what is happening  behind the scenes by reviewing the actual venv module.  A convenient way of identifying the source location, is through the REPL shell -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ python3</span><br><span class="line">Python 3.6.4 (v3.6.4:d48ecebad5, Dec 18 2017, 21:07:28)</span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; import venv</span><br><span class="line">&gt;&gt;&gt; print(venv)</span><br><span class="line">&lt;module &#39;venv&#39; from &#39;&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;3.6&#x2F;lib&#x2F;python3.6&#x2F;venv&#x2F;__init__.py&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>With the code here being at ‘/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/venv/<em>*init</em>*.py’</p>
+<p>If you jump to the bottom of the code in question, it has an  execution block at the footer of the file allowing it to be executed as a script -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    rc &#x3D; 1</span><br><span class="line">    try:</span><br><span class="line">        main()</span><br><span class="line">        rc &#x3D; 0</span><br><span class="line">    except Exception as e:</span><br><span class="line">        print(&#39;Error: %s&#39; % e, file&#x3D;sys.stderr)</span><br><span class="line">    sys.exit(rc)</span><br></pre></td></tr></table></figure>
+
+<p>Thus, executing the code directly, executes the main function that provides a list of available arguments to the user -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -mvenv</span><br><span class="line">usage: venv [-h] [--system-site-packages] [--symlinks | --copies] [--clear]</span><br><span class="line">            [--upgrade] [--without-pip] [--prompt PROMPT]</span><br><span class="line">            ENV_DIR [ENV_DIR ...]</span><br><span class="line">venv: error: the following arguments are required: ENV_DIR</span><br></pre></td></tr></table></figure>
+
+<h4 id="Creating-A-Virtual-Environment-in-Python-3-6-and-Below-Deprecated-Approach"><a href="#Creating-A-Virtual-Environment-in-Python-3-6-and-Below-Deprecated-Approach" class="headerlink" title="Creating A Virtual Environment in Python 3.6 and Below (Deprecated Approach)"></a>Creating A Virtual Environment in Python 3.6 and Below (Deprecated Approach)</h4><p>Python Version 3.6 and below, have an executable called pyvenv which is  essentially a binary wrapper for the venv module.  If you execute the  binary as it is, you can see similarities in the usage syntax, with, an  added deprecation warning in certain versions -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ pyvenv</span><br><span class="line">WARNING: the pyenv script is deprecated in favour of &#96;python3.6 -m venv&#96;</span><br><span class="line">usage: venv [-h] [--system-site-packages] [--symlinks | --copies] [--clear]</span><br><span class="line">            [--upgrade] [--without-pip] [--prompt PROMPT]</span><br><span class="line">            ENV_DIR [ENV_DIR ...]</span><br><span class="line">venv: error: the following arguments are required: ENV_DIR</span><br></pre></td></tr></table></figure>
+
+<p>Running the executable through the strings command, shows a similar entry point with an implicit import of the venv module -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ strings &#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;3.6&#x2F;bin&#x2F;pyvenv</span><br><span class="line">#!&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;3.6&#x2F;bin&#x2F;python3.6</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    import sys</span><br><span class="line">    import pathlib</span><br><span class="line">    executable &#x3D; pathlib.Path(sys.executable or &#39;python3&#39;).name</span><br><span class="line">    print(&#39;WARNING: the pyenv script is deprecated in favour of &#39;</span><br><span class="line">          f&#39;&#96;&#123;executable&#125; -m venv&#96;&#39;, file&#x3D;sys.stderr)</span><br><span class="line">    rc &#x3D; 1</span><br><span class="line">    try:</span><br><span class="line">        import venv</span><br><span class="line">        venv.main()</span><br><span class="line">        rc &#x3D; 0</span><br><span class="line">    except Exception as e:</span><br><span class="line">        print(&#39;Error: %s&#39; % e, file&#x3D;sys.stderr)</span><br><span class="line">    sys.exit(rc)</span><br></pre></td></tr></table></figure>
+
+<p>Finally, executing the binary gives the same result as the preferred approach, with the added warning shown in the snippet -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ pyvenv python3venv</span><br><span class="line">WARNING: the pyenv script is deprecated in favour of &#96;python3.6 -m venv&#96;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Creating-A-Virtual-Environment-in-Python-2-x"><a href="#Creating-A-Virtual-Environment-in-Python-2-x" class="headerlink" title="Creating A Virtual Environment in Python 2.x"></a>Creating A Virtual Environment in Python 2.x</h4><p>On Python 2.x, the virtualenv binary can be used to create the Virtual  Environment, on my Mac, this is available as part of the Python 2.7  installation.  In other operating systems your milage may vary and  subsequently, virtualenv may need to be installed if it’s not already  available.</p>
+<p>Check for a virtualenv binary -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ which virtualenv</span><br><span class="line">&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;2.7&#x2F;bin&#x2F;virtualenv</span><br></pre></td></tr></table></figure>
+
+<p>Create a Python 2.x virtualenv.  The syntax is similar to Python 3  with the target virtualenv directory.  The Python 2 equivalent however  gives a lot more in terms of output -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ virtualenv python2venv</span><br><span class="line">New python executable in &#x2F;Users&#x2F;james&#x2F;python2venv&#x2F;bin&#x2F;python</span><br><span class="line">Installing setuptools, pip, wheel...done.</span><br></pre></td></tr></table></figure>
+
+<h4 id="Inspecting-the-Virtual-Environments"><a href="#Inspecting-the-Virtual-Environments" class="headerlink" title="Inspecting the Virtual Environments"></a>Inspecting the Virtual Environments</h4><p>In both cases, a similar structure is created -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ ls python3venv python2venv&#x2F;</span><br><span class="line">python2venv&#x2F;:</span><br><span class="line">bin	include	lib</span><br><span class="line"></span><br><span class="line">python3venv:</span><br><span class="line">bin		include		lib		pyvenv.cfg</span><br></pre></td></tr></table></figure>
+
+<p>The main difference being the pyvenv.cfg file that is visible in the  root of the directory.  If you’re interested in knowing more about this  file <a href="https://www.python.org/dev/peps/pep-0405/" target="_blank" rel="noopener">PEP-0405</a> has a lot of context.</p>
+<h4 id="Activating-the-Virtual-Environment"><a href="#Activating-the-Virtual-Environment" class="headerlink" title="Activating the Virtual Environment"></a>Activating the Virtual Environment</h4><p>A convenient way of using the virtual environment is through activation,  however, it is not an implicit requirement (something we’ll look into  further).  When you activate the virtual environment, the user’s shell  prompt (PS1) is updated and subsequently, the command path gives higher  priority to the virtual environment.  If we check the PATH before  activation, it may look something like this -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo $PATH</span><br><span class="line">&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;3.6&#x2F;bin:&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;2.7&#x2F;bin:&#x2F;usr&#x2F;local&#x2F;bin:&#x2F;usr&#x2F;bin:&#x2F;bin:&#x2F;usr&#x2F;sbin:&#x2F;sbin</span><br></pre></td></tr></table></figure>
+
+<p>Activate the Virtual Environment, n.b. the change to the prompt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ source python3venv&#x2F;bin&#x2F;activate</span><br><span class="line">(python3venv) $</span><br></pre></td></tr></table></figure>
+
+<p>And checking the PATH, my virtual environment now takes precedence with it being the first entry in the PATH -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ echo $PATH</span><br><span class="line">&#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;bin:&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;3.6&#x2F;bin:&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;2.7&#x2F;bin:&#x2F;usr&#x2F;local&#x2F;bin:&#x2F;usr&#x2F;bin:&#x2F;bin:&#x2F;usr&#x2F;sbin:&#x2F;sbin</span><br></pre></td></tr></table></figure>
+
+<h4 id="Python-and-pip-usage-in-the-venv"><a href="#Python-and-pip-usage-in-the-venv" class="headerlink" title="Python and pip usage in the venv"></a>Python and pip usage in the venv</h4><p>If we now execute either python or pip, owing to the PATH precedence, the binary from the virtual environment take priority</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ which python</span><br><span class="line">&#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;bin&#x2F;python</span><br><span class="line">(python3venv) $ which pip</span><br><span class="line">&#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;bin&#x2F;pip</span><br></pre></td></tr></table></figure>
+
+<p>The Python environment, is automatically configured to search the  environments paths for module initialisation, we can verify this with  the REPL environment, note the addition of  /Users/james/python3venv/lib/python3.6/site-packages to the sys.path  list -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ python</span><br><span class="line">Python 3.6.4 (v3.6.4:d48ecebad5, Dec 18 2017, 21:07:28)</span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; import sys</span><br><span class="line">&gt;&gt;&gt; print(sys.path)</span><br><span class="line">[&#39;&#39;, &#39;&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;3.6&#x2F;lib&#x2F;python36.zip&#39;, &#39;&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;3.6&#x2F;lib&#x2F;python3.6&#39;, &#39;&#x2F;Library&#x2F;Frameworks&#x2F;Python.framework&#x2F;Versions&#x2F;3.6&#x2F;lib&#x2F;python3.6&#x2F;lib-dynload&#39;, &#39;&#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#39;]</span><br></pre></td></tr></table></figure>
+
+<h4 id="Installing-packages-through-pip"><a href="#Installing-packages-through-pip" class="headerlink" title="Installing packages through pip"></a>Installing packages through pip</h4><p>With the virtual environment activated, the use of pip will result in  requested packages being installed direct to the virtual environment.   For example, if we install the awesome datetime module called arrow -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ pip install arrow</span><br><span class="line">Collecting arrow</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;f4&#x2F;7f&#x2F;0360628ba40bb93c10cd89cd289b6a8e9ea87b2db884b8edf32c80ee1c73&#x2F;arrow-0.13.1-py2.py3-none-any.whl</span><br><span class="line">Collecting python-dateutil (from arrow)</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;41&#x2F;17&#x2F;c62faccbfbd163c7f57f3844689e3a78bae1f403648a6afb1d0866d87fbb&#x2F;python_dateutil-2.8.0-py2.py3-none-any.whl (226kB)</span><br><span class="line">    100% |████████████████████████████████| 235kB 3.6MB&#x2F;s</span><br><span class="line">Collecting six&gt;&#x3D;1.5 (from python-dateutil-&gt;arrow)</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;73&#x2F;fb&#x2F;00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9&#x2F;six-1.12.0-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: six, python-dateutil, arrow</span><br><span class="line">Successfully installed arrow-0.13.1 python-dateutil-2.8.0 six-1.12.0</span><br><span class="line">You are using pip version 9.0.1, however version 19.0.3 is available.</span><br><span class="line">You should consider upgrading via the &#39;pip install --upgrade pip&#39; command.</span><br></pre></td></tr></table></figure>
+
+<p>It has installed both arrow, and a dependent module of six and  python-dateutil.  We can again confirm, that it is actually installed in the virtual environment, through the REPL interface -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ python</span><br><span class="line">Python 3.6.4 (v3.6.4:d48ecebad5, Dec 18 2017, 21:07:28)</span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; import arrow</span><br><span class="line">&gt;&gt;&gt; print(arrow)</span><br><span class="line">&lt;module &#39;arrow&#39; from &#39;&#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;arrow&#x2F;__init__.py&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; ^D</span><br></pre></td></tr></table></figure>
+
+<h4 id="Using-pip-to-upgrade-pip"><a href="#Using-pip-to-upgrade-pip" class="headerlink" title="Using pip to upgrade pip"></a>Using pip to upgrade pip</h4><p>The eagle eyed amongst you, may have noticed the warning that pip provided  above, where a new version is available.  In the virtual environment, I  typically recommend that people upgrade pip as a post action to creating the venv, prior to installing any modules but showed the approach above as an example of the warning that you may see.  We can upgrade the  environment as follows -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ pip install --upgrade pip</span><br><span class="line">Cache entry deserialization failed, entry ignored</span><br><span class="line">Collecting pip</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;d8&#x2F;f3&#x2F;413bab4ff08e1fc4828dfc59996d721917df8e8583ea85385d51125dceff&#x2F;pip-19.0.3-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: pip</span><br><span class="line">  Found existing installation: pip 9.0.1</span><br><span class="line">    Uninstalling pip-9.0.1:</span><br><span class="line">      Successfully uninstalled pip-9.0.1</span><br><span class="line">Successfully installed pip-19.0.3</span><br><span class="line"></span><br><span class="line">(python3venv) $ pip --version</span><br><span class="line">pip 19.0.3 from &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;pip (python 3.6)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Freezing-Virtual-Environments"><a href="#Freezing-Virtual-Environments" class="headerlink" title="Freezing Virtual Environments"></a>Freezing Virtual Environments</h4><p>If we install additional modules to make this example more effective, i.e. flask</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ pip install flask</span><br><span class="line">Collecting flask</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;7f&#x2F;e7&#x2F;08578774ed4536d3242b14dacb4696386634607af824ea997202cd0edb4b&#x2F;Flask-1.0.2-py2.py3-none-any.whl (91kB)</span><br><span class="line">    100% |████████████████████████████████| 92kB 2.4MB&#x2F;s</span><br><span class="line">Collecting Jinja2&gt;&#x3D;2.10 (from flask)</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;7f&#x2F;ff&#x2F;ae64bacdfc95f27a016a7bed8e8686763ba4d277a78ca76f32659220a731&#x2F;Jinja2-2.10-py2.py3-none-any.whl (126kB)</span><br><span class="line">    100% |████████████████████████████████| 133kB 7.6MB&#x2F;s</span><br><span class="line">Collecting Werkzeug&gt;&#x3D;0.14 (from flask)</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;20&#x2F;c4&#x2F;12e3e56473e52375aa29c4764e70d1b8f3efa6682bef8d0aae04fe335243&#x2F;Werkzeug-0.14.1-py2.py3-none-any.whl (322kB)</span><br><span class="line">    100% |████████████████████████████████| 327kB 13.0MB&#x2F;s</span><br><span class="line">Collecting itsdangerous&gt;&#x3D;0.24 (from flask)</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;76&#x2F;ae&#x2F;44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e&#x2F;itsdangerous-1.1.0-py2.py3-none-any.whl</span><br><span class="line">Collecting click&gt;&#x3D;5.1 (from flask)</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;fa&#x2F;37&#x2F;45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec&#x2F;Click-7.0-py2.py3-none-any.whl (81kB)</span><br><span class="line">    100% |████████████████████████████████| 81kB 15.2MB&#x2F;s</span><br><span class="line">Collecting MarkupSafe&gt;&#x3D;0.23 (from Jinja2&gt;&#x3D;2.10-&gt;flask)</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;f0&#x2F;00&#x2F;a6aea33f5598b080b86d6b6d1214b51afe3ffa6100b902d5aa465080083f&#x2F;MarkupSafe-1.1.1-cp36-cp36m-macosx_10_6_intel.whl</span><br><span class="line">Installing collected packages: MarkupSafe, Jinja2, Werkzeug, itsdangerous, click, flask</span><br><span class="line">Successfully installed Jinja2-2.10 MarkupSafe-1.1.1 Werkzeug-0.14.1 click-7.0 flask-1.0.2 itsdangerous-1.1.0</span><br></pre></td></tr></table></figure>
+
+<p>We have a significant number of modules, post Flask/Arrow  installation.  The convenient command of pip freeze, allows us to  capture a snapshot of the virtual environment, in this example I’m using tee, to also send the output to a text file called requirements.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ pip freeze | tee &#x2F;tmp&#x2F;requirements.txt</span><br><span class="line">arrow&#x3D;&#x3D;0.13.1</span><br><span class="line">Click&#x3D;&#x3D;7.0</span><br><span class="line">Flask&#x3D;&#x3D;1.0.2</span><br><span class="line">itsdangerous&#x3D;&#x3D;1.1.0</span><br><span class="line">Jinja2&#x3D;&#x3D;2.10</span><br><span class="line">MarkupSafe&#x3D;&#x3D;1.1.1</span><br><span class="line">python-dateutil&#x3D;&#x3D;2.8.0</span><br><span class="line">six&#x3D;&#x3D;1.12.0</span><br><span class="line">Werkzeug&#x3D;&#x3D;0.14.1</span><br></pre></td></tr></table></figure>
+
+<h4 id="Replaying-a-Virtual-Environments-Requirements"><a href="#Replaying-a-Virtual-Environments-Requirements" class="headerlink" title="Replaying a Virtual Environments Requirements"></a>Replaying a Virtual Environments Requirements</h4><p>Earlier on, I created a Python 2 virtual environment, let’s use this, to replay the virtual environment configuration.  Firstly, we deactivate the  existing venv</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ deactivate</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+
+<p>Then we activate the Python 2 virtual environment -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ source python2venv&#x2F;bin&#x2F;activate</span><br><span class="line">(python2venv) $</span><br></pre></td></tr></table></figure>
+
+<p>Upgrade pip, in most cases you <em>should</em> be able to use ‘pip install –upgrade pip’, however, I encountered an issue and had to perform the following workaround -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ (python2venv) curl https:&#x2F;&#x2F;bootstrap.pypa.io&#x2F;get-pip.py | python</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100 1659k  100 1659k    0     0  2375k      0 --:--:-- --:--:-- --:--:-- 2377k</span><br><span class="line">DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won&#39;t be maintained after that date. A future version of pip will drop support for Python 2.7.</span><br><span class="line">Collecting pip</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;d8&#x2F;f3&#x2F;413bab4ff08e1fc4828dfc59996d721917df8e8583ea85385d51125dceff&#x2F;pip-19.0.3-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: pip</span><br><span class="line">  Found existing installation: pip 9.0.1</span><br><span class="line">    Uninstalling pip-9.0.1:</span><br><span class="line">      Successfully uninstalled pip-9.0.1</span><br><span class="line">Successfully installed pip-19.0.3</span><br></pre></td></tr></table></figure>
+
+<p>We can now replay the environment in our Python 3 setup, in the  Python 2 environment, using the requirements.txt captured using pip  freeze -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ (python2venv) pip install -r &#x2F;tmp&#x2F;requirements.txt</span><br><span class="line">DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won&#39;t be maintained after that date. A future version of pip will drop support for Python 2.7.</span><br><span class="line">Collecting arrow&#x3D;&#x3D;0.13.1 (from -r &#x2F;tmp&#x2F;requirements.txt (line 1))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;f4&#x2F;7f&#x2F;0360628ba40bb93c10cd89cd289b6a8e9ea87b2db884b8edf32c80ee1c73&#x2F;arrow-0.13.1-py2.py3-none-any.whl</span><br><span class="line">Collecting Click&#x3D;&#x3D;7.0 (from -r &#x2F;tmp&#x2F;requirements.txt (line 2))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;fa&#x2F;37&#x2F;45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec&#x2F;Click-7.0-py2.py3-none-any.whl</span><br><span class="line">Collecting Flask&#x3D;&#x3D;1.0.2 (from -r &#x2F;tmp&#x2F;requirements.txt (line 3))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;7f&#x2F;e7&#x2F;08578774ed4536d3242b14dacb4696386634607af824ea997202cd0edb4b&#x2F;Flask-1.0.2-py2.py3-none-any.whl</span><br><span class="line">Collecting itsdangerous&#x3D;&#x3D;1.1.0 (from -r &#x2F;tmp&#x2F;requirements.txt (line 4))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;76&#x2F;ae&#x2F;44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e&#x2F;itsdangerous-1.1.0-py2.py3-none-any.whl</span><br><span class="line">Collecting Jinja2&#x3D;&#x3D;2.10 (from -r &#x2F;tmp&#x2F;requirements.txt (line 5))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;7f&#x2F;ff&#x2F;ae64bacdfc95f27a016a7bed8e8686763ba4d277a78ca76f32659220a731&#x2F;Jinja2-2.10-py2.py3-none-any.whl</span><br><span class="line">Collecting MarkupSafe&#x3D;&#x3D;1.1.1 (from -r &#x2F;tmp&#x2F;requirements.txt (line 6))</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;6d&#x2F;d2&#x2F;0ccd2c0e2cd93b35e765d9b3205cd6602e6b202b522fc7997531353715b3&#x2F;MarkupSafe-1.1.1-cp27-cp27m-macosx_10_6_intel.whl</span><br><span class="line">Collecting python-dateutil&#x3D;&#x3D;2.8.0 (from -r &#x2F;tmp&#x2F;requirements.txt (line 7))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;41&#x2F;17&#x2F;c62faccbfbd163c7f57f3844689e3a78bae1f403648a6afb1d0866d87fbb&#x2F;python_dateutil-2.8.0-py2.py3-none-any.whl</span><br><span class="line">Collecting six&#x3D;&#x3D;1.12.0 (from -r &#x2F;tmp&#x2F;requirements.txt (line 8))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;73&#x2F;fb&#x2F;00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9&#x2F;six-1.12.0-py2.py3-none-any.whl</span><br><span class="line">Collecting Werkzeug&#x3D;&#x3D;0.14.1 (from -r &#x2F;tmp&#x2F;requirements.txt (line 9))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;20&#x2F;c4&#x2F;12e3e56473e52375aa29c4764e70d1b8f3efa6682bef8d0aae04fe335243&#x2F;Werkzeug-0.14.1-py2.py3-none-any.whl</span><br><span class="line">Collecting backports.functools-lru-cache&gt;&#x3D;1.2.1; python_version &#x3D;&#x3D; &quot;2.7&quot; (from arrow&#x3D;&#x3D;0.13.1-&gt;-r &#x2F;tmp&#x2F;requirements.txt (line 1))</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;03&#x2F;8e&#x2F;2424c0e65c4a066e28f539364deee49b6451f8fcd4f718fefa50cc3dcf48&#x2F;backports.functools_lru_cache-1.5-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: six, python-dateutil, backports.functools-lru-cache, arrow, Click, MarkupSafe, Jinja2, itsdangerous, Werkzeug, Flask</span><br><span class="line">Successfully installed Click-7.0 Flask-1.0.2 Jinja2-2.10 MarkupSafe-1.1.1 Werkzeug-0.14.1 arrow-0.13.1 backports.functools-lru-cache-1.5 itsdangerous-1.1.0 python-dateutil-2.8.0 six-1.12.0</span><br></pre></td></tr></table></figure>
+
+<p>Pip freeze, will confirm that the Python 2 environment has the same  versions installed as the Python 3 environment and is almost identical  to what we saw previously.  The version 2 equivalent also required a  dependency of ‘backports.functools-lru-cache==1.5’ hence an additional  module -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(python2venv) $ pip freeze</span><br><span class="line">DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won&#39;t be maintained after that date. A future version of pip will drop support for Python 2.7.</span><br><span class="line">arrow&#x3D;&#x3D;0.13.1</span><br><span class="line">backports.functools-lru-cache&#x3D;&#x3D;1.5</span><br><span class="line">Click&#x3D;&#x3D;7.0</span><br><span class="line">Flask&#x3D;&#x3D;1.0.2</span><br><span class="line">itsdangerous&#x3D;&#x3D;1.1.0</span><br><span class="line">Jinja2&#x3D;&#x3D;2.10</span><br><span class="line">MarkupSafe&#x3D;&#x3D;1.1.1</span><br><span class="line">python-dateutil&#x3D;&#x3D;2.8.0</span><br><span class="line">six&#x3D;&#x3D;1.12.0</span><br><span class="line">Werkzeug&#x3D;&#x3D;0.14.1</span><br></pre></td></tr></table></figure>
+
+<p>Whilst I don’t necessarily recommend switching virtual environments  between Python versions, the example was chosen to show the versitiliy  of the pip freeze command and the ability, to replay an environment,  albeit into the same version of a virtual environment, or another  version whether major, or minor.</p>
+<h4 id="Using-a-Virtual-Environment-without-activation"><a href="#Using-a-Virtual-Environment-without-activation" class="headerlink" title="Using a Virtual Environment, without activation"></a>Using a Virtual Environment, without activation</h4><p>Earlier, I made reference that it’s convenient, to activate a virtual  environment but, in some cases, it’s also convenient not to activate it.  For example, you may wish to call a script or application direct.</p>
+<p>The python binary, in the virtual environment can be called directly  and existing search paths are honoured.  For example, if we call the  binary direct without any virtualenv, we can still import the modules  we’ve installed without error -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(python2venv) $ deactivate</span><br><span class="line">$ python3venv&#x2F;bin&#x2F;python</span><br><span class="line">Python 3.6.4 (v3.6.4:d48ecebad5, Dec 18 2017, 21:07:28)</span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; import arrow</span><br><span class="line">&gt;&gt;&gt; print(arrow)</span><br><span class="line">&lt;module &#39;arrow&#39; from &#39;&#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;arrow&#x2F;__init__.py&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; ^D</span><br><span class="line"></span><br><span class="line">$ python2venv&#x2F;bin&#x2F;python</span><br><span class="line">Python 2.7.14 (v2.7.14:84471935ed, Sep 16 2017, 12:01:12)</span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; import arrow</span><br><span class="line">&gt;&gt;&gt; print(arrow)</span><br><span class="line">&lt;module &#39;arrow&#39; from &#39;&#x2F;Users&#x2F;james&#x2F;python2venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;arrow&#x2F;__init__.pyc&#39;&gt;</span><br><span class="line">&gt;&gt;&gt; ^D</span><br></pre></td></tr></table></figure>
+
+<p>Our scripts can also use the #! directive, making direct reference to the python binary, if we create a quick script -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt;&lt;EOF &gt; test.py</span><br><span class="line">&gt; #!&#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;bin&#x2F;python</span><br><span class="line">&gt;</span><br><span class="line">&gt; import arrow</span><br><span class="line">&gt; utc &#x3D; arrow.utcnow()</span><br><span class="line">&gt; print(utc)</span><br><span class="line">&gt; EOF</span><br></pre></td></tr></table></figure>
+
+<p>Set executable, and execute, we can confirm that modules within the venv are honoured -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ chmod u+x test.py</span><br><span class="line">$ .&#x2F;test.py</span><br><span class="line">2019-03-03T21:17:22.632130+00:00</span><br></pre></td></tr></table></figure>
+
+<p>Making it highly convenient for a script or application, to run with the specific requirements that are needed.</p>
+<h4 id="Packaging-and-re-use"><a href="#Packaging-and-re-use" class="headerlink" title="Packaging and re-use"></a>Packaging and re-use</h4><p>With a virtual environment configured, it’s possible to package an entire virtual environment, and use it as an execution base <em>providing</em> that the target installation has the same version of Python that was  used to create the virtual environment and that the virtual environment  is <em>placed in the same location</em>.  This is very convenient, when  working in environments that have standardised builds.  Essentially, the whole environment can be packaged and deployed to another system.</p>
+<p>To quickly demonstrate, take a dump of the virtual env</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar cf python3venv.tar python3venv</span><br></pre></td></tr></table></figure>
+
+<p>Destroy the venv -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf python3venv</span><br></pre></td></tr></table></figure>
+
+<p>Extract the dump -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar xf python3venv.tar</span><br></pre></td></tr></table></figure>
+
+<p>Test a dependent script -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;test.py</span><br><span class="line">2019-03-03T21:26:47.082092+00:00</span><br></pre></td></tr></table></figure>
+
+<h4 id="Using-pip-tools-to-manage-Virtual-Environments"><a href="#Using-pip-tools-to-manage-Virtual-Environments" class="headerlink" title="Using pip-tools to manage Virtual Environments"></a>Using pip-tools to manage Virtual Environments</h4><p>Personally, I am a big fan of pip-tools, it provides a great way, of managing and  maintaining virtual environments and their dependencies.  From the  examples above, we saw that the installation of both arrow and flask,  resulted in a number of dependent modules.  If for example we now remove both arrow and flask, the dependencies, remain in the virtual  environment -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ pip uninstall arrow flask</span><br><span class="line">Uninstalling arrow-0.13.1:</span><br><span class="line">  Would remove:</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;arrow-0.13.1.dist-info&#x2F;*</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;arrow&#x2F;*</span><br><span class="line">Proceed (y&#x2F;n)? y</span><br><span class="line">  Successfully uninstalled arrow-0.13.1</span><br><span class="line">Uninstalling Flask-1.0.2:</span><br><span class="line">  Would remove:</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;bin&#x2F;flask</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;Flask-1.0.2.dist-info&#x2F;*</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;flask&#x2F;*</span><br><span class="line">Proceed (y&#x2F;n)? y</span><br><span class="line">  Successfully uninstalled Flask-1.0.2</span><br><span class="line">(python3venv) $ pip freeze</span><br><span class="line">Click&#x3D;&#x3D;7.0</span><br><span class="line">itsdangerous&#x3D;&#x3D;1.1.0</span><br><span class="line">Jinja2&#x3D;&#x3D;2.10</span><br><span class="line">MarkupSafe&#x3D;&#x3D;1.1.1</span><br><span class="line">python-dateutil&#x3D;&#x3D;2.8.0</span><br><span class="line">six&#x3D;&#x3D;1.12.0</span><br><span class="line">Werkzeug&#x3D;&#x3D;0.14.1</span><br></pre></td></tr></table></figure>
+
+<p>Through the use of pip-tools, there is a cleaner way.  If we start with a fresh virtual environment and install pip-tools -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ deactivate</span><br><span class="line">$ rm -rf python3venv</span><br><span class="line">$ python3 -mvenv python3venv</span><br><span class="line">$ source python3venv&#x2F;bin&#x2F;activate</span><br><span class="line">(python3venv) $ pip install --upgrade pip</span><br><span class="line">Cache entry deserialization failed, entry ignored</span><br><span class="line">Collecting pip</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;d8&#x2F;f3&#x2F;413bab4ff08e1fc4828dfc59996d721917df8e8583ea85385d51125dceff&#x2F;pip-19.0.3-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: pip</span><br><span class="line">  Found existing installation: pip 9.0.1</span><br><span class="line">    Uninstalling pip-9.0.1:</span><br><span class="line">      Successfully uninstalled pip-9.0.1</span><br><span class="line">Successfully installed pip-19.0.3</span><br><span class="line"></span><br><span class="line">(python3venv) $ pip install pip-tools</span><br><span class="line">Collecting pip-tools</span><br><span class="line">  Downloading https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;58&#x2F;7a&#x2F;f93b24807b7ac2d9d0bd6b8a886bcbe67eb39c1b1184b985dd5e0e2eca92&#x2F;pip_tools-3.4.0-py2.py3-none-any.whl (43kB)</span><br><span class="line">    100% |████████████████████████████████| 51kB 2.3MB&#x2F;s</span><br><span class="line">Collecting six (from pip-tools)</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;73&#x2F;fb&#x2F;00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9&#x2F;six-1.12.0-py2.py3-none-any.whl</span><br><span class="line">Collecting click&gt;&#x3D;6 (from pip-tools)</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;fa&#x2F;37&#x2F;45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec&#x2F;Click-7.0-py2.py3-none-any.whl</span><br><span class="line">Installing collected packages: six, click, pip-tools</span><br><span class="line">Successfully installed click-7.0 pip-tools-3.4.0 six-1.12.0</span><br></pre></td></tr></table></figure>
+
+<p>We can now use an input file to track requirements.  In this case,  I’m going to create a requirements.in file, and I will implicitly put  the versions of arrow and flask that I am interested in</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ cat &lt;&lt;EOF &gt; requirements.in</span><br><span class="line">&gt; arrow&#x3D;&#x3D;0.13.1</span><br><span class="line">&gt; Flask&#x3D;&#x3D;1.0.2</span><br><span class="line">&gt; EOF</span><br></pre></td></tr></table></figure>
+
+<p>Using pip-compile, part of the pip-tools suite, we can create our requirements.txt from the requirements.in</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ pip-compile --generate-hashes --output-file requirements.txt requirements.in</span><br><span class="line">#</span><br><span class="line"># This file is autogenerated by pip-compile</span><br><span class="line"># To update, run:</span><br><span class="line">#</span><br><span class="line">#    pip-compile --generate-hashes --output-file requirements.txt requirements.in</span><br><span class="line">#</span><br><span class="line">arrow&#x3D;&#x3D;0.13.1 \</span><br><span class="line">    --hash&#x3D;sha256:3397e5448952e18e1295bf047014659effa5ae8da6a5371d37ff0ddc46fa6872 \</span><br><span class="line">    --hash&#x3D;sha256:6f54d9f016c0b7811fac9fb8c2c7fa7421d80c54dbdd75ffb12913c55db60b8a</span><br><span class="line">click&#x3D;&#x3D;7.0 \</span><br><span class="line">    --hash&#x3D;sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13 \</span><br><span class="line">    --hash&#x3D;sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7 \</span><br><span class="line">    # via flask</span><br><span class="line">flask&#x3D;&#x3D;1.0.2 \</span><br><span class="line">    --hash&#x3D;sha256:2271c0070dbcb5275fad4a82e29f23ab92682dc45f9dfbc22c02ba9b9322ce48 \</span><br><span class="line">    --hash&#x3D;sha256:a080b744b7e345ccfcbc77954861cb05b3c63786e93f2b3875e0913d44b43f05</span><br><span class="line">itsdangerous&#x3D;&#x3D;1.1.0 \</span><br><span class="line">    --hash&#x3D;sha256:321b033d07f2a4136d3ec762eac9f16a10ccd60f53c0c91af90217ace7ba1f19 \</span><br><span class="line">    --hash&#x3D;sha256:b12271b2047cb23eeb98c8b5622e2e5c5e9abd9784a153e9d8ef9cb4dd09d749 \</span><br><span class="line">    # via flask</span><br><span class="line">jinja2&#x3D;&#x3D;2.10 \</span><br><span class="line">    --hash&#x3D;sha256:74c935a1b8bb9a3947c50a54766a969d4846290e1e788ea44c1392163723c3bd \</span><br><span class="line">    --hash&#x3D;sha256:f84be1bb0040caca4cea721fcbbbbd61f9be9464ca236387158b0feea01914a4 \</span><br><span class="line">    # via flask</span><br><span class="line">markupsafe&#x3D;&#x3D;1.1.1 \</span><br><span class="line">    --hash&#x3D;sha256:00bc623926325b26bb9605ae9eae8a215691f33cae5df11ca5424f06f2d1f473 \</span><br><span class="line">    --hash&#x3D;sha256:09027a7803a62ca78792ad89403b1b7a73a01c8cb65909cd876f7fcebd79b161 \</span><br><span class="line">    --hash&#x3D;sha256:09c4b7f37d6c648cb13f9230d847adf22f8171b1ccc4d5682398e77f40309235 \</span><br><span class="line">    --hash&#x3D;sha256:1027c282dad077d0bae18be6794e6b6b8c91d58ed8a8d89a89d59693b9131db5 \</span><br><span class="line">    --hash&#x3D;sha256:24982cc2533820871eba85ba648cd53d8623687ff11cbb805be4ff7b4c971aff \</span><br><span class="line">    --hash&#x3D;sha256:29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b \</span><br><span class="line">    --hash&#x3D;sha256:43a55c2930bbc139570ac2452adf3d70cdbb3cfe5912c71cdce1c2c6bbd9c5d1 \</span><br><span class="line">    --hash&#x3D;sha256:46c99d2de99945ec5cb54f23c8cd5689f6d7177305ebff350a58ce5f8de1669e \</span><br><span class="line">    --hash&#x3D;sha256:500d4957e52ddc3351cabf489e79c91c17f6e0899158447047588650b5e69183 \</span><br><span class="line">    --hash&#x3D;sha256:535f6fc4d397c1563d08b88e485c3496cf5784e927af890fb3c3aac7f933ec66 \</span><br><span class="line">    --hash&#x3D;sha256:62fe6c95e3ec8a7fad637b7f3d372c15ec1caa01ab47926cfdf7a75b40e0eac1 \</span><br><span class="line">    --hash&#x3D;sha256:6dd73240d2af64df90aa7c4e7481e23825ea70af4b4922f8ede5b9e35f78a3b1 \</span><br><span class="line">    --hash&#x3D;sha256:717ba8fe3ae9cc0006d7c451f0bb265ee07739daf76355d06366154ee68d221e \</span><br><span class="line">    --hash&#x3D;sha256:79855e1c5b8da654cf486b830bd42c06e8780cea587384cf6545b7d9ac013a0b \</span><br><span class="line">    --hash&#x3D;sha256:7c1699dfe0cf8ff607dbdcc1e9b9af1755371f92a68f706051cc8c37d447c905 \</span><br><span class="line">    --hash&#x3D;sha256:88e5fcfb52ee7b911e8bb6d6aa2fd21fbecc674eadd44118a9cc3863f938e735 \</span><br><span class="line">    --hash&#x3D;sha256:8defac2f2ccd6805ebf65f5eeb132adcf2ab57aa11fdf4c0dd5169a004710e7d \</span><br><span class="line">    --hash&#x3D;sha256:98c7086708b163d425c67c7a91bad6e466bb99d797aa64f965e9d25c12111a5e \</span><br><span class="line">    --hash&#x3D;sha256:9add70b36c5666a2ed02b43b335fe19002ee5235efd4b8a89bfcf9005bebac0d \</span><br><span class="line">    --hash&#x3D;sha256:9bf40443012702a1d2070043cb6291650a0841ece432556f784f004937f0f32c \</span><br><span class="line">    --hash&#x3D;sha256:ade5e387d2ad0d7ebf59146cc00c8044acbd863725f887353a10df825fc8ae21 \</span><br><span class="line">    --hash&#x3D;sha256:b00c1de48212e4cc9603895652c5c410df699856a2853135b3967591e4beebc2 \</span><br><span class="line">    --hash&#x3D;sha256:b1282f8c00509d99fef04d8ba936b156d419be841854fe901d8ae224c59f0be5 \</span><br><span class="line">    --hash&#x3D;sha256:b2051432115498d3562c084a49bba65d97cf251f5a331c64a12ee7e04dacc51b \</span><br><span class="line">    --hash&#x3D;sha256:ba59edeaa2fc6114428f1637ffff42da1e311e29382d81b339c1817d37ec93c6 \</span><br><span class="line">    --hash&#x3D;sha256:c8716a48d94b06bb3b2524c2b77e055fb313aeb4ea620c8dd03a105574ba704f \</span><br><span class="line">    --hash&#x3D;sha256:cd5df75523866410809ca100dc9681e301e3c27567cf498077e8551b6d20e42f \</span><br><span class="line">    --hash&#x3D;sha256:e249096428b3ae81b08327a63a485ad0878de3fb939049038579ac0ef61e17e7 \</span><br><span class="line">    # via jinja2</span><br><span class="line">python-dateutil&#x3D;&#x3D;2.8.0 \</span><br><span class="line">    --hash&#x3D;sha256:7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb \</span><br><span class="line">    --hash&#x3D;sha256:c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e \</span><br><span class="line">    # via arrow</span><br><span class="line">six&#x3D;&#x3D;1.12.0 \</span><br><span class="line">    --hash&#x3D;sha256:3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c \</span><br><span class="line">    --hash&#x3D;sha256:d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73 \</span><br><span class="line">    # via python-dateutil</span><br><span class="line">werkzeug&#x3D;&#x3D;0.14.1 \</span><br><span class="line">    --hash&#x3D;sha256:c3fd7a7d41976d9f44db327260e263132466836cef6f91512889ed60ad26557c \</span><br><span class="line">    --hash&#x3D;sha256:d5da73735293558eb1651ee2fddc4d0dedcfa06538b8813a2e20011583c9e49b \</span><br><span class="line">    # via flask</span><br></pre></td></tr></table></figure>
+
+<p>The clear benefit of this approach, is that the dependencies also have hashes to ensure consistency of the desired modules.</p>
+<p>Running pip-sync, again, part of the pip-tools suite will synchronise our virtual environment with that of the requirements.txt file</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ pip-sync</span><br><span class="line">Collecting arrow&#x3D;&#x3D;0.13.1 (from -r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 1))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;f4&#x2F;7f&#x2F;0360628ba40bb93c10cd89cd289b6a8e9ea87b2db884b8edf32c80ee1c73&#x2F;arrow-0.13.1-py2.py3-none-any.whl</span><br><span class="line">Collecting flask&#x3D;&#x3D;1.0.2 (from -r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 4))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;7f&#x2F;e7&#x2F;08578774ed4536d3242b14dacb4696386634607af824ea997202cd0edb4b&#x2F;Flask-1.0.2-py2.py3-none-any.whl</span><br><span class="line">Collecting itsdangerous&#x3D;&#x3D;1.1.0 (from -r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 7))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;76&#x2F;ae&#x2F;44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e&#x2F;itsdangerous-1.1.0-py2.py3-none-any.whl</span><br><span class="line">Collecting jinja2&#x3D;&#x3D;2.10 (from -r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 10))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;7f&#x2F;ff&#x2F;ae64bacdfc95f27a016a7bed8e8686763ba4d277a78ca76f32659220a731&#x2F;Jinja2-2.10-py2.py3-none-any.whl</span><br><span class="line">Collecting markupsafe&#x3D;&#x3D;1.1.1 (from -r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 13))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;f0&#x2F;00&#x2F;a6aea33f5598b080b86d6b6d1214b51afe3ffa6100b902d5aa465080083f&#x2F;MarkupSafe-1.1.1-cp36-cp36m-macosx_10_6_intel.whl</span><br><span class="line">Collecting python-dateutil&#x3D;&#x3D;2.8.0 (from -r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 42))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;41&#x2F;17&#x2F;c62faccbfbd163c7f57f3844689e3a78bae1f403648a6afb1d0866d87fbb&#x2F;python_dateutil-2.8.0-py2.py3-none-any.whl</span><br><span class="line">Collecting werkzeug&#x3D;&#x3D;0.14.1 (from -r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 45))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;20&#x2F;c4&#x2F;12e3e56473e52375aa29c4764e70d1b8f3efa6682bef8d0aae04fe335243&#x2F;Werkzeug-0.14.1-py2.py3-none-any.whl</span><br><span class="line">Requirement already satisfied: click&gt;&#x3D;5.1 in .&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages (from flask&#x3D;&#x3D;1.0.2-&gt;-r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 4)) (7.0)</span><br><span class="line">Requirement already satisfied: six&gt;&#x3D;1.5 in .&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages (from python-dateutil&#x3D;&#x3D;2.8.0-&gt;-r &#x2F;var&#x2F;folders&#x2F;xk&#x2F;p46swdnn3b56rbd01qwdjhdh0000gn&#x2F;T&#x2F;tmpfwkk4j83 (line 42)) (1.12.0)</span><br><span class="line">Installing collected packages: python-dateutil, arrow, werkzeug, itsdangerous, markupsafe, jinja2, flask</span><br><span class="line">Successfully installed arrow-0.13.1 flask-1.0.2 itsdangerous-1.1.0 jinja2-2.10 markupsafe-1.1.1 python-dateutil-2.8.0 werkzeug-0.14.1</span><br><span class="line">(python3venv) $ pip freeze</span><br><span class="line">arrow&#x3D;&#x3D;0.13.1</span><br><span class="line">Click&#x3D;&#x3D;7.0</span><br><span class="line">Flask&#x3D;&#x3D;1.0.2</span><br><span class="line">itsdangerous&#x3D;&#x3D;1.1.0</span><br><span class="line">Jinja2&#x3D;&#x3D;2.10</span><br><span class="line">MarkupSafe&#x3D;&#x3D;1.1.1</span><br><span class="line">pip-tools&#x3D;&#x3D;3.4.0</span><br><span class="line">python-dateutil&#x3D;&#x3D;2.8.0</span><br><span class="line">six&#x3D;&#x3D;1.12.0</span><br><span class="line">Werkzeug&#x3D;&#x3D;0.14.1</span><br></pre></td></tr></table></figure>
+
+<p>Should however we wish to remove a component, for example Flask, we  can update our requirements.in.  When we repeat the process with  pip-sync, it will remove Flask as well as Flask’s dependencies -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ cat &lt;&lt;EOF &gt; requirements.in</span><br><span class="line">&gt; arrow&#x3D;&#x3D;0.13.1</span><br><span class="line">&gt; EOF</span><br><span class="line">(python3venv) $ pip-compile --generate-hashes --output-file requirements.txt requirements.in</span><br><span class="line">#</span><br><span class="line"># This file is autogenerated by pip-compile</span><br><span class="line"># To update, run:</span><br><span class="line">#</span><br><span class="line">#    pip-compile --generate-hashes --output-file requirements.txt requirements.in</span><br><span class="line">#</span><br><span class="line">arrow&#x3D;&#x3D;0.13.1 \</span><br><span class="line">    --hash&#x3D;sha256:3397e5448952e18e1295bf047014659effa5ae8da6a5371d37ff0ddc46fa6872 \</span><br><span class="line">    --hash&#x3D;sha256:6f54d9f016c0b7811fac9fb8c2c7fa7421d80c54dbdd75ffb12913c55db60b8a</span><br><span class="line">python-dateutil&#x3D;&#x3D;2.8.0 \</span><br><span class="line">    --hash&#x3D;sha256:7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb \</span><br><span class="line">    --hash&#x3D;sha256:c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e \</span><br><span class="line">    # via arrow</span><br><span class="line">six&#x3D;&#x3D;1.12.0 \</span><br><span class="line">    --hash&#x3D;sha256:3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c \</span><br><span class="line">    --hash&#x3D;sha256:d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73 \</span><br><span class="line">    # via python-dateutil</span><br><span class="line">(python3venv) $ pip-sync</span><br><span class="line">Uninstalling Flask-1.0.2:</span><br><span class="line">  Successfully uninstalled Flask-1.0.2</span><br><span class="line">Uninstalling itsdangerous-1.1.0:</span><br><span class="line">  Successfully uninstalled itsdangerous-1.1.0</span><br><span class="line">Uninstalling Jinja2-2.10:</span><br><span class="line">  Successfully uninstalled Jinja2-2.10</span><br><span class="line">Uninstalling MarkupSafe-1.1.1:</span><br><span class="line">  Successfully uninstalled MarkupSafe-1.1.1</span><br><span class="line">Uninstalling Werkzeug-0.14.1:</span><br><span class="line">  Successfully uninstalled Werkzeug-0.14.1</span><br><span class="line">(python3venv) $ pip freeze</span><br><span class="line">arrow&#x3D;&#x3D;0.13.1</span><br><span class="line">Click&#x3D;&#x3D;7.0</span><br><span class="line">pip-tools&#x3D;&#x3D;3.4.0</span><br><span class="line">python-dateutil&#x3D;&#x3D;2.8.0</span><br><span class="line">six&#x3D;&#x3D;1.12.0</span><br></pre></td></tr></table></figure>
+
+<h4 id="Using-your-Virtual-Environment-with-a-Specific-PyPi-Repository"><a href="#Using-your-Virtual-Environment-with-a-Specific-PyPi-Repository" class="headerlink" title="Using your Virtual Environment with a Specific PyPi Repository"></a>Using your Virtual Environment with a Specific PyPi Repository</h4><p>In some circumstances, you may have a requirement to use a specific PyPi  repository for installation.  Should this be the case, the creation of a file called pip.conf, in the root of the Virtual Environment is enough  to satisfy this dependency.  An example pip.conf looks like the  following, change <a href="http://hostname.spurin.com" target="_blank" rel="noopener">hostname.spurin.com</a> as required -</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">disable-pip-version-check &#x3D; True</span><br><span class="line">trusted-host &#x3D; hostname.spurin.com</span><br><span class="line">index &#x3D; https:&#x2F;&#x2F;hostname.spurin.com&#x2F;repository&#x2F;pypi-all&#x2F;pypi</span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;hostname.spurin.com&#x2F;repository&#x2F;pypi-all&#x2F;simple</span><br></pre></td></tr></table></figure>
+
+<h4 id="Isolating-Module-Versions"><a href="#Isolating-Module-Versions" class="headerlink" title="Isolating Module Versions"></a>Isolating Module Versions</h4><p>Virtual Environments are a great way of isolating, specific versions of  modules.  Over time you may have a project, that has dependencies on a  specific version whilst another, may benefit from newer functionality.</p>
+<p>A particular module where this isolation is effective in Ansible and in the course that I created, <a href="https://www.udemy.com/mastering-ansible-x/" target="_blank" rel="noopener">Mastering Ansible</a>, my preferred approach for installing Ansible is via a Virtual  Environment.  You can be specific with the version of Ansible that you  install, can choose whether or not you leverage Python 2 or Python 3  (historically, Python 2 is a more reliable choice with Ansible) and you  can have multiple versions of Ansible on the same system.  The following diagram from the course demonstrates the effectiveness, of Virtual  Environments </p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-3-8/1615165356466-pasted-19.png" alt=""></p>
+<h4 id="Creating-Wheels-from-your-Virtual-Environment"><a href="#Creating-Wheels-from-your-Virtual-Environment" class="headerlink" title="Creating Wheels from your Virtual Environment"></a>Creating Wheels from your Virtual Environment</h4><p>Wheel can be used to capture Python modules into zip like files that can be  conveniently used for installations.  They even handle complicated  Python packages that require compilation (C extensions).  Using such an  approach, allows you to facilitate installations from one machine that  has a compiler to another that may not.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">(python3venv) $ pip wheel --wheel-dir&#x3D;&#x2F;tmp&#x2F;wheel-dir -r requirements.txt</span><br><span class="line">Collecting arrow&#x3D;&#x3D;0.13.1 (from -r requirements.txt (line 7))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;f4&#x2F;7f&#x2F;0360628ba40bb93c10cd89cd289b6a8e9ea87b2db884b8edf32c80ee1c73&#x2F;arrow-0.13.1-py2.py3-none-any.whl</span><br><span class="line">  Saved &#x2F;private&#x2F;tmp&#x2F;wheel-dir&#x2F;arrow-0.13.1-py2.py3-none-any.whl</span><br><span class="line">Collecting python-dateutil&#x3D;&#x3D;2.8.0 (from -r requirements.txt (line 10))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;41&#x2F;17&#x2F;c62faccbfbd163c7f57f3844689e3a78bae1f403648a6afb1d0866d87fbb&#x2F;python_dateutil-2.8.0-py2.py3-none-any.whl</span><br><span class="line">  Saved &#x2F;private&#x2F;tmp&#x2F;wheel-dir&#x2F;python_dateutil-2.8.0-py2.py3-none-any.whl</span><br><span class="line">Collecting six&#x3D;&#x3D;1.12.0 (from -r requirements.txt (line 14))</span><br><span class="line">  Using cached https:&#x2F;&#x2F;files.pythonhosted.org&#x2F;packages&#x2F;73&#x2F;fb&#x2F;00a976f728d0d1fecfe898238ce23f502a721c0ac0ecfedb80e0d88c64e9&#x2F;six-1.12.0-py2.py3-none-any.whl</span><br><span class="line">  Saved &#x2F;private&#x2F;tmp&#x2F;wheel-dir&#x2F;six-1.12.0-py2.py3-none-any.whl</span><br><span class="line">(python3venv) $ ls &#x2F;tmp&#x2F;wheel-dir</span><br><span class="line">arrow-0.13.1-py2.py3-none-any.whl		python_dateutil-2.8.0-py2.py3-none-any.whl	six-1.12.0-py2.py3-none-any.whl</span><br><span class="line">(python3venv) $ pip uninstall arrow python_dateutil six</span><br><span class="line">Uninstalling arrow-0.13.1:</span><br><span class="line">  Would remove:</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;arrow-0.13.1.dist-info&#x2F;*</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;arrow&#x2F;*</span><br><span class="line">Proceed (y&#x2F;n)? y</span><br><span class="line">  Successfully uninstalled arrow-0.13.1</span><br><span class="line">Uninstalling python-dateutil-2.8.0:</span><br><span class="line">  Would remove:</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;dateutil&#x2F;*</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;python_dateutil-2.8.0.dist-info&#x2F;*</span><br><span class="line">Proceed (y&#x2F;n)? y</span><br><span class="line">  Successfully uninstalled python-dateutil-2.8.0</span><br><span class="line">Uninstalling six-1.12.0:</span><br><span class="line">  Would remove:</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;six-1.12.0.dist-info&#x2F;*</span><br><span class="line">    &#x2F;Users&#x2F;james&#x2F;python3venv&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;six.py</span><br><span class="line">Proceed (y&#x2F;n)? y</span><br><span class="line">  Successfully uninstalled six-1.12.0</span><br><span class="line">(python3venv) $ pip install --find-links&#x3D;&#x2F;tmp&#x2F;wheel-dir -r requirements.txt</span><br><span class="line">Looking in links: &#x2F;tmp&#x2F;wheel-dir</span><br><span class="line">Collecting arrow&#x3D;&#x3D;0.13.1 (from -r requirements.txt (line 7))</span><br><span class="line">Collecting python-dateutil&#x3D;&#x3D;2.8.0 (from -r requirements.txt (line 10))</span><br><span class="line">Collecting six&#x3D;&#x3D;1.12.0 (from -r requirements.txt (line 14))</span><br><span class="line">Installing collected packages: six, python-dateutil, arrow</span><br><span class="line">Successfully installed arrow-0.13.1 python-dateutil-2.8.0 six-1.12.0</span><br></pre></td></tr></table></figure>
+
+<h4 id="Closing-remarks"><a href="#Closing-remarks" class="headerlink" title="Closing remarks"></a>Closing remarks</h4><p>This post, covers a lot of the use cases for how I personally use virtual  environment and the traditional approach for setup and use.  There are  as to be expected with a topic such as this, a multitude of a ways of  managing and maintaining your own virtual environments.</p>
+<p>A popular module at the moment is Kenneth Reitz <a href="https://github.com/pypa/pipenv" target="_blank" rel="noopener">pipenv</a>.  It is an excellent module and as per his other endeavours, it has been met with significant praise.  There is however a flip side to it’s use  and both the article by <a href="https://chriswarrick.com/blog/2018/07/17/pipenv-promises-a-lot-delivers-very-little/" target="_blank" rel="noopener">Chris Warrick</a> and the subsequent discussion in the <a href="https://news.ycombinator.com/item?id=18612590" target="_blank" rel="noopener">hacker news thread</a> provide another viewpoint.  I recommend both trying the module for yourself and reading the counter arguments.</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/03/03/python-strings-word/">
+        <span class="nav-arrow">← </span>
+        
+          Python字符串的前世今生
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Python-Virtual-Environments-Masterclass"><span class="toc-nav-text">Python Virtual Environments Masterclass</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Introduction"><span class="toc-nav-text">Introduction</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Creating-Virtual-Environments"><span class="toc-nav-text">Creating Virtual Environments</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Creating-A-Virtual-Environment-in-Python-3-Preferred-Approach"><span class="toc-nav-text">Creating A Virtual Environment in Python 3 (Preferred Approach)</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Creating-A-Virtual-Environment-in-Python-3-6-and-Below-Deprecated-Approach"><span class="toc-nav-text">Creating A Virtual Environment in Python 3.6 and Below (Deprecated Approach)</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Creating-A-Virtual-Environment-in-Python-2-x"><span class="toc-nav-text">Creating A Virtual Environment in Python 2.x</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Inspecting-the-Virtual-Environments"><span class="toc-nav-text">Inspecting the Virtual Environments</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Activating-the-Virtual-Environment"><span class="toc-nav-text">Activating the Virtual Environment</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Python-and-pip-usage-in-the-venv"><span class="toc-nav-text">Python and pip usage in the venv</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Installing-packages-through-pip"><span class="toc-nav-text">Installing packages through pip</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Using-pip-to-upgrade-pip"><span class="toc-nav-text">Using pip to upgrade pip</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Freezing-Virtual-Environments"><span class="toc-nav-text">Freezing Virtual Environments</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Replaying-a-Virtual-Environments-Requirements"><span class="toc-nav-text">Replaying a Virtual Environments Requirements</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Using-a-Virtual-Environment-without-activation"><span class="toc-nav-text">Using a Virtual Environment, without activation</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Packaging-and-re-use"><span class="toc-nav-text">Packaging and re-use</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Using-pip-tools-to-manage-Virtual-Environments"><span class="toc-nav-text">Using pip-tools to manage Virtual Environments</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Using-your-Virtual-Environment-with-a-Specific-PyPi-Repository"><span class="toc-nav-text">Using your Virtual Environment with a Specific PyPi Repository</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Isolating-Module-Versions"><span class="toc-nav-text">Isolating Module Versions</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Creating-Wheels-from-your-Virtual-Environment"><span class="toc-nav-text">Creating Wheels from your Virtual Environment</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Closing-remarks"><span class="toc-nav-text">Closing remarks</span></a></li></ol></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/03/08/virtual-environments/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

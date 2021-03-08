@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python字符串的前世今生 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python字符串的前世今生</h2>
+    <p class="post-date">2021-03-03</p>
+    <section class="markdown-content"><h1 id="Python字符串的前世今生"><a href="#Python字符串的前世今生" class="headerlink" title="Python字符串的前世今生"></a>Python字符串的前世今生</h1><p>1991年，Guido van Rossum发布了Python编程语言的第一个版本，自此，世界迎来了巨变。互联网的发展，要求支持不同的自然语言，这促使了Unicode的发展。Unicode定义了一个通用字符集，它可以表示任何书面语言、各种非字母数字和符号，甚至包括表情符😀。Python在设计之处并没有考虑到Unicode，但它在后来的发展中支持了Unicode，主要的变化发生在Python 3中，这个版本开始将原来的<code>unicode</code>类型改为<code>str</code>类型。在Unicode时代，Python字符串已被证明是处理文本的一种便捷方法。</p>
+<p>在本文中，我们就来研究Python字符串是如何演化并能处理各类文本的，特别是窥视其幕后的运作方式。</p>
+<h2 id="网页上的字符"><a href="#网页上的字符" class="headerlink" title="网页上的字符"></a>网页上的字符</h2><p>据我所知，你一定是在浏览器上阅读本文，那是在微信公众号上，也是使用了微信内置的浏览器。我是在一个编辑器中，将本文的所有符号按照一定的序列输入，为了最终能够使你的浏览器和我的编辑器能够呈现相同的字符序列，它们二者必须能表示相同的字符集。但是，我们两个所用的工具还是有差别的。为此，就要将每个字符映射到某个字节组成的单元序列，这种映射称为字符编码。我们所用的工具都要能够将文本字符编码为字节，还能够从字节中解码。这样才能实现文本内容的呈现和存储。</p>
+<p>现在，你的浏览器和我的编辑器都选择支持Unicode字符集，因为它能够表示目前所知的各种书面语言（有点夸张吗？姑且如此认为）中的符号以及其他各类符号。在编辑器这部分，我采用了UTF-8编码，这是网络上用的最广的一种编码方案，通常会在HTML网页中声明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: text&#x2F;html; charset&#x3D;utf-8</span><br></pre></td></tr></table></figure>
+
+<p>当你用自己的浏览器打开这个网页时，就能自动检测到编码方案。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset&#x3D;&quot;utf-8&quot; &#x2F;&gt;</span><br><span class="line">    &lt;!-- ... --&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>不用担心浏览器不晓得这个编码，因为这已经成为了HTML的标准。</p>
+<h2 id="Unicode的发展历程"><a href="#Unicode的发展历程" class="headerlink" title="Unicode的发展历程"></a>Unicode的发展历程</h2><p>在Unicode之前，大多数计算机系统使用<a href="https://en.wikipedia.org/wiki/ASCII" target="_blank" rel="noopener">ASCII</a>字符编码。ASCII足以处理英文文本——供128个字符，但仅此而已。为了支持更多的语言，后来对ASCII进行了扩展，扩展到了256个字符，并用一个字节来编码每个字符。例如，<a href="https://en.wikipedia.org/wiki/ISO/IEC_" target="_blank" rel="noopener">ISO 8859</a>定义了如下编码：</p>
+<ul>
+<li><p>针对德语、法语、葡萄牙语、意大利语等西欧语言的 ISO 8859-1</p>
+</li>
+<li><p>针对波兰语、克罗地亚语、捷克语、斯洛伐克语等中欧语言的 ISO 8859-2</p>
+</li>
+<li><p>针对俄语、塞尔维亚语、乌克兰语等语言的 ISO 8859-5</p>
+</li>
+<li><p>针对阿拉伯语的 ISO 8859-6</p>
+</li>
+<li><p>针对希腊语的 ISO 8859-7.</p>
+</li>
+</ul>
+<p>适用于多种语言的软件必须具备处理不同的字符编码的能力，否则就会出现所谓的乱码，例如用<a href="https://en.wikipedia.org/wiki/KOI8-R" target="_blank" rel="noopener">KOI-8</a>对俄文单词“кракозбббры”进行编码，然后使用ISO 8859-1解码，你将看到“ËÒÁËÏÚÒÙ”。</p>
+<p>随着网络的发展，不同语言的人之间交流更加密切，解决编码问题已经迫在眉睫。于是，20世纪80年代末出现了两个相互独立的方案：一个是[ISO10646](<a href="https://en.wikipedia.org/wiki/Universal\u" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Universal\u</a> Coded\u Character\u Set)，另一个是Unicode，后者是由一群软件公司组织的项目。这两个项目有共同的目标：用一个涵盖所有正在广泛使用的语言的通用编码替换数百个相互冲突的字符编码。项目的发展使人们很快意识到，用两个不同的通用字符集无法实现这一目标，因此在1991年，ISO 10646和Unicode合并，统一为Unicode字符集。这就是现在被广泛采用的字符集。</p>
+<h2 id="Unicode基础"><a href="#Unicode基础" class="headerlink" title="Unicode基础"></a>Unicode基础</h2><p>Unicode以书面语言中最小意义单元定义字符，这意味着像变音符号这样的单位被认为是独立的字符。我们可以将多个Unicode字符组合在一起，以生成一个独立字符，这种组合称为字形群集。例如，字符串“á”是一个由两个字符组成的字组：拉丁字母“a”和锐音符“´”。Unicode也将一些字形群集编码为单独的字符，但这样做只是为了与传统编码兼容。由于字符的组合，Unicode可以生成各种各样的字形群集，例如”ä́” ，同时让字符集保持相对简单。</p>
+<p>Unicode字符并不牵扯到字符渲染时的字形，字形是字体设计师的事情，虽然字符和字形之间可能有比较复杂的关系。</p>
+<p>Unicode不直接将字符映射到字节，而是分两步映射：</p>
+<ol>
+<li><p><strong>编码字符集</strong>将字符映射到代码点。</p>
+</li>
+<li><p>以一种<strong>字符编码形式</strong>，例如UTF-8，将代码点映射到代码单元序列，其中每个代码单元是一个或多个字节的序列。</p>
+</li>
+</ol>
+<p>Unicode编码字符集是我们通常所说的Unicode。这和 ISO 10646定义的UCS是一样的。“编码”这个词的意思是它实际上不是一个集合，而是一个映射。此映射为字符集中的每个字符指定一个代码点。代码点是 [0, 1114111]范围内的整数，用Unicode十六进制表示法写成U+0000..U+10FFFF，称为<strong>代码空间</strong>。当前的Unicode 13.0将代码点分配给143,859个字符。</p>
+<p>从技术上讲，编码字符集是一个条目集合。每个条目定义一个字符，并通过指定三条信息为其规定一个代码点：</p>
+<ul>
+<li><p>代码点值</p>
+</li>
+<li><p>字符名称</p>
+</li>
+<li><p>一个有代表性的字形</p>
+</li>
+</ul>
+<p>例如，字母“b”的条目： (U+0062, LATIN SMALL LETTER B, b)。</p>
+<p>该标准还规定了各种字符属性，例如字符是字母、数字还是其他符号，是从左向右还是从右向左书写，是大写字母、小写字母还是根本没有大小写之分。所有这些信息都包含在<a href="https://unicode.org/ucd/" target="_blank" rel="noopener">Unicode字符数据库</a>.。我们可以使用Python标准库中的模块 [unicodedata`](<a href="https://docs.python.org/3/library/unicodedata.html#module-unicodedata" target="_blank" rel="noopener">https://docs.python.org/3/library/unicodedata.html#module-unicodedata</a>) 查询这个数据库。</p>
+<p>如果用编码字符集对一些文本进行编码，得到的是一系列代码点。这样的序列称为<strong>Unicode字符串</strong>。这是进行文本处理的适当抽象级别。然而，计算机对代码点一无所知，因此必须将代码点编码为字节。Unicode定义了三种字符编码形式：UTF-8、UTF-16和UTF-32。每种方法都能对整个代码空间进行编码，但各有优缺点。</p>
+<p>UTF-32是最直接的编码形式。每个代码点由32位的代码单元表示。例如，代码点U+01F193编码为“0x0001F193”。UTF-32的主要优点除了简单之外，还在于它是一种固定宽度的编码形式，即每个代码点对应于固定数量的代码单元（在本例中是1个代码单元）。这允许我们进行快速的代码点索引：可以在恒定的时间内访问UTF-32编码字符串的第n个代码点。</p>
+<p>最初，Unicode只定义了一种编码形式，用16位的代码单位表示每个代码点。使用这种编码形式可以对整个代码空间进行编码，因为代码空间较小，由2^16 = 65,536个代码点组成。随着时间的推移，Unicode用户意识到65,536 个代码点不足以覆盖所有的书面语言，并将代码空间扩展到1,114,112 个代码点。问题是，构成U+010000..U+10FFFF范围的新代码点不能用16位代码单元表示。Unicode通过使用一对16位代码单元（称为<strong>代理项对</strong>）对每个新代码点进行编码，解决了这个问题。保留了两个未分配的代码点范围，仅在代理项对中使用：U+D800..U+DBFF用于代理项对的较高部分，U+DC00..U+DFFF用于代理项对的较低部分。每个范围由1024个码点组成，因此它们可以用来对1024 × 1024 = 1,048,576个码点进行编码。这种编码形式使用一个16位代码单元对U+0000..U+FFFF范围内的代码点进行编码，并使用两个16位代码单元对U+010000..U+10FFFF范围内的代码点进行编码，因此被称为UTF-16。其原始版本是ISO 10646标准的一部分，称为UCS-2。UTF-16和UCS-2之间的唯一区别是UCS-2不支持代理项对，只能对U+0000..U+FFFF范围内的代码点进行编码，称为基本多语言平面（BMP）。ISO 10646标准还定义了UCS-4编码形式，它实际上与UTF-32相同。</p>
+<p>UTF-32和UTF-16广泛用于在程序中表示Unicode字符串。然而，它们不太适合于文本存储和传输。第一个问题是空间效率低下。当使用UTF-32编码形式对主要由ASCII字符组成的文本进行编码时尤其如此。第二个问题是，一个代码单元中的字节可以按little-endian或big-endian排列，因此UTF-32和UTF-16各有两种风格。被称为字节顺序标记（BOM）的特殊代码点通常被添加到文本的开头，以指定字节顺序。而字节顺序标记（BOM）的正确处理增加了复杂性。UTF-8编码形式没有这些问题。它用一个、两个、三个或四个字节的序列来表示每个代码点。第一个字节的前导位表示序列的长度。其他字节的格式总是“0b10xxxxxx”，以便与第一个字节区分开来。下表显示了每种长度的序列的外观以及它们所编码的代码点范围：</p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Byte 1</th>
+<th>Byte 2</th>
+<th>Byte 3</th>
+<th>Byte 4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>U+0000..U+007F</td>
+<td><code>0b0xxxxxxx</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>U+0080..U+07FF</td>
+<td><code>0b110xxxxx</code></td>
+<td><code>0b10xxxxxx</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>U+0800..U+FFFF</td>
+<td><code>0b1110xxxx</code></td>
+<td><code>0b10xxxxxx</code></td>
+<td><code>0b10xxxxxx</code></td>
+<td></td>
+</tr>
+<tr>
+<td>U+010000..U+10FFFF</td>
+<td><code>0b11110xxx</code></td>
+<td><code>0b10xxxxxx</code></td>
+<td><code>0b10xxxxxx</code></td>
+<td><code>0b10xxxxxx</code></td>
+</tr>
+</tbody></table>
+<p>为了对一个代码点进行编码，我们从上表中选择一个合适的模板，并用代码点的二进制表示来替换其中的<code>xs</code> 。最佳的模板是能够对代码点进行编码的最短模板。代码点的二进制表示法向右对齐，前导的<code>xs</code>替换为<code>0s</code>。</p>
+<p>请注意，UTF-8仅使用一个字节表示所有ASCII字符，因此任何ASCII编码的文本也是UTF-8编码的文本。这一特性是UTF-8被采用并成为网络上最主要的编码方式的原因之一。</p>
+<p>以上对Unicode做了简要介绍，如果要了解更多信息，请阅读阅读<a href="https://www.unicode.org/versions/Unicode13.0.0/" target="_blank" rel="noopener">《Unicode标准》</a>的前几章。</p>
+<h2 id="Python字符串简史"><a href="#Python字符串简史" class="headerlink" title="Python字符串简史"></a>Python字符串简史</h2><p>现在的Python字符串与Python刚发布时有很大差别了，在历史上，Python语言的字符串有过多次重大变化，为了更好地理解字符串的含义，下面就快速回顾一下这个变革历史。</p>
+<p>在Python最初的版本中，就有一个名为<code>str</code>的内置类型表示字符串，但它跟我们现在所使用的Python3中的<code>str</code>类型有所不同。早期的Python字符串本质上式“字节串”，也就是字节序列，与Python3中的<code>bytes</code>对象类似，这与现在Python3中的Unicode字符串有很大差别。</p>
+<p>字节序列本身不包含编码信息，例如，下面显示的<code>s</code>，就是一个字节串（这是在Pytyhon 2.7中），而我们所使用的终端是UTF-8编码的，如果用<code>print()</code>函数打印这个字节串，即用UTF-8对其进行编码，那么就能看到实际上的Unicode字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ python2.7</span><br><span class="line">&gt;&gt;&gt; s &#x3D; &#39;\xe2\x9c\x85&#39;</span><br><span class="line">&gt;&gt;&gt; print(s)</span><br><span class="line">✅</span><br></pre></td></tr></table></figure>
+
+<p>既然本质上是“字节串”，却被称为“字符串”，原因何在？这可能是习惯，也可能跟Python为“字节串”对象提供了“字符串方法”有关，例如<code>str.split()</code>和<code>str.upper()</code>等。本来<code>str.upper()</code>方法应该对一个字节序列执行某种操作，按照这个思路，如果真的是获取一个字节，并将其转换为大写，其实这是没有什么意义的，因为字节没有大小写之分。如果我们假设字节序列是某种编码中的文本，那么它就有意义了。Python一般会为为当前作用域设置一个编码方案，通常是ASCII码。但是我们可以更改设置，这样，调用该字符串方法就可以开始处理非ASCII编码的文本，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ python2<span class="number">.7</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">'\xef\xe8\xf2\xee\xed'</span> <span class="comment"># Russian 'питон' in the encoding windows-1251</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'\xef\xe8\xf2\xee\xed'</span>.upper() <span class="comment"># does nothing since characters are non-ascii</span></span><br><span class="line"><span class="string">'\xef\xe8\xf2\xee\xed'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> locale</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>locale.setlocale(locale.LC_ALL , <span class="string">'ru_RU.CP1251'</span>)</span><br><span class="line"><span class="string">'ru_RU.CP1251'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'\xef\xe8\xf2\xee\xed'</span>.upper() <span class="comment"># converts to uppercase</span></span><br><span class="line"><span class="string">'\xcf\xc8\xd2\xce\xcd'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'\xef\xe8\xf2\xee\xed'</span>.upper().decode(<span class="string">'windows-1251'</span>)) <span class="comment"># let's print it</span></span><br><span class="line">ПИТОН</span><br></pre></td></tr></table></figure>
+
+<p>以上过程的实现要依赖C标准库，它适用于8位固定宽度编码，不适用于UTF-8或任何其他Unicode编码。简而言之，早期的Python还没有Unicode字符串。</p>
+<p>后来，引入了<code>unicode</code>类型——注意，这是一种对象类型，这个发生在Python2之前，当时PEP还不存在，不要误认为是Python3的事情。<code>unicode</code>的实例对象就是真正的Unicode字符串，即代码点序列（也可以称为Unicode字符序列），这与我们今天所用的字符串就很像了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ python2<span class="number">.7</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">u'питон'</span> <span class="comment"># note unicode literal</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s <span class="comment"># each element is a code point</span></span><br><span class="line"><span class="string">u'\u043f\u0438\u0442\u043e\u043d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[<span class="number">1</span>] <span class="comment"># can index code points</span></span><br><span class="line"><span class="string">u'\u0438'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(s.upper()) <span class="comment"># string methods work</span></span><br><span class="line">ПИТОН</span><br></pre></td></tr></table></figure>
+
+<p>此时的Python，使用UCS-2编码在内部表示Unicode字符串，UCS-2能够对当时分配的所有代码点进行编码，但是，由于Unicode在BMP（Basic Multilingual Plane，基本多文种平面，UCS编码中的一个术语）之外分配了第一个代码点，致使UCS-2不再能够对所有的代码点进行编码，于是Python从UCS-2切换到UTF-16。这引起了另一个问题。由于UTF-16是一种可变宽度编码，因此获取字符串的第n个代码点需要扫描全体字符串，直到找到该代码点。尽管如此，Python中索引的方式还没有改变，如果使用Unicode对象，然后进行索引操作，就会产生下面的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ python2.7</span><br><span class="line">&gt;&gt;&gt; u&#39;hello&#39;[4] # indexing is still supported and works fast</span><br><span class="line">u&#39;o&#39;</span><br><span class="line">&gt;&gt;&gt; len(u&#39;😀&#39;) # but length of a character outside BMP is 2</span><br><span class="line">2</span><br><span class="line">&gt;&gt;&gt; u&#39;😀&#39;[1] # and indexing returns code units, not code points</span><br><span class="line">u&#39;\ude00&#39;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.python.org/dev/peps/pep-0261/" target="_blank" rel="noopener">PEP 261</a>试图恢复真正的Unicode字符串，它引入了一个启用了UCS-4编码的编译时间选项，但是UCS-4不能完全取代UTF-16，因为它的空间效率低下，所以两者必须共存。</p>
+<p>In the meantime, Python developers focused their attention on another source of confusion: the coexistence of byte strings and Unicode  strings. There were several problems with this. For example, it was  possible to mix two types:</p>
+<p>对于Python开发者而言，类似下面的问题，常常让大家困惑：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"I'm str"</span> + <span class="string">u" and I'm unicode"</span></span><br><span class="line"><span class="string">u"I'm str and I'm unicode"</span></span><br></pre></td></tr></table></figure>
+
+<p>字节串和Unicode字符串貌似能够“共存”，然而：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"I'm str \x80"</span> + <span class="string">u" and I'm unicode"</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeDecodeError: <span class="string">'ascii'</span> codec can<span class="string">'t decode byte 0x80 in position 8: ordinal not in range(128)</span></span><br></pre></td></tr></table></figure>
+
+<p>所以，还得继续进化。</p>
+<p>著名的Python3 .0将<code>unicode</code>类型重命名为<code>str</code>类型，并将旧的<code>str</code>类型替换为<code>bytes</code>类型，对此有专门的<a href="https://docs.python.org/3/whatsnew/3.0.html" target="_blank" rel="noopener">官方声明</a>概述了这一变化的原因：</p>
+<p><em>与2.x情形的最大区别是，在Python3.0中任何混合文本和数据的操作都会引发<code>TypeError</code>，而如果在python2.x中混合Unicode和8位字符串，8位字符串恰好只包含7位（ASCII）字节，也可以行得通，但是如果它包含非ASCII值，你会看到 <code>UnicodeDecodeError</code>。这些年来，这种因“类型”而异的情况让无数人郁闷。</em></p>
+<p>随着Python3.3的发布，Python字符串成为了我们今天所知道的Python字符串，是真正的Unicode字符串。</p>
+<h2 id="现在的Python字符串"><a href="#现在的Python字符串" class="headerlink" title="现在的Python字符串"></a>现在的Python字符串</h2><p>CPython使用三种数据结构来表示字符串：<code>PyASCIIObject</code>、<code>PyCompactUnicodeObject</code>和<code>PyUnicodeObject</code>。第二种是第一种的延伸，第三种是第二种的延伸：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">  PyObject_HEAD</span><br><span class="line">  Py_ssize_t length;</span><br><span class="line">  Py_hash_t hash;</span><br><span class="line">  struct &#123;</span><br><span class="line">      unsigned int interned:<span class="number">2</span>;</span><br><span class="line">      unsigned int kind:<span class="number">2</span>;</span><br><span class="line">      unsigned int compact:<span class="number">1</span>;</span><br><span class="line">      unsigned int ascii:<span class="number">1</span>;</span><br><span class="line">      unsigned int ready:<span class="number">1</span>;</span><br><span class="line">  &#125; state;</span><br><span class="line">  wchar_t *wstr;</span><br><span class="line">&#125; PyASCIIObject;</span><br><span class="line"></span><br><span class="line">typedef struct &#123;</span><br><span class="line">  PyASCIIObject _base;</span><br><span class="line">  Py_ssize_t utf8_length;</span><br><span class="line">  char *utf8;</span><br><span class="line">  Py_ssize_t wstr_length;</span><br><span class="line">&#125; PyCompactUnicodeObject;</span><br><span class="line"></span><br><span class="line">typedef struct &#123;</span><br><span class="line">  PyCompactUnicodeObject _base;</span><br><span class="line">  union &#123;</span><br><span class="line">      void *any;</span><br><span class="line">      Py_UCS1 *latin1;</span><br><span class="line">      Py_UCS2 *ucs2;</span><br><span class="line">      Py_UCS4 *ucs4;</span><br><span class="line">  &#125; data;</span><br><span class="line">&#125; PyUnicodeObject;</span><br></pre></td></tr></table></figure>
+
+<p>我们为什么需要这么多种数据结构？回想一下，CPython提供了<a href="https://docs.python.org/3/c-api/index.html" target="_blank" rel="noopener">Python/C API</a> ，允许编写C扩展。特别是，它提供了一组处理字符串的函数。其中许多函数公开了字符串的内部表示形式，因此PEP393在不破坏C扩展的情况下无法摆脱旧的表示形式。当前字符串的表示法比它实际需要的更加复杂，原因之一就是CPython继续提供旧的API。例如，它提供了<code>PyUnicode_AsUnicode()</code>函数，该函数返回字符串的 `Py_UNICODE*表示形式。</p>
+<p>首先让我们看看CPython如何表示使用新API创建的字符串，这些被称为“规范”字符串。它们包括在编写Python代码时创建的所有字符串。<code>PyASCIIObject</code>用于表示仅限ASCII的字符串。保存字符串的缓冲区不是结构的一部分，而是紧跟其后。分配过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj &#x3D; (PyObject *) PyObject_MALLOC(struct_size + (size + 1) * char_size);</span><br></pre></td></tr></table></figure>
+
+<p><code>PyCompactUnicodeObject</code>用于表示所有其他Unicode字符串，缓冲区在此结构之后以相同的方式分配，只有<code>struct_size</code> 不同，<code>char_size</code> 可以是<code>1</code>,  <code>2</code> 或 <code>4</code>。</p>
+<p><code>PyASCIIObject</code>和<code>PyCompactUnicodeObject</code>都存在的原因为了进行优化。如果字符串是仅限ASCII的字符串，那么CPython可以简单地返回存储在缓冲区中的数据。否则，CPython必须转化为UTF-8编码，<code>PyCompactUnicodeObject</code> 的 UTF-8字段用于存储缓存的UTF-8编码结果，但这些东西并不总是在缓存中。</p>
+<p>旧的API，在Python 3中会支持一段时间，在Python 3.12中，就要将它删除了。</p>
+<p>如今，Python默认使用UTF-8编码，为了实现此编码，CPython需要选择一个合适的数据结构和编码来表示字符串（ASCII、UCS-1、UCS-2或UCS-4），它必须解码所有的代码点。一种解决方案是读取输入两次：第一次是确定输入中最大的代码点，第二次是将输入从UTF-8编码转换为所选的内部编码。对CPython而言，并没有选用这种方案，而是首先创建一个<code>PyASCIIObject</code>实例来表示字符串。如果在读取输入时遇到非ASCII字符，将创建<code>PyCompactUnicodeObject</code>的实例，选择能够表示该字符的下一个最紧凑的编码，并将已解码的前缀转换为新编码。这样，它只读取一次输入，但最多可以更改三次内部表示。该算法在<a href="https://github.com/python/cpython/blob/3.9/Objects/unicodeobject.c" target="_blank" rel="noopener"><code>Objects/unicodeobject.c</code></a>中的<code>unicode_decode_utf8()</code>函数中实现。</p>
+<p>关于Python字符串还有很多要说，如 <code>str.find()</code>和 <code>str.join()</code>等字符串方法的实现，就可以用一个专题来讨论。这里的重点是关于CPython中实现字符串的方法，所以，其他内容暂不涉及。</p>
+<h2 id="其他语言中的字符串"><a href="#其他语言中的字符串" class="headerlink" title="其他语言中的字符串"></a>其他语言中的字符串</h2><p>处理文本内容，是每种编程语言都必须要面对的问题，因此也都有字符串，下面列举几种常见编程语言对字符串的处理方法。</p>
+<h3 id="C语言"><a href="#C语言" class="headerlink" title="C语言"></a>C语言</h3><p>字符串数据类型的最基本形式是字节数组。 Python2字符串就是这种方法的一个例子，它来自C，其中字符串表示为<code>char</code>数组。C标准库提供了一组函数，比如：<code>toupper()</code>和<code>isspace()</code>，它们接受字节，并在当前区域设置指定的编码中将它们视为字符。这允许编码中的每个字符使用一个字节。为了支持其他编码，C90标准中引入了<code>wchar_t</code>类型。与<code>char</code>不同，<code>wchar_t</code>可以保证足够大，可以表示由任何支持的作用域设置所指定的任何编码中的所有字符。例如，如果某个作用域设置指定了UTF-8编码，那么<code>wchar_t</code>必须足够大，以表示所有的Unicode代码点。<code>wchar_t</code>的问题是它依赖于平台，其宽度可以小到8位。C11标准解决了这个问题，并引入了<code>char16_t</code> 和 <code>char32_t</code>类型。这些类型可用于以独立于平台的方式分别表示UTF-16和UTF-32的代码单元。Unicode标准的<a href="https://www.unicode.org/versions/Unicode13.0.0/ch05.pdf" target="_blank" rel="noopener">第5章</a>更详细地讨论了C语言中的Unicode数据类型。</p>
+<h3 id="Go语言"><a href="#Go语言" class="headerlink" title="Go语言"></a>Go语言</h3><p>在Go中，字符串是只读的字节切片，即一个字节数组以及数组中的字节数。字符串可以包含任意字节，就像C中的“char”数组一样，索引到字符串中会返回一个字节。不过，Go提供了不错的Unicode支持。首先，Go总是以UTF-8编码，这意味着字符串文字是有效的UTF-8序列。其次，用<code>for</code>循环遍历字符串会产生Unicode代码点。有一个单独的类型来表示代码点：<code>rune</code>类型。第三，标准库提供了使用Unicode的函数。例如，我们可以使用<a href="https://golang.org/pkg/unicode/utf8/" target="_blank" rel="noopener"><code>unicode/utf8</code></a> 包提供的函数<a href="https://golang.org/pkg/unicode/utf8/#ValidString" target="_blank" rel="noopener"><code>ValidString()</code></a>来检查给定的字符串是否是有效的UTF-8序列。</p>
+<h3 id="Rust"><a href="#Rust" class="headerlink" title="Rust"></a>Rust</h3><p>Rust提供了几种字符串类型。主字符串类型，称为<a href="https://doc.rust-lang.org/std/primitive.str.html" target="_blank" rel="noopener"><code>str</code></a>，用于表示UTF-8编码的文本。字符串是字节切片，不是对任意字节都可容纳，而是只能容纳有效的UTF-8序列。如果从无效的UTF-8序列的字节序列中创建字符串，将导致错误。不支持按整数索引字符串。</p>
+<p>迭代是访问代码点的方法。不过，可以按范围索引到字符串中，如<code>&amp;string[0..4]</code>。此操作返回由指定范围内的字节组成的子字符串。如果子字符串不是有效的UTF-8序列，程序将崩溃。通过首先将字符串转换为字节片，总是可以访问字符串的各个字节。</p>
+<h3 id="Swift"><a href="#Swift" class="headerlink" title="Swift"></a>Swift</h3><p>对于Unicode支持，Swift采取了最激进的方法。Swift中的字符串是Unicode字形集群的序列，也就是人们所理解的字符序列。<code>count</code>属性返回字形集群的数目：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let str &#x3D; &quot;\u&#123;65&#125;\u&#123;301&#125;&quot;</span><br><span class="line">print(str)</span><br><span class="line">print(str.count)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Output:</span><br><span class="line">&#x2F;&#x2F; é</span><br><span class="line">&#x2F;&#x2F; 1</span><br></pre></td></tr></table></figure>
+
+<p>字符串的迭代会产生字形集群：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let str &#x3D; &quot;Cluster:\u&#123;1112&#125;\u&#123;1161&#125;\u&#123;11AB&#125; &quot;</span><br><span class="line">for c in str &#123;</span><br><span class="line">    print(c, terminator:&quot; &quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Output:</span><br><span class="line">&#x2F;&#x2F; C l u s t e r : 한</span><br></pre></td></tr></table></figure>
+
+
+<p>Swift语言不支持按整数索引到字符串中。不过，有一个API允许通过索引访问：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">"Swift"</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="built_in">c</span> = str[str.index(str.startIndex, offsetBy: <span class="number">3</span>)]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">c</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Output:</span></span><br><span class="line"><span class="comment">// f</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在现代编程语境中，“string”一词的意思是Unicode数据。程序员应该知道Unicode的工作原理，语言设计者应该提供正确的抽象概念来应对它。Python字符串是Unicode代码点的序列。灵活的字符串表示法允许在固定时间内索引到字符串中，同时试图让字符串保持相对紧凑。这种方法对于Python似乎很有效，因为访问字符串的元素很容易，而且在大多数情况下，程序员甚至不考虑这些元素应该是字符还是字形集群。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. 本文源自：<a href="https://tenthousandmeters.com/blog/python-behind-the-scenes-9-how-python-strings-work/，但翻译过程中，有删减。如果有意看原文，请根据上述链接查阅。" target="_blank" rel="noopener">https://tenthousandmeters.com/blog/python-behind-the-scenes-9-how-python-strings-work/，但翻译过程中，有删减。如果有意看原文，请根据上述链接查阅。</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/03/02/merge-dataframes/">
+        <span class="nav-arrow">← </span>
+        
+          合并Pandas的DataFrame方法汇总
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/03/08/virtual-environments/">
+        
+          virtual environments
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Python字符串的前世今生"><span class="toc-nav-text">Python字符串的前世今生</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#网页上的字符"><span class="toc-nav-text">网页上的字符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Unicode的发展历程"><span class="toc-nav-text">Unicode的发展历程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Unicode基础"><span class="toc-nav-text">Unicode基础</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python字符串简史"><span class="toc-nav-text">Python字符串简史</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#现在的Python字符串"><span class="toc-nav-text">现在的Python字符串</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他语言中的字符串"><span class="toc-nav-text">其他语言中的字符串</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#C语言"><span class="toc-nav-text">C语言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Go语言"><span class="toc-nav-text">Go语言</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Rust"><span class="toc-nav-text">Rust</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Swift"><span class="toc-nav-text">Swift</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/03/03/python-strings-word/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
