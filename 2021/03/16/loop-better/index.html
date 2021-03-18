@@ -168,159 +168,155 @@
   <article class="post-article">
     <h2>loop better</h2>
     <p class="post-date">2021-03-16</p>
-    <section class="markdown-content"><h1 id="Loop-Better-a-deeper-look-at-iteration-in-Python"><a href="#Loop-Better-a-deeper-look-at-iteration-in-Python" class="headerlink" title="Loop Better: a deeper look at iteration in Python"></a>Loop Better: a deeper look at iteration in Python</h1><p>Python’s <code>for</code> loops don’t work the way <code>for</code> loops do in other languages.  In this article we’re going to dive into Python’s <code>for</code> loops to take a look at how they work under the hood and why they work the way they do.</p>
-<h2 id="Looping-Gotchas"><a href="#Looping-Gotchas" class="headerlink" title="Looping Gotchas"></a>Looping Gotchas</h2><p>We’re going to start off our journey by taking a look at some  “gotchas”.  After we’ve learned how looping works in Python, we’ll take  another look at these gotchas and explain what’s going on.</p>
-<h3 id="Gotcha-1-Looping-Twice"><a href="#Gotcha-1-Looping-Twice" class="headerlink" title="Gotcha 1: Looping Twice"></a>Gotcha 1: Looping Twice</h3><p>Let’s say we have a list of numbers and a generator that will give us the squares of those numbers:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; squares &#x3D; (n**2 for n in numbers)</span><br></pre></td></tr></table></figure>
+    <section class="markdown-content"><h1 id="深入理解循环和迭代"><a href="#深入理解循环和迭代" class="headerlink" title="深入理解循环和迭代"></a>深入理解循环和迭代</h1><p>循环，特别是<code>for</code>循环，是Python中常见的语句，甚至于Guido van Rossum（Python创始人）在评论递归的时候说过在Python中“递归已死”，我想这句话的意思不是说在Python中不能用递归，而是说因为Python中的<code>for</code>循环语句足够强大，可以不考虑递归，而是用<code>for</code>循环实现原本用递归做的事情。</p>
+<p>本来，在《Python大学实用教程》和《跟老齐学Python：轻松入门》两本书中都对<code>for</code>循环语句做了很完整地介绍，并且在这两本书中也有关于可迭代等概念，但是，如何将两者融合起来理解，从而能够更好地实现<code>for</code>循环，对新手还是有挑战的。</p>
+<p>本文就在以上两本书所述基础上，从更深入和综合的角度进行阐述，以便能更好地使用<code>for</code>循环。</p>
+<h2 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h2><p>在实用<code>for</code>循环中，特别是初学者，会遇到很多坑，这里列举几个，看看你是否遇到过？</p>
+<h3 id="1、第二次无果"><a href="#1、第二次无果" class="headerlink" title="1、第二次无果"></a>1、第二次无果</h3><p>假设有一个数字组成的列表和一个生成器，生成器给出这些数字的平方：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = (n**<span class="number">2</span> <span class="keyword">for</span> n <span class="keyword">in</span> numbers)</span><br></pre></td></tr></table></figure>
 
-<p>We can pass our generator object to the <code>tuple</code> constructor to make a tuple out of it:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; tuple(squares) (1, 4, 9, 25, 49)</span><br></pre></td></tr></table></figure>
+<p>用<code>tuple</code>函数，将<code>squares</code>转化为元组。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>tuple(squares) </span><br><span class="line">(<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">49</span>)</span><br></pre></td></tr></table></figure>
 
-<p>If we then take the same generator object and pass it to the <code>sum</code> function we might expect that we’d get the sum of these numbers, which would be 88.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sum(squares) 0</span><br></pre></td></tr></table></figure>
+<p>现在，又向计算这个生成器对象<code>squares</code>里面所有数字的和，观察一下，应该能看出来，其和是<code>88</code>，然而：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum(squares) </span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
 
-<p>Instead we get <code>0</code>.</p>
-<h3 id="Gotcha-2-Containment-Checking"><a href="#Gotcha-2-Containment-Checking" class="headerlink" title="Gotcha 2: Containment Checking"></a>Gotcha 2: Containment Checking</h3><p>Let’s take the same list of numbers and the same generator object:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; squares &#x3D; (n**2 for n in numbers)</span><br></pre></td></tr></table></figure>
+<p>这里计算结果为<code>0</code>，是Python的BUG吗？</p>
+<h3 id="2、检查无效"><a href="#2、检查无效" class="headerlink" title="2、检查无效"></a>2、检查无效</h3><p>再用下面的方法得到那个生成器对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = (n**<span class="number">2</span> <span class="keyword">for</span> n <span class="keyword">in</span> numbers)</span><br></pre></td></tr></table></figure>
 
-<p>If we ask whether <code>9</code> is in our <code>squares</code> generator, Python will tell us that 9 <em>is</em> in <code>squares</code>.  But if we ask the <em>same question again</em>, Python will tell us that 9 <em>is not</em> in <code>squares</code>.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 9 in squares True &gt;&gt;&gt; 9 in squares False</span><br></pre></td></tr></table></figure>
+<p>如果检查<code>9</code>是否在<code>squares</code>生成器中，显然这是真的<code>True</code>。但是同样的检查如果再做一遍，就不是这个结果了——不可重复，不科学？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">9</span> <span class="keyword">in</span> squares </span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">9</span> <span class="keyword">in</span> squares </span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
 
-<p>We asked the same question twice and Python gave us two different answers.</p>
-<h3 id="Gotcha-3-Unpacking"><a href="#Gotcha-3-Unpacking" class="headerlink" title="Gotcha 3: Unpacking"></a>Gotcha 3: Unpacking</h3><p>This dictionary has two key-value pairs:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; counts &#x3D; &#123;&#39;apples&#39;: 2, &#39;oranges&#39;: 1&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3、解包"><a href="#3、解包" class="headerlink" title="3、解包"></a>3、解包</h3><p>创建一个包含两个键值对的字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>counts = &#123;<span class="string">'apples'</span>: <span class="number">2</span>, <span class="string">'oranges'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
 
-<p>Let’s unpack this dictionary using multiple assignment:</p>
+<p>用多变量的赋值语句对字典解包：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x, y &#x3D; counts</span><br></pre></td></tr></table></figure>
 
-<p>You might expect that when unpacking this dictionary, we’ll get key-value pairs or maybe that we’ll get an error.</p>
-<p>But unpacking dictionaries doesn’t raise errors and it doesn’t return key-value pairs.  When you unpack dictionaries you get keys:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x &#39;apples&#39;</span><br></pre></td></tr></table></figure>
+<p>先猜一下，这样做会有什么结果？报错，还是两个变量分别引用了两个键值对——引用键值对，兼职不可能吧，除非将键值对包裹在字典里。</p>
+<p>但是，一没有报错，二没有返回键值对，而是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x </span><br><span class="line"><span class="string">'apples'</span></span><br></pre></td></tr></table></figure>
 
-<p>We’ll come back to these gotchas after we’ve learned a bit about the logic that powers these Python snippets.</p>
-<h2 id="Review-Python’s-for-loop"><a href="#Review-Python’s-for-loop" class="headerlink" title="Review: Python’s for loop"></a>Review: Python’s for loop</h2><p>Python doesn’t have traditional <code>for</code> loops.  To explain what I mean, let’s take a look at a <code>for</code> loop in another programming language.</p>
-<p>This is a traditional C-style <code>for</code> loop written in JavaScript:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let numbers &#x3D; [1, 2, 3, 5, 7]; for (let i &#x3D; 0; i &lt; numbers.length; i +&#x3D; 1) &#123;    print(numbers[i]) &#125;</span><br></pre></td></tr></table></figure>
+<p>这似乎也合乎情理和逻辑。</p>
+<h2 id="复习for循环"><a href="#复习for循环" class="headerlink" title="复习for循环"></a>复习for循环</h2><p>温故而知新，先来回顾一下<code>for</code>循环。</p>
+<p>严格地说，Python中的<code>for</code>循环并不“传统”，或者说不符合众多语言中所继承的C语言风格的<code>for</code>循环。</p>
+<p>先看一看所谓的C语言风格的<code>for</code>循环，以JavaScript为例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>]; </span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; numbers.length; i += <span class="number">1</span>) &#123;</span><br><span class="line">    print(numbers[i]) &#125;</span><br></pre></td></tr></table></figure>
 
-<p>JavaScript, C, C++, Java, PHP, and a whole bunch of other programming languages all have this kind of <code>for</code> loop.  <strong>But Python doesn’t</strong>.</p>
-<p>Python <strong>does not</strong> have traditional C-style <code>for</code> loops.  We do have something that we <em>call</em> a <code>for</code> loop in Python, but it works like a <a href="https://en.wikipedia.org/wiki/Foreach" target="_blank" rel="noopener">foreach loop</a>.</p>
-<p>This is Python’s flavor of <code>for</code> loop:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numbers &#x3D; [1, 2, 3, 5, 7] for n in numbers:    print(n)</span><br></pre></td></tr></table></figure>
+<p>像人们熟知的JavaScript, C, C++, Java, PHP等很多编程语言的<code>for</code>循环，都是这个样子的，所以，不少人认为这样的才是真正的<code>for</code>循环。</p>
+<p>但是，Python盲从，而是特立独行地创造了自己的<code>for</code>循环。它不是C语言风格的，而是Python风格的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>] </span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> numbers:</span><br><span class="line">    print(n)</span><br></pre></td></tr></table></figure>
 
-<p>Unlike traditional C-style <code>for</code> loops, Python’s <code>for</code> loops don’t have index variables.  There’s no index initializing, bounds checking, or index incrementing.  Python’s <code>for</code> loops do <em>all the work</em> of looping over our <code>numbers</code> list for us.</p>
-<p>So while we do have <code>for</code> loops in Python, we do not have have traditional C-style <code>for</code> loops.  The thing that <em>we</em> call a <code>for</code> loop works very differently.</p>
-<h2 id="Definitions-Iterables-and-Sequences"><a href="#Definitions-Iterables-and-Sequences" class="headerlink" title="Definitions: Iterables and Sequences"></a>Definitions: Iterables and Sequences</h2><p>Now that we’ve addressed the index-free <code>for</code> loop in our Python room, let’s get some definitions out of the way now.</p>
-<p>An <strong>iterable</strong> is anything you can loop over with a <code>for</code> loop in Python. Iterables can be looped over and anything that can be looped over is an iterable.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for item in some_iterable:    print(item)</span><br></pre></td></tr></table></figure>
+<p>与传统的C语言风格的<code>for</code>循环不同，Python的<code>for</code>循环不需要创建索引，不需要对索引变量进行初始化，不需要进行边界检查，也不需要让索引递增。Python的<code>for</code>循环为我们完成了在<code>numbers</code>列表上循环的所有工作。</p>
+<p>因此，Python中虽有<code>for</code>循环，但并非传统的C风格，那么其工作原理亦与之不同。</p>
+<h2 id="可迭代对象和序列"><a href="#可迭代对象和序列" class="headerlink" title="可迭代对象和序列"></a>可迭代对象和序列</h2><p>在Python中，可迭代对象就是可以用<code>for</code>来循环的东西。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> some_iterable:</span><br><span class="line">    print(item)</span><br></pre></td></tr></table></figure>
 
-<p>Sequences are a very common type of iterable. Lists, tuples, and strings are all sequences.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; coordinates &#x3D; (4, 5, 7) &gt;&gt;&gt; words &#x3D; &quot;hello there&quot;</span><br></pre></td></tr></table></figure>
+<p>序列是一种非常常见的可迭代对象，例如列表、元组和字符串都是序列。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>coordinates = (<span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>words = <span class="string">"hello there"</span></span><br></pre></td></tr></table></figure>
 
-<p>Sequences are iterables which have a specific set of features. They can be indexed starting from <code>0</code> and ending at one less than the length of the sequence, they have a length, and they can be sliced. Lists, tuples, strings and <em>all other</em> sequences work this way.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers[0] 1 &gt;&gt;&gt; coordinates[2] 7 &gt;&gt;&gt; words[4] &#39;o&#39;</span><br></pre></td></tr></table></figure>
+<p>序列是具有一组特定特征的可迭代对象，它们可以从<code>0</code>开始索引，并在比序列长度少一个元素的地方结束。它们有长度，并且可以切片。列表、元组、字符串和所有其他序列都是这样工作的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers[<span class="number">0</span>] </span><br><span class="line"><span class="number">1</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>coordinates[<span class="number">2</span>] </span><br><span class="line"><span class="number">7</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>words[<span class="number">4</span>] </span><br><span class="line"><span class="string">'o'</span></span><br></pre></td></tr></table></figure>
 
-<p>Lots of things in Python are iterables, but not all iterables are  sequences.  Sets, dictionaries, files, and generators are all iterables  but none of these things are sequences.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; my_set &#x3D; &#123;1, 2, 3&#125; &gt;&gt;&gt; my_dict &#x3D; &#123;&#39;k1&#39;: &#39;v1&#39;, &#39;k2&#39;: &#39;v2&#39;&#125; &gt;&gt;&gt; my_file &#x3D; open(&#39;some_file.txt&#39;) &gt;&gt;&gt; squares &#x3D; (n**2 for n in my_set)</span><br></pre></td></tr></table></figure>
+<p>Python中的很多东西都是可迭代对象，但并非所有的可迭代对象都是序列。集合、字典、文件和生成器都是可迭代对象，但它们都不是序列。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_set = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125; </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_dict = &#123;<span class="string">'k1'</span>: <span class="string">'v1'</span>, <span class="string">'k2'</span>: <span class="string">'v2'</span>&#125; </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_file = open(<span class="string">'some_file.txt'</span>) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = (n**<span class="number">2</span> <span class="keyword">for</span> n <span class="keyword">in</span> my_set)</span><br></pre></td></tr></table></figure>
 
-<p>So anything that can be looped over with a <code>for</code> loop is an iterable and sequences are one type of iterable but Python has many other kinds of iterables as well.</p>
-<h2 id="Python’s-for-loops-don’t-use-indexes"><a href="#Python’s-for-loops-don’t-use-indexes" class="headerlink" title="Python’s for loops don’t use indexes"></a>Python’s for loops don’t use indexes</h2><p>You might think that under the hood, Python’s <code>for</code> loops use indexes to loop. Here we’re manually looping over an iterable using a <code>while</code> loop and indexes:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">numbers &#x3D; [1, 2, 3, 5, 7] i &#x3D; 0 while i &lt; len(numbers):    print(numbers[i])    i +&#x3D; 1</span><br></pre></td></tr></table></figure>
+<p>因此，任何可以用<code>for</code>来循环的东西都是一个可迭代对象，例如序列，但是并非所有可迭代对象都是序列。</p>
+<h2 id="Python的for循环"><a href="#Python的for循环" class="headerlink" title="Python的for循环"></a>Python的for循环</h2><p>前面已经显示了，Python的<code>for</code>循环不使用索引——这是不同于C语言分割的<code>for</code>循环之处。</p>
+<p>不过，你可能会悄悄滴认为，如果非要用，Python的<code>for</code>循环肯定也能实现C语言风格，因为我们一向认为“C语言是任何东西的基础”。为此，我们使用<code>while</code> 循环和索引手动遍历一个可迭代对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>] </span><br><span class="line">i = <span class="number">0</span> </span><br><span class="line"><span class="keyword">while</span> i &lt; len(numbers):</span><br><span class="line">    print(numbers[i])  </span><br><span class="line">    i += <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
-<p>This works for lists, but it won’t work for everything.  This way of looping <strong>only works for sequences</strong>.</p>
-<p>If we try to manually loop over a set using indexes, we’ll get an error:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; fruits &#x3D; &#123;&#39;lemon&#39;, &#39;apple&#39;, &#39;orange&#39;, &#39;watermelon&#39;&#125; &gt;&gt;&gt; i &#x3D; 0 &gt;&gt;&gt; while i &lt; len(fruits): ...     print(fruits[i]) ...     i +&#x3D; 1 ... Traceback (most recent call last): File &quot;&lt;stdin&gt;&quot;, line 2, in &lt;module&gt; TypeError: &#39;set&#39; object does not support indexing</span><br></pre></td></tr></table></figure>
+<p>很显然，上面的循环方式只适合于序列类对象，对其它的并非完全使用，比如字典、集合。</p>
+<p>比如使用索引手动遍历一个集合，我们将看到报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>fruits = &#123;<span class="string">'lemon'</span>, <span class="string">'apple'</span>, <span class="string">'orange'</span>, <span class="string">'watermelon'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>i = <span class="number">0</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">while</span> i &lt; len(fruits): </span><br><span class="line"><span class="meta">... </span>    print(fruits[i]) </span><br><span class="line"><span class="meta">... </span>    i += <span class="number">1</span> </span><br><span class="line"><span class="meta">... </span>Traceback (most recent call last): File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">2</span>, <span class="keyword">in</span> &lt;module&gt; </span><br><span class="line">    TypeError: <span class="string">'set'</span> object does <span class="keyword">not</span> support indexing</span><br></pre></td></tr></table></figure>
 
-<p>Sets are not sequences so they don’t support indexing.</p>
-<p>We <em>cannot</em> manually loop over every iterable in Python by using indexes. This simply won’t work for iterables that aren’t sequences.</p>
-<h2 id="Iterators-power-for-loops"><a href="#Iterators-power-for-loops" class="headerlink" title="Iterators power for loops"></a>Iterators power for loops</h2><p>So we’ve seen that Python’s <code>for</code> loops must not be using indexes under the hood. Instead, Python’s <code>for</code> loops use <strong>iterators</strong>.</p>
-<p>Iterators are the things that power iterables. You can get an iterator from <em>any</em> iterable. And you can use an iterator to manually loop over the iterable it came from.</p>
-<p>Let’s take a look at how that works.</p>
-<p>Here are three iterables: a set, a tuple, and a string.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; &#123;1, 2, 3, 5, 7&#125; &gt;&gt;&gt; coordinates &#x3D; (4, 5, 7) &gt;&gt;&gt; words &#x3D; &quot;hello there&quot;</span><br></pre></td></tr></table></figure>
+<p>集合不是序列，因此它们不支持索引。</p>
+<p>在Python中，我们<em>不能</em>通过使用索引手动遍历每个可迭代对象。这对于不是序列的可迭代对象根本不起作用。</p>
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>在Python中，迭代器可以用于<code>for</code>循环。</p>
+<p>什么是迭代器？它是驱动可迭代对象的一类对象。我们可以从任意可迭代对象那里生成迭代器。</p>
+<p>这里有三个可迭代对象：集合、元组和字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; &#123;1, 2, 3, 5, 7&#125; </span><br><span class="line">&gt;&gt;&gt; coordinates &#x3D; (4, 5, 7) </span><br><span class="line">&gt;&gt;&gt; words &#x3D; &quot;hello there&quot;</span><br></pre></td></tr></table></figure>
 
-<p>We can ask each of these iterables for an <em>iterator</em> using Python’s built-in <code>iter</code> function. Passing an iterable to the <code>iter</code> function will always give us back an iterator, no matter what type of iterable we’re working with.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; iter(numbers) &lt;set_iterator object at 0x7f2b9271c860&gt; &gt;&gt;&gt; iter(coordinates) &lt;tuple_iterator object at 0x7f2b9271ce80&gt; &gt;&gt;&gt; iter(words) &lt;str_iterator object at 0x7f2b9271c860&gt;</span><br></pre></td></tr></table></figure>
+<p>可以用Python内置的<code>iter</code>函数用上面的可迭代对象生成迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>iter(numbers) </span><br><span class="line">&lt;set_iterator object at <span class="number">0x7f2b9271c860</span>&gt; </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>iter(coordinates) </span><br><span class="line">&lt;tuple_iterator object at <span class="number">0x7f2b9271ce80</span>&gt; </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>iter(words) </span><br><span class="line">&lt;str_iterator object at <span class="number">0x7f2b9271c860</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<p>Once we have an iterator, the one thing we can do with it is get its next item by passing it to the built-in <code>next</code> function.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3] &gt;&gt;&gt; my_iterator &#x3D; iter(numbers) &gt;&gt;&gt; next(my_iterator) 1 &gt;&gt;&gt; next(my_iterator) 2</span><br></pre></td></tr></table></figure>
+<p>有了迭代器，就把它传给内置函数<code>next</code>，从而获得它的下一项。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_iterator = iter(numbers) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(my_iterator) </span><br><span class="line"><span class="number">1</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(my_iterator) </span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
 
-<p>Iterators are stateful, meaning once you’ve consumed an item from them it’s gone.</p>
-<p>If you ask for the <code>next</code> item from an iterator and there are no more items, you’ll get a <code>StopIteration</code> exception:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; next(iterator) 3 &gt;&gt;&gt; next(iterator) Traceback (most recent call last):  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt; StopIteration</span><br></pre></td></tr></table></figure>
+<p>每从迭代器中取出一项，那一项就从迭代器中“消失”了。如果到了迭代器的最后一项，还执行<code>next</code>，而实际上后面已经没有其他项了，这时候就会报出<code>StopIteration</code>异常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(iterator) </span><br><span class="line"><span class="number">3</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(iterator) </span><br><span class="line">Traceback (most recent call last):  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, </span><br><span class="line"><span class="keyword">in</span> &lt;module&gt; StopIteration</span><br></pre></td></tr></table></figure>
 
-<p>So you can get an iterator from every iterable. And the only thing that you can do with iterators is ask them for their next item using the <code>next</code> function. And if you pass them to <code>next</code> but they don’t have a next item, a <code>StopIteration</code> exception will be raised.</p>
-<p>You can think of iterators as like Hello Kitty PEZ dispensers that cannot be reloaded. You can take PEZ out, but once a PEZ is removed it can’t be put back and once the dispenser is empty, it’s useless.</p>
-<h2 id="Looping-without-a-for-loop"><a href="#Looping-without-a-for-loop" class="headerlink" title="Looping without a for loop"></a>Looping without a for loop</h2><p>Now that we’ve learned about iterators and the <code>iter</code> and <code>next</code> functions, we’re going to try manually looping over an iterable without using a <code>for</code> loop.</p>
-<p>We’ll do so by attempting to turn this <code>for</code> loop into a <code>while</code> loop:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def funky_for_loop(iterable, action_to_do):    for item in iterable:        action_to_do(item)</span><br></pre></td></tr></table></figure>
 
-<p>To do this we’ll:</p>
+
+<h2 id="不用for的循环"><a href="#不用for的循环" class="headerlink" title="不用for的循环"></a>不用for的循环</h2><p>在了解了迭代器、以及<code>iter</code>和<code>next</code>函数后，我们将尝试手动遍历一个可迭代对象，而不使用<code>for</code>循环。</p>
+<p>不用<code>for</code>，就得用<code>while</code>了，Python中只有这么两个循环语句。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">funky_for_loop</span><span class="params">(iterable, action_to_do)</span>:</span>    </span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> iterable:</span><br><span class="line">        action_to_do(item)</span><br></pre></td></tr></table></figure>
+
+<p>为了去掉<code>for</code>，需要：</p>
 <ol>
-<li>Get an iterator from the given iterable</li>
-<li>Repeatedly get the next item from the iterator</li>
-<li>Execute the body of the <code>for</code> loop if we successfully got the next item</li>
-<li>Stop our loop if we got a <code>StopIteration</code> exception while getting the next item</li>
+<li><p>根据给定的可迭代对象生成迭代器</p>
+</li>
+<li><p>从迭代器中重复获取下一项</p>
+</li>
+<li><p>如果成功获得了下一项，则相当于执行<code>for</code>循环了</p>
+</li>
+<li><p>如果在获取下一项时遇到“StopIteration”异常，则停止循环</p>
+</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def funky_for_loop(iterable, action_to_do):    iterator &#x3D; iter(iterable)    done_looping &#x3D; False    while not done_looping:        try:            item &#x3D; next(iterator)        except StopIteration:            done_looping &#x3D; True        else:            action_to_do(item)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">funky_for_loop</span><span class="params">(iterable, action_to_do)</span>:</span>    </span><br><span class="line">    iterator = iter(iterable)</span><br><span class="line">    done_looping = <span class="literal">False</span>    </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> done_looping:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            item = next(iterator)</span><br><span class="line">        <span class="keyword">except</span> StopIteration:</span><br><span class="line">            done_looping = <span class="literal">True</span>        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            action_to_do(item)</span><br></pre></td></tr></table></figure>
 
-<p>We’ve just re-invented a <code>for</code> loop by using a <code>while</code> loop and iterators.</p>
-<p>The above code pretty much defines the way looping works under the hood in Python.  If you understand the way the built-in <code>iter</code> and <code>next</code> functions work for looping over things, you understand how Python’s <code>for</code> loops work.</p>
-<p>In fact you’ll understand a little bit more than just how <code>for</code> loops work in Python.  All forms of looping over iterables work this way.</p>
-<p><strong>The iterator protocol</strong> is a fancy way of saying “how looping over iterables works in Python”. It’s essentially the definition of the way the <code>iter</code> and <code>next</code> functions work in Python. All forms of iteration in Python are powered by the iterator protocol.</p>
-<p>The iterator protocol is used by <code>for</code> loops (as we’ve already seen):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for n in numbers:    print(n)</span><br></pre></td></tr></table></figure>
+<p>这里，其实是用<code>while</code>循环和迭代器重新发明了<code>for</code>循环。</p>
+<p>上面的代码基本上定义了Python中循环的工作方式。如果你了解内置的<code>iter</code>和<code>next</code>函数在遍历对象时的工作方式，那么你就了解了Python的<code>for</code>循环是如何工作的，它们的工作过程是类似的。</p>
+<p>实际上，通过上面的代码，不仅仅展示了<code>for</code>循环的工作原理，所有可迭代对象的循环都如此。</p>
+<p>总结一下，<strong>迭代器协议</strong>是描述“Python中可迭代对象的循环如何工作的”的一种基本方式，它本质上是Python中<code>iter</code>和<code>next</code>函数所定义的，Python中所有形式的迭代都由迭代器协议提供支持。</p>
+<p>迭代器协议也被用于<code>for</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> numbers:    </span><br><span class="line">    print(n)</span><br></pre></td></tr></table></figure>
 
-<p>Multiple assignment also uses the iterator protocol:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x, y, z &#x3D; coordinates</span><br></pre></td></tr></table></figure>
+<p>多重赋值也使用迭代器协议：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x, y, z = coordinates</span><br></pre></td></tr></table></figure>
 
-<p>Star expressions use the iterator protocol:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a, b, *rest &#x3D; numbers print(*numbers)</span><br></pre></td></tr></table></figure>
+<p>下面这种使用<code>*</code>的表达式也使用迭代器协议：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a, b, *rest = numbers print(*numbers)</span><br></pre></td></tr></table></figure>
 
-<p>And many built-in functions rely on the iterator protocol:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unique_numbers &#x3D; set(numbers)</span><br></pre></td></tr></table></figure>
+<p>许多内置函数依赖于迭代器协议：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unique_numbers = set(numbers)</span><br></pre></td></tr></table></figure>
 
-<p>Anything in Python that works with an <em>iterable</em> probably uses the iterator protocol in some way. Any time you’re looping over an iterable in Python, you’re relying on the iterator protocol.</p>
-<h2 id="Generators-are-iterators"><a href="#Generators-are-iterators" class="headerlink" title="Generators are iterators"></a>Generators are iterators</h2><p>So you might be thinking: iterators seem cool, but they also just seem like an implementation detail and we might not need to <em>care</em> about them as users of Python.</p>
-<p>I have news for you: it’s very common to work directly with iterators in Python.</p>
-<p>The <code>squares</code> object here is a generator:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3] &gt;&gt;&gt; squares &#x3D; (n**2 for n in numbers)</span><br></pre></td></tr></table></figure>
+<p>Python中任何与可迭代对象一起工作的东西都可能以某种方式使用迭代器协议。在Python中，每当你遍历一个可迭代对象时，都依赖于迭代器协议。</p>
+<h2 id="生成器是迭代器"><a href="#生成器是迭代器" class="headerlink" title="生成器是迭代器"></a>生成器是迭代器</h2><p>迭代器看起来很酷，不过，它是不是用途有限呢？或者说作为普通的Python编程者，是不是不需要关心它呢？</p>
+<p>非也。</p>
+<p>迭代器很常见。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = (n**<span class="number">2</span> <span class="keyword">for</span> n <span class="keyword">in</span> numbers)</span><br></pre></td></tr></table></figure>
 
-<p>And generators are iterators, meaning you can call <code>next</code> on a generator to get its next item:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; next(squares) 1 &gt;&gt;&gt; next(squares) 4</span><br></pre></td></tr></table></figure>
+<p>此处得到的<code>squares</code>是一个生成器，生成器也是迭代器，这意味着你可以对生成器调用<code>next</code>，以获取其下一项：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares) </span><br><span class="line"><span class="number">1</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(squares) </span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
 
-<p>But if you’ve ever used a generator before, you probably know that you can also loop over generators:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; squares &#x3D; (n**2 for n in numbers) &gt;&gt;&gt; for n in squares: ...     print(n) ... 1 4 9</span><br></pre></td></tr></table></figure>
+<p>用<code>for</code>循环同样可以遍历生成器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = (n**<span class="number">2</span> <span class="keyword">for</span> n <span class="keyword">in</span> numbers) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> squares: </span><br><span class="line"><span class="meta">... </span>    print(n) </span><br><span class="line"><span class="meta">... </span><span class="number">1</span> <span class="number">4</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
 
-<p>If you can loop over something in Python, it’s an <strong>iterable</strong>.</p>
-<p>So <strong>generators are iterators</strong>, but generators are also iterables.  What’s going on here?</p>
-<h2 id="I-lied-to-you"><a href="#I-lied-to-you" class="headerlink" title="I lied to you"></a>I lied to you</h2><p>So when I explained how iterators worked earlier, I skipped over an important detail about them.</p>
-<p><strong>Iterators are iterables</strong>.</p>
-<p>I’ll say that again: every iterator in Python is also an iterable, which means you can loop over iterators.</p>
-<p>Because iterators are also iterables, you can get an iterator from an iterator using the built-in <code>iter</code> function:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3] &gt;&gt;&gt; iterator1 &#x3D; iter(numbers) &gt;&gt;&gt; iterator2 &#x3D; iter(iterator1)</span><br></pre></td></tr></table></figure>
+<p>下面这句话，貌似废话，但是重要：<strong>迭代器是可迭代对象</strong>。</p>
+<p>这就意味着，可以将迭代器对象作为<code>iter</code>函数的参数，生成一个新的迭代器对象。不是吗？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>iterator1 = iter(numbers) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>iterator2 = iter(iterator1)  <span class="comment"># 迭代器对象作为参数</span></span><br></pre></td></tr></table></figure>
 
-<p>Remember that iterables give us iterators when we call <code>iter</code> on them.</p>
-<p>When we call <code>iter</code> on an iterator it will always give us itself back:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; iterator1 is iterator2 True</span><br></pre></td></tr></table></figure>
+<p>以上最终得到的<code>iterator2</code>是一个迭代器。不过，要注意，<code>iterator1</code>和<code>iterator2</code>的关系：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>iterator1 <span class="keyword">is</span> iterator2 </span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
 
-<p>Iterators are iterables and all iterators are their own iterators.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def is_iterator(iterable):    return iter(iterable) is iterable</span><br></pre></td></tr></table></figure>
+<p><code>iter</code>函数的参数如果是一个迭代器，返回对象仍然是该迭代器对象自身。</p>
+<p>结论：迭代器是可迭代对象，所有迭代器都是自己的迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_iterator</span><span class="params">(iterable)</span>:</span>    </span><br><span class="line">    <span class="keyword">return</span> iter(iterable) <span class="keyword">is</span> iterable</span><br></pre></td></tr></table></figure>
 
-<p>Confused yet?</p>
-<p>Let’s recap these terms.</p>
-<p>An iter<strong>able</strong> is something you’re able to iterate over. An iter<strong>ator</strong> is the agent that actually does the iterating over an iterable.</p>
-<p>Additionally, in Python iterators are also iterables and they act as <em>their own</em> iterators.</p>
-<p>So iterators are iterables, but they don’t have the variety of features that some iterables have.</p>
-<p>Iterators have no length and they can’t be indexed:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; iterator &#x3D; iter(numbers) &gt;&gt;&gt; len(iterator) TypeError: object of type &#39;list_iterator&#39; has no len() &gt;&gt;&gt; iterator[0] TypeError: &#39;list_iterator&#39; object is not subscriptable</span><br></pre></td></tr></table></figure>
+<p>困惑了吗？</p>
+<p>继续。</p>
+<p>迭代器没有长度，因此无法索引。这个认识必须要建立起来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>iterator = iter(numbers) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(iterator) </span><br><span class="line">TypeError: object of type <span class="string">'list_iterator'</span> has no len() </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>iterator[<span class="number">0</span>] </span><br><span class="line">TypeError: <span class="string">'list_iterator'</span> object <span class="keyword">is</span> <span class="keyword">not</span> subscriptable</span><br></pre></td></tr></table></figure>
 
-<p>From our perspective as Python programmers, the only useful things you can do with an iterator are pass it to the built-in <code>next</code> function or loop over it:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; next(iterator) 1 &gt;&gt;&gt; list(iterator) [2, 3, 5, 7]</span><br></pre></td></tr></table></figure>
+<p>从Python程序员的角度来看，使用迭代器可以做的唯一有用的事情就是：将迭代器传给内置的<code>next</code>函数、或遍历迭代器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(iterator) </span><br><span class="line"><span class="number">1</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(iterator)</span><br><span class="line">[<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>]</span><br></pre></td></tr></table></figure>
 
-<p>And if we loop over an iterator a second time, we’ll get nothing back:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; list(iterator) []</span><br></pre></td></tr></table></figure>
+<p>如果我们第二次遍历迭代器，我们将一无所获：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(iterator) </span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
 
-<p>You can think of iterators are <strong>lazy iterables</strong> that are <strong>single-use</strong>, meaning they can be looped over one time only.</p>
+<p>这就是说，迭代器可以认为是<strong>一次性</strong>的惰性的可迭代对象，这意味着它们只能遍历一次。</p>
 <table>
 <thead>
 <tr>
@@ -350,121 +346,37 @@
 <td>❌</td>
 </tr>
 </tbody></table>
-<p>As you can see in the truth table above, iterables are not always iterators but iterators are always iterables:</p>
-<h2 id="The-iterator-protocol-in-full"><a href="#The-iterator-protocol-in-full" class="headerlink" title="The iterator protocol, in full"></a>The iterator protocol, in full</h2><p>Let’s define how iterators work from Python’s perspective.</p>
-<p>Iterables can be passed to the <code>iter</code> function to get an iterator for them.</p>
-<p>Iterators:</p>
+<p>正如上表中所示，可迭代对象并不总是迭代器，但迭代器总是可迭代对象：</p>
+<p>所谓迭代器协议，即：</p>
 <ol>
-<li>Can be passed to the <code>next</code> function which will give their next item or raise a <code>StopIteration</code> exception if there are no more items</li>
-<li>Can be passed to the <code>iter</code> function and will return themselves back</li>
+<li><p>可以作为<code>next</code>函数的参数，从而获得对象的下一项，或者在没有其他项时引发<code>StopIteration</code>异常。</p>
+</li>
+<li><p>可以作为<code>iter</code>函数的参数，并返回自身。</p>
+</li>
 </ol>
-<p>The inverse of these statements also hold true:</p>
+<p>反过来说，也成立：</p>
 <ol>
-<li>Anything that can be passed to <code>iter</code> without a <code>TypeError</code> is an iterable</li>
-<li>Anything that can be passed to <code>next</code> without a <code>TypeError</code> is an iterator</li>
-<li>Anything that returns itself when passed to <code>iter</code> is an iterator</li>
+<li><p>任何可以传给<code>iter</code>而没有引发<code>TypeError</code>的对象都是可迭代对象。</p>
+</li>
+<li><p>任何可以传给<code>next</code>而没有引发<code>TypeError</code>的对象都是迭代器。</p>
+</li>
+<li><p>任何在传给<code>iter</code>时返回自身的对象都是迭代器。</p>
+</li>
 </ol>
-<p>That’s the iterator protocol in Python.</p>
-<h2 id="Iterators-enable-laziness"><a href="#Iterators-enable-laziness" class="headerlink" title="Iterators enable laziness"></a>Iterators enable laziness</h2><p>Iterators allow us to both work with and create <strong>lazy iterables</strong> that don’t do any work until we ask them for their next item. Because we can create lazy iterables, we can make infinitely long iterables. And we can create iterables that are conservative with system resources, that can save us memory and can save us CPU time.</p>
-<h2 id="Iterators-are-everywhere"><a href="#Iterators-are-everywhere" class="headerlink" title="Iterators are everywhere"></a>Iterators are everywhere</h2><p>You’ve already seen lots of iterators in Python. I’ve already mentioned that generators are iterators. Many of Python’s built-in classes are iterators also. For example Python’s <code>enumerate</code> and <code>reversed</code> objects are iterators.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; letters &#x3D; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;] &gt;&gt;&gt; e &#x3D; enumerate(letters) &gt;&gt;&gt; e &lt;enumerate object at 0x7f112b0e6510&gt; &gt;&gt;&gt; next(e) (0, &#39;a&#39;)</span><br></pre></td></tr></table></figure>
+<p>这是Python中的迭代器协议。</p>
+<p>迭代器还能创建包含无限多个元素的对象，关于这方面的内容请参阅《Python大学实用教程》中的有关内容。</p>
+<h2 id="迭代器无处不在"><a href="#迭代器无处不在" class="headerlink" title="迭代器无处不在"></a>迭代器无处不在</h2><p>Python中的迭代器很多，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>e = enumerate(letters) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>e </span><br><span class="line">&lt;enumerate object at <span class="number">0x7f112b0e6510</span>&gt; </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(e) </span><br><span class="line">(<span class="number">0</span>, <span class="string">'a'</span>)</span><br></pre></td></tr></table></figure>
 
-<p>In Python 3, <code>zip</code>, <code>map</code>, and <code>filter</code> objects are iterators too.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; letters &#x3D; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;] &gt;&gt;&gt; z &#x3D; zip(numbers, letters) &gt;&gt;&gt; z &lt;zip object at 0x7f112cc6ce48&gt; &gt;&gt;&gt; next(z) (1, &#39;a&#39;)</span><br></pre></td></tr></table></figure>
+<p>在Python3中，<code>zip</code>、<code>map</code>和<code>filter</code>对象也是迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z = zip(numbers, letters) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z </span><br><span class="line">&lt;zip object at <span class="number">0x7f112cc6ce48</span>&gt; </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(z) </span><br><span class="line">(<span class="number">1</span>, <span class="string">'a'</span>)</span><br></pre></td></tr></table></figure>
 
-<p>And file objects in Python are iterators also.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; next(open(&#39;hello.txt&#39;)) &#39;hello world\n&#39;</span><br></pre></td></tr></table></figure>
+<p>Python中的文件对象也是迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(open(<span class="string">'hello.txt'</span>)) </span><br><span class="line"><span class="string">'hello world\n'</span></span><br></pre></td></tr></table></figure>
 
-<p>There are lots of iterators bult-in to Python, in the standard library, and in third-party Python libraries. These iterators all act like lazy iterables by delaying work until the moment you ask them for their next item.</p>
-<h2 id="Creating-your-own-iterator"><a href="#Creating-your-own-iterator" class="headerlink" title="Creating your own iterator"></a>Creating your own iterator</h2><p>It’s useful to know that you’re already using iterators, but I’d like you to also know that you can create your own iterators and your own  lazy iterables.</p>
-<p>This class makes an iterator that accepts an iterable of numbers and  provides squares of each of the numbers as it’s looped over.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class square_all:    def __init__(self, numbers):        self.numbers &#x3D; iter(numbers)    def __next__(self):        return next(self.numbers) ** 2    def __iter__(self):        return self</span><br></pre></td></tr></table></figure>
-
-<p>But no work will be done until we start looping over an instance of this class.</p>
-<p>Here we have an infinitely long iterable <code>count</code> and you can see that <code>square_all</code> accepts <code>count</code> without fully looping over this infinitely long iterable:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from itertools import count &gt;&gt;&gt; numbers &#x3D; count(5) &gt;&gt;&gt; squares &#x3D; square_all(numbers) &gt;&gt;&gt; next(squares) 25 &gt;&gt;&gt; next(squares) 36</span><br></pre></td></tr></table></figure>
-
-<p>This iterator class works, but we don’t usually make iterators this way. Usually when we want to make a custom iterator, we make a generator function:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def square_all(numbers):    for n in numbers:        yield n**2</span><br></pre></td></tr></table></figure>
-
-<p>This generator function is equivalent to the class we made above and it works essentially the same way.</p>
-<p>That <code>yield</code> statement probablys seem magical, but it is very powerful: <code>yield</code> allows us to put our generator function on pause between calls from the <code>next</code> function. The <code>yield</code> statement is the thing that separates generator functions from regular functions.</p>
-<p>Another way we could implement this same iterator is with a generator expression.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def square_all(numbers):    return (n**2 for n in numbers)</span><br></pre></td></tr></table></figure>
-
-<p>This does the same thing as our generator function but it uses a syntax that looks <a href="https://treyhunner.com/2015/12/python-list-comprehensions-now-in-color/" target="_blank" rel="noopener">like a list comprehension</a>. If you need to make a lazy iterable in your code, think of iterators and consider making a generator function or a generator expression.</p>
-<h2 id="How-iterators-can-improve-your-code"><a href="#How-iterators-can-improve-your-code" class="headerlink" title="How iterators can improve your code"></a>How iterators can improve your code</h2><p>Once you’ve embraced the idea of using lazy iterables in your code,  you’ll find that there are lots of possibilities for discovering or  creating helper functions that assist you in looping over iterables and  processing data.</p>
-<h3 id="Laziness-and-summing"><a href="#Laziness-and-summing" class="headerlink" title="Laziness and summing"></a>Laziness and summing</h3><p>This is a <code>for</code> loop that sums up all billable hours in a Django queryset:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hours_worked &#x3D; 0 for event in events:    if event.is_billable():        hours_worked +&#x3D; event.duration</span><br></pre></td></tr></table></figure>
-
-<p>Here is code that does the same thing using a generator expression for lazy evaluation:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">billable_times &#x3D; (    event.duration    for event in events    if event.is_billable() ) hours_worked &#x3D; sum(billable_times)</span><br></pre></td></tr></table></figure>
-
-<p>Notice that the shape of our code has changed dramatically.</p>
-<p>Turning our billable times into a lazy iterable has allowed us to name something (<code>billable_times</code>) that was previously unnamed. This has also allowed us to use the <code>sum</code> function.  We couldn’t have used <code>sum</code> before because we didn’t even have an iterable to pass to it. Iterators allow you to fundamentally change the way you structure your code.</p>
-<h3 id="Laziness-and-breaking-out-of-loops"><a href="#Laziness-and-breaking-out-of-loops" class="headerlink" title="Laziness and breaking out of loops"></a>Laziness and breaking out of loops</h3><p>This code prints out the first ten lines of a log file:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i, line in enumerate(log_file):    if i &gt;&#x3D; 10:        break    print(line)</span><br></pre></td></tr></table></figure>
-
-<p>This code does the same thing, but we’re using the <code>itertools.islice</code> function to lazily grab the first 10 lines of our file as we loop:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from itertools import islice first_ten_lines &#x3D; islice(log_file, 10) for line in first_ten_lines:    print(line)</span><br></pre></td></tr></table></figure>
-
-<p>The <code>first_ten_lines</code> variable we’ve made is an iterator. Again using an iterator allowed us to give a name to something (first ten lines) that was previously unnamed. Naming things can make our code more descriptive and more readable.</p>
-<p>As a bonus we also removed the need for a <code>break</code> statement in our loop because the <code>islice</code> utility handles the breaking for us.</p>
-<p>You can find many more iteration helper functions in <a href="https://docs.python.org/3/library/itertools.html" target="_blank" rel="noopener">itertools</a> in the standard library as well as in third-party libraries such as <a href="https://boltons.readthedocs.io" target="_blank" rel="noopener">boltons</a> and <a href="https://more-itertools.readthedocs.io" target="_blank" rel="noopener">more-itertools</a>.</p>
-<h3 id="Creating-your-own-iteration-helpers"><a href="#Creating-your-own-iteration-helpers" class="headerlink" title="Creating your own iteration helpers"></a>Creating your own iteration helpers</h3><p>You can find helper functions for looping in the standard library and in third-party libraries, but you can also make your own!</p>
-<p>This code makes a list of the differences between consecutive values in a sequence.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">current &#x3D; readings[0] for next_item in readings[1:]:    differences.append(next_item - current)    current &#x3D; next_item</span><br></pre></td></tr></table></figure>
-
-<p>Notice that this code has an extra variable that we need to assign each time we loop. Also note that this code only works with things we can slice, like sequences.  If <code>readings</code> were a generator, a zip object, or any other type of iterator this code would fail.</p>
-<p>Let’s write a helper function to fix our code.</p>
-<p>This is a generator function that gives us the current item and the item following it for every item in a given iterable:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def with_next(iterable):    &quot;&quot;&quot;Yield (current, next_item) tuples for each item in iterable.&quot;&quot;&quot;    iterator &#x3D; iter(iterable)    current &#x3D; next(iterator)    for next_item in iterator:        yield current, next_item        current &#x3D; next_item</span><br></pre></td></tr></table></figure>
-
-<p>We’re manually getting an iterator from our iterable, calling <code>next</code> on it to grab the first item, and then looping over our iterator to get all subsequent items, keeping track of our last item along the way. This function works not just with sequences, but with any type of  iterable</p>
-<p>This is the same code but we’re using our helper function instead of manually keeping track of <code>next_item</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">differences &#x3D; [] for current, next_item in with_next(readings):    differences.append(next_item - current)</span><br></pre></td></tr></table></figure>
-
-<p>Notice that this code doesn’t have awkward assignments to <code>next_item</code> hanging around our loop. The <code>with_next</code> generator function handles the work of keeping track of <code>next_item</code> for us.</p>
-<p>Also note that this code has been compacted enough that we could even <a href="https://treyhunner.com/2015/12/python-list-comprehensions-now-in-color/" target="_blank" rel="noopener">copy-paste our way into a list comprehension</a> if we wanted to.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">differences &#x3D; [    (next_item - current)    for current, next_item in with_next(readings) ]</span><br></pre></td></tr></table></figure>
-
-<h2 id="Looping-Gotchas-Revisited"><a href="#Looping-Gotchas-Revisited" class="headerlink" title="Looping Gotchas: Revisited"></a>Looping Gotchas: Revisited</h2><p>At this point we’re ready to jump back to those odd examples we saw earlier and try to figure out what was going on.</p>
-<h3 id="Gotcha-1-Exhausting-an-Iterator"><a href="#Gotcha-1-Exhausting-an-Iterator" class="headerlink" title="Gotcha 1: Exhausting an Iterator"></a>Gotcha 1: Exhausting an Iterator</h3><p>Here we have a generator object, <code>squares</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; squares &#x3D; (n**2 for n in numbers)</span><br></pre></td></tr></table></figure>
-
-<p>If we pass this generator to the <code>tuple</code> constructor, we’ll get a tuple of its items back:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; squares &#x3D; (n**2 for n in numbers) &gt;&gt;&gt; tuple(squares) (1, 4, 9, 25, 49)</span><br></pre></td></tr></table></figure>
-
-<p>If we then try to compute the <code>sum</code> of the numbers in this generator, we’ll get <code>0</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sum(squares) 0</span><br></pre></td></tr></table></figure>
-
-<p>This generator is now empty: we’ve exhausted it. If we try to make a tuple out of it again, we’ll get an empty tuple:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; tuple(squares) ()</span><br></pre></td></tr></table></figure>
-
-<p>Generators are iterators. And iterators are single-use iterables. They’re like Hello Kitty PEZ dispensers that cannot be reloaded.</p>
-<h3 id="Gotcha-2-Partially-Consuming-an-Iterator"><a href="#Gotcha-2-Partially-Consuming-an-Iterator" class="headerlink" title="Gotcha 2: Partially-Consuming an Iterator"></a>Gotcha 2: Partially-Consuming an Iterator</h3><p>Again we have a generator object, <code>squares</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; squares &#x3D; (n**2 for n in numbers)</span><br></pre></td></tr></table></figure>
-
-<p>If we ask whether <code>9</code> is in this <code>squares</code> generator, we’ll get <code>True</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 9 in squares True</span><br></pre></td></tr></table></figure>
-
-<p>But if we ask the same question again, we’ll get <code>False</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 9 in squares False</span><br></pre></td></tr></table></figure>
-
-<p>When we ask whether <code>9</code> is in this generator, Python has to loop over this generator to find <code>9</code>. If we kept looping over it after checking for <code>9</code>, we’ll only get the last two numbers because we’ve already consumed the numbers before this point:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; [1, 2, 3, 5, 7] &gt;&gt;&gt; squares &#x3D; (n**2 for n in numbers) &gt;&gt;&gt; 9 in squares True &gt;&gt;&gt; list(squares) [25, 49]</span><br></pre></td></tr></table></figure>
-
-<p>Asking whether something is <em>contained</em> in an iterator will partially consume the iterator. There is no way to know whether something is in an iterator without starting to loop over it.</p>
-<h3 id="Gotcha-3-Unpacking-is-iteration"><a href="#Gotcha-3-Unpacking-is-iteration" class="headerlink" title="Gotcha 3: Unpacking is iteration"></a>Gotcha 3: Unpacking is iteration</h3><p>When you <em>loop</em> over dictionaries you get keys:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; counts &#x3D; &#123;&#39;apples&#39;: 2, &#39;oranges&#39;: 1&#125; &gt;&gt;&gt; for key in counts: ...     print(key) ... apples oranges</span><br></pre></td></tr></table></figure>
-
-<p>You also get keys when you unpack a dictionary:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x, y &#x3D; counts &gt;&gt;&gt; x, y (&#39;apples&#39;, &#39;oranges&#39;)</span><br></pre></td></tr></table></figure>
-
-<p>Looping relies on the iterator protocol. Iterable unpacking also relies on the iterator protocol. Unpacking a dictionary is really the same as looping over the dictionary. Both use the iterator protocol, so you get the same result in both cases.</p>
-<h2 id="Recap-and-related-resources"><a href="#Recap-and-related-resources" class="headerlink" title="Recap and related resources"></a>Recap and related resources</h2><p>Sequences are iterables, but not all iterables are sequences. When someone says the word “iterable” you can only assume they mean  “something that you can iterate over”.  Don’t assume iterables can be  looped over twice, asked for their length, or indexed.</p>
-<p>Iterators are the most rudimentary form of iterables in Python. If you’d like to make a lazy iterable in your code think of iterators  and consider making a generator function or a generator expression.</p>
-<p>And finally, remember that every type of iteration in Python relies  on the iterator protocol so understanding the iterator protocol is the  key to understanding quite a bit about looping in Python in general.</p>
+<p>在Python、标准库和第三方Python库中还有许多内置的迭代器。</p>
+<p>至此，本文开始时所提到的那三个坑，已经可以给出完美的解释了。</p>
+<p>最后，要强调，这里所介绍的有关迭代器概念，只是对《Python大学实用教程》中没有特别强调或者容易忽视的地方给予补充和强调，在这本书中，对循环、迭代和迭代器、生成器有比较全面的介绍，请参阅。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. <a href="https://treyhunner.com/2019/06/loop-better-a-deeper-look-at-iteration-in-python/#Generators_are_iterators" target="_blank" rel="noopener">https://treyhunner.com/2019/06/loop-better-a-deeper-look-at-iteration-in-python/#Generators_are_iterators</a></p>
 <p>​        </p>
 </section>
@@ -527,7 +439,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Loop-Better-a-deeper-look-at-iteration-in-Python"><span class="toc-nav-text">Loop Better: a deeper look at iteration in Python</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Looping-Gotchas"><span class="toc-nav-text">Looping Gotchas</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Gotcha-1-Looping-Twice"><span class="toc-nav-text">Gotcha 1: Looping Twice</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Gotcha-2-Containment-Checking"><span class="toc-nav-text">Gotcha 2: Containment Checking</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Gotcha-3-Unpacking"><span class="toc-nav-text">Gotcha 3: Unpacking</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Review-Python’s-for-loop"><span class="toc-nav-text">Review: Python’s for loop</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Definitions-Iterables-and-Sequences"><span class="toc-nav-text">Definitions: Iterables and Sequences</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python’s-for-loops-don’t-use-indexes"><span class="toc-nav-text">Python’s for loops don’t use indexes</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Iterators-power-for-loops"><span class="toc-nav-text">Iterators power for loops</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Looping-without-a-for-loop"><span class="toc-nav-text">Looping without a for loop</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Generators-are-iterators"><span class="toc-nav-text">Generators are iterators</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#I-lied-to-you"><span class="toc-nav-text">I lied to you</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#The-iterator-protocol-in-full"><span class="toc-nav-text">The iterator protocol, in full</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Iterators-enable-laziness"><span class="toc-nav-text">Iterators enable laziness</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Iterators-are-everywhere"><span class="toc-nav-text">Iterators are everywhere</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Creating-your-own-iterator"><span class="toc-nav-text">Creating your own iterator</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#How-iterators-can-improve-your-code"><span class="toc-nav-text">How iterators can improve your code</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Laziness-and-summing"><span class="toc-nav-text">Laziness and summing</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Laziness-and-breaking-out-of-loops"><span class="toc-nav-text">Laziness and breaking out of loops</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Creating-your-own-iteration-helpers"><span class="toc-nav-text">Creating your own iteration helpers</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Looping-Gotchas-Revisited"><span class="toc-nav-text">Looping Gotchas: Revisited</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Gotcha-1-Exhausting-an-Iterator"><span class="toc-nav-text">Gotcha 1: Exhausting an Iterator</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Gotcha-2-Partially-Consuming-an-Iterator"><span class="toc-nav-text">Gotcha 2: Partially-Consuming an Iterator</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Gotcha-3-Unpacking-is-iteration"><span class="toc-nav-text">Gotcha 3: Unpacking is iteration</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Recap-and-related-resources"><span class="toc-nav-text">Recap and related resources</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#深入理解循环和迭代"><span class="toc-nav-text">深入理解循环和迭代</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#踩过的坑"><span class="toc-nav-text">踩过的坑</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、第二次无果"><span class="toc-nav-text">1、第二次无果</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、检查无效"><span class="toc-nav-text">2、检查无效</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、解包"><span class="toc-nav-text">3、解包</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#复习for循环"><span class="toc-nav-text">复习for循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#可迭代对象和序列"><span class="toc-nav-text">可迭代对象和序列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python的for循环"><span class="toc-nav-text">Python的for循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#迭代器"><span class="toc-nav-text">迭代器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#不用for的循环"><span class="toc-nav-text">不用for的循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#生成器是迭代器"><span class="toc-nav-text">生成器是迭代器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#迭代器无处不在"><span class="toc-nav-text">迭代器无处不在</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol></li></ol>
     
   </div>
 </aside>
