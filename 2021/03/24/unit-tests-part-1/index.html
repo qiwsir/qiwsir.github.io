@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      How to Write Unit Tests in Python | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>How to Write Unit Tests in Python</h2>
+    <p class="post-date">2021-03-24</p>
+    <section class="markdown-content"><h1 id="用Python进行单元测试"><a href="#用Python进行单元测试" class="headerlink" title="用Python进行单元测试"></a>用Python进行单元测试</h1><p>Python编程语言，不仅仅在机器学习、数据分析等领域大放异彩，在web开发中等软件开发中，使用者也越来越多。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-3-24/1616550424499-p.jpeg" alt=""></p>
+<p>在软件开发中，有一种被提倡的开发范式：测试驱动开发。在这种开发范式中，编写单元测试是必不可少的。如果不实施严格的测试驱动开发，编写单元测试程序也是必要的。</p>
+<p>对于单元测试而言，最基本的模块是<a href="https://docs.pytest.org/en/stable/" target="_blank" rel="noopener">pytest</a>，在本文中会对这个模块给予简要介绍。此外，还有一个现在很流行的模块<a href="https://en.wikipedia.org/wiki/Fizz_buzz" target="_blank" rel="noopener">fizz buzz</a>，本文也会向读者推荐。</p>
+<h2 id="为什么要自动化测试"><a href="#为什么要自动化测试" class="headerlink" title="为什么要自动化测试"></a>为什么要自动化测试</h2><p>并非所有人都理解自动化测试的必要性，有人甚至认为纯粹是个负担，他们认为自己在编写代码的时候，就已经发现了程序中的BUG，并且已经及时修复了。</p>
+<p>这么说，也不是完全没道理。因为我们在开发的时候，就是边写代码、边执行程序，如果有问题，肯定会及时修改。特别是对有丰富开发经验的程序员，编写的代码中错误的确很少。</p>
+<p>不过，BUG是难免的。一般情况下，我们都使用已有的框架或者库进行开发，并非从头开始写每一行代码。还有可能是维护、修改、升级原有的功能。在这些情况下，程序中出现BUG的概率就更高了。</p>
+<p>因此，自动化测试就不可缺少了。开发者应该将自动化测试视为代码的保险策略，防止由于增加新功能致使BUG产生。</p>
+<p>另外一个要实施自动化测试的缘由，是因为人工测试在某些时候是难以完成对程序的所有功能测试。例如，一段程序是从第三方API那个获取一些数据，如果用人工测试，无法测试出对方服务在出现问题是程序获得的异常信息。但是，如果用自动化测试，则能轻易实现。</p>
+<h2 id="单元测试、集成测试和功能测试"><a href="#单元测试、集成测试和功能测试" class="headerlink" title="单元测试、集成测试和功能测试"></a>单元测试、集成测试和功能测试</h2><p>先简单罗列一下这三种测试的含义：</p>
+<ul>
+<li>单元测试（Unit tests）：又称为模块测试，是针对程序模块（软件设计的最小单位）来进行正确性检验的测试工作。程序单元是应用的最小可测试部件。在过程化编程中，一个单元就是单个程序、函数、过程等；对于面向对象编程，最小单元就是方法，包括基类（超类）、抽象类、或者派生类（子类）中的方法$^{[2]}$。</li>
+<li>整合测试（Integration tests）：又称组装测试，即对程序模块采用一次性或增值方式组装起来，对系统的接口进行正确性检验的测试工作。整合测试一般在单元测试之后、系统测试之前进行。实践表明，有时模块虽然可以单独工作，但是并不能保证组装起来也可以同时工作$^{[3]}$。 </li>
+<li>功能测试（Functional tests）：功能测试就是对产品的各功能进行验证，根据功能测试用例，逐项测试，检查产品是否达到用户要求的功能$^{[4]}$。</li>
+</ul>
+<p>如你所见，三种测试各司其职。在编写代码是，通常会用单元测试，这个更简单快捷，便于执行。所以，本文仅讨论单元测试。</p>
+<h2 id="用Python进行单元测试-1"><a href="#用Python进行单元测试-1" class="headerlink" title="用Python进行单元测试"></a>用Python进行单元测试</h2><p>Python中的单元测试，就是编写一个测试函数，在其中执行一小段应用程序，检验代码是否正确，如果有问题，会抛出异常。例如，函数<code>forty_two()</code>返回值是<code>42</code>，针对这个函数编写的单元测试如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from app import forty_two</span><br><span class="line"></span><br><span class="line">def test_forty_two():</span><br><span class="line">    result &#x3D; forty_two()</span><br><span class="line">    assert result &#x3D;&#x3D; 42</span><br></pre></td></tr></table></figure>
+
+<p>这个例子非常简单，在实际的开发过程中会比这复杂，<code>assert</code>语句也可能不止一条。</p>
+<p>要执行这个单元测试，则需将其保存为一个Python文件，然后执行该文件，就能完成测试过程。</p>
+<p>Two of the most popular frameworks in Python to write and run unit tests are the <a href="https://docs.python.org/3/library/unittest.html" target="_blank" rel="noopener">unittest</a> package from the Python standard library and the <a href="https://docs.pytest.org/en/stable/" target="_blank" rel="noopener">pytest</a> package. For this series of articles I’m going to use a hybrid testing  solution that incorporates parts of both packages, as follows:</p>
+<p>在Python中有两个非常流行的单元测试框架，一个是标准库中的<a href="https://docs.python.org/3/library/unittest.html" target="_blank" rel="noopener">unittest</a>，另外一个是<a href="https://docs.pytest.org/en/stable/" target="_blank" rel="noopener">pytest</a>。</p>
+<ul>
+<li>The object-oriented approach based on the <code>TestCase</code> class of the <code>unittest</code> package will be used to structure and organize the unit tests.</li>
+<li>The <code>assert</code> statement from Python will be used to write assertions. The <code>pytest</code> package includes some enhancements to the <code>assert</code> statement to provide more verbose output when there is a failure.</li>
+<li>The <code>pytest</code> test runner will be used to run the tests, as it is required to use the enhanced <code>assert</code>. This test runner has full support for the <code>TestCase</code> class from the <code>unittest</code> package.</li>
+</ul>
+<p>Don’t worry if some of these things don’t make much sense yet. The examples that are coming will make it more clear.</p>
+<h2 id="Testing-a-Fizz-Buzz-Application"><a href="#Testing-a-Fizz-Buzz-Application" class="headerlink" title="Testing a Fizz Buzz Application"></a>Testing a Fizz Buzz Application</h2><p>The “Fizz Buzz” game consists in counting from 1 to 100, but  replacing the numbers that are divisible by 3 with the word “Fizz”, the  ones that are divisible by 5 with “Buzz”, and the ones that are  divisible by both with “FizzBuzz”. This game is intended to help kids  learn division, but has been made into a very popular coding interview  question.</p>
+<p>I googled for implementations of the “Fizz Buzz” problem in Python and this one came up first:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for i in range(1, 101):</span><br><span class="line">    if i % 15 &#x3D;&#x3D; 0:</span><br><span class="line">        print(&quot;FizzBuzz&quot;)</span><br><span class="line">    elif i % 3 &#x3D;&#x3D; 0:</span><br><span class="line">        print(&quot;Fizz&quot;)</span><br><span class="line">    elif i % 5 &#x3D;&#x3D; 0:</span><br><span class="line">        print(&quot;Buzz&quot;)</span><br><span class="line">    else:</span><br><span class="line">        print(i)</span><br></pre></td></tr></table></figure>
+
+<p>After you’ve seen the <code>forty_two()</code> unit test example  above, testing this code seems awfully difficult, right? For starters  there is no function to call from a unit test. And nothing is returned,  the program just prints results to the screen, so how can you verify  what is printed to the terminal?</p>
+<p>To test this code in this original form you would need to write a  functional test that runs it, captures the output, and then ensures it  is correct. Instead of doing that, however, it is possible to refactor  the application to make it more unit testing friendly. This is an  important point that you should remember: if a piece of code proves  difficult to test in an automated way, you should consider refactoring  it so that testing becomes easier.</p>
+<p>Here is a new version of the “Fizz Buzz” program above that is  functionally equivalent but has a more robust structure that will lend  better to writing tests for it:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def fizzbuzz(i):</span><br><span class="line">    if i % 15 &#x3D;&#x3D; 0:</span><br><span class="line">        return &quot;FizzBuzz&quot;</span><br><span class="line">    elif i % 3 &#x3D;&#x3D; 0:</span><br><span class="line">        return &quot;Fizz&quot;</span><br><span class="line">    elif i % 5 &#x3D;&#x3D; 0:</span><br><span class="line">        return &quot;Buzz&quot;</span><br><span class="line">    else:</span><br><span class="line">        return i</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    for i in range(1, 101):</span><br><span class="line">        print(fizzbuzz(i))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>What I did here is to encapsulate the main logic of the application in the <code>fizzbuzz()</code> function. This function takes a number as input argument and returns what needs to be printed for that number, which can be <code>Fizz</code>, <code>Buzz</code>, <code>FizzBuzz</code> or the number.</p>
+<p>What’s left after that is the loop that iterates over the numbers.  Instead of leaving that in the global scope I moved it into a <code>main()</code> function, and then I added a standard <a href="https://docs.python.org/3/library/__main__.html" target="_blank" rel="noopener">top-level script check</a> so that this function is automatically executed when the script is run  directly, but not when it is imported by another script. This is  necessary because the unit test will need to import this code.</p>
+<p>I hope you now see that there is some hope and that testing the refactored code might be possible, after all.</p>
+<h3 id="Writing-a-test-case"><a href="#Writing-a-test-case" class="headerlink" title="Writing a test case"></a>Writing a test case</h3><p>Since this is going to be a hands-on exercise, copy the refactored code from the previous section and save it to a file named <em>fizzbuzz.py</em> in an empty directory in your computer. Open a terminal or command  prompt window and enter this directory. Set up a new Python virtual  environment using your favorite tool.</p>
+<p>Since you will be using <code>pytest</code> in a little bit, install it in your virtual environment:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pip install pytest</span><br></pre></td></tr></table></figure>
+
+<p>The <code>fizzbuzz()</code> function can be tested by feeding a few  different numbers and asserting that the correct response is given for  each one. To keep things nicely organized, separate unit tests can be  written to test for “Fizz”, “Buzz” and “FizzBuzz” numbers.</p>
+<p>Here is a <code>TestCase</code> class that includes a method to test for “Fizz”:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import unittest</span><br><span class="line">from fizzbuzz import fizzbuzz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class TestFizzBuzz(unittest.TestCase):</span><br><span class="line">    def test_fizz(self):</span><br><span class="line">        for i in [3, 6, 9, 18]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">            assert fizzbuzz(i) &#x3D;&#x3D; &#39;Fizz&#39;</span><br></pre></td></tr></table></figure>
+
+<p>This has some similarities with the <code>forty_two()</code> unit test, but now the test is a method within a class, not a function as before. The <code>unittest</code> framework’s <code>TestCase</code> class is used as a base class to the <code>TestFizzBuzz</code> class. Organizing tests as methods of a test case class is useful to  keep several related tests together. The benefits are not going to be  evident with the simple application that is the testing subject in this  article, so for now you’ll have to bear with me and trust me in that  this makes it easier to write more complex unit tests.</p>
+<p>Since testing for “Fizz” numbers can be done really quickly, the  implementation of this test runs a few numbers instead of just one, so a loop is used to go through a list of several “Fizz” numbers and  asserting that all of them are reported as such.</p>
+<p>Save this code in a file named <em>test_fizzbuzz.py</em> in the same directory as the main <em>fizzbuzz.py</em> file, and then type <code>pytest</code> in your terminal:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pytest</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; test session starts &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">platform darwin -- Python 3.8.6, pytest-6.1.2, py-1.9.0, pluggy-0.13.1</span><br><span class="line">rootdir: &#x2F;Users&#x2F;miguel&#x2F;testing</span><br><span class="line">collected 1 items</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py .                                                 [100%]</span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 1 passed in 0.03s &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>The <code>pytest</code> command is smart and automatically detects unit tests. In general it will assume that any Python files named with the <em>test_[something].py</em> or <em>[something]_test.py</em> patterns contain unit tests. It will also look for files with this  naming patterns in subdirectories. A common way to keep unit tests  nicely organized in a larger project is to put them in a <em>tests</em> package, separately from the application source code.</p>
+<p>If you want to see how does a test failure looks like, edit the list  of numbers used in this test to include 4 or some other number that is  not divisible by 3. Then run <code>pytest</code> again:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pytest</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; test session starts &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">platform darwin -- Python 3.8.6, pytest-6.1.2, py-1.9.0, pluggy-0.13.1</span><br><span class="line">rootdir: &#x2F;Users&#x2F;miguel&#x2F;testing</span><br><span class="line">collected 1 item</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py F                                                 [100%]</span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; FAILURES &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">_________________________ TestFizzBuzz.test_fizz _________________________</span><br><span class="line"></span><br><span class="line">self &#x3D; &lt;test_fizzbuzz.TestFizzBuzz testMethod&#x3D;test_fizz&gt;</span><br><span class="line"></span><br><span class="line">    def test_fizz(self):</span><br><span class="line">        for i in [3, 4, 6, 9, 18]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">&gt;           assert fizzbuzz(i) &#x3D;&#x3D; &#39;Fizz&#39;</span><br><span class="line">E           AssertionError: assert 4 &#x3D;&#x3D; &#39;Fizz&#39;</span><br><span class="line">E            +  where 4 &#x3D; fizzbuzz(4)</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py:9: AssertionError</span><br><span class="line">-------------------------- Captured stdout call --------------------------</span><br><span class="line">testing 3</span><br><span class="line">testing 4</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; short test summary info &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">FAILED test_fizzbuzz.py::TestFizzBuzz::test_fizz - AssertionError: asse...</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 1 failed in 0.13s &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>Note how the test stopped as soon as one of the numbers failed to  test as a “Fizz” number. To help you in figuring out exactly what part  of the test failed, <code>pytest</code> shows you the source code lines  around the failure and the expected and actual results for the failed  assertion. It also captures any output that the test prints and includes it in the report. Above you can see that the test went through numbers 3 and 4 and that’s when the assertion for 4 failed, causing the test to  end. After you experiment with test failures revert the test to its  original passing condition.</p>
+<p>Now that you’ve seen how “Fizz” numbers are tested, it is easy to add two more unit tests for “Buzz” and “FizzBuzz” numbers:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import unittest</span><br><span class="line">from fizzbuzz import fizzbuzz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class TestFizzBuzz(unittest.TestCase):</span><br><span class="line">    def test_fizz(self):</span><br><span class="line">        for i in [3, 6, 9, 18]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">            assert fizzbuzz(i) &#x3D;&#x3D; &#39;Fizz&#39;</span><br><span class="line"></span><br><span class="line">    def test_buzz(self):</span><br><span class="line">        for i in [5, 10, 50]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">            assert fizzbuzz(i) &#x3D;&#x3D; &#39;Buzz&#39;</span><br><span class="line"></span><br><span class="line">    def test_fizzbuzz(self):</span><br><span class="line">        for i in [15, 30, 75]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">            assert fizzbuzz(i) &#x3D;&#x3D; &#39;FizzBuzz&#39;</span><br></pre></td></tr></table></figure>
+
+<p>Running <code>pytest</code> once again now shows that there are three unit tests and that all are passing:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pytest</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; test session starts &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">platform darwin -- Python 3.8.6, pytest-6.1.2, py-1.9.0, pluggy-0.13.1</span><br><span class="line">rootdir: &#x2F;Users&#x2F;miguel&#x2F;testing</span><br><span class="line">collected 3 items</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py ...                                               [100%]</span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 3 passed in 0.04s &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Test-Coverage"><a href="#Test-Coverage" class="headerlink" title="Test Coverage"></a>Test Coverage</h3><p>Are the three tests above good enough? What do you think?</p>
+<p>While you are going to have to use your own judgement to decide how  much automated testing you need to have confidence that your tests give  adequate protection against failures in the future, there is one tool  called <em>code coverage</em> that can help you get a better picture.</p>
+<p>Code coverage is a technique that consists in watching the code as it executes in the interpreter and keeping track of which lines run and  which do not. When code coverage is combined with unit tests, it can be  used to get a report of all the lines of code that your unit tests did  not exercise.</p>
+<p>There is a plugin for <code>pytest</code> called <a href="https://pytest-cov.readthedocs.io/en/latest/" target="_blank" rel="noopener">pytest-cov</a> that adds code coverage support to a test run. Let’s install it into the virtual environment:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pip install pytest-cov</span><br></pre></td></tr></table></figure>
+
+<p>The command <code>pytest --cov=fizzbuzz</code> runs the unit tests with code coverage tracking enabled for the <code>fizzbuzz</code> module:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pytest --cov&#x3D;fizzbuzz</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; test session starts &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">platform darwin -- Python 3.8.6, pytest-6.2.2, py-1.10.0, pluggy-0.13.1</span><br><span class="line">rootdir: &#x2F;Users&#x2F;miguel&#x2F;testing</span><br><span class="line">plugins: cov-2.11.1</span><br><span class="line">collected 3 items</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py ...                                               [100%]</span><br><span class="line"></span><br><span class="line">---------- coverage: platform darwin, python 3.8.6-final-0 -----------</span><br><span class="line">Name          Stmts   Miss  Cover</span><br><span class="line">---------------------------------</span><br><span class="line">fizzbuzz.py      13      4    69%</span><br><span class="line">---------------------------------</span><br><span class="line">TOTAL            13      4    69%</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 3 passed in 0.07s &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>Note that when running tests with code coverage it is useful to  always limit coverage to the application module or package, which is  passed as an argument to the <code>--cov</code> option as seen above. If the scope is not restricted, then code coverage will apply to the  entire Python process, which will include functions from the Python  standard library and third-party dependencies, resulting in a very noisy report at the end.</p>
+<p>With this report you know that the three unit tests cover 69% of the <em>fizzbuzz.py</em> code. I’m sure you agree that it would be useful to know exactly what  parts of the application make up that other 31% of the code that the  tests are currently missing, right? This could help you determine what  other tests need to be written.</p>
+<p>The <code>pytest-cov</code> plugin can generate the final report in several formats. The one you’ve seen above is the most basic one, called <code>term</code> because it is printed to the terminal. A variant of this report is called <code>term-missing</code>, which adds the lines of code that were not covered:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pytest --cov&#x3D;fizzbuzz --cov-report&#x3D;term-missing</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; test session starts &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">platform darwin -- Python 3.8.6, pytest-6.2.2, py-1.10.0, pluggy-0.13.1</span><br><span class="line">rootdir: &#x2F;Users&#x2F;miguel&#x2F;testing</span><br><span class="line">plugins: cov-2.11.1</span><br><span class="line">collected 3 items</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py ...                                               [100%]</span><br><span class="line"></span><br><span class="line">---------- coverage: platform darwin, python 3.8.6-final-0 -----------</span><br><span class="line">Name          Stmts   Miss  Cover   Missing</span><br><span class="line">-------------------------------------------</span><br><span class="line">fizzbuzz.py      13      4    69%   9, 13-14, 18</span><br><span class="line">-------------------------------------------</span><br><span class="line">TOTAL            13      4    69%</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 3 passed in 0.07s &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>The <code>term-missing</code> report shows the list of line numbers that did not execute during the tests. Lines 13 and 14 are the body of the <code>main()</code> function, which were intentionally left out of the tests. Recall that  when I refactored the original application I decided to split the logic  into the <code>main()</code> and <code>fizzbuzz()</code> functions with the intention to have the core logic in <code>fizzbuzz()</code> to make it easy to test. There is nothing in the current tests that attempts to run the <code>main()</code> function, so it is expected those lines will appear as missing in terms of test coverage.</p>
+<p>Likewise, line 18 is the last line of the application, which only runs when the <em>fizzbuzz.py</em> file is invoked as the main script, so it is also expected this line will not run during the tests.</p>
+<p>Line 9, however, is inside the <code>fizzbuzz()</code> function. It  looks like one aspect of the logic in this function is not currently  being tested. Can you see what it is? Line 9 is the last line of the  function, which returns the input number after it was determined that  the number isn’t divisible by 3 or by 5. This is an important case in  this application, so a unit test should be added to check for numbers  that are not “Fizz”, “Buzz” or “FizzBuzz”. </p>
+<p>One detail that this report isn’t still being accurate about are  lines that have conditionals in them. When you have a line with an <code>if</code> statement such as lines 2, 4, 6 and 17 in <em>fizzbuzz.py</em>, saying that the line is covered does not give you the full picture,  because these lines can execute in two very distinct ways based on the  condition evaluating to <code>True</code> or <code>False</code>. The  code coverage analysis can also be configured to treat lines with  conditionals as needing double coverage to account for the two possible  outcomes. This is called <em>branch coverage</em> and is enabled with the <code>--cov-branch</code> option:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pytest --cov&#x3D;fizzbuzz --cov-report&#x3D;term-missing --cov-branch</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; test session starts &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">platform darwin -- Python 3.8.6, pytest-6.2.2, py-1.10.0, pluggy-0.13.1</span><br><span class="line">rootdir: &#x2F;Users&#x2F;miguel&#x2F;testing</span><br><span class="line">plugins: cov-2.11.1</span><br><span class="line">collected 3 items</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py ...                                               [100%]</span><br><span class="line"></span><br><span class="line">---------- coverage: platform darwin, python 3.8.6-final-0 -----------</span><br><span class="line">Name          Stmts   Miss Branch BrPart  Cover   Missing</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">fizzbuzz.py      13      4     10      2    65%   6-&gt;9, 9, 13-14, 17-&gt;18, 18</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">TOTAL            13      4     10      2    65%</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 3 passed in 0.07s &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>Adding branch coverage has lowered the covered percentage to 65%. And the “Missing” column not only shows lines 9, 13, 14 and 18, but also  adds those lines with conditionals that have been covered only for one  of the two possible outcomes. The <code>if</code> statement in line 17, which was reported as fully covered before, now appears as not been covered for the <code>True</code> case, which would move on to line 18. And the <code>elif</code> in line 6 is not covered for a <code>False</code> condition, where execution would jump to line 9.</p>
+<p>As mentioned above, a test is missing to cover numbers that are not  divisible by 3 or 5. This is evident not only because line 9 is reported as missing, but also because of the missing <code>6-&gt;9</code> conditional. Let’s add a fourth unit test:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import unittest</span><br><span class="line">from fizzbuzz import fizzbuzz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class TestFizzBuzz(unittest.TestCase):</span><br><span class="line">    def test_fizz(self):</span><br><span class="line">        for i in [3, 6, 9, 18]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">            assert fizzbuzz(i) &#x3D;&#x3D; &#39;Fizz&#39;</span><br><span class="line"></span><br><span class="line">    def test_buzz(self):</span><br><span class="line">        for i in [5, 10, 50]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">            assert fizzbuzz(i) &#x3D;&#x3D; &#39;Buzz&#39;</span><br><span class="line"></span><br><span class="line">    def test_fizzbuzz(self):</span><br><span class="line">        for i in [15, 30, 75]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">            assert fizzbuzz(i) &#x3D;&#x3D; &#39;FizzBuzz&#39;</span><br><span class="line"></span><br><span class="line">    def test_number(self):</span><br><span class="line">        for i in [2, 4, 88]:</span><br><span class="line">            print(&#39;testing&#39;, i)</span><br><span class="line">            assert fizzbuzz(i) &#x3D;&#x3D; i</span><br></pre></td></tr></table></figure>
+
+<p>Let’s run <code>pytest</code> one more time to see how this new test helped improve coverage:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pytest --cov&#x3D;fizzbuzz --cov-report&#x3D;term-missing --cov-branch</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; test session starts &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">platform darwin -- Python 3.8.6, pytest-6.2.2, py-1.10.0, pluggy-0.13.1</span><br><span class="line">rootdir: &#x2F;Users&#x2F;miguel&#x2F;testing</span><br><span class="line">plugins: cov-2.11.1</span><br><span class="line">collected 4 items</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py ....                                              [100%]</span><br><span class="line"></span><br><span class="line">---------- coverage: platform darwin, python 3.8.6-final-0 -----------</span><br><span class="line">Name          Stmts   Miss Branch BrPart  Cover   Missing</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">fizzbuzz.py      13      3     10      1    74%   13-14, 17-&gt;18, 18</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">TOTAL            13      3     10      1    74%</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 4 passed in 0.08s &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>This is looking much better. Coverage is now at 74%, and in particular all the lines that belong to the <code>fizzbuzz()</code> function, which are the core logic of the application, are covered.</p>
+<h3 id="Code-Coverage-Exceptions"><a href="#Code-Coverage-Exceptions" class="headerlink" title="Code Coverage Exceptions"></a>Code Coverage Exceptions</h3><p>The four unit tests now do a good job at keeping the main logic  tested, but the coverage report still shows lines 13, 14 and 18 as not  covered, plus the conditional on line 17 as partially covered.</p>
+<p>I’m sure you will agree that lines 17 and 18 are pretty safe, so it  is an annoyance to have to see them listed in every coverage report. For cases where you as a developer make a conscious decision that a piece  of code does not need to be tested, it is possible to mark these lines  as an exception, and with that they will be counted as covered and will  not appear in coverage reports as missing. This is done by adding a  comment with the text <code>pragma: no cover</code> to the line or lines in question. Here is the updated <em>fizzbuzz.py</em> with an exception made for lines 17 and 18:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">def fizzbuzz(i):</span><br><span class="line">    if i % 15 &#x3D;&#x3D; 0:</span><br><span class="line">        return &quot;FizzBuzz&quot;</span><br><span class="line">    elif i % 3 &#x3D;&#x3D; 0:</span><br><span class="line">        return &quot;Fizz&quot;</span><br><span class="line">    elif i % 5 &#x3D;&#x3D; 0:</span><br><span class="line">        return &quot;Buzz&quot;</span><br><span class="line">    else:</span><br><span class="line">        return i</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    for i in range(1, 101):</span><br><span class="line">        print(fizzbuzz(i))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:  # pragma: no cover</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>Note how the comment was only added in line 17. This is because when  an exception is added in a line that begins a control structure, it is  applied to the whole code block.</p>
+<p>Let’s run the tests one more time:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(venv) $ pytest --cov&#x3D;fizzbuzz --cov-report&#x3D;term-missing --cov-branch</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; test session starts &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">platform darwin -- Python 3.8.6, pytest-6.2.2, py-1.10.0, pluggy-0.13.1</span><br><span class="line">rootdir: &#x2F;Users&#x2F;miguel&#x2F;testing</span><br><span class="line">plugins: cov-2.11.1</span><br><span class="line">collected 4 items</span><br><span class="line"></span><br><span class="line">test_fizzbuzz.py ....                                              [100%]</span><br><span class="line"></span><br><span class="line">---------- coverage: platform darwin, python 3.8.6-final-0 -----------</span><br><span class="line">Name          Stmts   Miss Branch BrPart  Cover   Missing</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">fizzbuzz.py      11      2      8      0    79%   13-14</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">TOTAL            11      2      8      0    79%</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 4 passed in 0.07s &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>This final report looks much cleaner. Should lines 13 and 14 also be  marked as exempt from coverage? That is really up to you to decide. I’m  always willing to exclude lines that I’m 100% sure I’ll never need to  test, but I’m not really sure the <code>main()</code> function in lines 13 and 14 falls into that category.</p>
+<p>Writing a unit test for this function is going to be tricky because of the <code>print()</code> statements, and it is definitely out of scope for this introductory  article. It is not impossible to do it, though. My preference is to  leave those lines alone, as a reminder that at some point I could figure out a good testing strategy for them. The alternative point of view  would be to say that this is a piece of code that is stable and unlikely to change, so the return of investment for writing unit tests for it is very low, and in that case it would also be okay to exempt it from code coverage. If you add an exception for lines 13 and 14 then the coverage report will show 100% code coverage.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>I hope this was a good introduction to unit testing in Python. In the following articles in the series I’ll be looking at testing more  complex code. My intention is to be very thorough and cover many  different types of applications and testing techniques. If you have a  particular problem related to unit testing feel free to mention it to me in the comments so that I keep it in mind for future articles!</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. <a href="https://blog.miguelgrinberg.com/post/how-to-write-unit-tests-in-python-part-1-fizz-buzz" target="_blank" rel="noopener">How to Write Unit Tests in Python, Part 1: Fizz Buzz</a></p>
+<p>[2]. <a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95" target="_blank" rel="noopener">维基百科-单元测试</a></p>
+<p>[3]. <a href="https://zh.wikipedia.org/wiki/%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95" target="_blank" rel="noopener">维基百科-集成测试</a></p>
+<p>[4]. <a href="https://www.jianshu.com/p/7716ccc68814" target="_blank" rel="noopener">https://www.jianshu.com/p/7716ccc68814</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/03/16/loop-better/">
+        <span class="nav-arrow">← </span>
+        
+          深入理解循环和迭代
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#用Python进行单元测试"><span class="toc-nav-text">用Python进行单元测试</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么要自动化测试"><span class="toc-nav-text">为什么要自动化测试</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#单元测试、集成测试和功能测试"><span class="toc-nav-text">单元测试、集成测试和功能测试</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用Python进行单元测试-1"><span class="toc-nav-text">用Python进行单元测试</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Testing-a-Fizz-Buzz-Application"><span class="toc-nav-text">Testing a Fizz Buzz Application</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Writing-a-test-case"><span class="toc-nav-text">Writing a test case</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Test-Coverage"><span class="toc-nav-text">Test Coverage</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Code-Coverage-Exceptions"><span class="toc-nav-text">Code Coverage Exceptions</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Conclusion"><span class="toc-nav-text">Conclusion</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/03/24/unit-tests-part-1/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

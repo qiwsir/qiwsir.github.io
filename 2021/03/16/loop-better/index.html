@@ -10,7 +10,7 @@
   
   <title>
     
-      loop better | 老齐教室
+      深入理解循环和迭代 | 老齐教室
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -166,9 +166,9 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <h2>loop better</h2>
+    <h2>深入理解循环和迭代</h2>
     <p class="post-date">2021-03-16</p>
-    <section class="markdown-content"><h1 id="深入理解循环和迭代"><a href="#深入理解循环和迭代" class="headerlink" title="深入理解循环和迭代"></a>深入理解循环和迭代</h1><p>循环，特别是<code>for</code>循环，是Python中常见的语句，甚至于Guido van Rossum（Python创始人）在评论递归的时候说过在Python中“递归已死”，我想这句话的意思不是说在Python中不能用递归，而是说因为Python中的<code>for</code>循环语句足够强大，可以不考虑递归，而是用<code>for</code>循环实现原本用递归做的事情。</p>
+    <section class="markdown-content"><p>循环，特别是<code>for</code>循环，是Python中常见的语句，甚至于Guido van Rossum（Python创始人）在评论递归的时候说过在Python中“递归已死”，我想这句话的意思不是说在Python中不能用递归，而是说因为Python中的<code>for</code>循环语句足够强大，可以不考虑递归，而是用<code>for</code>循环实现原本用递归做的事情。</p>
 <p>本来，在《Python大学实用教程》和《跟老齐学Python：轻松入门》两本书中都对<code>for</code>循环语句做了很完整地介绍，并且在这两本书中也有关于可迭代等概念，但是，如何将两者融合起来理解，从而能够更好地实现<code>for</code>循环，对新手还是有挑战的。</p>
 <p>本文就在以上两本书所述基础上，从更深入和综合的角度进行阐述，以便能更好地使用<code>for</code>循环。</p>
 <h2 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h2><p>在实用<code>for</code>循环中，特别是初学者，会遇到很多坑，这里列举几个，看看你是否遇到过？</p>
@@ -396,6 +396,13 @@
       </a>
     
     
+      <a class="nav-right" href="/2021/03/24/unit-tests-part-1/">
+        
+          How to Write Unit Tests in Python
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
   </div>
 
     <!-- NAV END -->
@@ -439,7 +446,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#深入理解循环和迭代"><span class="toc-nav-text">深入理解循环和迭代</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#踩过的坑"><span class="toc-nav-text">踩过的坑</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、第二次无果"><span class="toc-nav-text">1、第二次无果</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、检查无效"><span class="toc-nav-text">2、检查无效</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、解包"><span class="toc-nav-text">3、解包</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#复习for循环"><span class="toc-nav-text">复习for循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#可迭代对象和序列"><span class="toc-nav-text">可迭代对象和序列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python的for循环"><span class="toc-nav-text">Python的for循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#迭代器"><span class="toc-nav-text">迭代器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#不用for的循环"><span class="toc-nav-text">不用for的循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#生成器是迭代器"><span class="toc-nav-text">生成器是迭代器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#迭代器无处不在"><span class="toc-nav-text">迭代器无处不在</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#踩过的坑"><span class="toc-nav-text">踩过的坑</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、第二次无果"><span class="toc-nav-text">1、第二次无果</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、检查无效"><span class="toc-nav-text">2、检查无效</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、解包"><span class="toc-nav-text">3、解包</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#复习for循环"><span class="toc-nav-text">复习for循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#可迭代对象和序列"><span class="toc-nav-text">可迭代对象和序列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python的for循环"><span class="toc-nav-text">Python的for循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#迭代器"><span class="toc-nav-text">迭代器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#不用for的循环"><span class="toc-nav-text">不用for的循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#生成器是迭代器"><span class="toc-nav-text">生成器是迭代器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#迭代器无处不在"><span class="toc-nav-text">迭代器无处不在</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
     
   </div>
 </aside>
