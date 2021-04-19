@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python运算符 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python运算符</h2>
+    <p class="post-date">2021-04-19</p>
+    <section class="markdown-content"><p>下面总结常见的Python操作符。</p>
+<h2 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>+</code></td>
+<td>两个对象相加</td>
+<td><code>1+2=3</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>得到负数或是一个数减去另一个数</td>
+<td><code>2-3=-1</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>两个数相乘或是返回一个被重复若干次的字符串</td>
+<td><code>2*3=6</code></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>两个数相除</td>
+<td><code>5/2=2.5</code></td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>两个数相除后所得的余数</td>
+<td><code>5%2=1</code></td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>计算一个数的幂运算</td>
+<td><code>5**2=25</code></td>
+</tr>
+<tr>
+<td><code>//</code></td>
+<td>向下取整，返回两个数相除的整数</td>
+<td><code>5//2=2</code></td>
+</tr>
+</tbody></table>
+<h2 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>==</code></td>
+<td>比较对象是否相等</td>
+<td><code>(1 == 2)</code> 返回 <code>False</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>比较两个对象是否不相等</td>
+<td><code>(1 != 2)</code> 返回 <code>True</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>大于</td>
+<td><code>(1 &gt; 2)</code> 返回 <code>False</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>小于</td>
+<td><code>(1 &lt; 2)</code> 返回 <code>True</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>大于等于</td>
+<td><code>(1 &gt;= 2)</code> 返回 <code>False</code></td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>小于等于</td>
+<td><code>(1 &lt;= 2) 返回</code>True`</td>
+</tr>
+</tbody></table>
+<h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&amp;</code></td>
+<td>按位与运算符：参与运算的两个值,如果两个相应位都为1,则该位的结果为1,否则为0</td>
+<td><code>0b1100 &amp; 0b0110 = 0b0100</code></td>
+</tr>
+<tr>
+<td>`</td>
+<td>`</td>
+<td>按位或运算符：只要对应的二进制位有一个为1时，结果位就为1。</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>按位异或运算符：对应的二进位相异时，结果为1</td>
+<td><code>0b1100 ^ 0b0110 =0b1010</code></td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>按位取反运算符：对数据的每个二进制位取反,即把1变为0,把0变为1 。~x 类似于 -x-1</td>
+<td><code>~0b1100=-0b1101</code></td>
+</tr>
+<tr>
+<td><code>&lt;&lt;</code></td>
+<td>左移动运算符：运算数的各二进位全部左移若干位，由 &lt;&lt; 右边的数字指定了移动的位数，高位丢弃，低位补0。</td>
+<td><code>0b00110011 &lt;&lt; 2 = 0b11001100</code></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td>右移动运算符：把”&gt;&gt;”左边的运算数的各二进位全部右移若干位，&gt;&gt; 右边的数字指定了移动的位数</td>
+<td><code>0b00110011 &gt;&gt; 2 = 0b00001100</code></td>
+</tr>
+</tbody></table>
+<h2 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>逻辑表达式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>and</code></td>
+<td>x and y</td>
+<td>布尔”与”</td>
+</tr>
+<tr>
+<td><code>or</code></td>
+<td>x or y</td>
+<td>布尔”或”</td>
+</tr>
+<tr>
+<td><code>not</code></td>
+<td>not x</td>
+<td>布尔”非”</td>
+</tr>
+</tbody></table>
+<h2 id="成员运算符"><a href="#成员运算符" class="headerlink" title="成员运算符"></a>成员运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>in</code></td>
+<td>如果在指定的序列中找到值返回 True，否则返回 False。</td>
+<td><code>&#39;hello&#39; in &#39;hello world&#39;</code> 返回 <code>True</code></td>
+</tr>
+<tr>
+<td><code>not in</code></td>
+<td>如果在指定的序列中没有找到值返回 True，否则返回 False。</td>
+<td><code>&#39;hello&#39; not in &#39;hello world&#39;</code> 返回 <code>False</code></td>
+</tr>
+</tbody></table>
+<h2 id="身份运算符"><a href="#身份运算符" class="headerlink" title="身份运算符"></a>身份运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>is</code></td>
+<td>判断两个标识符是不是引用自一个对象</td>
+<td><code>type(2) is int</code> 返回 <code>True</code></td>
+</tr>
+<tr>
+<td><code>is not</code></td>
+<td>判断两个标识符是不是引用自不同对象</td>
+<td><code>type(2) not is int</code> 返回 <code>False</code></td>
+</tr>
+</tbody></table>
+<h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>=</code></td>
+<td>简单的赋值运算符</td>
+<td><code>a = 5</code></td>
+</tr>
+<tr>
+<td><code>+=</code></td>
+<td>加法赋值运算符</td>
+<td><code>a += 2</code> 等效于 <code>a = a + 2</code></td>
+</tr>
+<tr>
+<td><code>-=</code></td>
+<td>减法赋值运算符</td>
+<td><code>a -= 2</code> 等效于 <code>a = a - 2</code></td>
+</tr>
+<tr>
+<td><code>*=</code></td>
+<td>乘法赋值运算符</td>
+<td><code>a *= 2</code> 等效于 <code>a = a * 2</code></td>
+</tr>
+<tr>
+<td><code>/=</code></td>
+<td>除法赋值运算符</td>
+<td><code>a /= 2</code> 等效于 <code>a = a / 2</code></td>
+</tr>
+<tr>
+<td><code>%=</code></td>
+<td>取模赋值运算符</td>
+<td><code>a %= 2</code> 等效于 <code>a = a % 2</code></td>
+</tr>
+<tr>
+<td><code>**=</code></td>
+<td>幂赋值运算符</td>
+<td><code>a **= 2</code> 等效于 <code>a = a ** 2</code></td>
+</tr>
+<tr>
+<td><code>//=</code></td>
+<td>取整除赋值运算符</td>
+<td><code>a //= 2</code> 等效于 <code>a = a // 2</code></td>
+</tr>
+</tbody></table>
+<h2 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h2><p>从高到低的运算优先级：</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>( )</code></td>
+<td>遇到括号，先计算括号内的</td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>指数 (最高优先级)</td>
+</tr>
+<tr>
+<td><code>~ + -</code></td>
+<td>单一运算符，针对单个对象</td>
+</tr>
+<tr>
+<td><code>* / % //</code></td>
+<td>乘，除，取模和取整除</td>
+</tr>
+<tr>
+<td><code>+ -</code></td>
+<td>加法减法</td>
+</tr>
+<tr>
+<td><code>&gt;&gt; &lt;&lt;</code></td>
+<td>右移，左移运算符</td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td>位 ‘AND’</td>
+</tr>
+<tr>
+<td>`^</td>
+<td>`</td>
+</tr>
+<tr>
+<td><code>&lt;= &lt; &gt; &gt;=</code></td>
+<td>比较运算符</td>
+</tr>
+<tr>
+<td><code>&lt;&gt; == !=</code></td>
+<td>等于运算符</td>
+</tr>
+<tr>
+<td><code>= %= /= //= -= += *= **=</code></td>
+<td>赋值运算符</td>
+</tr>
+<tr>
+<td><code>is, is not</code></td>
+<td>身份运算符</td>
+</tr>
+<tr>
+<td><code>in, not in</code></td>
+<td>成员运算符</td>
+</tr>
+<tr>
+<td><code>not and or</code></td>
+<td>逻辑运算符</td>
+</tr>
+</tbody></table>
+<p>上述运算符的完整运用介绍，请参阅《Python大学实用教程》，关于本书的详情，请阅读：<a href="http://www.itdiffer.com/python_course.html" target="_blank" rel="noopener">http://www.itdiffer.com/python_course.html</a> 。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/03/24/unit-tests-part-1/">
+        <span class="nav-arrow">← </span>
+        
+          How to Write Unit Tests in Python
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#算术运算符"><span class="toc-nav-text">算术运算符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#比较运算符"><span class="toc-nav-text">比较运算符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#位运算符"><span class="toc-nav-text">位运算符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#逻辑运算符"><span class="toc-nav-text">逻辑运算符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#成员运算符"><span class="toc-nav-text">成员运算符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#身份运算符"><span class="toc-nav-text">身份运算符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#赋值运算符"><span class="toc-nav-text">赋值运算符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#运算符优先级"><span class="toc-nav-text">运算符优先级</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/04/19/Python运算符/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
