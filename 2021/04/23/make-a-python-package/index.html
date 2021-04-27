@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      创建 Python 包 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>创建 Python 包</h2>
+    <p class="post-date">2021-04-23</p>
+    <section class="markdown-content"><p>如果你和我一样，希望将编写的 Python 实用程序与同事共享，最好的方法是制作一个软件包：它很容易安装，而且不需要复制粘贴。</p>
+<p>不过，如果对其中的方法不熟悉，可能会感到头痛。下面就分几步介绍创建 Python 包的方法，供大家参考。</p>
+<h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>创建一个名为<code>podsearch</code>的目录，进入这个目录，并创建一个虚拟环境（关于虚拟环境的文章，请参阅<a href="https://qiwsir.github.io/2021/03/08/virtual-environments/">《Python 虚拟环境》</a>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir podsearch</span><br><span class="line">$ cd podsearch</span><br><span class="line">$ python3 -m venv env</span><br><span class="line">$ . env&#x2F;bin&#x2F;activate</span><br></pre></td></tr></table></figure>
+
+<p>然后在此目录中创建一个文件<code>__init__.py</code>，并写入下述函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── .gitignore</span><br><span class="line">└── podsearch</span><br><span class="line">    └── __init__.py</span><br><span class="line">&quot;&quot;&quot;Let&#39;s find some podcasts!&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line"> __version__ &#x3D; &quot;0.1.0&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> def search(name, count&#x3D;5):</span><br><span class="line">     &quot;&quot;&quot;Search podcast by name.&quot;&quot;&quot;</span><br><span class="line">     raise NotImplementedError()</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试包"><a href="#测试包" class="headerlink" title="测试包"></a>测试包</h2><p>用传统的方法，比较麻烦，这里推荐一个工具：<a href="https://flit.readthedocs.io/en/latest/" target="_blank" rel="noopener">flit</a>，它可以简化一切。安装它:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flit</span><br></pre></td></tr></table></figure>
+
+<p>安装之后，执行如下操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ flit init</span><br><span class="line">Module name [podsearch]:</span><br><span class="line">Author [Anton Zhiyanov]:</span><br><span class="line">Author email [m@antonz.org]:</span><br><span class="line">Home page [https:&#x2F;&#x2F;github.com&#x2F;nalgeon&#x2F;podsearch-py]:</span><br><span class="line">Choose a license (see http:&#x2F;&#x2F;choosealicense.com&#x2F; for more info)</span><br><span class="line">1. MIT - simple and permissive</span><br><span class="line">2. Apache - explicitly grants patent rights</span><br><span class="line">3. GPL - ensures that code based on this is shared with the same terms</span><br><span class="line">4. Skip - choose a license later</span><br><span class="line">Enter 1-4 [1]: 1</span><br><span class="line"></span><br><span class="line">Written pyproject.toml; edit that file to add optional extra info.</span><br></pre></td></tr></table></figure>
+
+<p>在这里，用 flit 创建了<a href="https://github.com/nalgeon/podsearch-py/blob/main/pyproject.toml" target="_blank" rel="noopener">pyproject.toml</a> 文件，这是一个元数据文件，它具有将软件包发布到 PyPI 所需的一切配置。</p>
+<p>当然，一定要在 TestPyPi](<a href="https://test.pypi.org/)（测试库）和" target="_blank" rel="noopener">https://test.pypi.org/)（测试库）和</a> <a href="http://pypi.org/" target="_blank" rel="noopener">PyPI</a>（主要的存储库）注册，这两个地方的账号是完全独立的，所以你需要两个。</p>
+<p>在<code>~/.pypirc</code>中设置对存储库的访问：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[distutils]</span><br><span class="line">index-servers &#x3D;</span><br><span class="line">  pypi</span><br><span class="line">  pypitest</span><br><span class="line"></span><br><span class="line">[pypi]</span><br><span class="line">username: nalgeon  # replace with your PyPI username</span><br><span class="line"></span><br><span class="line">[pypitest]</span><br><span class="line">repository: https:&#x2F;&#x2F;test.pypi.org&#x2F;legacy&#x2F;</span><br><span class="line">username: nalgeon  # replace with your TestPyPI username</span><br></pre></td></tr></table></figure>
+
+<p>并将包发布到测试存储库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ flit publish --repository pypitest</span><br><span class="line">Found 4 files tracked in git</span><br><span class="line">...</span><br><span class="line">Package is at https:&#x2F;&#x2F;test.pypi.org&#x2F;project&#x2F;podsearch&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>搞定！可以在 <a href="https://test.pypi.org/project/podsearch/" target="_blank" rel="noopener">TestPyPi</a> 上获取该软件包。</p>
+<h2 id="公共包"><a href="#公共包" class="headerlink" title="公共包"></a>公共包</h2><p>把文件中的代码修改一下，让它真的有用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># ...</span><br><span class="line"></span><br><span class="line">SEARCH_URL &#x3D; &quot;https:&#x2F;&#x2F;itunes.apple.com&#x2F;search&quot;</span><br><span class="line"></span><br><span class="line">@dataclass</span><br><span class="line">class Podcast:</span><br><span class="line">    &quot;&quot;&quot;Podcast metadata.&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    id: str</span><br><span class="line">    name: str</span><br><span class="line">    author: str</span><br><span class="line">    url: str</span><br><span class="line">    feed: Optional[str] &#x3D; None</span><br><span class="line">    category: Optional[str] &#x3D; None</span><br><span class="line">    image: Optional[str] &#x3D; None</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def search(name: str, limit: int &#x3D; 5) -&gt; List[Podcast]:</span><br><span class="line">    &quot;&quot;&quot;Search podcast by name.&quot;&quot;&quot;</span><br><span class="line">    params &#x3D; &#123;&quot;term&quot;: name, &quot;limit&quot;: limit, &quot;media&quot;: &quot;podcast&quot;&#125;</span><br><span class="line">    response &#x3D; _get(url&#x3D;SEARCH_URL, params&#x3D;params)</span><br><span class="line">    return _parse(response)</span><br></pre></td></tr></table></figure>
+
+<p>并发布到主存储库 PyPI 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flit publish</span><br></pre></td></tr></table></figure>
+
+<p>搞定！</p>
+<p>为了使软件包更易于使用，我建议你再多做点事情。</p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p>没有人喜欢写文档。但是如果没有文档，别人不了解你的东西，所以添加<code>README.md</code>以及<code>CHANGELOG.md</code>.</p>
+<ul>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/README.md" target="_blank" rel="noopener">README.md</a></li>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a></li>
+</ul>
+<p>将<code>readme.md</code>添加到<code>pyproject.toml</code>，这样 PyPI 就会在这个包的页面上显示它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">description-file &#x3D; &quot;README.md&quot;</span><br></pre></td></tr></table></figure>
+
+<p>指定所支持的最低 Python 版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requires-python &#x3D; &quot;&gt;&#x3D;3.7&quot;</span><br></pre></td></tr></table></figure>
+
+<p>更新 <code>__init__.py</code> 中的版本，并通过<code>flit publish</code>发布这个包：</p>
+<ul>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/README.md" target="_blank" rel="noopener">README.md</a></li>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a></li>
+</ul>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-4-27/1619494306493-package1.jpg" alt=""></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>下面关注格式化（<code>black</code>）、测试覆盖率（<code>coverage</code>）、代码质量（<code>flake8</code>、<code>pylint</code>、<code>mccabe</code>）和静态分析（<code>mypy</code>）等，通过<code>tox</code>来执行所有操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install black coverage flake8 mccabe mypy pylint pytest tox</span><br></pre></td></tr></table></figure>
+
+<p>在<code>tox.ini</code>中创建 <code>tox</code> 配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[tox]</span><br><span class="line">isolated_build &#x3D; True</span><br><span class="line">envlist &#x3D; py37,py38,py39</span><br><span class="line"></span><br><span class="line">[testenv]</span><br><span class="line">deps &#x3D;</span><br><span class="line">    black</span><br><span class="line">    coverage</span><br><span class="line">    flake8</span><br><span class="line">    mccabe</span><br><span class="line">    mypy</span><br><span class="line">    pylint</span><br><span class="line">    pytest</span><br><span class="line">commands &#x3D;</span><br><span class="line">    black podsearch</span><br><span class="line">    flake8 podsearch</span><br><span class="line">    pylint podsearch</span><br><span class="line">    mypy podsearch</span><br><span class="line">    coverage erase</span><br><span class="line">    coverage run --include&#x3D;podsearch&#x2F;* -m pytest -ra</span><br><span class="line">    coverage report -m</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/nalgeon/podsearch-py/blob/main/tox.ini" target="_blank" rel="noopener">tox.ini</a> 进行所有的检测：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ tox -e py39</span><br><span class="line">...</span><br><span class="line">py39 run-test: commands[0] | black podsearch</span><br><span class="line">All done! ✨ 🍰 ✨</span><br><span class="line">...</span><br><span class="line">py39 run-test: commands[2] | pylint podsearch</span><br><span class="line">Your code has been rated at 10.00&#x2F;10 (previous run: 10.00&#x2F;10, +0.00)</span><br><span class="line">...</span><br><span class="line">py39 run-test: commands[6] | coverage report -m</span><br><span class="line">TOTAL 100%</span><br><span class="line">...</span><br><span class="line">py39: commands succeeded</span><br><span class="line">congratulations :)</span><br></pre></td></tr></table></figure>
+
+<p>太好了！测试通过，覆盖率100%。</p>
+<h2 id="云构建"><a href="#云构建" class="headerlink" title="云构建"></a>云构建</h2><p>每个可靠的开源项目都会在每次提交后运行云测试，所以此处亦然。</p>
+<p>用 <a href="https://github.com/features/actions" target="_blank" rel="noopener">GitHub Actions</a> 构建项目，用<a href="https://about.codecov.io/" target="_blank" rel="noopener">Codecov</a> 检查测试覆盖率，用 <a href="https://codeclimate.com/" target="_blank" rel="noopener">Code Climate</a>检查代码质量。</p>
+<p>必须注册Codecov和Code Climate（都支持GitHub登录），并在设置中启用包存储库。</p>
+<p>之后，将GitHub Actions build config添加到<code>.github/workflows/build.yml</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"># ...</span><br><span class="line">jobs:</span><br><span class="line">    build:</span><br><span class="line">        runs-on: ubuntu-latest</span><br><span class="line">        strategy:</span><br><span class="line">            matrix:</span><br><span class="line">                python-version: [3.7, 3.8, 3.9]</span><br><span class="line"></span><br><span class="line">        env:</span><br><span class="line">            USING_COVERAGE: &quot;3.9&quot;</span><br><span class="line"></span><br><span class="line">        steps:</span><br><span class="line">            - name: Checkout sources</span><br><span class="line">              uses: actions&#x2F;checkout@v2</span><br><span class="line"></span><br><span class="line">            - name: Set up Python</span><br><span class="line">              uses: actions&#x2F;setup-python@v2</span><br><span class="line">              with:</span><br><span class="line">                  python-version: $</span><br><span class="line"></span><br><span class="line">            - name: Install dependencies</span><br><span class="line">              run: |</span><br><span class="line">                  python -m pip install --upgrade pip</span><br><span class="line">                  python -m pip install black coverage flake8 flit mccabe mypy pylint pytest tox tox-gh-actions</span><br><span class="line"></span><br><span class="line">            - name: Run tox</span><br><span class="line">              run: |</span><br><span class="line">                  python -m tox</span><br><span class="line"></span><br><span class="line">            - name: Upload coverage to Codecov</span><br><span class="line">              uses: codecov&#x2F;codecov-action@v1</span><br><span class="line">              if: contains(env.USING_COVERAGE, matrix.python-version)</span><br><span class="line">              with:</span><br><span class="line">                  fail_ci_if_error: true</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/nalgeon/podsearch-py/blob/main/.github/workflows/build.yml" target="_blank" rel="noopener">build.yml</a></p>
+<p>GitHub通过“tox”进行测试，就像我们前面所做的一样。 <code>tox-gh-actions</code> 包 和<code>USING_COVERAGE</code> 设置确保<code>tox</code>使用与GitHub Actions相同的Python版本，正如<code>strategy.matrix</code>所要求的那样（参阅<a href="https://hynek.me/articles/python-github-actions/" target="_blank" rel="noopener">Hynek Schlawak</a>中的说明。）</p>
+<p>最后一步将测试覆盖发送到Codecov。Code Climate不需要单独的步骤—它自动发现存储库的更改。</p>
+<p>现在提交、推送和享受这一成果。让每个人都可以享受这一成果 - 把徽章添加到’ README.md ‘:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[![PyPI Version][pypi-image]][pypi-url]</span><br><span class="line">[![Build Status][build-image]][build-url]</span><br><span class="line">[![Code Coverage][coverage-image]][coverage-url]</span><br><span class="line">[![Code Quality][quality-image]][quality-url]</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&lt;!-- Badges --&gt;</span><br><span class="line"></span><br><span class="line">[pypi-image]: https:&#x2F;&#x2F;img.shields.io&#x2F;pypi&#x2F;v&#x2F;podsearch</span><br><span class="line">[pypi-url]: https:&#x2F;&#x2F;pypi.org&#x2F;project&#x2F;podsearch&#x2F;</span><br><span class="line">[build-image]: https:&#x2F;&#x2F;github.com&#x2F;nalgeon&#x2F;podsearch-py&#x2F;actions&#x2F;workflows&#x2F;build.yml&#x2F;badge.svg</span><br><span class="line">[build-url]: https:&#x2F;&#x2F;github.com&#x2F;nalgeon&#x2F;podsearch-py&#x2F;actions&#x2F;workflows&#x2F;build.yml</span><br><span class="line">[coverage-image]: https:&#x2F;&#x2F;codecov.io&#x2F;gh&#x2F;nalgeon&#x2F;podsearch-py&#x2F;branch&#x2F;main&#x2F;graph&#x2F;badge.svg</span><br><span class="line">[coverage-url]: https:&#x2F;&#x2F;codecov.io&#x2F;gh&#x2F;nalgeon&#x2F;podsearch-py</span><br><span class="line">[quality-image]: https:&#x2F;&#x2F;api.codeclimate.com&#x2F;v1&#x2F;badges&#x2F;3130fa0ba3b7993fbf0a&#x2F;maintainability</span><br><span class="line">[quality-url]: https:&#x2F;&#x2F;codeclimate.com&#x2F;github&#x2F;nalgeon&#x2F;podsearch-py</span><br></pre></td></tr></table></figure>
+
+<p>是不是很cool</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-4-27/1619494244217-package2.png" alt=""></p>
+<h2 id="任务自动化"><a href="#任务自动化" class="headerlink" title="任务自动化"></a>任务自动化</h2><p><code>tox</code>很好，但对开发不是很方便。运行诸如<code>pylint、coverage</code>等单个命令会更快，但这些命令非常冗长，因此我们将把这些枯燥的东西自动化。</p>
+<p>用 <a href="https://antonz.org/makefile-automation/" target="_blank" rel="noopener">Makefile</a>为频繁的操作创建简短的别名:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">.DEFAULT_GOAL := help</span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: coverage deps help lint push test</span></span><br><span class="line"></span><br><span class="line"><span class="section">coverage:  ## Run tests with coverage</span></span><br><span class="line">	coverage erase</span><br><span class="line">	coverage run --include=podsearch/* -m pytest -ra</span><br><span class="line">	coverage report -m</span><br><span class="line"></span><br><span class="line"><span class="section">deps:  ## Install dependencies</span></span><br><span class="line">	pip install black coverage flake8 mccabe mypy pylint pytest tox</span><br><span class="line"></span><br><span class="line"><span class="section">lint:  ## Lint and static-check</span></span><br><span class="line">	flake8 podsearch</span><br><span class="line">	pylint podsearch</span><br><span class="line">	mypy podsearch</span><br><span class="line"></span><br><span class="line"><span class="section">push:  ## Push code with tags</span></span><br><span class="line">	git push &amp;&amp; git push --tags</span><br><span class="line"></span><br><span class="line"><span class="section">test:  ## Run tests</span></span><br><span class="line">	pytest -ra</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/nalgeon/podsearch-py/blob/main/Makefile" target="_blank" rel="noopener">Makefile</a></p>
+<p>以下是我们的任务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ make help</span><br><span class="line">Usage: make [task]</span><br><span class="line"></span><br><span class="line">task                 help</span><br><span class="line">------               ----</span><br><span class="line">coverage             Run tests with coverage</span><br><span class="line">deps                 Install dependencies</span><br><span class="line">lint                 Lint and static-check</span><br><span class="line">push                 Push code with tags</span><br><span class="line">test                 Run tests</span><br><span class="line">help                 Show help message</span><br></pre></td></tr></table></figure>
+
+<p>要使代码更简洁，请使用“make”调用来替换原始的<code>build.yml</code>步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- name: Install dependencies</span><br><span class="line">  run: |</span><br><span class="line">      make deps</span><br><span class="line"></span><br><span class="line">- name: Run tox</span><br><span class="line">  run: |</span><br><span class="line">      make tox</span><br></pre></td></tr></table></figure>
+
+<h2 id="云发布"><a href="#云发布" class="headerlink" title="云发布"></a>云发布</h2><p>在GitHub可以运行<code>flit publish</code>。我们来创建一个单独的工作流：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">name: publish</span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">    release:</span><br><span class="line">        types: [created]</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">    publish:</span><br><span class="line">        runs-on: ubuntu-latest</span><br><span class="line">        steps:</span><br><span class="line">            - name: Checkout sources</span><br><span class="line">              uses: actions&#x2F;checkout@v2</span><br><span class="line"></span><br><span class="line">            - name: Set up Python</span><br><span class="line">              uses: actions&#x2F;setup-python@v2</span><br><span class="line">              with:</span><br><span class="line">                  python-version: &quot;3.9&quot;</span><br><span class="line"></span><br><span class="line">            - name: Install dependencies</span><br><span class="line">              run: |</span><br><span class="line">                  make deps</span><br><span class="line"></span><br><span class="line">            - name: Publish to PyPi</span><br><span class="line">              env:</span><br><span class="line">                  FLIT_USERNAME: $&#123;&#123; secrets.PYPI_USERNAME &#125;&#125;</span><br><span class="line">                  FLIT_PASSWORD: $&#123;&#123; secrets.PYPI_PASSWORD &#125;&#125;</span><br><span class="line">              run: |</span><br><span class="line">                  make publish</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/nalgeon/podsearch-py/blob/main/.github/workflows/publish.yml" target="_blank" rel="noopener">publish.yml</a></p>
+<p>把<code>PYPI_USERNAME</code>和 <code>PYPI_PASSWORD</code>放在存储库设置（(Settings &gt; Secrets &gt; New repository secret)中。使用你的PyPi用户名和密码，或者使用 <a href="https://pypi.org/manage/account/token/" target="_blank" rel="noopener">API token</a>.</p>
+<p>现在，只要创建一个新版本，GitHub就会自动发布这个包。</p>
+<p>正确配置下面的文件，能让你发布的内容更漂亮：</p>
+<ul>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/pyproject.toml" target="_blank" rel="noopener">pyproject.toml</a></li>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/tox.ini" target="_blank" rel="noopener">tox.ini</a></li>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/Makefile" target="_blank" rel="noopener">Makefile</a></li>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/.github/workflows/build.yml" target="_blank" rel="noopener">build.yml</a></li>
+<li><a href="https://github.com/nalgeon/podsearch-py/blob/main/.github/workflows/publish.yml" target="_blank" rel="noopener">publish.yml</a></li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://antonz.org/python-packaging/?continueFlag=27ecc1d264efd99fc7f058dae314b3d9" target="_blank" rel="noopener">https://antonz.org/python-packaging/?continueFlag=27ecc1d264efd99fc7f058dae314b3d9</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/04/19/Python%E8%BF%90%E7%AE%97%E7%AC%A6/">
+        <span class="nav-arrow">← </span>
+        
+          Python运算符
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本结构"><span class="toc-nav-text">基本结构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测试包"><span class="toc-nav-text">测试包</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#公共包"><span class="toc-nav-text">公共包</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文档"><span class="toc-nav-text">文档</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测试"><span class="toc-nav-text">测试</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#云构建"><span class="toc-nav-text">云构建</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#任务自动化"><span class="toc-nav-text">任务自动化</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#云发布"><span class="toc-nav-text">云发布</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/04/23/make-a-python-package/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
