@@ -168,376 +168,215 @@
   <article class="post-article">
     <h2>Python 中的递归</h2>
     <p class="post-date">2021-06-03</p>
-    <section class="markdown-content"><h2 id="What-Is-Recursion"><a href="#What-Is-Recursion" class="headerlink" title="What Is Recursion?"></a>What Is Recursion?</h2><h2 id="什么是递归"><a href="#什么是递归" class="headerlink" title="什么是递归"></a>什么是递归</h2><p>The word <strong>recursion</strong> comes from the Latin word <em>recurrere</em>, meaning to run or hasten back, return, revert, or recur. Here are some online definitions of recursion:</p>
-<p>递归（recursion）这个单词来自拉丁语中的<em>recurre</em>，意思是：跑回或匆匆返回、回归、还原或重现。以下是递归的一些在线定义：</p>
+    <section class="markdown-content"><h2 id="什么是递归"><a href="#什么是递归" class="headerlink" title="什么是递归"></a>什么是递归</h2><p>递归（recursion）这个单词来自拉丁语中的 <em>recurre</em>，意思是：匆匆而归、返回、还原或重现。以下是网络上对递归的一些定义：</p>
 <ul>
-<li><a href="https://www.dictionary.com/browse/recursion" target="_blank" rel="noopener"><strong>Dictionary.com</strong>:</a> The act or process of returning or running back</li>
+<li><p><a href="https://www.dictionary.com/browse/recursion" target="_blank" rel="noopener">Dictionary.com</a>：表示返回的行为或过程。</p>
+</li>
+<li><p><a href="https://en.wiktionary.org/wiki/recursion" target="_blank" rel="noopener">Wiktionary</a> ：在对象内部定义使用该对象（通常是函数）的操作。</p>
+</li>
+<li><p><a href="https://www.thefreedictionary.com/recursion" target="_blank" rel="noopener">The Free Dictionary</a>：定义一系列对象的方法，如表达式、函数、集合等，给定一些初始对象，并且根据根据前面的对象来定义后续每个对象。</p>
+</li>
 </ul>
-<p>-<a href="https://www.dictionary.com/browse/recursion" target="_blank" rel="noopener"><strong>Dictionary.com</strong>: </a>回归或跑回的行为或过程。</p>
-<ul>
-<li><a href="https://en.wiktionary.org/wiki/recursion" target="_blank" rel="noopener"><strong>Wiktionary</strong>:</a> The act of defining an object (usually a function) in terms of that object itself</li>
-</ul>
-<p>-<a href="https://en.wiktionary.org/wiki/recursion" target="_blank" rel="noopener"><strong>Wiktionary</strong>: </a>根据对象本身定义某个对象（通常是函数）的行为。</p>
-<ul>
-<li><a href="https://www.thefreedictionary.com/recursion" target="_blank" rel="noopener"><strong>The Free Dictionary</strong>:</a> A method of defining a sequence of objects, such as an expression,  function, or set, where some number of initial objects are given and  each successive object is defined in terms of the preceding objects</li>
-</ul>
-<p>-<a href="https://www.thefreedictionary.com/recursion" target="_blank" rel="noopener"><strong>免费词典</strong>: </a>定义一系列对象（如表达式、函数或集合）的一种方法，其中给定一些初始对象，并根据前面的对象来定义每个后续对象。</p>
-<p>A <strong>recursive</strong> definition is one in which the defined  term appears in the definition itself. Self-referential situations often crop up in real life, even if they aren’t immediately recognizable as  such. For example, suppose you wanted to describe the set of people that make up your ancestors. You could describe them this way:</p>
-<p>递归式的定义是指被定义的术语出现在定义本身中。在现实生活中经常会出现自我参照的情况，尽管这种情况没有立即被识别出来。例如，假设你想描述构成你的祖先的一群人。你可以这样描述他们：</p>
-<p><a href="https://files.realpython.com/media/jsturtz-ancestors.9f0adeb014ef.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-ancestors.9f0adeb014ef.png" alt="Recursive definition of ancestors"></a></p>
-<p>Notice how the concept that is being defined, <strong>ancestors</strong>, shows up in its own definition. This is a recursive definition.</p>
-<p>请注意正在定义的概念“祖先”是如何在它自己的定义中表示的。这是一个递归式定义。</p>
-<p>In programming, recursion has a very precise meaning. It refers to a coding technique in which a function calls itself.</p>
-<p>在编程中，递归有一个非常精确的含义。它指的是一种编码技术，其中函数对自身进行调用。</p>
-<h2 id="Why-Use-Recursion"><a href="#Why-Use-Recursion" class="headerlink" title="Why Use Recursion?"></a>Why Use Recursion?</h2><p>为什么使用递归？</p>
-<p>Most programming problems are solvable without recursion. So, strictly speaking, recursion usually isn’t necessary.</p>
-<p>大多数编程问题都是不需要递归就可以解决的。所以严格说来，递归通常是不必要的。</p>
-<p>However, some situations particularly lend themselves to a <strong>self-referential</strong> definition—for example, the definition of ancestors shown above. If you were devising an algorithm to handle such a case programmatically, a  recursive solution would likely be cleaner and more concise.</p>
-<p>然而，有些情况特别适合用<strong>自我参照</strong>进行定义，例如，上面所示的“祖先”的定义。如果你正在设计一个算法，以便用编程方式处理这种情况，使用递归解决方案可能更干净、更简洁。</p>
-<p>Traversal of <a href="https://en.wikipedia.org/wiki/Tree_(data_structure)" target="_blank" rel="noopener">tree-like data structures</a> is another good example. Because these are nested structures, they  readily fit a recursive definition. A non-recursive algorithm to walk  through a nested structure is likely to be somewhat clunky, while a  recursive solution will be relatively elegant. An example of this  appears later in this tutorial.</p>
-<p>树状数据结构的遍历也是一个很好的例子。因为这些是嵌套式结构，所以它们很容易适应递归定义。遍历嵌套式结构的非递归算法可能会有点笨拙，而递归解决方案则相对优雅。本教程后面将会有这方面的一个示例。</p>
-<p>On the other hand, recursion isn’t for every situation. Here are some other factors to consider:</p>
+<p>所谓递归，是指被定义的对象出现在定义本身中。在现实生活中经常会出现自我参照的情况，尽管这种情况没有立即被识别出来。例如，假设定义祖先，可以用这样的表达式：</p>
+<p><code>祖先 = （父母） + （父母的祖先）</code></p>
+<p>请注意上述定义中的<strong>祖先</strong>，在它自己的定义中也出现。这是一个递归的定义。</p>
+<p>在编程中，递归有一个非常精确的含义。它指的是一种编码技术，是函数对自身的调用。</p>
+<h2 id="为什么使用递归？"><a href="#为什么使用递归？" class="headerlink" title="为什么使用递归？"></a>为什么使用递归？</h2><p>大多数编程问题是不需要递归就可以解决的。所以严格说来，递归通常是不必须的。</p>
+<p>然而，有些情况特别适合用<strong>自我参照</strong>进行定义，例如，上面所示的“祖先”的定义，如果你要写一段程序实现这个定义，用递归可能是一种简约的途径。</p>
+<p>对树状数据结构的遍历也是应用递归的恰当例子。因为这类数据是嵌套结构，很容易用递归定义。遍历嵌套结构的非递归算法可能会有点笨拙，而递归解决方案则相对优雅。</p>
 <p>另一方面，递归并非对每一种情况都适用。以下是需要考虑的其他因素：</p>
 <ul>
-<li>For some problems, a recursive solution, though possible, will be awkward rather than elegant.</li>
-</ul>
-<p>-有些问题虽然可以使用递归方案来解决，但实际上会显得很笨拙，而不是优雅。</p>
-<ul>
-<li>Recursive implementations often consume more memory than non-recursive ones.</li>
-</ul>
-<p>-递归实现通常比非递归实现消耗更多的内存。</p>
-<ul>
-<li>In some cases, using recursion may result in slower execution time.</li>
-</ul>
-<p>-在某些情况下，使用递归可能会导致执行时间较长。</p>
-<p>Typically, the readability of the code will be the biggest  determining factor. But it depends on the circumstances. The examples  presented below should help you get a feel for when you should choose  recursion.</p>
-<p>通常，代码的可读性将是最大的决定因素。但这取决于具体情况。下面的示例将帮助你了解何时应该选择递归。</p>
-<h2 id="Recursion-in-Python"><a href="#Recursion-in-Python" class="headerlink" title="Recursion in Python"></a>Recursion in Python</h2><p>Python中的递归</p>
-<p>When you call a function in Python, the interpreter creates a new <a href="https://realpython.com/python-namespaces-scope/" target="_blank" rel="noopener">local namespace</a> so that names defined within that function don’t <a href="https://en.wikipedia.org/wiki/Name_collision" target="_blank" rel="noopener">collide</a> with identical names defined elsewhere. One function can call another,  and even if they both define objects with the same name, it all works  out fine because those objects exist in separate <strong>namespaces</strong>.</p>
-<p>当你在Python中调用一个函数时，解释器会创建一个新的本地名称空间，这样在该函数中定义的名称就不会与其他地方定义的相同名称<a href="https://en.wikipedia.org/wiki/Name_collision" target="_blank" rel="noopener">冲突</a>。一个函数可以调用另一个函数，即使它们都定义了具有相同名称的对象，也能正常工作，因为这些对象存在于单独的<strong>名称空间</strong>中。</p>
-<p>The same holds true if multiple instances of the same function are  running concurrently. For example, consider the following definition:</p>
-<p>这一点同样适用于在同一函数中同时运行多个实例。例如以下定义:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def function():</span><br><span class="line">    x &#x3D; 10</span><br><span class="line">    function()</span><br></pre></td></tr></table></figure>
-
-<p>When <code>function()</code> executes the first time, Python creates a namespace and assigns <code>x</code> the value <code>10</code> in that namespace. Then <code>function()</code> calls itself recursively. The second time <code>function()</code> runs, the interpreter creates a second namespace and assigns <code>10</code> to <code>x</code> there as well. These two instances of the name <code>x</code> are distinct from each another and can coexist without clashing because they are in separate namespaces.</p>
-<p>当<code>function()</code>第一次执行时，Python会创建一个名称空间，并在该名称空间中把“x”赋值“为10”。然后<code>function()</code>递归地调用自身。第二次运行<code>function()</code>时，解释器会创建第二个名称空间，并将“10”赋值给“x”。名称“x”的这两个实例彼此不同，可以共存而不发生冲突，因为它们位于不同的名称空间中。<br>Unfortunately, running <code>function()</code> as it stands produces a result that is less than inspiring, as the following <a href="https://realpython.com/python-traceback/" target="_blank" rel="noopener">traceback</a> shows:</p>
-<p>不幸的是，按原样运行<code>function()</code>会产生一个不太好的结果，正如下面的<a href="https://realpython.com/python-traceback/" target="_blank" rel="noopener">回溯</a>所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; function()</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 3, in function</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 3, in function</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 3, in function</span><br><span class="line">  [Previous line repeated 996 more times]</span><br><span class="line">RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
-
-<p>As written, <code>function()</code> would in theory go on forever,  calling itself over and over without any of the calls ever returning. In practice, of course, nothing is truly forever. Your computer only has  so much memory, and it would run out eventually.</p>
-<p>如前所述，<code>function()</code>在理论上将永远持续下去，一遍又一遍地调用自己，而没有任何调用返回。当然，在实践中，没有什么是真正永恒的。你的电脑只有这么多内存，这些内存最终也会耗尽。</p>
-<p>Python doesn’t allow that to happen. The interpreter limits the  maximum number of times a function can call itself recursively, and when it reaches that limit, it raises a <code>RecursionError</code> <a href="https://realpython.com/python-exceptions/" target="_blank" rel="noopener">exception</a>, as you see above.</p>
-<p>Python不允许这种情况发生。解释器限制了函数可以对自身进行递归式调用的最大次数，当达到该限制时，解释器会引发“RecursionError”<a href="https://realpython.com/python-exceptions/" target="_blank" rel="noopener">异常</a>，如上所示。</p>
-<p><strong>Technical note:</strong> You can find out what Python’s recursion limit is with a function from the <code>sys</code> module called <code>getrecursionlimit()</code>:</p>
-<p><strong>技术说明：</strong>你可以通过名为<code>getrecursionlimit()</code>的“sys”模块中的函数来了解Python的递归限制：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from sys import getrecursionlimit</span><br><span class="line">&gt;&gt;&gt; getrecursionlimit()</span><br><span class="line">1000</span><br></pre></td></tr></table></figure>
-
-<p>You can change it, too, with <code>setrecursionlimit()</code>:</p>
-<p>你也可以用’ setrecursionlimit() ‘来改变它:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from sys import setrecursionlimit</span><br><span class="line">&gt;&gt;&gt; setrecursionlimit(2000)</span><br><span class="line">&gt;&gt;&gt; getrecursionlimit()</span><br><span class="line">2000</span><br></pre></td></tr></table></figure>
-
-<p>You can set it to be pretty large, but you can’t make it infinite.</p>
-<p>你可以把这个限制值设置得非常大，但你不能使它无限大。</p>
-<p>There isn’t much use for a function to indiscriminately call itself  recursively without end. It’s reminiscent of the instructions that you  sometimes find on shampoo bottles: “Lather, rinse, repeat.” If you were  to follow these instructions literally, you’d shampoo your hair forever!</p>
-<p>一个函数无休止地递归式调用自己并没有多大用处。这让人想起你有时在洗发水瓶子上看到的说明：“揉至起泡沫，清洗，重复。”如果你真的按照这些说明去做，你会永远在洗头！</p>
-<p>This logical flaw has evidently occurred to some shampoo  manufacturers, because some shampoo bottles instead say “Lather, rinse,  repeat <em>as necessary</em>.” That provides a termination condition to  the instructions. Presumably, you’ll eventually feel your hair is  sufficiently clean to consider additional repetitions unnecessary.  Shampooing can then stop.</p>
-<p>这种逻辑上的缺陷显然出现在一些洗发水制造商身上，因为有些洗发水瓶子上写着“揉至起泡沫，清洗，必要时重复”。这为说明书提供了终止条件。想必，你最终会觉得你的头发足够干净，不需要额外的重复，洗头的过程就可以结束了。</p>
-<p>Similarly, a function that calls itself recursively must have a plan  to eventually stop. Recursive functions typically follow this pattern:</p>
-<p>同样的道理，递归式调用自身的函数必须有一个方案使其最终停止调用。递归函数通常遵循以下模式：</p>
-<ul>
-<li>There are one or more base cases that are directly solvable without the need for further recursion.</li>
-</ul>
-<p>-有一个或多个基本案例可以直接解决问题，而不需要进一步递归。</p>
-<ul>
-<li><p>Each recursive call moves the solution progressively closer to a base case.</p>
-<p>-每次递归调用都会使解决方案逐渐接近基本案例。</p>
+<li><p>有些问题虽然可以使用递归方案来解决，但实际上会显得很笨拙，而不是优雅。</p>
+</li>
+<li><p>递归实现通常比非递归实现消耗更多的内存。</p>
+</li>
+<li><p>在某些情况下，使用递归可能会导致执行时间较长。</p>
 </li>
 </ul>
-<h2 id="Get-Started-Count-Down-to-Zero"><a href="#Get-Started-Count-Down-to-Zero" class="headerlink" title="Get Started: Count Down to Zero"></a>Get Started: Count Down to Zero</h2><p>开始：倒数至零</p>
-<p>The first example is a function called <code>countdown()</code>, which takes a positive number as an argument and prints the numbers from the specified argument down to zero:</p>
-<p>第一个示例是一个名为<code>countdown()</code>的函数，它将正数作为参数，并将指定参数中的数字按倒数的顺序输出至零：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def countdown(n):</span><br><span class="line">...     print(n)</span><br><span class="line">...     if n &#x3D;&#x3D; 0:</span><br><span class="line">...         return             # Terminate recursion</span><br><span class="line">...     else:</span><br><span class="line">...         countdown(n - 1)   # Recursive call</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; countdown(5)</span><br><span class="line">5</span><br><span class="line">4</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>通常，代码的可读性是编程中应该考虑的第一因素。是否使用递归，要视具体情况而定。下面的示例将帮助你了解何时应该选择递归。</p>
+<h2 id="Python-中的递归"><a href="#Python-中的递归" class="headerlink" title="Python 中的递归"></a>Python 中的递归</h2><p>当你在 Python 中调用一个函数时，解释器会创建一个新的局部命名空间，这样在该函数中定义的名称就不会与其他地方定义的相同名称冲突。一个函数可以调用另一个函数，即使它们都定义了具有相同名称的对象，也能正常工作，因为这些对象存在于单独的命名空间中。</p>
+<p>这一点同样适用于在同一函数中同时运行多个实例。例如以下定义:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">10</span></span><br><span class="line">    function()</span><br></pre></td></tr></table></figure>
 
-<p>Notice how <code>countdown()</code> fits the paradigm for a recursive algorithm described above:</p>
-<p>请注意<code>countdown()</code>是如何适用于上述递归算法的:</p>
-<ul>
-<li>The base case occurs when <code>n</code> is zero, at which point recursion stops.</li>
-</ul>
-<p>-当“n”为零时，符合基本案例，此时递归停止。</p>
-<ul>
-<li>In the recursive call, the argument is one less than the current value of <code>n</code>, so each recursion moves closer to the base case.</li>
-</ul>
-<p>-在递归调用中，参数为n-1 （n是当前值），因此每个递归都更接近基本案例。</p>
-<p><strong>Note:</strong> For simplicity, <code>countdown()</code> doesn’t check its argument for validity. If <code>n</code> is either a non-integer or negative, you’ll get a <code>RecursionError</code> exception because the base case is never reached.</p>
-<p><strong>注意：</strong>为简单起见，<code>countdown()</code>不检查其参数的有效性。如果“n”是非整数或负数，则会出现“RecursionError”异常，因为它一点都不符合基本案例。</p>
-<p>The version of <code>countdown()</code> shown above clearly highlights the base case and the recursive call, but there’s a more concise way to express it:</p>
-<p>上面的<code>countdown()</code> 版本突显了基本案例和递归调用，但有一种更简洁的表达方式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def countdown(n):</span><br><span class="line">    print(n)</span><br><span class="line">    if n &gt; 0:</span><br><span class="line">        countdown(n - 1)</span><br></pre></td></tr></table></figure>
+<p>当 <code>function()</code> 第一次执行时，Python 会创建一个命名空间，并在该命名空间中把 <code>x</code> 赋值为 <code>10</code> 。然后 <code>function()</code> 调用自身——递归。第二次运行 <code>function()</code> 时，解释器会创建第二个命名空间，并将 <code>10</code> 赋值给 <code>x</code> 。名称 <code>x</code> 的这两个实例彼此不同，可以共存而不发生冲突，因为它们位于不同的命名空间中。</p>
+<p>不幸的是，如果执行上面的所定义的 <code>function()</code> 函数，会得到不太好的结果，正如下面的<a href="https://realpython.com/python-traceback/" target="_blank" rel="noopener">回溯</a>所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>function()</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">3</span>, <span class="keyword">in</span> function</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">3</span>, <span class="keyword">in</span> function</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">3</span>, <span class="keyword">in</span> function</span><br><span class="line">  [Previous line repeated <span class="number">996</span> more times]</span><br><span class="line">RecursionError: maximum recursion depth exceeded</span><br></pre></td></tr></table></figure>
 
-<p>Here’s one possible non-recursive implementation for comparison:</p>
+<p>如前所述，<code>function()</code> 函数在理论上将永远持续下去，一遍又一遍地调用自己，而没有任何返回值。当然，在实践中，应该没有这样的递归。电脑只有那么多内存，那些内存最终也会耗尽。</p>
+<p>Python 不允许出现这种情况，解释器限制了函数可以对自身进行递归式调用的最大次数，当达到该极限时，会引发 <code>RecursionError</code> 异常，如上所示。</p>
+<p><strong>技术说明：</strong>可以通过名 sys 模块中的 <code>getrecursionlimit()</code> 函数来了解 Python 的递归次数限制：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sys <span class="keyword">import</span> getrecursionlimit</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getrecursionlimit()</span><br><span class="line"><span class="number">1000</span></span><br></pre></td></tr></table></figure>
+
+<p>以上是限制的默认值，也可以通过 <code>setrecursionlimit()</code> 函数修改此值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sys <span class="keyword">import</span> setrecursionlimit</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>setrecursionlimit(<span class="number">2000</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getrecursionlimit()</span><br><span class="line"><span class="number">2000</span></span><br></pre></td></tr></table></figure>
+
+<p>可以把这个限制值设置得非常大，但不能使它无限大。</p>
+<p>一个函数无休止地递归式调用自己并没有多大用处。这让人想起你有时在洗发水瓶子上看到的说明：“揉至起泡沫，清洗，重复。”如果你真的按照这些说明去做，你会永远在洗头！</p>
+<p>这种逻辑上的缺陷显然出现在一些洗发水制造商身上，因为有些洗发水瓶子上写着“揉至起泡沫，清洗，必要时重复”。这为说明书提供了终止条件。想必，你最终会觉得你的头发足够干净，不需要额外的重复，洗头的过程就可以结束了。</p>
+<p>同样的道理，递归式调用自身的函数必须有一个事件使其最终停止调用。递归函数通常遵循以下模式：</p>
+<ul>
+<li><p>有一个或多个终止条件可以直接得到结果，而不需要进一步递归。</p>
+</li>
+<li><p>每次递归调用都会使结果逐渐接近终止条件。</p>
+</li>
+</ul>
+<h2 id="开始：倒数至零"><a href="#开始：倒数至零" class="headerlink" title="开始：倒数至零"></a>开始：倒数至零</h2><p>第一个示例是一个名为 <code>countdown()</code> 的函数，它以正数作为输入参数，并将指定参数中的数字按倒数的顺序输出至零：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">countdown</span><span class="params">(n)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(n)</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span>             <span class="comment"># Terminate recursion</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</span><br><span class="line"><span class="meta">... </span>        countdown(n - <span class="number">1</span>)   <span class="comment"># Recursive call</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>countdown(<span class="number">5</span>)</span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>请注意 <code>countdown()</code> 函数的终止条件：</p>
+<ul>
+<li><p>当 <code>n</code> 为零时，符合终止条件，此时递归停止。</p>
+</li>
+<li><p>在递归调用中，参数为 <code>n-1</code> （ <code>n</code> 是当前值），因此每个递归都更接近终止条件。</p>
+</li>
+</ul>
+<p><strong>注意：</strong>为简单起见，<code>countdown()</code> 不检查其参数的有效性。如果 <code>n</code> 是非整数或负数，则会出现 <code>RecursionError</code> 异常，因为它完全不不符合终止条件。</p>
+<p>上面的 <code>countdown()</code>  版本突显了终止条件和递归调用，但有一种更简洁的表达方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">countdown</span><span class="params">(n)</span>:</span></span><br><span class="line">    print(n)</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">0</span>:</span><br><span class="line">        countdown(n - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
 <p>下面是一个可能的非递归实现，用于比较:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def countdown(n):</span><br><span class="line">...     while n &gt;&#x3D; 0:</span><br><span class="line">...         print(n)</span><br><span class="line">...         n -&#x3D; 1</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; countdown(5)</span><br><span class="line">5</span><br><span class="line">4</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">countdown</span><span class="params">(n)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">while</span> n &gt;= <span class="number">0</span>:</span><br><span class="line"><span class="meta">... </span>        print(n)</span><br><span class="line"><span class="meta">... </span>        n -= <span class="number">1</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>countdown(<span class="number">5</span>)</span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
 
-<p>This is a case where the non-recursive solution is at least as clear and intuitive as the recursive one, and probably more so.</p>
-<p>在这种情况下，非递归解决方案至少与递归解决方案一样清晰直观，而且可能更为清晰直观。</p>
-<h2 id="Calculate-Factorial"><a href="#Calculate-Factorial" class="headerlink" title="Calculate Factorial"></a>Calculate Factorial</h2><p>计算阶乘</p>
-<p>The next example involves the mathematical concept of <a href="https://en.wikipedia.org/wiki/Factorial" target="_blank" rel="noopener">factorial</a>. The factorial of a positive integer <em>n</em>, denoted as <em>n</em>!, is defined as follows:</p>
-<p>下一个例子涉及“阶乘”的数学概念。正整数“n”的阶乘，表示为“<em>n</em>！”，定义如下：</p>
-<p><a href="https://files.realpython.com/media/jsturtz-factorial-defn.b3cd3711a627.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-factorial-defn.b3cd3711a627.png" alt="Definition of factorial"></a></p>
-<p>In other words, <em>n</em>! is the product of all integers from 1 to <em>n</em>, inclusive.</p>
-<p>换句话说，“<em>n</em>！”是从1到<em>n</em>的所有整数的乘积。</p>
-<p>Factorial so lends itself to recursive definition that programming  texts nearly always include it as one of the first examples. You can  express the definition of <em>n</em>! recursively like this:</p>
-<p>因此，阶乘适合于递归定义，以至于编程文本几乎总是将其作为开头的几个示例之一。你可以这样对“<em>n</em>！”的定义进行递归式表达：</p>
-<p><a href="https://files.realpython.com/media/jsturtz-recursive-factorial-defn.32f2c2a3048a.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-recursive-factorial-defn.32f2c2a3048a.png" alt="Recursive definition of factorial"></a></p>
-<p>As with the example shown above, there are base cases that are solvable without recursion. The more complicated cases are <strong>reductive</strong>, meaning that they reduce to one of the base cases:</p>
-<p>与上面的示例一样，有些基本案例是不需要递归就可以解决的。更复杂的案例是<strong>简化</strong>，也就是把它们简化为基本案例之一:</p>
+<p>在这种情况下，非递归解决方案至少与递归解决方案一样清晰直观，而且可能更为简洁。</p>
+<h2 id="计算阶乘"><a href="#计算阶乘" class="headerlink" title="计算阶乘"></a>计算阶乘</h2><p>下一个例子涉及“阶乘”的数学概念。正整数 <code>n</code> 的阶乘，表示为 $n！$​ ，定义如下：</p>
+<p>$$n! = 1\times2\times\cdots\times n$$</p>
+<p>换句话说，$n！$​​ 是从 $1$​ 到 $n$​ 的所有整数的乘积。</p>
+<p>因此，阶乘适合于用递归定义，很多编程的数据都会用这个作为示例说明递归。</p>
+<p>$$n!=\begin{cases}1 &amp; n=0,1\n\times(n-1)! &amp; n\ge 2\end{cases}$$​</p>
+<p>与上面的示例一样，终止条件是不需要递归就可以实现的；更复杂的事件则可简化，也就是将其简化为终止条件之一:</p>
 <ul>
-<li>The base cases (<em>n</em> = 0 or <em>n</em> = 1) are solvable without recursion.</li>
+<li><p>$n = 0$​​ 或 $n = 1$​​ 时是终止条件，不需要递归就可以得到阶乘的结果。</p>
+</li>
+<li><p>如果 $n\gt1$​​​ ，根据 $(n - 1)!$​​​ 来定义 $n!$​​​ ，这样通过递归逐步接近终止条件。</p>
+</li>
 </ul>
-<p>-基本案例(<em>n</em> = 0或<em>n</em> = 1)是不需要递归就可以解决的。</p>
-<ul>
-<li>For values of <em>n</em> greater than 1, <em>n</em>! is defined in terms of (<em>n</em> - 1)!, so the recursive solution progressively approaches the base case.</li>
-</ul>
-<p>-如果<em>n</em>的值大于1，根据(<em>n</em> - 1)!来定义<em>n</em>!，这样就会使递归解决方案逐步接近基本案例。</p>
-<p>For example, recursive computation of 4! looks like this:</p>
-<p>例如4!的递归计算是这样的:</p>
-<p><a href="https://files.realpython.com/media/jsturtz-factorial-example.496c01139673.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-factorial-example.496c01139673.png" alt="Factorial illustration"></a>Recursive Calculation of 4!</p>
-<p>4!的递归计算</p>
-<p>The calculations of 4!, 3!, and 2! suspend until the algorithm reaches the base case where <em>n</em> = 1. At that point, 1! is computable without further recursion, and the deferred calculations run to completion.</p>
-<p>4!、3!和 2! 的计算暂停，直到算法达到<em>n</em> = 1的基本案例。此时，无需进一步递归就可以计算1!，延迟的计算将运行到最终完成。</p>
-<h3 id="Define-a-Python-Factorial-Function"><a href="#Define-a-Python-Factorial-Function" class="headerlink" title="Define a Python Factorial Function"></a>Define a Python Factorial Function</h3><p>定义一个Python 阶乘函数</p>
-<p>Here’s a recursive Python function to calculate factorial. Note how  concise it is and how well it mirrors the definition shown above:</p>
-<p>这里有一个用于计算阶乘的Python递归函数。请注意它是多么简洁、而且多么准确地反映了上面的定义:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def factorial(n):</span><br><span class="line">...     return 1 if n &lt;&#x3D; 1 else n * factorial(n - 1)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; factorial(4)</span><br><span class="line">24</span><br></pre></td></tr></table></figure>
+<p>例如 $4!$​ 的递归计算过程是这样的：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-6/1630904603247-factorial.png" alt=""></p>
+<p>计算 $4!$​​ 、$3!$​​ 和 $2!$​​  ，直到 $n = 1$ 时的终止条件结束递归。此时，无需进一步递归就可以计算 $1!$ 。后续的延迟计算将运行到最终完成。</p>
+<h3 id="编写阶乘函数"><a href="#编写阶乘函数" class="headerlink" title="编写阶乘函数"></a>编写阶乘函数</h3><p>下面的函数就是按照以上四项编写的计算阶乘的 Python 递归函数。它是多么简洁、而且多么准确地反映了上面的定义:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">factorial</span><span class="params">(n)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> n &lt;= <span class="number">1</span> <span class="keyword">else</span> n * factorial(n - <span class="number">1</span>)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>factorial(<span class="number">4</span>)</span><br><span class="line"><span class="number">24</span></span><br></pre></td></tr></table></figure>
 
-<p>A little embellishment of this function with some <a href="https://realpython.com/python-print/" target="_blank" rel="noopener"><code>print()</code></a> statements gives a clearer idea of the call and return sequence:</p>
-<p>用一些<a href="https://realpython.com/python-print/" target="_blank" rel="noopener">‘ print() ‘</a>语句修饰一下这个函数，这样可以对调用和返回序列有一个更清晰的理解:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def factorial(n):</span><br><span class="line">...     print(f&quot;factorial() called with n &#x3D; &#123;n&#125;&quot;)</span><br><span class="line">...     return_value &#x3D; 1 if n &lt;&#x3D; 1 else n * factorial(n -1)</span><br><span class="line">...     print(f&quot;-&gt; factorial(&#123;n&#125;) returns &#123;return_value&#125;&quot;)</span><br><span class="line">...     return return_value</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; factorial(4)</span><br><span class="line">factorial() called with n &#x3D; 4</span><br><span class="line">factorial() called with n &#x3D; 3</span><br><span class="line">factorial() called with n &#x3D; 2</span><br><span class="line">factorial() called with n &#x3D; 1</span><br><span class="line">-&gt; factorial(1) returns 1</span><br><span class="line">-&gt; factorial(2) returns 2</span><br><span class="line">-&gt; factorial(3) returns 6</span><br><span class="line">-&gt; factorial(4) returns 24</span><br><span class="line">24</span><br></pre></td></tr></table></figure>
+<p>为了弄清楚函数的执行过程，可以用 <code>print()</code> 将函数执行过程中的结果打印出来，这样可以对调用和返回序列有一个更清晰的理解:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">factorial</span><span class="params">(n)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(<span class="string">f"factorial() called with n = <span class="subst">&#123;n&#125;</span>"</span>)</span><br><span class="line"><span class="meta">... </span>    return_value = <span class="number">1</span> <span class="keyword">if</span> n &lt;= <span class="number">1</span> <span class="keyword">else</span> n * factorial(n <span class="number">-1</span>)</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">f"-&gt; factorial(<span class="subst">&#123;n&#125;</span>) returns <span class="subst">&#123;return_value&#125;</span>"</span>)</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> return_value</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>factorial(<span class="number">4</span>)</span><br><span class="line">factorial() called <span class="keyword">with</span> n = <span class="number">4</span></span><br><span class="line">factorial() called <span class="keyword">with</span> n = <span class="number">3</span></span><br><span class="line">factorial() called <span class="keyword">with</span> n = <span class="number">2</span></span><br><span class="line">factorial() called <span class="keyword">with</span> n = <span class="number">1</span></span><br><span class="line">-&gt; factorial(1) returns 1</span><br><span class="line">-&gt; factorial(2) returns 2</span><br><span class="line">-&gt; factorial(3) returns 6</span><br><span class="line">-&gt; factorial(4) returns 24</span><br><span class="line"><span class="number">24</span></span><br></pre></td></tr></table></figure>
 
-<p>Notice how all the recursive calls <em>stack up</em>. The function gets called with <code>n</code> = <code>4</code>, <code>3</code>, <code>2</code>, and <code>1</code> in succession before any of the calls return. Finally, when <code>n</code> is <code>1</code>, the problem can be solved without any more recursion. Then each of the stacked-up recursive calls unwinds back out, returning <code>1</code>, <code>2</code>, <code>6</code>, and finally <code>24</code> from the outermost call.</p>
-<p>注意所有的递归调用是如何堆叠的。在任何一个调用返回之前，该函数被<code>n</code> = <code>4</code>, <code>3</code>, <code>2</code>, <code>1</code>连续调用。最后，当n = 1时，无需再递归即可解决问题。然后每个堆叠起来的递归调用都会展开，从最外层的调用返回 <code>1</code>, <code>2</code>, <code>6</code>，最后返回<code>24</code>。</p>
-<p>Recursion isn’t necessary here. You could implement <code>factorial()</code> iteratively using a <a href="https://realpython.com/python-for-loop/" target="_blank" rel="noopener"><code>for</code></a> loop:</p>
-<p>这里不需要递归。你可以使用<a href="https://realpython.com/python-for-loop/" target="_blank" rel="noopener">‘ for ‘</a>循环迭代地实现’ factorial() ‘:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def factorial(n):</span><br><span class="line">...     return_value &#x3D; 1</span><br><span class="line">...     for i in range(2, n + 1):</span><br><span class="line">...         return_value *&#x3D; i</span><br><span class="line">...     return return_value</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; factorial(4)</span><br><span class="line">24</span><br></pre></td></tr></table></figure>
+<p>注意递归调用的累积过程。在返回任何一个递归调用的函数结果之前，该函数被 <code>n = 4, 3, 2, 1</code> 连续调用。最后，当 <code>n = 1</code> 时，无需再递归即可解决问题。然后每个累积起来的递归调用都会展开，从最外层的调用返回 <code>1</code>, <code>2</code>, <code>6</code>，最后返回 <code>24</code>。</p>
+<p>如果不用递归，其实也能实现阶乘，下面用 <code>for</code> 循环写一个实现阶乘的函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">factorial</span><span class="params">(n)</span>:</span></span><br><span class="line"><span class="meta">... </span>    return_value = <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line"><span class="meta">... </span>        return_value *= i</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> return_value</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>factorial(<span class="number">4</span>)</span><br><span class="line"><span class="number">24</span></span><br></pre></td></tr></table></figure>
 
-<p>You can also implement factorial using Python’s <a href="https://realpython.com/python-reduce-function/" target="_blank" rel="noopener"><code>reduce()</code></a>, which you can <a href="https://realpython.com/python-import/" target="_blank" rel="noopener">import</a> from the <code>functools</code> module:</p>
-<p>你也可以使用Python的<a href="https://realpython.com/python-reduce-function/" target="_blank" rel="noopener">‘ reduce() ‘</a>来实现阶乘，该函数可以从’ functools ‘模块导入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from functools import reduce</span><br><span class="line">&gt;&gt;&gt; def factorial(n):</span><br><span class="line">...     return reduce(lambda x, y: x * y, range(1, n + 1) or [1])</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; factorial(4)</span><br><span class="line">24</span><br></pre></td></tr></table></figure>
+<p>还可以使用 Python 的 <code>reduce()</code> 函数来实现阶乘，此函数要从 <code>functools</code> 模块导入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">factorial</span><span class="params">(n)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> reduce(<span class="keyword">lambda</span> x, y: x * y, range(<span class="number">1</span>, n + <span class="number">1</span>) <span class="keyword">or</span> [<span class="number">1</span>])</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>factorial(<span class="number">4</span>)</span><br><span class="line"><span class="number">24</span></span><br></pre></td></tr></table></figure>
 
-<p>Again, this shows that if a problem is solvable with recursion, there will also likely be several viable non-recursive solutions as well.  You’ll typically choose based on which one results in the most readable  and intuitive code.</p>
-<p>同样，这表明如果一个问题可以用递归来解决，那么也可能有几个可行的非递归解决方案。你的选择通常会基于最具可读性和最直观的代码。</p>
-<p>Another factor to take into consideration is execution speed. There  can be significant performance differences between recursive and  non-recursive solutions. In the next section, you’ll explore these  differences a little further.</p>
-<p>另一个需要考虑的因素是执行速度。递归和非递归解决方案之间可能存在显著的性能差异。在下一节中，我们将进一步探讨这些差异。</p>
-<h3 id="Speed-Comparison-of-Factorial-Implementations"><a href="#Speed-Comparison-of-Factorial-Implementations" class="headerlink" title="Speed Comparison of Factorial Implementations"></a>Speed Comparison of Factorial Implementations</h3><p>阶乘实现的速度比较</p>
-<p>To evaluate execution time, you can use a function called <a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" target="_blank" rel="noopener"><code>timeit()</code></a> from a module that is also called <code>timeit</code>. This function supports a number of different formats, but you’ll use the following format in this tutorial:</p>
-<p>要计算执行时间，你可以使用一个名为<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" target="_blank" rel="noopener">‘ timeit() ‘</a>的函数，该函数来自一个名为’ timeit ‘的模块。这个函数支持多种不同的格式，但在本教程中我们将使用以下格式:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timeit(&lt;command&gt;, setup&#x3D;&lt;setup_string&gt;, number&#x3D;&lt;iterations&gt;)</span><br></pre></td></tr></table></figure>
+<p>这表明如果一个问题可以用递归来解决，那么也可能有几个非递归解决方案。你的选择通常会基于代码的可读性和直观性。</p>
+<p>另一个需要考虑的因素是执行速度。递归和非递归解决方案之间可能存在显著的性能差异。</p>
+<h3 id="比较不同实现方式的速度"><a href="#比较不同实现方式的速度" class="headerlink" title="比较不同实现方式的速度"></a>比较不同实现方式的速度</h3><p>要计算函数的执行时间，可以使用 <code>timeit</code> 模块中的 <code>timeit()</code> 的函数，这个函数支持多种不同的调用形式，此处将用下面的方式调用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timeit(&lt;command&gt;, setup=&lt;setup_string&gt;, number=&lt;iterations&gt;)</span><br></pre></td></tr></table></figure>
 
-<p><code>timeit()</code> first executes the commands contained in the specified <code>&lt;setup_string&gt;</code>. Then it executes <code>&lt;command&gt;</code> the given number of <code>&lt;iterations&gt;</code> and reports the cumulative execution time in seconds:</p>
-<p>‘ timeit() ‘首先执行指定的 <code>&lt;setup_string&gt;</code>中包含的命令。然后按照给定的 <code>&lt;iterations&gt;</code> 次数执行<code>&lt;command&gt;</code>，并报告累计的执行时间（以秒为单位）:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from timeit import timeit</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; timeit(&quot;print(string)&quot;, setup&#x3D;&quot;string&#x3D;&#39;foobar&#39;&quot;, number&#x3D;100)</span><br><span class="line">foobar</span><br><span class="line">foobar</span><br><span class="line">foobar</span><br><span class="line">   .</span><br><span class="line">   . [100 repetitions]</span><br><span class="line">   .</span><br><span class="line">foobar</span><br><span class="line">0.03347089999988384</span><br></pre></td></tr></table></figure>
+<p>执行 <code>timeit()</code> 函数时，首先调用 <code>setup</code> 参数的值 <code>&lt;setup_string&gt;</code> 中指令，然后按照 <code>number</code> 参数的值执行 <code>&lt;command&gt;</code> 操作  <code>&lt;iterations&gt;</code> 次，并报告累计的执行时间（以秒为单位）:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> timeit <span class="keyword">import</span> timeit</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>timeit(<span class="string">"print(string)"</span>, setup=<span class="string">"string='foobar'"</span>, number=<span class="number">100</span>)</span><br><span class="line">foobar</span><br><span class="line">foobar</span><br><span class="line">foobar</span><br><span class="line">   .</span><br><span class="line">   . [<span class="number">100</span> repetitions]</span><br><span class="line">   .</span><br><span class="line">foobar</span><br><span class="line"><span class="number">0.03347089999988384</span></span><br></pre></td></tr></table></figure>
 
-<p>Here, the <code>setup</code> parameter assigns <code>string</code> the value <code>&#39;foobar&#39;</code>. Then <code>timeit()</code> prints <code>string</code> one hundred times. The total execution time is just over 3/100 of a second.</p>
-<p>这里，’ setup ‘参数将’ string ‘赋值为’foobar’ ‘。然后’ timeit() ‘打印’ string ‘ 100次。总执行时间刚好超过3/100秒。</p>
-<p>The examples shown below use <code>timeit()</code> to compare the recursive, iterative, and <code>reduce()</code> implementations of factorial from above. In each case, <code>setup_string</code> contains a setup string that defines the relevant <code>factorial()</code> function. <code>timeit()</code> then executes <code>factorial(4)</code> a total of ten million times and reports the aggregate execution.</p>
-<p>下面的示例使用’ timeit() ‘来比较上面阶乘的递归、迭代和’ reduce() ‘实现。在每种情况下，’ setup_string ‘包含一个设置字符串，该字符串定义了相关的’ factorial() ‘函数。然后，’ timeit() ‘执行’ factorial(4) ‘总共1000万次，并报告聚合执行。</p>
-<p>First, here’s the recursive version:</p>
-<p>首先，这是递归版本:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; setup_string &#x3D; &quot;&quot;&quot;</span><br><span class="line">... print(&quot;Recursive:&quot;)</span><br><span class="line">... def factorial(n):</span><br><span class="line">...     return 1 if n &lt;&#x3D; 1 else n * factorial(n - 1)</span><br><span class="line">... &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; from timeit import timeit</span><br><span class="line">&gt;&gt;&gt; timeit(&quot;factorial(4)&quot;, setup&#x3D;setup_string, number&#x3D;10000000)</span><br><span class="line">Recursive:</span><br><span class="line">4.957105500000125</span><br></pre></td></tr></table></figure>
+<p>上述代码中，<code>setup</code> 参数实现了对变量 <code>string</code> 赋值为 <code>foobar</code> 的操作。然后将 <code>print(string)</code> 指令执行 <code>number=100</code> 此。最终显示执行时间是 <code>0.03347</code> s （大于 $\frac{3}{100} s$​ ）。</p>
+<p>下面使用 <code>timeit()</code> 来比较上面实现阶乘三种方式：递归、for 循环和 <code>reduce()</code> 函数。在每种情况下，变量 <code>setup_string</code> 是字符串，其中定义了相关的 <code>factorial()</code> 函数。然后，<code>timeit()</code> 执行 <code>factorial(4)</code> 总共1000万次，并报告结果。</p>
+<p>首先，测试递归版本:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>setup_string = <span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">... </span>print("Recursive:")</span></span><br><span class="line"><span class="string"><span class="meta">... </span>def factorial(n):</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    return 1 if n &lt;= 1 else n * factorial(n - 1)</span></span><br><span class="line"><span class="string"><span class="meta">... </span>"""</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> timeit <span class="keyword">import</span> timeit</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>timeit(<span class="string">"factorial(4)"</span>, setup=setup_string, number=<span class="number">10000000</span>)</span><br><span class="line">Recursive:</span><br><span class="line"><span class="number">4.957105500000125</span></span><br></pre></td></tr></table></figure>
 
-<p>Next up is the iterative implementation:</p>
-<p>接下来是迭代实现:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; setup_string &#x3D; &quot;&quot;&quot;</span><br><span class="line">... print(&quot;Iterative:&quot;)</span><br><span class="line">... def factorial(n):</span><br><span class="line">...     return_value &#x3D; 1</span><br><span class="line">...     for i in range(2, n + 1):</span><br><span class="line">...         return_value *&#x3D; i</span><br><span class="line">...     return return_value</span><br><span class="line">... &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; from timeit import timeit</span><br><span class="line">&gt;&gt;&gt; timeit(&quot;factorial(4)&quot;, setup&#x3D;setup_string, number&#x3D;10000000)</span><br><span class="line">Iterative:</span><br><span class="line">3.733752099999947</span><br></pre></td></tr></table></figure>
+<p>接下来测试 for 循环的实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>setup_string = <span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">... </span>print("Iterative:")</span></span><br><span class="line"><span class="string"><span class="meta">... </span>def factorial(n):</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    return_value = 1</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    for i in range(2, n + 1):</span></span><br><span class="line"><span class="string"><span class="meta">... </span>        return_value *= i</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    return return_value</span></span><br><span class="line"><span class="string"><span class="meta">... </span>"""</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> timeit <span class="keyword">import</span> timeit</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>timeit(<span class="string">"factorial(4)"</span>, setup=setup_string, number=<span class="number">10000000</span>)</span><br><span class="line">Iterative:</span><br><span class="line"><span class="number">3.733752099999947</span></span><br></pre></td></tr></table></figure>
 
-<p>Last, here’s the version that uses <code>reduce()</code>:</p>
-<p>最后是使用’ reduce() ‘的版本:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; setup_string &#x3D; &quot;&quot;&quot;</span><br><span class="line">... from functools import reduce</span><br><span class="line">... print(&quot;reduce():&quot;)</span><br><span class="line">... def factorial(n):</span><br><span class="line">...     return reduce(lambda x, y: x * y, range(1, n + 1) or [1])</span><br><span class="line">... &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; from timeit import timeit</span><br><span class="line">&gt;&gt;&gt; timeit(&quot;factorial(4)&quot;, setup&#x3D;setup_string, number&#x3D;10000000)</span><br><span class="line">reduce():</span><br><span class="line">8.101526299999932</span><br></pre></td></tr></table></figure>
+<p>最后测试 <code>reduce()</code> 版本:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>setup_string = <span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">... </span>from functools import reduce</span></span><br><span class="line"><span class="string"><span class="meta">... </span>print("reduce():")</span></span><br><span class="line"><span class="string"><span class="meta">... </span>def factorial(n):</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    return reduce(lambda x, y: x * y, range(1, n + 1) or [1])</span></span><br><span class="line"><span class="string"><span class="meta">... </span>"""</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> timeit <span class="keyword">import</span> timeit</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>timeit(<span class="string">"factorial(4)"</span>, setup=setup_string, number=<span class="number">10000000</span>)</span><br><span class="line">reduce():</span><br><span class="line"><span class="number">8.101526299999932</span></span><br></pre></td></tr></table></figure>
 
-<p>In this case, the iterative implementation is the fastest, although the recursive solution isn’t far behind. The method using <code>reduce()</code> is the slowest. Your mileage will probably vary if you try these  examples on your own machine. You certainly won’t get the same times,  and you may not even get the same ranking.</p>
-<p>在这种情况下，迭代实现是最快的，尽管递归解决方案也不算落后。使用’ reduce() ‘的方法是最慢的。如果你在自己的计算机上尝试这些示例，你的实际情况可能会有所不同。与示例相比，你所花费的时间肯定有所不同，甚至你所得出的排名也可能有所不同。</p>
-<p>Does it matter? There’s a difference of almost four seconds in  execution time between the iterative implementation and the one that  uses <code>reduce()</code>, but it took ten million calls to see it.</p>
-<p>这有关系吗? 迭代实现和使用’ reduce() ‘的实现在执行时间上几乎有4秒的差异，但我们需要1000万个调用才能看到这一差异。</p>
-<p>If you’ll be calling a function many times, you might need to take  execution speed into account when choosing an implementation. On the  other hand, if the function will run relatively infrequently, then the  difference in execution times will probably be negligible. In that case, you’d be better off choosing the implementation that seems to express  the solution to the problem most clearly.</p>
-<p>如果要多次调用一个函数，那么在选择实现时可能需要考虑执行速度。另一方面，如果函数运行的频率相对较低，那么执行时间上的差异或许可以忽略不计。在这种情况下，你所选择的实现最好能非常清楚地表达解决问题的方案。</p>
-<p>For factorial, the timings recorded above suggest a recursive implementation is a reasonable choice.</p>
-<p>对于阶乘，上面记录的时间表明递归实现是一个合理的选择。</p>
-<p>Frankly, if you’re coding in Python, you don’t need to implement a  factorial function at all. It’s already available in the standard <a href="https://realpython.com/python-math-module/" target="_blank" rel="noopener"><code>math</code> module</a>:</p>
-<p>坦白地说，如果你用Python编码，你根本不需要实现阶乘函数。标准[‘ math ‘模块]中已经提供了阶乘函数：</p>
+<p>从上述测试可知，用 for 循环的迭代是最快的，尽管递归解决方案也不算太慢，倒是 <code>reduce()</code> 的实现是最慢的。如果你在自己的计算机上尝试这些示例，可能会有所不同。与示例相比，你所花费的时间肯定有所不同，甚至你所得出的排名也可能有所不同。</p>
+<p>这有关系吗? 迭代和使用 <code>reduce()</code> 的实现在执行时间上几乎有4秒的差异，但我们需要1000万个调用才能看到这一差异。</p>
+<p>如果要多次调用一个函数，那么在选择实现时可能需要考虑执行速度。另一方面，如果函数运行的频率相对较低，那么执行时间上的差异或许可以忽略不计。这种情况下，你所选择的实现最好能非常清楚地表达解决问题的方案——即代码的可读性是第一位的。</p>
+<p>对于阶乘，从上述测试结果来看，递归实现是一个合理的选择。</p>
+<p>坦白地说，如果你用 Python 编码，你根本不需要实现阶乘函数，因为标准库的 <code>math</code> 模块中已经提供了阶乘函数：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from math import factorial</span><br><span class="line">&gt;&gt;&gt; factorial(4)</span><br><span class="line">24</span><br></pre></td></tr></table></figure>
 
-<p>Perhaps it might interest you to know how this performs in the timing test:</p>
-<p>也许你会有兴趣了解它在计时测试中是如何运行的：</p>
+<p>也许你会有兴趣了解它在计时测试中的表现：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; setup_string &#x3D; &quot;from math import factorial&quot;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; from timeit import timeit</span><br><span class="line">&gt;&gt;&gt; timeit(&quot;factorial(4)&quot;, setup&#x3D;setup_string, number&#x3D;10000000)</span><br><span class="line">0.3724050999999946</span><br></pre></td></tr></table></figure>
 
-<p>Wow! <code>math.factorial()</code> performs better than the best of the other three implementations shown above by roughly a factor of 10.</p>
-<p>哇! 与上面显示的其他三种实现相比，math.factorial() ‘的运行时间大约缩短了10倍。</p>
-<p>A function implemented in C will virtually always be faster than a corresponding function implemented in pure Python.</p>
-<p>用C语言实现的函数几乎总是比用纯Python实现的相应函数运行速度更快。</p>
-<h2 id="Traverse-a-Nested-List"><a href="#Traverse-a-Nested-List" class="headerlink" title="Traverse a Nested List"></a>Traverse a Nested List</h2><p>遍历嵌套式列表</p>
-<p>The next example involves visiting each item in a nested list structure. Consider the following Python <a href="https://realpython.com/python-lists-tuples/#python-lists" target="_blank" rel="noopener">list</a>:</p>
-<p>下一个示例涉及访问嵌套式列表结构中的每个项。思考下面的Python列表：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">names &#x3D; [</span><br><span class="line">    &quot;Adam&quot;,</span><br><span class="line">    [</span><br><span class="line">        &quot;Bob&quot;,</span><br><span class="line">        [</span><br><span class="line">            &quot;Chet&quot;,</span><br><span class="line">            &quot;Cat&quot;,</span><br><span class="line">        ],</span><br><span class="line">        &quot;Barb&quot;,</span><br><span class="line">        &quot;Bert&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;Alex&quot;,</span><br><span class="line">    [</span><br><span class="line">        &quot;Bea&quot;,</span><br><span class="line">        &quot;Bill&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;Ann&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>哇! 与上面显示的其他三种实现相比，<code>math.factorial()</code> 的运行时间大约缩短了10倍。</p>
+<p>用 C 语言实现的函数几乎总是比用纯 Python 实现的相应函数运行速度更快。</p>
+<h2 id="遍历嵌套列表"><a href="#遍历嵌套列表" class="headerlink" title="遍历嵌套列表"></a>遍历嵌套列表</h2><p>下一个示例涉及访问嵌套式列表结构中的每个项。思考下面的 Python 列表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">names = [</span><br><span class="line">    "Adam",</span><br><span class="line">    [</span><br><span class="line">        "Bob",</span><br><span class="line">        [</span><br><span class="line">            "Chet",</span><br><span class="line">            "Cat",</span><br><span class="line">        ],</span><br><span class="line">        "Barb",</span><br><span class="line">        "Bert"</span><br><span class="line">    ],</span><br><span class="line">    "Alex",</span><br><span class="line">    [</span><br><span class="line">        "Bea",</span><br><span class="line">        "Bill"</span><br><span class="line">    ],</span><br><span class="line">    "Ann"</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
-<p>As the following diagram shows, <code>names</code> contains two sublists. The first of these sublists itself contains another sublist:</p>
-<p>如下图所示，’ names ‘包含两个子列表。第一个子列表本身包含另一个子列表:</p>
-<p><a href="https://files.realpython.com/media/jsturtz-nested-list.20eb8fe32366.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-nested-list.20eb8fe32366.png" alt="Nested list example"></a></p>
-<p>Suppose you wanted to count the number of <strong>leaf elements</strong> in this list—the lowest-level <code>str</code> objects—as though you’d flattened out the list. The leaf elements are <code>&quot;Adam&quot;</code>, <code>&quot;Bob&quot;</code>, <code>&quot;Chet&quot;</code>, <code>&quot;Cat&quot;</code>, <code>&quot;Barb&quot;</code>, <code>&quot;Bert&quot;</code>, <code>&quot;Alex&quot;</code>, <code>&quot;Bea&quot;</code>, <code>&quot;Bill&quot;</code>, and <code>&quot;Ann&quot;</code>, so the answer should be <code>10</code>.</p>
-<p>假设你想统计这个列表中叶元素（即最低级别的“str”对象）的数量，就好像你已经将列表展开一样。叶元素包括 “Adam”、“Bob”、“Chet”、“Cat”、“Barb”、“Bert”、“Alex”、“Bea”、“Bill” 和 “Ann”，所以答案应该是“10”。</p>
-<p>Just calling <code>len()</code> on the list doesn’t give the correct answer:</p>
-<p>仅仅在列表中调用<code>len()</code>并不能得出正确的答案：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; len(names)</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<p>如下图所示，<code>names</code> 包含两个子列表。第一个子列表本身包含另一个子列表:</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-6/1630909715653-jsturtz-nested-list.png" alt=""></p>
+<p>假设你想统计这个列表中叶子元素（即最低级别的字符串对象）的数量，就好像你已经将列表展开一样。叶子元素包括 <code>&quot;Adam&quot;、&quot;Bob&quot;、&quot;Chet&quot;、&quot;Cat&quot;、&quot;Barb&quot;、&quot;Bert&quot;、&quot;Alex&quot;、&quot;Bea&quot;、&quot;Bill&quot;、&quot;Ann&quot;</code> ，所以答案应该是“10”。</p>
+<p>如果用 <code>len()</code> 函数并不能得出正确的答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(names)</span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
 
-<p><code>len()</code> counts the objects at the top level of <code>names</code>, which are the three leaf elements <code>&quot;Adam&quot;</code>, <code>&quot;Alex&quot;</code>, and <code>&quot;Ann&quot;</code> and two sublists <code>[&quot;Bob&quot;, [&quot;Chet&quot;, &quot;Cat&quot;], &quot;Barb&quot;, &quot;Bert&quot;]</code> and <code>[&quot;Bea&quot;, &quot;Bill&quot;]</code>:</p>
-<p><code>len()</code> 统计“names”顶层的对象，即三个叶元素“Adam”、“Alex”和“Ann”，以及两个子列表“[”Bob“，[”Chet“，”Cat“]，”Barb“，”Bert“]<code>和“[”Bea“，”Bill“]</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; for index, item in enumerate(names):</span><br><span class="line">...     print(index, item)</span><br><span class="line">...</span><br><span class="line">0 Adam</span><br><span class="line">1 [&#39;Bob&#39;, [&#39;Chet&#39;, &#39;Cat&#39;], &#39;Barb&#39;, &#39;Bert&#39;]</span><br><span class="line">2 Alex</span><br><span class="line">3 [&#39;Bea&#39;, &#39;Bill&#39;]</span><br><span class="line">4 Ann</span><br></pre></td></tr></table></figure>
+<p><code>len()</code> 函数统计 <code>names</code> 顶层的对象个数，即三个叶元素 <code>&quot;Adam&quot;、&quot;Alex&quot;</code> 和 <code>&quot;Ann&quot;</code> ，以及两个子列表 <code>[&quot;Bob&quot;，[&quot;Chet&quot;，&quot;Cat&quot;]，&quot;Barb&quot;，&quot;Bert&quot;]</code> 和 <code>[&quot;Bea&quot;，&quot;Bill&quot;]</code> ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, item <span class="keyword">in</span> enumerate(names):</span><br><span class="line"><span class="meta">... </span>    print(index, item)</span><br><span class="line">...</span><br><span class="line"><span class="number">0</span> Adam</span><br><span class="line"><span class="number">1</span> [<span class="string">'Bob'</span>, [<span class="string">'Chet'</span>, <span class="string">'Cat'</span>], <span class="string">'Barb'</span>, <span class="string">'Bert'</span>]</span><br><span class="line"><span class="number">2</span> Alex</span><br><span class="line"><span class="number">3</span> [<span class="string">'Bea'</span>, <span class="string">'Bill'</span>]</span><br><span class="line"><span class="number">4</span> Ann</span><br></pre></td></tr></table></figure>
 
-<p>What you need here is a function that traverses the entire list  structure, sublists included. The algorithm goes something like this:</p>
-<p>这里需要的是一个遍历整个列表结构(包括子列表)的函数。该算法是这样的:</p>
-<ol>
-<li><p>Walk through the list, examining each item in turn.</p>
+<p>这里需要的是一个遍历整个列表结构（包括子列表）的函数。该算法是这样的:</p>
 <ol>
 <li>遍历列表，依次检查每一项。</li>
-</ol>
-</li>
-<li><p>If you find a leaf element, then add it to the accumulated count.</p>
-<ol start="2">
 <li>如果找到一个叶元素，则将其添加到累积计数中。</li>
-</ol>
-</li>
-<li><p>If you encounter a sublist, then do the following:</p>
-<ol start="3">
-<li>如果遇到子列表，执行以下操作:</li>
+<li>如果遇到子列表，执行以下操作:<ol>
+<li>进入到该子列表，并用类似的方式遍历它。</li>
+<li>一旦你遍历了子列表，就返回，将子列表中的元素添加到累积计数中，并从结束的地方继续遍历父列表。</li>
 </ol>
 </li>
 </ol>
-<ul>
-<li><p>Drop down into that sublist and similarly walk through it.</p>
-</li>
-<li><p>下拉到该子列表，并用类似的方式遍历它。</p>
-</li>
-<li><p>Once you’ve exhausted the sublist, go back up, add the elements from the sublist to the accumulated count, and resume the walk through the  parent list where you left off.</p>
-</li>
-<li><p>一旦你遍历了子列表，就返回，将子列表中的元素添加到累积计数中，并从结束的地方继续遍历父列表。</p>
-</li>
-</ul>
-<p>Note the self-referential nature of this description: <em>Walk through the list</em>. If you encounter a sublist, then similarly <em>walk through that list</em>. This situation begs for recursion!</p>
-<p>注意这里所描述的自引用性质: 遍历列表。 如果遇到子列表，则用类似的方式<em>遍历该列表</em>。这种情况需要递归!</p>
-<h3 id="Traverse-a-Nested-List-Recursively"><a href="#Traverse-a-Nested-List-Recursively" class="headerlink" title="Traverse a Nested List Recursively"></a>Traverse a Nested List Recursively</h3><p>递归式遍历嵌套列表</p>
-<p>Recursion fits this problem very nicely. To solve it, you need to be  able to determine whether a given list item is leaf item or not. For  that, you can use the built-in Python function <a href="https://docs.python.org/3/library/functions.html#isinstance" target="_blank" rel="noopener"><code>isinstance()</code></a>.</p>
-<p>递归非常适合这个问题。要解决这个问题，你需要能够确定给定的列表项是否是叶项。为此，你可以使用内置的Python函数<a href="https://docs.python.org/3/library/functions.html#isinstance" target="_blank" rel="noopener"><code>isinstance()</code></a>。</p>
-<p>In the case of the <code>names</code> list, if an item is an instance of type <code>list</code>, then it’s a sublist. Otherwise, it’s a leaf item:</p>
-<p>在“names”列表中，如果一个项是“list”类型的实例，那么它就是一个子列表。否则，它就是一个叶项：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; names</span><br><span class="line">[&#39;Adam&#39;, [&#39;Bob&#39;, [&#39;Chet&#39;, &#39;Cat&#39;], &#39;Barb&#39;, &#39;Bert&#39;], &#39;Alex&#39;, [&#39;Bea&#39;, &#39;Bill&#39;], &#39;Ann&#39;]</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; names[0]</span><br><span class="line">&#39;Adam&#39;</span><br><span class="line">&gt;&gt;&gt; isinstance(names[0], list)</span><br><span class="line">False</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; names[1]</span><br><span class="line">[&#39;Bob&#39;, [&#39;Chet&#39;, &#39;Cat&#39;], &#39;Barb&#39;, &#39;Bert&#39;]</span><br><span class="line">&gt;&gt;&gt; isinstance(names[1], list)</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; names[1][1]</span><br><span class="line">[&#39;Chet&#39;, &#39;Cat&#39;]</span><br><span class="line">&gt;&gt;&gt; isinstance(names[1][1], list)</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; names[1][1][0]</span><br><span class="line">&#39;Chet&#39;</span><br><span class="line">&gt;&gt;&gt; isinstance(names[1][1][0], list)</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>注意这里所描述的自引用性质: 遍历列表。 如果遇到子列表，则用类似的方式遍历此列表，这种情况就需要递归!</p>
+<h3 id="用递归遍历嵌套列表"><a href="#用递归遍历嵌套列表" class="headerlink" title="用递归遍历嵌套列表"></a>用递归遍历嵌套列表</h3><p>递归非常适合解决这个问题。首先要确定给定的列表项是否是叶子。为此，可以使用内置的 Python 函数 <code>isinstance()</code> 。</p>
+<p>在 <code>names</code> 列表中，如果一个项是 <code>list</code> 类型的实例，那么它就是一个子列表。否则，它就是一个叶子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>names</span><br><span class="line">[<span class="string">'Adam'</span>, [<span class="string">'Bob'</span>, [<span class="string">'Chet'</span>, <span class="string">'Cat'</span>], <span class="string">'Barb'</span>, <span class="string">'Bert'</span>], <span class="string">'Alex'</span>, [<span class="string">'Bea'</span>, <span class="string">'Bill'</span>], <span class="string">'Ann'</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="number">0</span>]</span><br><span class="line"><span class="string">'Adam'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(names[<span class="number">0</span>], list)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="number">1</span>]</span><br><span class="line">[<span class="string">'Bob'</span>, [<span class="string">'Chet'</span>, <span class="string">'Cat'</span>], <span class="string">'Barb'</span>, <span class="string">'Bert'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(names[<span class="number">1</span>], list)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="number">1</span>][<span class="number">1</span>]</span><br><span class="line">[<span class="string">'Chet'</span>, <span class="string">'Cat'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(names[<span class="number">1</span>][<span class="number">1</span>], list)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>names[<span class="number">1</span>][<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line"><span class="string">'Chet'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(names[<span class="number">1</span>][<span class="number">1</span>][<span class="number">0</span>], list)</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
 
-<p>Now you have the tools in place to implement a function that counts  leaf elements in a list, accounting for sublists recursively:</p>
-<p>现在，你已经有了实现一个函数的工具，该函数用于统计列表中的叶元素，并递归地计算子列表：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def count_leaf_items(item_list):</span><br><span class="line">    &quot;&quot;&quot;Recursively counts and returns the</span><br><span class="line">       number of leaf items in a (potentially</span><br><span class="line">       nested) list.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    count &#x3D; 0</span><br><span class="line">    for item in item_list:</span><br><span class="line">        if isinstance(item, list):</span><br><span class="line">            count +&#x3D; count_leaf_items(item)</span><br><span class="line">        else:</span><br><span class="line">            count +&#x3D; 1</span><br><span class="line"></span><br><span class="line">    return count</span><br></pre></td></tr></table></figure>
+<p>接下来，编写实现函数，该函数用于统计列表中的叶子元素，并递归地计算子列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_leaf_items</span><span class="params">(item_list)</span>:</span></span><br><span class="line">    <span class="string">"""Recursively counts and returns the</span></span><br><span class="line"><span class="string">       number of leaf items in a (potentially</span></span><br><span class="line"><span class="string">       nested) list.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> item_list:</span><br><span class="line">        <span class="keyword">if</span> isinstance(item, list):</span><br><span class="line">            count += count_leaf_items(item)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure>
 
-<p>If you run <code>count_leaf_items()</code> on several lists, including the <code>names</code> list defined above, you get this:</p>
-<p>如果你在几个列表上运行 count_leaf_items() ，包括上面定义的’ names ‘列表，你会得到以下结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; count_leaf_items([1, 2, 3, 4])</span><br><span class="line">4</span><br><span class="line">&gt;&gt;&gt; count_leaf_items([1, [2.1, 2.2], 3])</span><br><span class="line">4</span><br><span class="line">&gt;&gt;&gt; count_leaf_items([])</span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; count_leaf_items(names)</span><br><span class="line">10</span><br><span class="line">&gt;&gt;&gt; # Success!</span><br></pre></td></tr></table></figure>
+<p>下面用几个参数传入 <code>count_leaf_items()</code> ，包括上面定义的 <code>names</code> 列表，会得到以下结果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>count_leaf_items([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>count_leaf_items([<span class="number">1</span>, [<span class="number">2.1</span>, <span class="number">2.2</span>], <span class="number">3</span>])</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>count_leaf_items([])</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>count_leaf_items(names)</span><br><span class="line"><span class="number">10</span></span><br></pre></td></tr></table></figure>
 
-<p>As with the factorial example, adding some <a href="https://realpython.com/python-print/" target="_blank" rel="noopener"><code>print()</code></a> statements helps to demonstrate the sequence of recursive calls and <a href="https://realpython.com/python-return-statement/" target="_blank" rel="noopener">return</a> values:</p>
-<p>与阶乘示例一样，添加一些<a href="https://realpython.com/python-print/" target="_blank" rel="noopener"><code>print()</code></a>语句有助于演示递归调用的顺序和返回值：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">def count_leaf_items(item_list):</span><br><span class="line">    &quot;&quot;&quot;Recursively counts and returns the</span><br><span class="line">       number of leaf items in a (potentially</span><br><span class="line">       nested) list.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    print(f&quot;List: &#123;item_list&#125;&quot;)</span><br><span class="line">    count &#x3D; 0</span><br><span class="line">    for item in item_list:</span><br><span class="line">        if isinstance(item, list):</span><br><span class="line">            print(&quot;Encountered sublist&quot;)</span><br><span class="line">            count +&#x3D; count_leaf_items(item)</span><br><span class="line">        else:</span><br><span class="line">            print(f&quot;Counted leaf item \&quot;&#123;item&#125;\&quot;&quot;)</span><br><span class="line">            count +&#x3D; 1</span><br><span class="line"></span><br><span class="line">    print(f&quot;-&gt; Returning count &#123;count&#125;&quot;)</span><br><span class="line">    return count</span><br></pre></td></tr></table></figure>
+<p>与阶乘示例一样，添加一些 <code>print()</code> 语句有助于演示递归调用的顺序和返回值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_leaf_items</span><span class="params">(item_list)</span>:</span></span><br><span class="line">    <span class="string">"""Recursively counts and returns the</span></span><br><span class="line"><span class="string">       number of leaf items in a (potentially</span></span><br><span class="line"><span class="string">       nested) list.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    print(<span class="string">f"List: <span class="subst">&#123;item_list&#125;</span>"</span>)</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> item_list:</span><br><span class="line">        <span class="keyword">if</span> isinstance(item, list):</span><br><span class="line">            print(<span class="string">"Encountered sublist"</span>)</span><br><span class="line">            count += count_leaf_items(item)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">f"Counted leaf item \"<span class="subst">&#123;item&#125;</span>\""</span>)</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">f"-&gt; Returning count <span class="subst">&#123;count&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure>
 
-<p>Here’s a synopsis of what’s happening in the example above:</p>
-<p>对上述示例的概要如下:</p>
+<p>对上述示例的解释如下：</p>
 <ul>
-<li><strong>Line 9:</strong> <code>isinstance(item, list)</code> is <code>True</code>, so <code>count_leaf_items()</code> has found a sublist.</li>
+<li><p><strong>第9行:</strong>  <code>isinstance(item, list)</code> 的值是 <code>True</code> ，所以 <code>count_leaf_items()</code> 找到了一个子列表。</p>
+</li>
+<li><p>*<em>第11行: *</em>函数通过调用自身实现递归，继续统计子列表中的项，然后将结果添加到累计的总数中。</p>
+</li>
+<li><p>*<em>第12行: *</em> <code>isinstance(item, list)</code> 的值是 <code>False</code> 时，<code>count_leaf_items()</code> 遇到了一个叶子项。</p>
+</li>
+<li><p>*<em>第14行: *</em>将累计总数增加1，以计入叶子项。</p>
+</li>
 </ul>
-<p>- <strong>第9行:</strong>  ‘ isinstance(item, list) ‘是’ True ‘，所以’ count_leaf_items() ‘找到了一个子列表。</p>
-<ul>
-<li><strong>Line 11:</strong> The function calls itself recursively to count the items in the sublist, then adds the result to the accumulating total.</li>
-</ul>
-<p>- *<em>第11行: *</em>函数通过对自身进行递归式调用来统计子列表中的项，然后将结果添加到累计的总数中。</p>
-<ul>
-<li><strong>Line 12:</strong> <code>isinstance(item, list)</code> is <code>False</code>, so <code>count_leaf_items()</code> has encountered a leaf item.</li>
-</ul>
-<p>- *<em>第12行: *</em> ‘ isinstance(item, list) ‘是’ False ‘，所以’ count_leaf_items() ‘遇到了一个叶项。</p>
-<ul>
-<li><strong>Line 14:</strong> The function increments the accumulating total by one to account for the leaf item.</li>
-</ul>
-<p>- *<em>第14行: *</em>该函数将累计总数增加1，以计入叶项。</p>
-<p><strong>Note:</strong> To keep things simple, this implementation assumes the list passed to <code>count_leaf_items()</code> contains only leaf items or sublists, not any other type of composite object like a <a href="https://realpython.com/python-dicts/" target="_blank" rel="noopener">dictionary</a> or <a href="https://realpython.com/python-lists-tuples/#python-tuples" target="_blank" rel="noopener">tuple</a>.</p>
-<p>注： 为简单起见, 该实现假设传递给“count_leaf_items()的列表只包含叶项或子列表, 而不包含任何其他类型的复合对象，如：字典或元组。</p>
+<p><strong>注</strong>： 为简单起见, 该实现假设传递给 <code>count_leaf_items()</code> 的列表只包含叶子项或子列表, 而不包含任何其他类型的复合对象，如：字典或元组。</p>
 <p>The output from <code>count_leaf_items()</code> when it’s executed on the <code>names</code> list now looks like this:</p>
-<p>现在，在’ names ‘列表上执行’ count_leaf_items() ‘时的输出是这样的:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; count_leaf_items(names)</span><br><span class="line">List: [&#39;Adam&#39;, [&#39;Bob&#39;, [&#39;Chet&#39;, &#39;Cat&#39;], &#39;Barb&#39;, &#39;Bert&#39;], &#39;Alex&#39;, [&#39;Bea&#39;, &#39;Bill&#39;], &#39;Ann&#39;]</span><br><span class="line">Counted leaf item &quot;Adam&quot;</span><br><span class="line">Encountered sublist</span><br><span class="line">List: [&#39;Bob&#39;, [&#39;Chet&#39;, &#39;Cat&#39;], &#39;Barb&#39;, &#39;Bert&#39;]</span><br><span class="line">Counted leaf item &quot;Bob&quot;</span><br><span class="line">Encountered sublist</span><br><span class="line">List: [&#39;Chet&#39;, &#39;Cat&#39;]</span><br><span class="line">Counted leaf item &quot;Chet&quot;</span><br><span class="line">Counted leaf item &quot;Cat&quot;</span><br><span class="line">-&gt; Returning count 2</span><br><span class="line">Counted leaf item &quot;Barb&quot;</span><br><span class="line">Counted leaf item &quot;Bert&quot;</span><br><span class="line">-&gt; Returning count 5</span><br><span class="line">Counted leaf item &quot;Alex&quot;</span><br><span class="line">Encountered sublist</span><br><span class="line">List: [&#39;Bea&#39;, &#39;Bill&#39;]</span><br><span class="line">Counted leaf item &quot;Bea&quot;</span><br><span class="line">Counted leaf item &quot;Bill&quot;</span><br><span class="line">-&gt; Returning count 2</span><br><span class="line">Counted leaf item &quot;Ann&quot;</span><br><span class="line">-&gt; Returning count 10</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
+<p>现在，对 <code>names</code> 列表执行 <code>count_leaf_items()</code> 时的输出是这样的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>count_leaf_items(names)</span><br><span class="line">List: [<span class="string">'Adam'</span>, [<span class="string">'Bob'</span>, [<span class="string">'Chet'</span>, <span class="string">'Cat'</span>], <span class="string">'Barb'</span>, <span class="string">'Bert'</span>], <span class="string">'Alex'</span>, [<span class="string">'Bea'</span>, <span class="string">'Bill'</span>], <span class="string">'Ann'</span>]</span><br><span class="line">Counted leaf item <span class="string">"Adam"</span></span><br><span class="line">Encountered sublist</span><br><span class="line">List: [<span class="string">'Bob'</span>, [<span class="string">'Chet'</span>, <span class="string">'Cat'</span>], <span class="string">'Barb'</span>, <span class="string">'Bert'</span>]</span><br><span class="line">Counted leaf item <span class="string">"Bob"</span></span><br><span class="line">Encountered sublist</span><br><span class="line">List: [<span class="string">'Chet'</span>, <span class="string">'Cat'</span>]</span><br><span class="line">Counted leaf item <span class="string">"Chet"</span></span><br><span class="line">Counted leaf item <span class="string">"Cat"</span></span><br><span class="line">-&gt; Returning count 2</span><br><span class="line">Counted leaf item <span class="string">"Barb"</span></span><br><span class="line">Counted leaf item <span class="string">"Bert"</span></span><br><span class="line">-&gt; Returning count 5</span><br><span class="line">Counted leaf item <span class="string">"Alex"</span></span><br><span class="line">Encountered sublist</span><br><span class="line">List: [<span class="string">'Bea'</span>, <span class="string">'Bill'</span>]</span><br><span class="line">Counted leaf item <span class="string">"Bea"</span></span><br><span class="line">Counted leaf item <span class="string">"Bill"</span></span><br><span class="line">-&gt; Returning count 2</span><br><span class="line">Counted leaf item <span class="string">"Ann"</span></span><br><span class="line">-&gt; Returning count 10</span><br><span class="line"><span class="number">10</span></span><br></pre></td></tr></table></figure>
 
-<p>Each time a call to <code>count_leaf_items()</code> terminates, it returns the count of leaf elements it tallied in the list passed to it. The top-level call returns <code>10</code>, as it should.</p>
-<p>每次对’ count_leaf_items() ‘的调用终止时，都会返回叶元素的计数，这些叶元素位于传递给该函数的列表中。顶层调用返回’ 10 ‘，这是理所应当的。</p>
-<h3 id="Traverse-a-Nested-List-Non-Recursively"><a href="#Traverse-a-Nested-List-Non-Recursively" class="headerlink" title="Traverse a Nested List Non-Recursively"></a>Traverse a Nested List Non-Recursively</h3><p>非递归式遍历嵌套列表</p>
-<p>Like the other examples shown so far, this list traversal doesn’t  require recursion. You can also accomplish it iteratively. Here’s one  possibility:</p>
-<p>与到目前为止展示的其他示例一样，这个列表的遍历不需要递归。你也可以迭代地完成它。这里有一个可能性:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def count_leaf_items(item_list):</span><br><span class="line">    &quot;&quot;&quot;Non-recursively counts and returns the</span><br><span class="line">       number of leaf items in a (potentially</span><br><span class="line">       nested) list.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    count &#x3D; 0</span><br><span class="line">    stack &#x3D; []</span><br><span class="line">    current_list &#x3D; item_list</span><br><span class="line">    i &#x3D; 0</span><br><span class="line"></span><br><span class="line">    while True:</span><br><span class="line">        if i &#x3D;&#x3D; len(current_list):</span><br><span class="line">            if current_list &#x3D;&#x3D; item_list:</span><br><span class="line">                return count</span><br><span class="line">            else:</span><br><span class="line">                current_list, i &#x3D; stack.pop()</span><br><span class="line">                i +&#x3D; 1</span><br><span class="line"></span><br><span class="line">        if isinstance(current_list[i], list):</span><br><span class="line">            stack.append([current_list, i])</span><br><span class="line">            current_list &#x3D; current_list[i]</span><br><span class="line">            i &#x3D; 0</span><br><span class="line"></span><br><span class="line">        count +&#x3D; 1</span><br><span class="line">        i +&#x3D; 1</span><br></pre></td></tr></table></figure>
+<p>每次对 <code>count_leaf_items()</code> 的调用终止时，都会返回叶子的计数，这些叶子元素在传给该函数的列表中。顶层调用返回 <code>10</code> 。</p>
+<h3 id="非递归遍历嵌套列表"><a href="#非递归遍历嵌套列表" class="headerlink" title="非递归遍历嵌套列表"></a>非递归遍历嵌套列表</h3><p>下面还是要展示一下用非递归方式实现对嵌套列表的遍历，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_leaf_items</span><span class="params">(item_list)</span>:</span></span><br><span class="line">    <span class="string">"""Non-recursively counts and returns the</span></span><br><span class="line"><span class="string">       number of leaf items in a (potentially</span></span><br><span class="line"><span class="string">       nested) list.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    stack = []</span><br><span class="line">    current_list = item_list</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> i == len(current_list):</span><br><span class="line">            <span class="keyword">if</span> current_list == item_list:</span><br><span class="line">                <span class="keyword">return</span> count</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                current_list, i = stack.pop()</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> isinstance(current_list[i], list):</span><br><span class="line">            stack.append([current_list, i])</span><br><span class="line">            current_list = current_list[i]</span><br><span class="line">            i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        i += <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
-<p>If you run this non-recursive version of <code>count_leaf_items()</code> on the same lists as shown previously, you get the same results:</p>
-<p>如果你在前面所示的相同列表上运行这个非递归版本的count_leaf_items()，则会得到相同的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; count_leaf_items([1, 2, 3, 4])</span><br><span class="line">4</span><br><span class="line">&gt;&gt;&gt; count_leaf_items([1, [2.1, 2.2], 3])</span><br><span class="line">4</span><br><span class="line">&gt;&gt;&gt; count_leaf_items([])</span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; count_leaf_items(names)</span><br><span class="line">10</span><br><span class="line">&gt;&gt;&gt; # Success!</span><br></pre></td></tr></table></figure>
+<p>对相同列表上执行这个非递归版本的 <code>count_leaf_items()</code> 函数，则会得到相同的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; count_leaf_items([1, 2, 3, 4])</span><br><span class="line">4</span><br><span class="line">&gt;&gt;&gt; count_leaf_items([1, [2.1, 2.2], 3])</span><br><span class="line">4</span><br><span class="line">&gt;&gt;&gt; count_leaf_items([])</span><br><span class="line">0</span><br><span class="line">&gt;&gt;&gt; count_leaf_items(names)</span><br><span class="line">10</span><br><span class="line">&gt;&gt;&gt; # Success!</span><br></pre></td></tr></table></figure>
 
-<p>The strategy employed here uses a <a href="https://realpython.com/how-to-implement-python-stack/" target="_blank" rel="noopener">stack</a> to handle the nested sublists. When this version of <code>count_leaf_items()</code> encounters a sublist, it pushes the list that is currently in progress  and the current index in that list onto a stack. Once it has counted the sublist, the function pops the parent list and index from the stack so  it can resume counting where it left off.</p>
-<p>这里所用的策略是用堆栈来处理嵌套的子列表。当此版本的 <code>count_leaf_items()</code>遇到子列表时，它会将当前正在运行的列表和该列表中的当前索引推送到堆栈上。一旦计算完子列表，函数就会从堆栈中弹出父列表和索引，这样就可以在停止的地方继续计算。</p>
-<p>In fact, essentially the same thing happens in the recursive  implementation as well. When you call a function recursively, Python  saves the state of the executing instance on a stack so the recursive  call can run. When the recursive call finishes, the state is popped from the stack so that the interrupted instance can resume. It’s the same  concept, but with the recursive solution, Python is doing the  state-saving work for you.</p>
-<p>实际上，在递归实现中也会发生同样的事情。当你递归式调用函数时，Python会将正在执行的实例的状态保存在堆栈上，以便可以运行递归调用。当递归调用完成时，状态将从堆栈中弹出，从而让中断的实例可以继续。这是相同的概念，但是有了递归解决方案，Python就为你完成了状态保存工作。</p>
-<p>Notice how concise and readable the recursive code is when compared to the non-recursive version:</p>
+<p>这个函数中用栈来处理嵌套的子列表，当函数循环到一个子列表时，将父列表及子列表在父列表中的索引推送到栈里。一旦对子列表中的叶子元素完成计数，就会从栈中将父列表和索引删除并获得其返回值，这样就可以在停止的地方继续计算。</p>
+<p>实际上，在递归实现中也会发生同样的事情。当你递归式调用函数时，Python 会将正在执行的实例的状态保存在栈上，以便可以运行递归调用。当递归调用完成时，状态将从栈中弹出，从而让中断的实例可以继续。这是相同的概念，但是在使用递归时，是 Python 自动完成了状态保存工作。</p>
 <p>请注意，与非递归版本相比，递归代码是多么简洁易读：</p>
-<p><a href="https://files.realpython.com/media/jsturtz-traversal-comparison.930c512e5fd6.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-traversal-comparison.930c512e5fd6.png" alt="Comparison of non-recursive and recursive list traversal algorithms"></a>Recursive vs Non-Recursive Nested List Traversal</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-7/1630995953038-comparison.png" alt=""></p>
 <p>比较递归式嵌套列表的遍历与非递归式嵌套列表的遍历</p>
-<p>This is a case where using recursion is definitely an advantage.</p>
 <p>在这种情况下，使用递归绝对是一种优势。</p>
-<h2 id="Detect-Palindromes"><a href="#Detect-Palindromes" class="headerlink" title="Detect Palindromes"></a>Detect Palindromes</h2><p>检测回文</p>
-<p>The choice of whether to use recursion to solve a problem depends in  large part on the nature of the problem. Factorial, for example,  naturally translates to a recursive implementation, but the iterative  solution is quite straightforward as well. In that case, it’s arguably a toss-up.</p>
-<p>选择是否使用递归来解决问题在很大程度上取决于问题的性质。例如，阶乘自然会转化为递归实现，但迭代解决方案也相当简单。在这种情况下的选择可以说是碰运气的事。</p>
-<p>The list traversal problem is a different story. In that case, the  recursive solution is very elegant, while the non-recursive one is  cumbersome at best.</p>
-<p>列表遍历的问题是另一回事。在这种情况下，递归解决方案非常优雅，而非递归解决方案则很麻烦。</p>
-<p>For the next problem, using recursion is arguably silly.</p>
-<p>对于下一个问题，使用递归可以说是愚蠢的。</p>
-<p>A <strong>palindrome</strong> is a word that reads the same backward as it does forward. Examples include the following words:</p>
-<p><strong>回文</strong>是一个单词，它从前往后读和从后往前读是一样的。回文的示例包括以下单词：</p>
-<ul>
-<li>Racecar</li>
-</ul>
-<p>-赛车</p>
-<ul>
-<li>Level</li>
-</ul>
-<p>-水平</p>
-<ul>
-<li>Kayak</li>
-</ul>
-<p>-皮划艇</p>
-<ul>
-<li>Reviver</li>
-</ul>
-<p>-复活剂</p>
-<ul>
-<li>Civic</li>
-</ul>
-<p>-公民</p>
-<p>If asked to devise an algorithm to determine whether a string is  palindromic, you would probably come up with something like “Reverse the string and see if it’s the same as the original.” You can’t get much  plainer than that.</p>
-<p>如果让你设计一个算法来判断一个字符串是否是回文的，你可能会想出类似于“反转字符串，看看它是否和原来一样”这样的方案。没有比这更简单的了。</p>
-<p>Even more helpfully, Python’s <code>[::-1]</code> slicing syntax for reversing a string provides a convenient way to code it:</p>
-<p>更有帮助的是，Python用于反转字符串的’[::-1]’切片语法提供了一种便捷的编码方式:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def is_palindrome(word):</span><br><span class="line">...     &quot;&quot;&quot;Return True if word is a palindrome, False if not.&quot;&quot;&quot;</span><br><span class="line">...     return word &#x3D;&#x3D; word[::-1]</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;foo&quot;)</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;racecar&quot;)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;troglodyte&quot;)</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;civic&quot;)</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<h2 id="检测回文"><a href="#检测回文" class="headerlink" title="检测回文"></a>检测回文</h2><p>选择是否使用递归来解决问题在很大程度上取决于问题的性质。例如，阶乘自然可用递归实现，但用 for 循环也相当简单。这二者选谁，完全由开发者自己决定。</p>
+<p>对于前面的遍历列表则是另一回事，对于该问题，显然递归非常优雅，而非递归解决方案则很麻烦。</p>
+<p>下面再举一个检测回文的示例，如果使用递归解决这个问题，可以说是愚蠢的。</p>
+<p><strong>回文</strong>是一个单词，它从前往后读和从后往前读是一样的，例如：Racecar、Level、Kayak、Reviver、Civic</p>
+<p>如果让你设计一个算法来判断一个字符串是否是回文的，你可能会想出类似于“反转字符串，看看它是否和原来一样”这样的方案——没有比这更简单的了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">is_palindrome</span><span class="params">(word)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="string">"""Return True if word is a palindrome, False if not."""</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> word == word[::<span class="number">-1</span>]</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"foo"</span>)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"racecar"</span>)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"troglodyte"</span>)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"civic"</span>)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
 
-<p>This is clear and concise. There’s hardly any need to look for an  alternative. But just for fun, consider this recursive definition of a  palindrome:</p>
-<p>这种方式又清楚又简洁。几乎不需要寻找替代方式。但为了好玩，请考虑一下回文的递归定义：</p>
+<p>这种方式又清楚又简洁。几乎不需要寻找替代方式。但为了好玩，请考虑一下用递归实现回文检测：</p>
 <ul>
-<li><strong>Base cases:</strong> An empty string and a string consisting of a single character are inherently palindromic.</li>
-</ul>
-<p>-<strong>基本案例：</strong>空字符串和由单个字符组成的字符串本质上是回文的。</p>
-<ul>
-<li><p>Reductive recursion:</p>
-<p>-还原递归：</p>
-<p>A string of length two or greater is a palindrome if it satisfies both of these criteria:</p>
+<li><p>终止条件：空字符串以及单个字符，都可以视为回文。</p>
+</li>
+<li><p>递归：</p>
 <p>长度大于或等于2个字符的字符串，如果同时满足以下两个条件，则为回文：</p>
 <ol>
-<li><p>The first and last characters are the same.</p>
-</li>
 <li><p>第一个字符和最后一个字符相同。</p>
-</li>
-<li><p>The substring between the first and last characters is a palindrome.</p>
 </li>
 <li><p>第一个字符和最后一个字符之间的子字符串是回文。</p>
 </li>
@@ -545,197 +384,119 @@
 </li>
 </ul>
 <p>Slicing is your friend here as well. For a string <code>word</code>, indexing and slicing give the following substrings:</p>
-<p>切片也是有帮助的。对于字符串“word”，索引和切片将给出以下子字符串：</p>
+<p>字符串的切片也是有帮助的。对于字符串 <code>&quot;word&quot;</code> ，索引和切片将给出以下子字符串：</p>
 <ul>
-<li><p>The first character is <code>word[0]</code>.</p>
-<p>-第一个字符是“word[0]”。</p>
+<li><p>第一个字符是 <code>word[0]</code> 。</p>
 </li>
-<li><p>The last character is <code>word[-1]</code>.</p>
-<p>-最后一个字符是“word[-1]”。</p>
+<li><p>最后一个字符是 <code>word[-1]</code> 。</p>
 </li>
-<li><p>The substring between the first and last characters is <code>word[1:-1]</code>.</p>
+<li><p>第一个和最后一个字符之间的子字符串是 <code>word[1:-1]</code> 。</p>
 </li>
 </ul>
-<p>-第一个和最后一个字符之间的子字符串是“word[1:-1]”。</p>
-<p>So you can define <code>is_palindrome()</code> recursively like this:</p>
-<p>所以你可以像这样递归地定义’ is_palindrome() ‘:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def is_palindrome(word):</span><br><span class="line">...     &quot;&quot;&quot;Return True if word is a palindrome, False if not.&quot;&quot;&quot;</span><br><span class="line">...     if len(word) &lt;&#x3D; 1:</span><br><span class="line">...         return True</span><br><span class="line">...     else:</span><br><span class="line">...         return word[0] &#x3D;&#x3D; word[-1] and is_palindrome(word[1:-1])</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; # Base cases</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;&quot;)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;a&quot;)</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; # Recursive cases</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;foo&quot;)</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;racecar&quot;)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;troglodyte&quot;)</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; is_palindrome(&quot;civic&quot;)</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<p>所以可以像下面这样用递归定义函数 <code>is_palindrome()</code> 来判断一个字符串是否为回文。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">is_palindrome</span><span class="params">(word)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="string">"""Return True if word is a palindrome, False if not."""</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">if</span> len(word) &lt;= <span class="number">1</span>:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> word[<span class="number">0</span>] == word[<span class="number">-1</span>] <span class="keyword">and</span> is_palindrome(word[<span class="number">1</span>:<span class="number">-1</span>])</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Base cases</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">""</span>)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"a"</span>)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Recursive cases</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"foo"</span>)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"racecar"</span>)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"troglodyte"</span>)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>is_palindrome(<span class="string">"civic"</span>)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
 
-<p>It’s an interesting exercise to think recursively, even when it isn’t especially necessary.</p>
-<p>递归思考是一个有趣的练习，尽管它有时候不是很有必要。</p>
-<h2 id="Sort-With-Quicksort"><a href="#Sort-With-Quicksort" class="headerlink" title="Sort With Quicksort"></a>Sort With Quicksort</h2><p>使用Quicksort排序</p>
-<p>The final example presented, like the nested list traversal, is a  good example of a problem that very naturally suggests a recursive  approach. The <a href="https://realpython.com/sorting-algorithms-python/#the-quicksort-algorithm-in-python" target="_blank" rel="noopener">Quicksort algorithm</a> is an efficient sorting algorithm developed by British computer scientist Tony Hoare in 1959.</p>
-<p>最后一个示例就像嵌套列表的遍历一样，是一个很好的问题示例，它很自然地建议使用递归方法。Quicksort 算法是英国计算机科学家托尼·浩（tonyhoare）于1959年开发的一种高效排序算法。</p>
-<p>Quicksort is a <a href="https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm" target="_blank" rel="noopener">divide-and-conquer algorithm</a>. Suppose you have a list of objects to sort. You start by choosing an item in the list, called the <strong>pivot</strong> item. This can be any item in the list. You then <strong>partition</strong> the list into two sublists based on the pivot item and recursively sort the sublists.</p>
-<p>Quicksort 是一种<a href="https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm" target="_blank" rel="noopener">分而治之算法</a>. 假设你有一个要排序的对象列表。首先从列表中选择一个数据透视项。它可以是列表中的任意项。然后，基于数据透视项<strong>将</strong>列表划分为两个子列表，并对子列表进行递归排序。</p>
-<p>The steps of the algorithm are as follows:</p>
-<p>算法步骤如下：</p>
+<p>思考递归问题是一个有趣的练习，尽管它有时候不是很有必要。</p>
+<h2 id="Quicksort-排序"><a href="#Quicksort-排序" class="headerlink" title="Quicksort 排序"></a>Quicksort 排序</h2><p>最后一个示例就像嵌套列表的遍历一样，是一个很好的问题示例，它也很自然地使用递归方法。Quicksort 算法是英国计算机科学家 Tony Hoare 于1959年开发的一种高效排序算法。</p>
+<p>Quicksort 是一种<a href="https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm" target="_blank" rel="noopener">分而治之算法</a>。假设有一个待排序的列表。首先从列表中选出一项，称之为<strong>基准</strong>（pivot），它可以是列表中的任意一项。然后，根据基准，将列表<strong>分区</strong>（partition），划分为比基准小和比基准大两部分，即得到了两个子列表。再对子列表递归排序。具体算法步骤如下：</p>
 <ul>
-<li>Choose the pivot item.</li>
-</ul>
-<p>-选择数据透视项。</p>
-<ul>
-<li><p>Partition the list into two sublists:</p>
-<p>-将列表划分为两个子列表：</p>
+<li><p>选择基准。</p>
+</li>
+<li><p>根据基准，将列表划分为两个子列表：</p>
 <ol>
-<li><p>Those items that are less than the pivot item</p>
+<li><p>子列表1：小于基准的项组成</p>
 </li>
-<li><p>小于透视项的项</p>
-</li>
-<li><p>Those items that are greater than the pivot item</p>
-</li>
-<li><p>大于透视项的项</p>
+<li><p>子列表2：大于基准的项组成</p>
 </li>
 </ol>
 </li>
-<li><p>Quicksort the sublists recursively.</p>
+<li><p>以递归方法，对子列表进行实施 Quicksort 排序。</p>
 </li>
 </ul>
-<p>-递归地对子列表进行快速排序。</p>
-<p>Each partitioning produces smaller sublists, so the algorithm is  reductive. The base cases occur when the sublists are either empty or  have one element, as these are inherently sorted.</p>
-<p>每次划分都会产生更小的子列表，所以该算法是简化法。基本案例发生在子列表为空或只有一个元素时，因为这些元素本身是有序的。</p>
-<h3 id="Choosing-the-Pivot-Item"><a href="#Choosing-the-Pivot-Item" class="headerlink" title="Choosing the Pivot Item"></a>Choosing the Pivot Item</h3><p>选择数据透视项</p>
-<p>The Quicksort algorithm will work no matter what item in the list is  the pivot item. But some choices are better than others. Remember that  when partitioning, two sublists that are created: one with items that  are less than the pivot item and one with items that are greater than  the pivot item. Ideally, the two sublists are of roughly equal length.</p>
-<p>无论列表中的哪一项是透视项，Quicksort 算法都会起作用。但有些选择比另一些要好。请记住，在分区时，将创建两个子列表：一个子列表中的项小于透视项，另一个子列表中的项大于透视项。理想情况下，两个子列表的长度大致相等。</p>
-<p>Imagine that your initial list to sort contains eight items. If each  partitioning results in sublists of roughly equal length, then you can  reach the base cases in three steps:</p>
-<p>假设要排序的初始列表包含八项。如果每个分区都会产生长度大致相等的子列表，则可以通过三个步骤达到基本案例：</p>
-<p><a href="https://files.realpython.com/media/jsturtz-optimal-pivot.93e52ac803a8.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-optimal-pivot.93e52ac803a8.png" alt="Optimal pivot item"></a>Optimal Partitioning, Eight-Item List</p>
-<p>最佳分区，八项列表</p>
-<p>At the other end of the spectrum, if your choice of pivot item is  especially unlucky, each partition results in one sublist that contains  all the original items except the pivot item and another sublist that is empty. In that case, it takes seven steps to reduce the list to the  base cases:</p>
-<p>另一方面，如果选择的透视项特别不走运，则每个分区产生的两个子列表中，其中一个子列表包含除透视项以外的所有原始项，另一个子列表为空。在这种情况下，需要七个步骤才能将列表简化为基本案例：</p>
-<p><a href="https://files.realpython.com/media/jsturtz-suboptimal-pivot.546d83e040c3.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-suboptimal-pivot.546d83e040c3.png" alt="Suboptimal pivot item"></a>Suboptimal Partitioning, Eight-Item List</p>
-<p>次优分区，八项列表</p>
-<p>The Quicksort algorithm will be more efficient in the first case. But you’d need to know something in advance about the nature of the data  you’re sorting in order to systematically choose optimal pivot items. In any case, there isn’t any one choice that will be the best for all  cases. So if you’re writing a Quicksort function to handle the general  case, the choice of pivot item is somewhat arbitrary.</p>
-<p>在第一种情况下，Quicksort 算法将更有效。但是，为了系统地选择最佳的数据透视项，你需要提前了解正在排序的数据的性质。在任何情况下，没有任何一个选择对所有情况都是最好的。因此，如果你要编写一个Quicksort函数来处理一般情况，那么透视项的选择就有点随意了。</p>
-<p>The first item in the list is a common choice, as is the last item.  These will work fine if the data in the list is fairly randomly  distributed. However, if the data is already sorted, or even nearly so,  then these will result in suboptimal partitioning like that shown above. To avoid this, some Quicksort algorithms choose the middle item in the  list as the pivot item.</p>
-<p>列表中的第一项与最后一项都是常见的选择。如果列表中的数据是随机分布的，那么这些方法就会很有效。然而，如果数据已经被排序，或者几乎被排序了，那么这些方法将导致像上面所示的次优分区。为了避免这种情况，一些Quicksort 算法选择列表中的中间项作为透视项。</p>
-<p>Another option is to find the median of the first, last, and middle  items in the list and use that as the pivot item. This is the strategy  used in the sample code below.</p>
-<p>另一个做法是找到列表中第一项、最后一项和中间项的中位数，并将其用作透视项。这是下面的示例代码中所用的策略。</p>
-<h3 id="Implementing-the-Partitioning"><a href="#Implementing-the-Partitioning" class="headerlink" title="Implementing the Partitioning"></a>Implementing the Partitioning</h3><p>实现分区</p>
-<p>Once you’ve chosen the pivot item, the next step is to partition the  list. Again, the goal is to create two sublists, one containing the  items that are less than the pivot item and the other containing those  that are greater.</p>
-<p>一旦选择了透视项，下一步就是对列表进行分区。同样，目标是创建两个子列表，一个子列表包含小于透视项的项，另一个子列表包含大于透视项的项。</p>
-<p>You could accomplish this directly in place. In other words, by  swapping items, you could shuffle the items in the list around until the pivot item is in the middle, all the lesser items are to its left, and  all the greater items are to its right. Then, when you Quicksort the  sublists recursively, you’d pass the slices of the list to the left and  right of the pivot item.</p>
-<p>你可以直接在原有列表上完成。换言之，通过对项进行交换，你可以将列表中的项打乱次序，直到透视项位于中间，所有较小的项位于其左侧，所有较大的项位于其右侧。然后，当你递归地对子列表进行快速排序时，就会将列表的切片传递到透视项的左侧和右侧。</p>
-<p>Alternately, you can use Python’s list manipulation capability to  create new lists instead of operating on the original list in place.  This is the approach taken in the code below. The algorithm is as  follows:</p>
-<p>或者，你可以使用Python的列表操作功能来创建新的列表，而不是在原来的列表上进行操作。这是下面代码中采用的方法。算法如下：</p>
-<ul>
-<li>Choose the pivot item using the median-of-three method described above.</li>
-</ul>
-<p>-采用上述的对三个项取中位数（中值）法选择透视项。</p>
-<ul>
-<li><p>Using the pivot item, create three sublists:</p>
-<p>-使用透视项创建三个子列表：</p>
-<ol>
-<li>The items in the original list that are less than the pivot item</li>
-</ol>
-<p>1.原始列表中小于透视项的项</p>
-<ol start="2">
-<li>The pivot item itself</li>
-</ol>
-<p>2.透视项本身</p>
-<ol start="3">
-<li>The items in the original list that are greater than the pivot item</li>
-</ol>
-<p>3.原始列表中大于透视项的项</p>
-</li>
-<li><p>Recursively Quicksort lists 1 and 3.</p>
-<p>-对列表1和3进行递归式快速排序。</p>
-</li>
-<li><p>Concatenate all three lists back together.</p>
-</li>
-</ul>
-<p>-将所有三个列表重新连接在一起。</p>
-<p>Note that this involves creating a third sublist that contains the  pivot item itself. One advantage to this approach is that it smoothly  handles the case where the pivot item appears in the list more than  once. In that case, list 2 will have more than one element.</p>
-<p>请注意，这涉及到创建包含透视项本身的第三个子列表。这种方法的一个优点是，它可以顺利地处理数据透视项多次出现在列表中的情况。在这种情况下，列表2将有多个元素。</p>
-<h3 id="Using-the-Quicksort-Implementation"><a href="#Using-the-Quicksort-Implementation" class="headerlink" title="Using the Quicksort Implementation"></a>Using the Quicksort Implementation</h3><p>使用Quicksort实现</p>
-<p>Now that the groundwork is in place, you are ready to move on to the Quicksort algorithm. Here’s the Python code:</p>
-<p>现在基础工作已经就绪，你可以继续使用Quicksort算法了。下面是Python代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import statistics</span><br><span class="line"></span><br><span class="line">def quicksort(numbers):</span><br><span class="line">    if len(numbers) &lt;&#x3D; 1:</span><br><span class="line">        return numbers</span><br><span class="line">    else:</span><br><span class="line">        pivot &#x3D; statistics.median(</span><br><span class="line">            [</span><br><span class="line">                numbers[0],</span><br><span class="line">                numbers[len(numbers) &#x2F;&#x2F; 2],</span><br><span class="line">                numbers[-1]</span><br><span class="line">            ]</span><br><span class="line">        )</span><br><span class="line">        items_less, pivot_items, items_greater &#x3D; (</span><br><span class="line">            [n for n in numbers if n &lt; pivot],</span><br><span class="line">            [n for n in numbers if n &#x3D;&#x3D; pivot],</span><br><span class="line">            [n for n in numbers if n &gt; pivot]</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        return (</span><br><span class="line">            quicksort(items_less) +</span><br><span class="line">            pivot_items +</span><br><span class="line">            quicksort(items_greater)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+<p>每次分区都会产生更小的子列表，所以该算法是简化法。基本时间发生在子列表为空或只有一个元素时，因为这些元素本身是有序的。</p>
+<h3 id="选择基准"><a href="#选择基准" class="headerlink" title="选择基准"></a>选择基准</h3><p>无论以列表中的哪一项为基准，Quicksort 算法都能执行，但有些选择比另一些要好。请记住，在分区时，会创建两个子列表：一个子列表中的项小于基准，另一个子列表中的项大于基准。理想情况下，两个子列表的长度大致相等。</p>
+<p>假设要排序的初始列表包含八项。如果每个分区都会产生长度大致相等的子列表，则可以通过三个步骤达到终止条件（如下图所示）。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-7/1630996136433-pivot.png" alt=""></p>
+<center>最优分区示意图</center>
 
-<p>This is what each section of <code>quicksort()</code> is doing:</p>
-<p>以下是对 quicksort() 的各部分所做的分析：</p>
+<p>另一方面，如果选择的基准特别不走运，则每个分区产生的两个子列表中，其中一个子列表包含基准以外的所有原始项，另一个子列表为空。在这种情况下，需要七个步骤才能将列表简化为终止条件：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-7/1630996437182-suboptimal.png" alt=""></p>
+<center>次优分区示意图</center>
+
+<p>在第一种情况下，Quicksort 算法将更有效。但是，为了从全局着手选择最佳基准项，需要提前了解用于排序的数据的特点。在任何情况下，没有任何一个选择对所有情况都是最好的。因此，如果要编写一个 Quicksort 函数来处理一般情况，那么基准的选择就有点随意了。</p>
+<p>如果列表中的数据是随机分布的，那么以第一项与最后一项为基准是常见的选择。然而，如果数据已经被排序，或者几乎被排序了，这种方法将导致像上面所示的次优分区。为了避免这种情况，一些 Quicksort 算法选择列表中的中间项作为基准。</p>
+<p>另一个做法是找到列表中第一项、最后一项和中间项的中位数，并将其用作基准，这是下面的示例代码中所用的策略。</p>
+<h3 id="实现分区"><a href="#实现分区" class="headerlink" title="实现分区"></a>实现分区</h3><p>一旦选择了基准，下一步就是对列表进行分区。同样，目标是创建两个子列表，一个子列表包含小于透视项的项，另一个子列表包含大于透视项的项。</p>
+<p>你可以直接在原有列表上完成。换言之，通过对列表成员项进行交换，打乱列表中的项的次序，直到基准项位于中间，所有小于它的项位于其左侧，所有大于它的项位于其右侧。然后，运用递归算法对子列表进行 Quicksort 排序，就会将列表的切片传递到基准项的左侧和右侧。</p>
+<p>或者，你可以使用 Python 的列表的方法来创建新的列表，而不是在原来的列表上进行操作。这是下面代码中采用的方法。算法如下：</p>
 <ul>
-<li><strong>Line 4:</strong> The base cases where the list is either empty or has only a single element</li>
+<li><p>以第一项、最后一项和中间项的中位数（中值）作为所选定的基准。</p>
+</li>
+<li><p>通过基准创建三个子列表：</p>
+<ol>
+<li>子列表1的成员是原始列表中小于基准的项</li>
+<li>子列表2是由基准项本身构成</li>
+<li>子列表3的成员是原始列表中大于基准的项</li>
+</ol>
+</li>
+<li><p>对子列表1和子列表3分布进行递归式 Quicksort 。</p>
+</li>
+<li><p>将所有三个列表重新连接在一起。</p>
+</li>
 </ul>
-<p>-<strong>第4行：</strong>列表为空或只有一个元素的基本案例</p>
+<p>请注意，这里创建了一个仅含有基准的子列表，这种方法的一个优点是，它可以顺利地处理基准项多次出现在列表中的情况。在这种情况下，子列表2将有多个元素。</p>
+<h3 id="实现-Quicksort"><a href="#实现-Quicksort" class="headerlink" title="实现 Quicksort"></a>实现 Quicksort</h3><p>现在基础工作已经就绪，就可以编写 Quicksort 算法的代码了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> statistics</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quicksort</span><span class="params">(numbers)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(numbers) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> numbers</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pivot = statistics.median(</span><br><span class="line">            [</span><br><span class="line">                numbers[<span class="number">0</span>],</span><br><span class="line">                numbers[len(numbers) // <span class="number">2</span>],</span><br><span class="line">                numbers[<span class="number">-1</span>]</span><br><span class="line">            ]</span><br><span class="line">        )</span><br><span class="line">        items_less, pivot_items, items_greater = (</span><br><span class="line">            [n <span class="keyword">for</span> n <span class="keyword">in</span> numbers <span class="keyword">if</span> n &lt; pivot],</span><br><span class="line">            [n <span class="keyword">for</span> n <span class="keyword">in</span> numbers <span class="keyword">if</span> n == pivot],</span><br><span class="line">            [n <span class="keyword">for</span> n <span class="keyword">in</span> numbers <span class="keyword">if</span> n &gt; pivot]</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            quicksort(items_less) +</span><br><span class="line">            pivot_items +</span><br><span class="line">            quicksort(items_greater)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<p>以下对 <code>quicksort()</code> 做必要的解释：</p>
 <ul>
-<li><strong>Lines 7 to 13:</strong> Calculation of the pivot item by the median-of-three method</li>
+<li><p><strong>第4行：</strong>列表为空或只有一个元素的终止条件</p>
+</li>
+<li><p><strong>第7行至第13行：</strong>用三个数的中位数（中值）计算基准项</p>
+</li>
+<li><p><strong>第14行到第18行：</strong>创建表示三个分区的列表</p>
+</li>
+<li><p><strong>第20至24行：</strong>分区列表的递归排序和重新组合</p>
+</li>
 </ul>
-<p>-<strong>第7行至第13行：</strong>采用三数取中法（中值）计算数据透视项</p>
-<ul>
-<li><strong>Lines 14 to 18:</strong> Creation of the three partition lists</li>
-</ul>
-<p>-<strong>第14行到第18行：</strong>创建三个分区列表</p>
-<ul>
-<li><strong>Lines 20 to 24:</strong> Recursive sorting and reassembly of the partition lists</li>
-</ul>
-<p>-<strong>第20至24行：</strong>分区列表的递归排序和重新组合</p>
-<p><strong>Note:</strong> This example has the advantage of being  succinct and relatively readable. However, it isn’t the most efficient  implementation. In particular, the creation of the partition lists on  lines 14 to 18 involves iterating through the list three separate times, which isn’t optimal from the standpoint of execution time.</p>
-<p><strong>注：</strong>这个例子的优点是简洁易懂。然而，它并不是最有效的实现。特别是：在第14行到第18行上创建分区列表，这需要对列表进行三次独立的迭代。从执行时间的角度来看，这不是最佳方案。</p>
+<p><strong>注：</strong>这个例子的优点是简洁易懂。然而，它并不是最有效的实现。特别是：在第14行到第18行创建分区的部分，需要对列表进行三次独立的循环。从执行时间的角度来看，这不是最佳方案。</p>
 <p>Here are some examples of <code>quicksort()</code> in action:</p>
-<p>下面是<code>quicksort()</code>的一些示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; # Base cases</span><br><span class="line">&gt;&gt;&gt; quicksort([])</span><br><span class="line">[]</span><br><span class="line">&gt;&gt;&gt; quicksort([42])</span><br><span class="line">[42]</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; # Recursive cases</span><br><span class="line">&gt;&gt;&gt; quicksort([5, 2, 6, 3])</span><br><span class="line">[2, 3, 5, 6]</span><br><span class="line">&gt;&gt;&gt; quicksort([10, -3, 21, 6, -8])</span><br><span class="line">[-8, -3, 6, 10, 21]</span><br></pre></td></tr></table></figure>
+<p>下面是调用 <code>quicksort()</code> 函数的示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Base cases</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quicksort([])</span><br><span class="line">[]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quicksort([<span class="number">42</span>])</span><br><span class="line">[<span class="number">42</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Recursive cases</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quicksort([<span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>])</span><br><span class="line">[<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quicksort([<span class="number">10</span>, <span class="number">-3</span>, <span class="number">21</span>, <span class="number">6</span>, <span class="number">-8</span>])</span><br><span class="line">[<span class="number">-8</span>, <span class="number">-3</span>, <span class="number">6</span>, <span class="number">10</span>, <span class="number">21</span>]</span><br></pre></td></tr></table></figure>
 
-<p>For testing purposes, you can define a short function that generates a list of random numbers between <code>1</code> and <code>100</code>:</p>
-<p>为了便于测试，你可以定义一个简短的函数来生成一个在’ 1 ‘和’ 100 ‘之间的随机数字列表:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line"></span><br><span class="line">def get_random_numbers(length, minimum&#x3D;1, maximum&#x3D;100):</span><br><span class="line">    numbers &#x3D; []</span><br><span class="line">    for _ in range(length):</span><br><span class="line">        numbers.append(random.randint(minimum, maximum))</span><br><span class="line"></span><br><span class="line">    return numbers</span><br></pre></td></tr></table></figure>
+<p>为了便于测试，你可以定义一个简短的函数来生成一个由 <code>1</code> 到 <code>100</code> 的随机数字列表:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_random_numbers</span><span class="params">(length, minimum=<span class="number">1</span>, maximum=<span class="number">100</span>)</span>:</span></span><br><span class="line">    numbers = []</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(length):</span><br><span class="line">        numbers.append(random.randint(minimum, maximum))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> numbers</span><br></pre></td></tr></table></figure>
 
-<p>Now you can use <code>get_random_numbers()</code> to test <code>quicksort()</code>:</p>
-<p>现在你可以使用’ get_random_numbers() ‘来测试’ quicksort() ‘:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; numbers &#x3D; get_random_numbers(20)</span><br><span class="line">&gt;&gt;&gt; numbers</span><br><span class="line">[24, 4, 67, 71, 84, 63, 100, 94, 53, 64, 19, 89, 48, 7, 31, 3, 32, 76, 91, 78]</span><br><span class="line">&gt;&gt;&gt; quicksort(numbers)</span><br><span class="line">[3, 4, 7, 19, 24, 31, 32, 48, 53, 63, 64, 67, 71, 76, 78, 84, 89, 91, 94, 100]</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; numbers &#x3D; get_random_numbers(15, -50, 50)</span><br><span class="line">&gt;&gt;&gt; numbers</span><br><span class="line">[-2, 14, 48, 42, -48, 38, 44, -25, 14, -14, 41, -30, -35, 36, -5]</span><br><span class="line">&gt;&gt;&gt; quicksort(numbers)</span><br><span class="line">[-48, -35, -30, -25, -14, -5, -2, 14, 14, 36, 38, 41, 42, 44, 48]</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; quicksort(get_random_numbers(10, maximum&#x3D;500))</span><br><span class="line">[49, 94, 99, 124, 235, 287, 292, 333, 455, 464]</span><br><span class="line">&gt;&gt;&gt; quicksort(get_random_numbers(10, 1000, 2000))</span><br><span class="line">[1038, 1321, 1530, 1630, 1835, 1873, 1900, 1931, 1936, 1943]</span><br></pre></td></tr></table></figure>
+<p>现在可以使用 <code>get_random_numbers()</code> 函数生成的结果测试排序函数 <code>quicksort()</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = get_random_numbers(<span class="number">20</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers</span><br><span class="line">[<span class="number">24</span>, <span class="number">4</span>, <span class="number">67</span>, <span class="number">71</span>, <span class="number">84</span>, <span class="number">63</span>, <span class="number">100</span>, <span class="number">94</span>, <span class="number">53</span>, <span class="number">64</span>, <span class="number">19</span>, <span class="number">89</span>, <span class="number">48</span>, <span class="number">7</span>, <span class="number">31</span>, <span class="number">3</span>, <span class="number">32</span>, <span class="number">76</span>, <span class="number">91</span>, <span class="number">78</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quicksort(numbers)</span><br><span class="line">[<span class="number">3</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">19</span>, <span class="number">24</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">48</span>, <span class="number">53</span>, <span class="number">63</span>, <span class="number">64</span>, <span class="number">67</span>, <span class="number">71</span>, <span class="number">76</span>, <span class="number">78</span>, <span class="number">84</span>, <span class="number">89</span>, <span class="number">91</span>, <span class="number">94</span>, <span class="number">100</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = get_random_numbers(<span class="number">15</span>, <span class="number">-50</span>, <span class="number">50</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers</span><br><span class="line">[<span class="number">-2</span>, <span class="number">14</span>, <span class="number">48</span>, <span class="number">42</span>, <span class="number">-48</span>, <span class="number">38</span>, <span class="number">44</span>, <span class="number">-25</span>, <span class="number">14</span>, <span class="number">-14</span>, <span class="number">41</span>, <span class="number">-30</span>, <span class="number">-35</span>, <span class="number">36</span>, <span class="number">-5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quicksort(numbers)</span><br><span class="line">[<span class="number">-48</span>, <span class="number">-35</span>, <span class="number">-30</span>, <span class="number">-25</span>, <span class="number">-14</span>, <span class="number">-5</span>, <span class="number">-2</span>, <span class="number">14</span>, <span class="number">14</span>, <span class="number">36</span>, <span class="number">38</span>, <span class="number">41</span>, <span class="number">42</span>, <span class="number">44</span>, <span class="number">48</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quicksort(get_random_numbers(<span class="number">10</span>, maximum=<span class="number">500</span>))</span><br><span class="line">[<span class="number">49</span>, <span class="number">94</span>, <span class="number">99</span>, <span class="number">124</span>, <span class="number">235</span>, <span class="number">287</span>, <span class="number">292</span>, <span class="number">333</span>, <span class="number">455</span>, <span class="number">464</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quicksort(get_random_numbers(<span class="number">10</span>, <span class="number">1000</span>, <span class="number">2000</span>))</span><br><span class="line">[<span class="number">1038</span>, <span class="number">1321</span>, <span class="number">1530</span>, <span class="number">1630</span>, <span class="number">1835</span>, <span class="number">1873</span>, <span class="number">1900</span>, <span class="number">1931</span>, <span class="number">1936</span>, <span class="number">1943</span>]</span><br></pre></td></tr></table></figure>
 
-<p>To further understand how <code>quicksort()</code> works, see the diagram below. This shows the recursion sequence when sorting a twelve-element list:</p>
-<p>要进一步理解 quicksort() 的工作原理，请参见下图。这里显示了对包含12个元素的列表进行排序时的递归序列:</p>
-<p><a href="https://files.realpython.com/media/jsturtz-qsort.8fac5b768da0.png" target="_blank" rel="noopener"><img src="https://files.realpython.com/media/jsturtz-qsort.8fac5b768da0.png" alt="Quicksort algorithm"></a>Quicksort Algorithm, Twelve-Element List</p>
-<p>Quicksort算法，12元素列表</p>
-<p>In the first step, the first, middle, and last list values are <code>31</code>, <code>92</code>, and <code>28</code>, respectively. The median is <code>31</code>, so that becomes the pivot item. The first partition then consists of the following sublists:</p>
-<p>在第一步中，第一个列表、中间和最后一个列表的值分别是’ 31 ‘、’ 92 ‘和’ 28 ‘。中值是31，所以它是数据透视项。第一个分区由以下子列表组成:</p>
+<p>要进一步理解 <code>quicksort()</code> 的工作原理，请参见下图。这里显示了对含有 12 个元素的列表进行排序时的递归过程。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-7/1631011983139-qsort.png" alt=""></p>
+<center>Quicksort 算法原理解析</center>
+
+<p>如上图所示，在原始列表中，第一个成员是 <code>31</code> 、中间的是 <code>92</code>、最后一个是 <code>28</code> , 这三个数值的中位数（中值）是 <code>31</code> ，故以它为基准。第一个分区由以下子列表组成:</p>
 <table>
 <thead>
 <tr>
-<th>Sublist</th>
-<th>Items</th>
+<th>子列表</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
 <td><code>[18, 3, 18, 11, 28]</code></td>
-<td>The items less than the pivot item</td>
+<td>小于基准的成员</td>
 </tr>
 <tr>
 <td><code>[31]</code></td>
-<td>The pivot item itself</td>
+<td>基准本身</td>
 </tr>
 <tr>
 <td><code>[72, 79, 92, 44, 56, 41]</code></td>
-<td>The items greater than the pivot item</td>
+<td>大于基准的成员</td>
 </tr>
 </tbody></table>
-<p>Each sublist is subsequently partitioned recursively in the same  manner until all the sublists either contain a single element or are  empty. As the recursive calls return, the lists are reassembled in  sorted order. Note that in the second-to-last step on the left, the  pivot item <code>18</code> appears in the list twice, so the pivot item list has two elements.</p>
-<p>每个子列表随后以相同的方式递归式分区，直到所有子列表要么包含单个元素，要么为空。当递归调用返回时，列表将按排序的顺序重组。注意，在左边倒数第二个步骤中，数据透视项’ 18 ‘在列表中出现了两次，因此数据透视项列表有两个元素。</p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>结论</p>
-<p>That concludes your journey through <strong>recursion</strong>, a  programming technique in which a function calls itself. Recursion isn’t  by any means appropriate for every task. But some programming problems  virtually cry out for it. In those situations, it’s a great technique to have at your disposal.</p>
-<p>我们的<strong>递归</strong>之旅到此就要结束了，这一编程技术的核心就是：函数对自身的调用。递归并非对所有的任务都适用。但实际上有些编程问题迫切需要使用递归。在这种情况下，递归是一种很好用的技巧。</p>
-<p><strong>In this tutorial, you learned:</strong></p>
-<p>在本教程中，我们学习了:</p>
-<ul>
-<li>What it means for a function to call itself <strong>recursively</strong></li>
-</ul>
-<p>-函数递归式自我调用的意义</p>
-<ul>
-<li>How the <strong>design</strong> of Python functions supports recursion</li>
-</ul>
-<p>Python函数的设计如何支持递归</p>
-<ul>
-<li>What <strong>factors</strong> to consider when choosing whether or not to solve a problem recursively</li>
-</ul>
-<p>-当选择是否递归地解决问题时，应该考虑哪些因素</p>
-<ul>
-<li>How to <strong>implement</strong> a recursive function in Python</li>
-</ul>
-<p>如何在Python中<strong>实现</strong>递归函数</p>
-<p>You also saw several examples of recursive algorithms and compared them to corresponding non-recursive solutions.</p>
-<p>你还看到了几个递归算法的示例，并将它们与相应的非递归解决方案进行了比较。</p>
-<p>You should now be in a good position to recognize when recursion is  called for and be ready to use it confidently when it’s needed! If you  want to explore more about recursion in Python, then check out <a href="https://realpython.com/python-thinking-recursively/" target="_blank" rel="noopener">Thinking Recursively in Python</a>.</p>
+<p>每个子列表随后以相同的方式再实施递归，并获得分区，直到所有子列表要么包含单个成员，要么为空。当递归调用返回时，列表将按排序的结果重组。注意，在左边倒数第二步中，基准项 <code>18</code> 在列表中出现了两次，因此基准项的子列表有两个成员。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><strong>递归</strong>之旅到此就要结束了，递归的核心就是：函数对自身的调用。递归并非对所有的任务都适用，有些编程问题迫切需要使用递归，此时递归是一种很好用的技巧。</p>
 <p>你现在应该能够很好地认识到何时调用递归，并准备好在需要递归时自信地使用它了。 如果你想了解更多关于Python递归的知识，请查看<a href="https://realpython.com/python-thinking-recursively/" target="_blank" rel="noopener">Python递归思维</a>。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. <a href="https://realpython.com/python-recursion/" target="_blank" rel="noopener">https://realpython.com/python-recursion/</a></p>
 </section>
@@ -750,10 +511,17 @@
       <a class="nav-left" href="/2021/05/06/what-is-debugging/">
         <span class="nav-arrow">← </span>
         
-          what is debugging
+          调试及其重要性
         
       </a>
     
+    
+      <a class="nav-right" href="/2021/09/06/learn-program-right-way/">
+        
+          什么是学习编程的正确方法
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
@@ -798,7 +566,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#What-Is-Recursion"><span class="toc-nav-text">What Is Recursion?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是递归"><span class="toc-nav-text">什么是递归</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Why-Use-Recursion"><span class="toc-nav-text">Why Use Recursion?</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Recursion-in-Python"><span class="toc-nav-text">Recursion in Python</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Get-Started-Count-Down-to-Zero"><span class="toc-nav-text">Get Started: Count Down to Zero</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Calculate-Factorial"><span class="toc-nav-text">Calculate Factorial</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Define-a-Python-Factorial-Function"><span class="toc-nav-text">Define a Python Factorial Function</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Speed-Comparison-of-Factorial-Implementations"><span class="toc-nav-text">Speed Comparison of Factorial Implementations</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Traverse-a-Nested-List"><span class="toc-nav-text">Traverse a Nested List</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Traverse-a-Nested-List-Recursively"><span class="toc-nav-text">Traverse a Nested List Recursively</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Traverse-a-Nested-List-Non-Recursively"><span class="toc-nav-text">Traverse a Nested List Non-Recursively</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Detect-Palindromes"><span class="toc-nav-text">Detect Palindromes</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Sort-With-Quicksort"><span class="toc-nav-text">Sort With Quicksort</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Choosing-the-Pivot-Item"><span class="toc-nav-text">Choosing the Pivot Item</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Implementing-the-Partitioning"><span class="toc-nav-text">Implementing the Partitioning</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Using-the-Quicksort-Implementation"><span class="toc-nav-text">Using the Quicksort Implementation</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Conclusion"><span class="toc-nav-text">Conclusion</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是递归"><span class="toc-nav-text">什么是递归</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么使用递归？"><span class="toc-nav-text">为什么使用递归？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python-中的递归"><span class="toc-nav-text">Python 中的递归</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#开始：倒数至零"><span class="toc-nav-text">开始：倒数至零</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#计算阶乘"><span class="toc-nav-text">计算阶乘</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#编写阶乘函数"><span class="toc-nav-text">编写阶乘函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#比较不同实现方式的速度"><span class="toc-nav-text">比较不同实现方式的速度</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#遍历嵌套列表"><span class="toc-nav-text">遍历嵌套列表</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#用递归遍历嵌套列表"><span class="toc-nav-text">用递归遍历嵌套列表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#非递归遍历嵌套列表"><span class="toc-nav-text">非递归遍历嵌套列表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#检测回文"><span class="toc-nav-text">检测回文</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Quicksort-排序"><span class="toc-nav-text">Quicksort 排序</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#选择基准"><span class="toc-nav-text">选择基准</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#实现分区"><span class="toc-nav-text">实现分区</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#实现-Quicksort"><span class="toc-nav-text">实现 Quicksort</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
     
   </div>
 </aside>
