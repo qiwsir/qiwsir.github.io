@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用 Python 实现并行计算 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用 Python 实现并行计算</h2>
+    <p class="post-date">2021-09-15</p>
+    <section class="markdown-content"><p><strong>注</strong>：不少学过点编程语言的人，都会抱怨 Python 语言的程序执行速度慢，因此对学习和使用此语言嗤之以鼻。暂且不论程序的执行速度是否是开发者追求的唯一目标（有意对此进行争论的，请参阅人民邮电出版社出版的《编程的原则》一书），单就提升 Python 计算速度而言，并行计算是一个重要的选项。本文即为这方面的入门资料。</p>
+<hr>
+<p>Python 非常适合训练机器学习模型、进行数值计算、以及快速开发验证性的模型等。使用 Python ，所需要的辅助工具和也依赖项都很少。在执行这些任务时，你还希望尽可能多地使用底层硬件，以便获得更高的速度。Python 代码的并行化可以实现这一目标。但是，使用标准的 CPython 则无法充分使用底层硬件的计算能力，因为全局解释器锁（GIL）会阻止多个线程同时运行字节码。</p>
+<p>本文汇总了一些用 Python 代码实现并行计算的常见方法，包括：</p>
+<ul>
+<li><p>基于进程的并行计算</p>
+</li>
+<li><p>使用专用库实现并行计算</p>
+</li>
+<li><p>IPython 中的并行计算</p>
+</li>
+<li><p>用第三方库 Ray 实现并行计算 </p>
+</li>
+</ul>
+<p>对于每种实现并行计算的技术，本文都列出了一些优点和缺点，并展示了代码示例，以帮助你了解其使用情况。</p>
+<h2 id="并行化-Python-代码"><a href="#并行化-Python-代码" class="headerlink" title="并行化 Python 代码"></a>并行化 Python 代码</h2><p>有几种常见的方法可以让 Python 代码实现并行运行——可以说成“并行化”。 例如启动多个应用程序实例或启动某个脚本来并行执行程序。 若不需要在并行的进程之间交换数据时，这种方法非常有用。 否则，在进程之间共享数据会在聚合数据时显著降低运算性能。  </p>
+<p>在同一个进程中启动多个线程可以更有效地在作业之间共享数据。在这种情况下，基于线程的并行化可以将一些工作转移到后台。 然而，CPython 实现的全局解释器锁（GIL）阻止了字节码在多个线程中同时运行。  </p>
+<p>下面示例中的函数模拟了复杂计算（旨在模拟激活函数）。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> timebudget <span class="keyword">import</span> timebudget</span><br><span class="line"></span><br><span class="line">iterations_count = round(<span class="number">1e7</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">complex_operation</span><span class="params">(input_index)</span>:</span></span><br><span class="line">    print(<span class="string">"Complex operation. Input index: &#123;:2d&#125;"</span>.format(input_index))</span><br><span class="line">    [math.exp(i) * math.sinh(i) <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="number">1</span>] * iterations_count]</span><br></pre></td></tr></table></figure>
+
+<p>为了更直观地计算时间，将函数 <code>complex_operation()</code> 执行多次。将输入的数据划分为几个子集，然后对这些子集并行计算。 </p>
+<p>下面调用函数 <code>complex_operation()</code> 的代码中，将其多次执行（ <code>input</code> 的区间是 <code>0~10</code> ），并使用 <code>timebudget</code> 包来度量执行时间（ <code>pip install timebudget</code> ）  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@timebudget</span><br><span class="line">def run_complex_operations(operation, input):</span><br><span class="line">    for i in input:</span><br><span class="line">        operation(i)</span><br><span class="line"></span><br><span class="line">input &#x3D; range(10)</span><br><span class="line">run_complex_operations(complex_operation, input)</span><br></pre></td></tr></table></figure>
+
+<p>执行上述程序，输出结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Complex operation. Input index:  0</span><br><span class="line">Complex operation. Input index:  1</span><br><span class="line">Complex operation. Input index:  2</span><br><span class="line">Complex operation. Input index:  3</span><br><span class="line">Complex operation. Input index:  4</span><br><span class="line">Complex operation. Input index:  5</span><br><span class="line">Complex operation. Input index:  6</span><br><span class="line">Complex operation. Input index:  7</span><br><span class="line">Complex operation. Input index:  8</span><br><span class="line">Complex operation. Input index:  9</span><br><span class="line">run_complex_operations took 34.495sec</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，在本文中使用的笔记本电脑上执行这段代码大约花了 34.5 秒。这是没有采用任何并行化技术的执行结果，下面就让我们看看如何用并行化方式优化。</p>
+<h3 id="基于进程的并行计算"><a href="#基于进程的并行计算" class="headerlink" title="基于进程的并行计算"></a>基于进程的并行计算</h3><p>第一种方法是基于进程的并行。 使用这种方法，可以同时（即“并发”）启动多个进程，这样，它们就可以并发地执行计算。  </p>
+<p>从 Python 3开始，标准库中已经有了实现多进程的模块 <a href="https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing" target="_blank" rel="noopener">multiprocessing</a> ，用它可以非常便捷地实现多进程进程并发。multiprocessing 模块中的 Pool 类，能自动将输入划分为若干个子集，并将这些子集分配给多个进程。  </p>
+<p>在前述代码中，使用 Pool 启动 10 个进程，完整代码如下：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> timebudget <span class="keyword">import</span> timebudget</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</span><br><span class="line"></span><br><span class="line">iterations_count = round(<span class="number">1e7</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">complex_operation</span><span class="params">(input_index)</span>:</span></span><br><span class="line">    print(<span class="string">"Complex operation. Input index: &#123;:2d&#125;"</span>.format(input_index))</span><br><span class="line">    [math.exp(i) * math.sinh(i) <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="number">1</span>] * iterations_count]</span><br><span class="line"></span><br><span class="line"><span class="meta">@timebudget</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_complex_operations</span><span class="params">(operation, input, pool)</span>:</span></span><br><span class="line">    pool.map(operation, input)</span><br><span class="line">    <span class="comment"># for i in input:</span></span><br><span class="line">    <span class="comment">#     operation(i)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># input = range(10)</span></span><br><span class="line"><span class="comment"># run_complex_operations(complex_operation, input)</span></span><br><span class="line"></span><br><span class="line">processes_count = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    processes_pool = Pool(processes_count)</span><br><span class="line">    run_complex_operations(complex_operation, range(<span class="number">10</span>), processes_pool)</span><br></pre></td></tr></table></figure>
+
+<p>每个进程同时执行 <code>complex_operations()</code> 函数，因此，从理论上讲，这些代码可以将总的执行时间减少 10 倍。 然而，试试并非如此。以下是译者的执行结果（在翻译本文的时候，译者将所有代码重新执行，在文中显示的是译者的执行结果）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Complex operation. Input index:  0</span><br><span class="line">Complex operation. Input index:  1</span><br><span class="line">Complex operation. Input index:  2</span><br><span class="line">Complex operation. Input index:  3</span><br><span class="line">Complex operation. Input index:  4</span><br><span class="line">Complex operation. Input index:  5</span><br><span class="line">Complex operation. Input index:  6</span><br><span class="line">Complex operation. Input index:  7</span><br><span class="line">Complex operation. Input index:  8</span><br><span class="line">Complex operation. Input index:  9</span><br><span class="line">run_complex_operations took 10.645sec</span><br></pre></td></tr></table></figure>
+
+<p>与之前的运行结果比较，并没有将执行时间缩短 10 倍，其原因有多方面，首先要考察的是本地计算机中 CPU 的数量，它决定了最大进程数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'Number of CPUs in the system: &#123;&#125;'</span>.format(os.cpu_count()))</span><br><span class="line">Number of CPUs <span class="keyword">in</span> the system: <span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<p>用 <code>os</code> 模块中的 <code>os.cpu_count()</code> 函数能得到本地计算机中 CPU 的数量。</p>
+<p>另外一个导致上述程序没有如预想那样大幅度降低运算时间的原因，跟程序汇总的计算量较小也有关系。这是因为进程之间必须通过进程间通信机制实现通信，这些计算开销，对于比较小的计算任务而言，并行计算通常比 Python 编写的普通程序所执行的串行计算更慢。</p>
+<p>总结基于进程的并行计算的优劣：</p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>劣势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应用简单</td>
+<td>性能不如 Ray （关于 Ray ，见后续）</td>
+</tr>
+<tr>
+<td>摆脱了 GIL 限制</td>
+<td>因共享数据而降低性能</td>
+</tr>
+<tr>
+<td></td>
+<td>对结果的聚合需要手动实现</td>
+</tr>
+</tbody></table>
+<h3 id="利用专用库"><a href="#利用专用库" class="headerlink" title="利用专用库"></a>利用专用库</h3><p>NumPy 等专用于计算的库可以在许多计算上不受 GIL 的限制，于是就能用进程和其他技术实现并行计算。下面就介绍将 NumPy 用于并行计算的方式。</p>
+<p>为了比较使用 Numpy 与否在计算中的差异，需要编写如下函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">complex_operation_numpy</span><span class="params">(input_index)</span>:</span></span><br><span class="line">      print(<span class="string">f"Complex operation (numpy). Input index: <span class="subst">&#123;input_index:<span class="number">2</span>d&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">      data = np.ones(iterations_count)</span><br><span class="line">      np.exp(data) * np.sinh(data)</span><br></pre></td></tr></table></figure>
+
+<p>函数中使用 NumPy 的 <code>np.exp()</code> 和 <code>np.sinh()</code> 两个函数对输入数据执行计算。 然后，使用进程池执行 <code>complex_operation()</code> 和 <code>complex_operation_numpy()</code> 函数各十次，以比较它们的性能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">processes_count = <span class="number">10</span></span><br><span class="line">input = range(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    processes_pool = Pool(processes_count)</span><br><span class="line">    print(‘Without NumPy’)</span><br><span class="line">    run_complex_operations(complex_operation, input, processes_pool)</span><br><span class="line">    print(‘NumPy’)</span><br><span class="line">    run_complex_operations(complex_operation_numpy, input, processes_pool)</span><br></pre></td></tr></table></figure>
+
+<p>以下为执行结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Without Numpy</span><br><span class="line">Complex operation. Input index:  0</span><br><span class="line">Complex operation. Input index:  1</span><br><span class="line">Complex operation. Input index:  2</span><br><span class="line">Complex operation. Input index:  3</span><br><span class="line">Complex operation. Input index:  4</span><br><span class="line">Complex operation. Input index:  5</span><br><span class="line">Complex operation. Input index:  6</span><br><span class="line">Complex operation. Input index:  8</span><br><span class="line">Complex operation. Input index:  7</span><br><span class="line">Complex operation. Input index:  9</span><br><span class="line">run_complex_operations took 11.874sec</span><br><span class="line">Numpy</span><br><span class="line">Complex operation (numpy). Input index:  1</span><br><span class="line">Complex operation (numpy). Input index:  2</span><br><span class="line">Complex operation (numpy). Input index:  3</span><br><span class="line">Complex operation (numpy). Input index:  4</span><br><span class="line">Complex operation (numpy). Input index:  0</span><br><span class="line">Complex operation (numpy). Input index:  5</span><br><span class="line">Complex operation (numpy). Input index:  6</span><br><span class="line">Complex operation (numpy). Input index:  7</span><br><span class="line">Complex operation (numpy). Input index:  8</span><br><span class="line">Complex operation (numpy). Input index:  9</span><br><span class="line">run_complex_operations took 845.87ms</span><br></pre></td></tr></table></figure>
+
+<p>NumPy 使性能得到了大幅度提升，846ms vs 12s 。 之所 NumPy 能更快，其原因是其中的大多数处理都是向量化的。 向量化实际上使底层代码可以“并行化”，因为该操作可以一次计算多个数组元素，而不是一次遍历一个数组元素。 </p>
+<table>
+<thead>
+<tr>
+<th>NumPy 的优点</th>
+<th>NumPy 的劣势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>简单易用</td>
+<td>对结果的聚合需要手动实现</td>
+</tr>
+<tr>
+<td>多数 NumPy 计算不受 GIL 限制，但不是全部</td>
+<td>有限的数值计算</td>
+</tr>
+<tr>
+<td>支持向量化</td>
+<td>自定义算法比较麻烦</td>
+</tr>
+</tbody></table>
+<p>###使用 IPython 的并行计算包</p>
+<p>IPython 是数据科学研究者使用的一个工具，能够实现交互式操作，后来被更名为 Jupyter （参阅<a href="http://www.itdiffer.com/data.html" target="_blank" rel="noopener">《跟老齐学 Python：数据分析》</a>）。除了这些之外，它还提供了一个用于并行计算的包“IPython Parallel”，安装方法如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install ipyparallel</span><br></pre></td></tr></table></figure>
+
+<p>的官方网站：<a href="https://ipyparallel.readthedocs.io/en/latest/" target="_blank" rel="noopener">https://ipyparallel.readthedocs.io/en/latest/</a> 。</p>
+<p>IPython Parallel 有很多优点，其中最令人神往的可能是它允许以交互的方式开发、执行和监视并行应用程序。 </p>
+<p>一种使用 IPython Parallel 的方式是参考官方文档中的样式，在 Jupyter 中直接调用。</p>
+<p>下面演示的是另外一种方式。首先准备好代码，如下所示（文件名称 <code>parallelprocess.py</code> ）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> timebudget <span class="keyword">import</span> timebudget</span><br><span class="line"><span class="keyword">import</span> ipyparallel <span class="keyword">as</span> ipp</span><br><span class="line"></span><br><span class="line">iterations_count = round(<span class="number">1e7</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">complex_operation</span><span class="params">(input_index)</span>:</span></span><br><span class="line">    print(<span class="string">"Complex operation. Input index: &#123;:2d&#125;"</span>.format(input_index))</span><br><span class="line"></span><br><span class="line">    [math.exp(i) * math.sinh(i) <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="number">1</span>] * iterations_count]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">complex_operation_numpy</span><span class="params">(input_index)</span>:</span></span><br><span class="line">    print(<span class="string">"Complex operation (numpy). Input index: &#123;:2d&#125;"</span>.format(input_index))</span><br><span class="line"></span><br><span class="line">    data = np.ones(iterations_count)</span><br><span class="line">    np.exp(data) * np.sinh(data)</span><br><span class="line"></span><br><span class="line"><span class="meta">@timebudget</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_complex_operations</span><span class="params">(operation, input, pool)</span>:</span></span><br><span class="line">    pool.map(operation, input)</span><br><span class="line"></span><br><span class="line">client_ids = ipp.Client()</span><br><span class="line">pool = client_ids[:]</span><br><span class="line"></span><br><span class="line">input = range(<span class="number">10</span>)</span><br><span class="line">print(<span class="string">'Without NumPy'</span>)</span><br><span class="line">run_complex_operations(complex_operation, input, pool)</span><br><span class="line">print(<span class="string">'NumPy'</span>)</span><br><span class="line">run_complex_operations(complex_operation_numpy, input, pool)</span><br></pre></td></tr></table></figure>
+
+<p>然后打开一个终端，输入如下 ipcluster 命令（是在命令行状态）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">%</span><span class="bash"> ipcluster start -n 10</span></span><br><span class="line">2021-09-17 13:21:24.805 [IPClusterStart] Starting ipcluster with [daemonize=False]</span><br><span class="line">2021-09-17 13:21:25.898 [IPClusterStart] Starting 10 engines with &lt;class 'ipyparallel.cluster.launcher.LocalEngineSetLauncher'&gt;</span><br><span class="line">2021-09-17 13:21:56.945 [IPClusterStart] Engines appear to have started successfully</span><br></pre></td></tr></table></figure>
+
+<p>出现上述 <code>Engines appear to have started successfully</code> 提示之后，再打开一个终端，执行前述程序文件，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">%</span><span class="bash"> python parallelprocess.py</span></span><br><span class="line">Without NumPy</span><br><span class="line">run_complex_operations took 8.18ms</span><br><span class="line">NumPy</span><br><span class="line">run_complex_operations took 6.76ms</span><br></pre></td></tr></table></figure>
+
+<p>上述结果显示，对于使用和不使用 NumPy 两种情况下下，均用 IPython Parallel 进行并行处理，运算速度远远快于前述两种条件下的执行结果。</p>
+<table>
+<thead>
+<tr>
+<th>IPython 的有点</th>
+<th>IPython 的劣势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>支持并行和分布计算</td>
+<td>适用于较短的作业内容</td>
+</tr>
+<tr>
+<td>能用于 Jupyter notebook</td>
+<td>如果要执行过程的输出，需要额外的配置</td>
+</tr>
+<tr>
+<td>配置简单</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h3><p>Ray 是一款实现并行和分布计算的第三方库，它具有快速、简单的特点，可以轻松地扩展应用程序，并适用于最先进的机器学习库。 使用 Ray，还是像以往那样运行 Python 代码，只需要做很小的改动。</p>
+<p>下面会简要介绍 Ray 是如何轻松地并行化普通的 Python 代码的，但需要注意的是，Ray 及其生态系统也可以轻松地并行化其他库，如  scikit-learn，XGBoost, LightGBM, PyTorch, 等等。 </p>
+<p>首先要安装 Ray ：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install ray</span><br></pre></td></tr></table></figure>
+
+<p>然后在前面的  <code>parallelprocess.py</code> 文件基础上进行修改，最后的完整代码如下（并命名为 <code>rayprocess.py</code> 文件）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> timebudget <span class="keyword">import</span> timebudget</span><br><span class="line"><span class="keyword">import</span> ray</span><br><span class="line"></span><br><span class="line">iterations_count = round(<span class="number">1e7</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">complex_operation</span><span class="params">(input_index)</span>:</span></span><br><span class="line">    print(<span class="string">f"Complex operation. Input index: <span class="subst">&#123;input_index:<span class="number">2</span>d&#125;</span>"</span>)</span><br><span class="line">    [math.exp(i) * math.sinh(i) <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="number">1</span>] * iterations_count]</span><br><span class="line"></span><br><span class="line"><span class="meta">@ray.remote</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">complex_operation_numpy</span><span class="params">(input_index)</span>:</span></span><br><span class="line">    print(<span class="string">f"Complex operation (numpy). Input index: <span class="subst">&#123;input_index:<span class="number">2</span>d&#125;</span>"</span>)</span><br><span class="line">    data = np.ones(iterations_count)</span><br><span class="line">    np.exp(data) * np.sinh(data)</span><br><span class="line"></span><br><span class="line"><span class="meta">@timebudget</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_complex_operations</span><span class="params">(operation, input)</span>:</span></span><br><span class="line">    ray.get([operation.remote(i) <span class="keyword">for</span> i <span class="keyword">in</span> input])</span><br><span class="line"></span><br><span class="line">ray.init()</span><br><span class="line"></span><br><span class="line">input = range(<span class="number">10</span>)</span><br><span class="line">print(<span class="string">'Without NumPy'</span>)</span><br><span class="line">run_complex_operations(complex_operation, input)</span><br><span class="line">print(<span class="string">'NumPy'</span>)</span><br><span class="line">run_complex_operations(complex_operation_numpy, input)</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>ray.init()</code>  的作用是启动所有相关的 Ray 进程。 默认情况下，Ray 为每个 CPU 核创建一个进程。 如果希望在集群上运行 Ray ，则需要传入一个类似于<code>ray.init(address=&#39;insertAddressHere&#39;)</code> 的集群地址。 </p>
+<p>用装饰器 <code>@ray.remote</code> 装饰一个普通的 Python 函数，从而实现创建一个 Ray 任务。这个操作可以在笔记本电脑 CPU 核之间（或 Ray 集群）实现任务调度。</p>
+<p>在最后一步中，以 <code>@timebudget</code> 装饰 <code>run_complex_operations()</code> 函数，在 Ray 的调用时间内执行这些函数。  </p>
+<p>执行此程序后，会得到一个类似于下面的输出:  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">%</span><span class="bash"> python rayprocess.py </span></span><br><span class="line">/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/ray/_private/services.py:238: UserWarning: Not all Ray Dashboard dependencies were found. To use the dashboard please install Ray using `pip install ray[default]`. To disable this message, set RAY_DISABLE_IMPORT_WARNING env var to '1'.</span><br><span class="line">  warnings.warn(warning_message)</span><br><span class="line">Without NumPy</span><br><span class="line">(pid=9351) Complex operation. Input index:  7</span><br><span class="line">(pid=9352) Complex operation. Input index:  5</span><br><span class="line">(pid=9353) Complex operation. Input index:  6</span><br><span class="line">(pid=9354) Complex operation. Input index:  1</span><br><span class="line">(pid=9356) Complex operation. Input index:  2</span><br><span class="line">(pid=9358) Complex operation. Input index:  0</span><br><span class="line">(pid=9355) Complex operation. Input index:  3</span><br><span class="line">(pid=9357) Complex operation. Input index:  4</span><br><span class="line">(pid=9351) Complex operation. Input index:  8</span><br><span class="line">(pid=9358) Complex operation. Input index:  9</span><br><span class="line">run_complex_operations took 12.731sec</span><br><span class="line">NumPy</span><br><span class="line">(pid=9351) Complex operation (numpy). Input index:  1</span><br><span class="line">(pid=9352) Complex operation (numpy). Input index:  7</span><br><span class="line">(pid=9353) Complex operation (numpy). Input index:  3</span><br><span class="line">(pid=9354) Complex operation (numpy). Input index:  5</span><br><span class="line">(pid=9356) Complex operation (numpy). Input index:  2</span><br><span class="line">(pid=9358) Complex operation (numpy). Input index:  0</span><br><span class="line">(pid=9355) Complex operation (numpy). Input index:  4</span><br><span class="line">(pid=9357) Complex operation (numpy). Input index:  6</span><br><span class="line">(pid=9351) Complex operation (numpy). Input index:  9</span><br><span class="line">(pid=9354) Complex operation (numpy). Input index:  8</span><br><span class="line">run_complex_operations took 858.52ms</span><br></pre></td></tr></table></figure>
+
+<p>结果中显示了对于当前 Ray 任务而言的、使用和不使用 NumPy 的运行时间。这里似乎没有体现出 Ray 相对于前述其他并行计算方法的优势，这是因为我们在上面演示的属于小量的计算任务，如果遇到更大的业务，Ray 的优势就会非常显著，如下图所示。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-18/1631960505648-ray.png" alt=""></p>
+<p>在下面的表格中，对 Ray 给予简要总结。</p>
+<table>
+<thead>
+<tr>
+<th>Ray 的优点</th>
+<th>Ray 的劣势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>支持并行计算和分布计算</td>
+<td>针对更大型的业务才会有显著效果</td>
+</tr>
+<tr>
+<td>可以在 Jupyter 上使用</td>
+<td></td>
+</tr>
+<tr>
+<td>能够应用于现有的常见机器学习和神经网络库</td>
+<td></td>
+</tr>
+<tr>
+<td>整合了多个 Ray 库，如 RLlib（用于强化学习）、Ray Tune（超参数调优）、Ray Serve（可伸缩模式）</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>有多种方法可以让 Python 程序实现并行化执行，并且本文还介绍了它们的一些优缺点。并行化的代码通常会带来一些开销；并行化的好处在较大的业务中更明显，而不是在本文中的简短计算中。</p>
+<p>特别是在处理典型的基于人工智能的任务时，你必须对你的模型进行重复的微调。 在这种情况下，Ray 提供了最好的支持，因为它拥有丰富的生态系统、自动伸缩、容错和远程服务等能力。  </p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://www.anyscale.com/blog/parallelizing-python-code" target="_blank" rel="noopener">https://www.anyscale.com/blog/parallelizing-python-code</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/09/10/python-ellipsis/">
+        <span class="nav-arrow">← </span>
+        
+          python ellipsis
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/09/15/compressandarchivefile/">
+        
+          用 Python 压缩文件方法汇总
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#并行化-Python-代码"><span class="toc-nav-text">并行化 Python 代码</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基于进程的并行计算"><span class="toc-nav-text">基于进程的并行计算</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#利用专用库"><span class="toc-nav-text">利用专用库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Ray"><span class="toc-nav-text">Ray</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/09/15/paralellizingcode/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

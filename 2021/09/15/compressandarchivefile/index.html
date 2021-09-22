@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      用 Python 压缩文件方法汇总 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>用 Python 压缩文件方法汇总</h2>
+    <p class="post-date">2021-09-15</p>
+    <section class="markdown-content"><p>对于流行的文件压缩格式，如 <code>tar</code> 、<code>zip</code> 、<code>gzip</code> 、<code>bz2</code> 等，乃至于更奇特的 <code>lzma</code> 等格式，Python 都能轻易实现。本文将对有关压缩文件的问题给予阐述。</p>
+<h2 id="压缩格式以及相关模块"><a href="#压缩格式以及相关模块" class="headerlink" title="压缩格式以及相关模块"></a>压缩格式以及相关模块</h2><p>Python 提供了几乎为所有现有压缩文件的工具，下面逐一领略。</p>
+<ul>
+<li><p><code>zlib</code> 是一个 Python 库，能够实现 <code>zip</code> 、<code>gzip</code> 格式文件的压缩和解压缩。</p>
+</li>
+<li><p><code>bz2</code> 模块提供了对 <code>bzip2</code> 格式的压缩支持。它也只对单个文件起作用，因此不能归档。</p>
+</li>
+<li><p><code>lzma</code> 既是算法的名称，也是 Python 模块。它可以产生比一些旧方法更高的压缩比，并且是 <code>xz</code> （更具体地说是 LZMA2 ）背后的算法。</p>
+</li>
+<li><p><code>gzip</code> 是大多数人都熟悉的应用，此外它也是一个 Python 模块的名称。此模块使用前面提到的 <code>zlib</code> 压缩算法，并充当类似于实用程序 <code>gzip</code> 和 <code>gunzip</code>的接口。</p>
+</li>
+<li><p><code>shutils</code> 是一个模块，我们通常不把该模块与压缩和解压缩联系在一起。但它提供了处理归档文件的实用方法，便于生成 <code>tar</code> 、 <code>gztar</code> 、 <code>zip</code> 、 <code>bztar</code> 或者 <code>xztar</code> 这些类型的归档文件。</p>
+</li>
+<li><p>顾名思义，<code>zipfile</code> 允许我们用 Python 中实现 zip 归档，提供了创建、读取、写入或追加 <code>zip</code> 文件所需的所有方法，还提供了便于操作这些文件的类和对象。</p>
+</li>
+<li><p>和上面的 <code>zipfile</code> 类似， <code>tarfile</code> 这个模块用于实现 <code>tar</code> 归档，可以读取和写入 <code>gzip</code> 、<code>bz2</code> 和 <code>lzma</code> 文件或归档文件。 也支持与常规的 <code>tar</code> 压缩软件能实现的其他功能。</p>
+</li>
+</ul>
+<h2 id="压缩与解压缩"><a href="#压缩与解压缩" class="headerlink" title="压缩与解压缩"></a>压缩与解压缩</h2><p>上面列出了很多选择，它们中有一些比较基本，有一些具有许多其他功能，但共同点显然是包含压缩功能。下面就来看看有关基本操作。</p>
+<p>先看 <code>zlib</code> ，这是一个相当低级的库，因此可能不太常用，让我们来看看针对整个文件的压缩或解压缩方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zlib, sys</span><br><span class="line"></span><br><span class="line">filename_in = <span class="string">"data"</span></span><br><span class="line">filename_out = <span class="string">"compressed_data"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename_in, mode=<span class="string">"rb"</span>) <span class="keyword">as</span> fin, open(filename_out, mode=<span class="string">"wb"</span>) <span class="keyword">as</span> fout:</span><br><span class="line">    data = fin.read()</span><br><span class="line">    compressed_data = zlib.compress(data, zlib.Z_BEST_COMPRESSION)</span><br><span class="line">    print(<span class="string">f"Original size: <span class="subst">&#123;sys.getsizeof(data)&#125;</span>"</span>)</span><br><span class="line">    <span class="comment"># Original size: 1000033</span></span><br><span class="line">    print(<span class="string">f"Compressed size: <span class="subst">&#123;sys.getsizeof(compressed_data)&#125;</span>"</span>)</span><br><span class="line">    <span class="comment"># Compressed size: 1024</span></span><br><span class="line"></span><br><span class="line">    fout.write(compressed_data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename_out, mode=<span class="string">"rb"</span>) <span class="keyword">as</span> fin:</span><br><span class="line">    data = fin.read()</span><br><span class="line">    compressed_data = zlib.decompress(data)</span><br><span class="line">    print(<span class="string">f"Compressed size: <span class="subst">&#123;sys.getsizeof(data)&#125;</span>"</span>)</span><br><span class="line">    <span class="comment"># Compressed size: 1024</span></span><br><span class="line">    print(<span class="string">f"Decompressed size: <span class="subst">&#123;sys.getsizeof(compressed_data)&#125;</span>"</span>)</span><br><span class="line">    <span class="comment"># Decompressed size: 1000033</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中所需要的输入文件，可以用 <code>head -c 1MB &lt;/dev/zero &gt; data</code> 指令生成，此文件由零组成且大小为 1MB 。将文件读入内存滞后，用 <code>zlib</code> 中的  <code>compress</code> 方法创建压缩数据。然后将该数据写入输出文件。</p>
+<p>为了证明能够恢复数据——解压缩，再次打开上述生成的压缩文件并对其通过 <code>zlibb</code> 的 <code>decompress</code> 方法。通过 <code>print</code> ，可以看到压缩和解压缩数据的大小都是匹配的。</p>
+<p>下一个是 <code>bz2</code> ，它的使用方式与上面的 <code>zlib</code> 非常相似：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bz2, os, sys</span><br><span class="line"></span><br><span class="line">filename_in = <span class="string">"data"</span></span><br><span class="line">filename_out = <span class="string">"compressed_data.bz2"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename_in, mode=<span class="string">"rb"</span>) <span class="keyword">as</span> fin, bz2.open(filename_out, <span class="string">"wb"</span>) <span class="keyword">as</span> fout:</span><br><span class="line">    fout.write(fin.read())</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"Uncompressed size: <span class="subst">&#123;os.stat(filename_in).st_size&#125;</span>"</span>)</span><br><span class="line"><span class="comment"># Uncompressed size: 1000000</span></span><br><span class="line">print(<span class="string">f"Compressed size: <span class="subst">&#123;os.stat(filename_out).st_size&#125;</span>"</span>)</span><br><span class="line"><span class="comment"># Compressed size: 48</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> bz2.open(filename_out, <span class="string">"rb"</span>) <span class="keyword">as</span> fin:</span><br><span class="line">    data = fin.read()</span><br><span class="line">    print(<span class="string">f"Decompressed size: <span class="subst">&#123;sys.getsizeof(data)&#125;</span>"</span>)</span><br><span class="line">    <span class="comment"># Decompressed size: 1000033</span></span><br></pre></td></tr></table></figure>
+
+<p>不出所料，使用方法大同小异。为了显示一些不同之处，在上面的示例中，我们简化了压缩步骤，将其减少到1行，并使用 <code>os.stat</code>来检查文件的大小。</p>
+<p>这些低级模块中的最后一个是 <code>lzma</code> ，为了避免反复显示相同的代码，这次执行增量压缩：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lzma, os</span><br><span class="line">lzc = lzma.LZMACompressor()</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /usr/share/dict/words | sort -R | head -c 1MB &gt; data</span></span><br><span class="line">filename_in = <span class="string">"data"</span></span><br><span class="line">filename_out = <span class="string">"compressed_data.xz"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename_in, mode=<span class="string">"r"</span>) <span class="keyword">as</span> fin, open(filename_out, <span class="string">"wb"</span>) <span class="keyword">as</span> fout:</span><br><span class="line">    <span class="keyword">for</span> chunk <span class="keyword">in</span> fin.read(<span class="number">1024</span>):</span><br><span class="line">        compressed_chunk = lzc.compress(chunk.encode(<span class="string">"ascii"</span>))</span><br><span class="line">        fout.write(compressed_chunk)</span><br><span class="line">    fout.write(lzc.flush())</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"Uncompressed size: <span class="subst">&#123;os.stat(filename_in).st_size&#125;</span>"</span>)</span><br><span class="line"><span class="comment"># Uncompressed size: 972398</span></span><br><span class="line">print(<span class="string">f"Compressed size: <span class="subst">&#123;os.stat(filename_out).st_size&#125;</span>"</span>)</span><br><span class="line"><span class="comment"># Compressed size: 736</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> lzma.open(filename_out, <span class="string">"r"</span>) <span class="keyword">as</span> fin:</span><br><span class="line">    words = fin.read().decode(<span class="string">"utf-8"</span>).split()</span><br><span class="line">    print(words[:<span class="number">5</span>])</span><br><span class="line">    <span class="comment"># ['dabbing', 'hauled', "seediness's", 'Iroquoian', 'vibe']</span></span><br></pre></td></tr></table></figure>
+
+<p>首先创建一个输入文件，文件中包含从字典中提取的一组单词，该字典在 <code>/usr/share/dict/words</code> 中，这样可以确认解压后的数据与原始数据相同。</p>
+<p>然后，我们像前面的示例一样打开输入和输出文件。然而，这一次在 1024 位块中迭代随机数据，并使用 <code>LZMACompressor.compress</code> 方法压缩它们。然后将这些块写入输出文件。在读取和压缩整个文件之后，我们需要调用 <code>flush</code> ，以完成压缩过程、并从压缩器中清除任何剩余数据。</p>
+<p>为了证实上述操作的有效性，我们以通常的方式打开并解压缩文件，并从文件中打印出几个单词。</p>
+<p>下面要研究高级别的模块。现在使用 <code>gzip</code> 执行相同的任务：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os, sys, shutil, gzip</span><br><span class="line"></span><br><span class="line">filename_in = <span class="string">"data"</span></span><br><span class="line">filename_out = <span class="string">"compressed_data.tar.gz"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(filename_in, <span class="string">"rb"</span>) <span class="keyword">as</span> fin, gzip.open(filename_out, <span class="string">"wb"</span>) <span class="keyword">as</span> fout:</span><br><span class="line">    <span class="comment"># Reads the file by chunks to avoid exhausting memory</span></span><br><span class="line">    shutil.copyfileobj(fin, fout)</span><br><span class="line"></span><br><span class="line">print(<span class="string">f"Uncompressed size: <span class="subst">&#123;os.stat(filename_in).st_size&#125;</span>"</span>)</span><br><span class="line"><span class="comment"># Uncompressed size: 1000000</span></span><br><span class="line">print(<span class="string">f"Compressed size: <span class="subst">&#123;os.stat(filename_out).st_size&#125;</span>"</span>)</span><br><span class="line"><span class="comment"># Compressed size: 1023</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> gzip.open(filename_out, <span class="string">"rb"</span>) <span class="keyword">as</span> fin:</span><br><span class="line">    data = fin.read()</span><br><span class="line">    print(<span class="string">f"Decompressed size: <span class="subst">&#123;sys.getsizeof(data)&#125;</span>"</span>)</span><br><span class="line">    <span class="comment"># Decompressed size: 1000033</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，结合了 <code>gzip</code> 和 <code>shutils</code> 。看起来我们所做的批量压缩与之前使用 <code>zlib</code> 或 <code>bz2</code> 的效果相同，但由于 <code>shutil.copyfileobj</code> 方法，我们实现了分块增量压缩，而不必像使用<code>lzma</code>那样循环数据。</p>
+<p><code>gzip</code> 模块的一个优点是：它还提供了命令行接口，我说的不是 Linux <code>gzip</code> 和 <code>gunzip</code> ，而是 Python 中所集成的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">python3 -m gzip -h</span><br><span class="line">usage: gzip.py [-h] [--fast | --best | -d] [file [file ...]]</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">ls -l data*</span><br><span class="line">-rw-rw-r-- <span class="number">1</span> martin martin <span class="number">1000000</span> aug <span class="number">22</span> <span class="number">18</span>:<span class="number">48</span> data</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use fast compression on file "data"</span></span><br><span class="line">python3 -m gzip --fast data</span><br><span class="line"></span><br><span class="line"><span class="comment"># File named "data.gz" was generated:</span></span><br><span class="line">ls -l data*</span><br><span class="line">-rw-rw-r-- <span class="number">1</span> martin martin <span class="number">1000000</span> aug <span class="number">22</span> <span class="number">18</span>:<span class="number">48</span> data</span><br><span class="line">-rw-rw-r-- <span class="number">1</span> martin martin    <span class="number">1008</span> aug <span class="number">22</span> <span class="number">20</span>:<span class="number">50</span> data.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="更高效的工具"><a href="#更高效的工具" class="headerlink" title="更高效的工具"></a>更高效的工具</h2><p>如果你熟悉 <code>zip</code> 或 <code>tar</code> ，或者必须用其中的一种格式存档，就应该认真阅读下面的内容。除了基本的压缩或解压缩操作外，这两个模块还包括其他的一些实用方法，例如校验、使用密码、在归档文件中列出文件等。所以，很有必要深入研究一番，确保掌握这些技能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># shuf -n5 /usr/share/dict/words &gt; words.txt</span></span><br><span class="line">files = [<span class="string">"words1.txt"</span>, <span class="string">"words2.txt"</span>, <span class="string">"words3.txt"</span>, <span class="string">"words4.txt"</span>, <span class="string">"words5.txt"</span>]</span><br><span class="line">archive = <span class="string">"archive.zip"</span></span><br><span class="line">password = <span class="string">b"verysecret"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> zipfile.ZipFile(archive, <span class="string">"w"</span>) <span class="keyword">as</span> zf:</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> files:</span><br><span class="line">        zf.write(file)</span><br><span class="line"></span><br><span class="line">    zf.setpassword(password)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> zipfile.ZipFile(archive, <span class="string">"r"</span>) <span class="keyword">as</span> zf:</span><br><span class="line">    crc_test = zf.testzip()</span><br><span class="line">    <span class="keyword">if</span> crc_test <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        print(<span class="string">f"Bad CRC or file headers: <span class="subst">&#123;crc_test&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">    info = zf.infolist()  <span class="comment"># also zf.namelist()</span></span><br><span class="line">    print(info)  </span><br><span class="line">    <span class="comment"># See all attributes at https://docs.python.org/3/library/zipfile.html#zipinfo-objects</span></span><br><span class="line">    <span class="comment"># [ &lt;ZipInfo filename='words1.txt' filemode='-rw-r--r--' file_size=37&gt;,</span></span><br><span class="line">    <span class="comment">#   &lt;ZipInfo filename='words2.txt' filemode='-rw-r--r--' file_size=47&gt;,</span></span><br><span class="line">    <span class="comment">#   ... ]</span></span><br><span class="line"></span><br><span class="line">    file = info[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">with</span> zf.open(file) <span class="keyword">as</span> f:</span><br><span class="line">        print(f.read().decode())</span><br><span class="line">        <span class="comment"># Olav</span></span><br><span class="line">        <span class="comment"># teakettles</span></span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line">    zf.extract(file, <span class="string">"/tmp"</span>, pwd=password)  <span class="comment"># also zf.extractall()</span></span><br></pre></td></tr></table></figure>
+
+<p>上述代码有点长，它涵盖了 <code>zipfile</code> 模块的所有重要功能。在这段代码中，首先在 <code>with</code> 上下文管理中，以 <code>w</code> 模式使用 <code>ZipFile</code>创建 ZIP 归档文件，然后将文件添加到归档文件中。你会注意到，实际上不需要打开要添加的文件 —— 我们所需要做的就是调用 <code>write</code> 方法，并传入文件名为参数。添加所有文件后，我们还使用 <code>setpassword</code> 方法设置存档密码。</p>
+<p>接下来，为了证明这种操作方法的有效性，打开归档文件。在读取任何文件之前，检查CRC和文件头，然后检索存档中所有文件的信息。在本例中，我们只打印 <code>ZipInfo</code> 对象的列表，但你也可以检查其属性，以获得CRC、大小、压缩类型等。</p>
+<p>检查完所有文件后，打开并读取其中一个文件。我们看到它具有预期的内容，所以可以继续并将其解压缩都指定路径（<code>/tmp/</code> ）。</p>
+<p>除了创建和读取归档文件或普通文件外，ZIP 还允许我们将文件追加到现有的存档中。为此，只需将访问模式更改为 <code>a</code> （追加模式）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> zipfile.ZipFile(archive, <span class="string">"a"</span>) <span class="keyword">as</span> zf:</span><br><span class="line">    zf.write(<span class="string">"words6.txt"</span>)</span><br><span class="line">    print(zf.namelist())</span><br><span class="line">    <span class="comment"># ['words1.txt', 'words2.txt', 'words3.txt', 'words4.txt', 'words5.txt', 'words6.txt']</span></span><br></pre></td></tr></table></figure>
+
+<p>与 <code>gzip</code> 模块相同，Python的 <code>zipfile</code> 和 <code>tarfile</code> 也提供 CLI 。要执行基本存档和提取，请使用以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">python3 -m zipfile -c arch.zip words1.txt words2.txt  # Create</span><br><span class="line">python3 -m zipfile -t arch.zip  # Test</span><br><span class="line">Done testing</span><br><span class="line"></span><br><span class="line">python3 -m zipfile -e arch.zip /tmp  # Extract</span><br><span class="line">ls /tmp/words*</span><br><span class="line">/tmp/words1.txt  /tmp/words2.txt</span><br></pre></td></tr></table></figure>
+
+<p>最后但并非最不重要的是 <code>tarfile</code> 模块。此模块类似于 <code>zipfile</code> ，但也实现了一些额外的功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tarfile</span><br><span class="line"></span><br><span class="line">files = [<span class="string">"words1.txt"</span>, <span class="string">"words2.txt"</span>, <span class="string">"words3.txt"</span>, <span class="string">"words4.txt"</span>]</span><br><span class="line">archive = <span class="string">"archive.tar.gz"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tarfile.open(archive, <span class="string">"w:gz"</span>) <span class="keyword">as</span> tar:</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> files:</span><br><span class="line">        tar.add(file)  <span class="comment"># can also be dir (added recursively), symlink, etc</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">f"archive contains: <span class="subst">&#123;tar.getmembers()&#125;</span>"</span>)</span><br><span class="line">    <span class="comment"># [&lt;TarInfo 'words1.txt' at 0x7f71ed74f8e0&gt;,</span></span><br><span class="line">    <span class="comment">#  &lt;TarInfo 'words2.txt' at 0x7f71ed74f9a8&gt;</span></span><br><span class="line">    <span class="comment">#  ... ]</span></span><br><span class="line"></span><br><span class="line">    info = tar.gettarinfo(<span class="string">"words1.txt"</span>)  <span class="comment"># Other Linux attributes - https://docs.python.org/3/library/tarfile.html#tarinfo-objects</span></span><br><span class="line">    print(<span class="string">f"<span class="subst">&#123;tar.name&#125;</span> contains <span class="subst">&#123;info.name&#125;</span> with permissions <span class="subst">&#123;oct(info.mode)[<span class="number">-3</span>:]&#125;</span>, size: <span class="subst">&#123;info.size&#125;</span> and owner: <span class="subst">&#123;info.uid&#125;</span>:<span class="subst">&#123;info.gid&#125;</span>"</span>)</span><br><span class="line">    <span class="comment"># .../archive.tar contains words1.txt with permissions 644, size: 37 and owner: 500:500</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change_permissions</span><span class="params">(tarinfo)</span>:</span></span><br><span class="line">        tarinfo.mode = <span class="number">0o100600</span>  <span class="comment"># -rw-------.</span></span><br><span class="line">        <span class="keyword">return</span> tarinfo</span><br><span class="line">    </span><br><span class="line">    tar.add(<span class="string">"words5.txt"</span>, filter=change_permissions)</span><br><span class="line"></span><br><span class="line">    tar.list()</span><br><span class="line">    <span class="comment"># -rw-r--r-- martin/martin   37 2021-08-23 09:01:56 words1.txt</span></span><br><span class="line">    <span class="comment"># -rw-r--r-- martin/martin   47 2021-08-23 09:02:06 words2.txt</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="comment"># -rw------- martin/martin   42 2021-08-23 09:02:22 words5.txt</span></span><br></pre></td></tr></table></figure>
+
+<p>我们从归档文件的基本创建开始，这里使用的打开模式 <code>&quot;w:gz&quot;</code> ，指定要使用 GZ 压缩。然后将所有的文件添加到存档中。使用 <code>tarfile</code> 模块，还可以传入符号链接（软连接）、或传入可以递归添加的整个目录。</p>
+<p>接下来，为了确认所有文件都确实存在，我们使用 <code>getmembers</code> 方法。为了深入了解各个文件，可以使用 <code>gettarinfo</code> 方法，它提供了所有 Linux 文件属性。</p>
+<p><code>tarfile</code> 提供了一个我们在其他模块中没有看到的很酷的特性，那就是在将文件添加到归档文件时能够修改文件的属性。在上面的代码片段中，通过提供 <code>filter</code> 参数来更改文件的权限，该参数修改了 <code>TarInfo.mode</code>。此值必须作为八进制数提供，此处的 <code>0o100600</code> 将权限设置为 <code>0600</code> 或 <code>-rw-------.</code>。</p>
+<p>为了在进行此更改后获得文件的完整概览，我们可以运行 <code>list</code> 方法，它提供类似于 <code>ls -l</code>的输出。</p>
+<p>使用<code>tar</code> 存档的最后一件事是打开它并将其解压缩。为此，我们使用 <code>&quot;r:gz&quot;</code> 模式打开它，以文件名作为 <code>getmember</code> 方法的参数，返回文件对象，并将其解压缩到指定路径中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tarfile.open(archive, <span class="string">"r:gz"</span>) <span class="keyword">as</span> tar:</span><br><span class="line">    member = tar.getmember(<span class="string">"words3.txt"</span>)</span><br><span class="line">    <span class="keyword">if</span> member.isfile():</span><br><span class="line">        tar.extract(member, <span class="string">"/tmp/"</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>如你所见，Python 的提供了包括低级和高级、特定和通用、简单和复杂的各类模块或库。可以根据实际需要进行选择，通常建议使用通用模块，如 <code>zipfile</code> 或 <code>tarfile</code> ，只有在必要时才使用 <code>lzma</code> 之类的模块。</p>
+<p>当然，要想熟练使用以上各个模块的各种方法，还是要阅读官方文档。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://towardsdatascience.com/all-the-ways-to-compress-and-archive-files-in-python-e8076ccedb4b" target="_blank" rel="noopener">https://towardsdatascience.com/all-the-ways-to-compress-and-archive-files-in-python-e8076ccedb4b</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/09/15/paralellizingcode/">
+        <span class="nav-arrow">← </span>
+        
+          用 Python 实现并行计算
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#压缩格式以及相关模块"><span class="toc-nav-text">压缩格式以及相关模块</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#压缩与解压缩"><span class="toc-nav-text">压缩与解压缩</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#更高效的工具"><span class="toc-nav-text">更高效的工具</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/09/15/compressandarchivefile/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

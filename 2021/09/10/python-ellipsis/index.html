@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      python ellipsis | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>python ellipsis</h2>
+    <p class="post-date">2021-09-10</p>
+    <section class="markdown-content"><h1 id="What-is-Python’s-Ellipsis-Object"><a href="#What-is-Python’s-Ellipsis-Object" class="headerlink" title="What is Python’s Ellipsis Object?"></a>What is Python’s Ellipsis Object?</h1><h2 id="Introduction¶"><a href="#Introduction¶" class="headerlink" title="Introduction¶"></a>Introduction<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#introduction" target="_blank" rel="noopener">¶</a></h2><p>Some time ago, I stumbled across a Python code snippet, which looked like this:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomException</span><span class="params">(Exception)</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>At first, I thought it would just be a sort of pseudo-code. In Python, you usually use the <code>pass</code> keyword to fill a function (or at least something indented), which is not fully implemented yet. My thoughts were somewhat the following: “Ah someone wants to indicate that more code is following, but the code is truncated here, to just get the idea.” Consequently, using the <code>pass</code> keyword would mean that something is not yet implemented. At this point, I haven’t thought about it much again but used it sometimes on my own to explain a certain concept to colleagues.</p>
+<p>A few weeks later, I stumbled upon it again and this time, it was in a running code example. I got curious and wanted to find out, whether this is really a language feature or just a side effect from something else. It turned out that it was the first time I actively identified Python’s <em>ellipsis object</em>!</p>
+<p>In this article, we will have a closer look at the ellipsis object,  where you can use it in your day to day life as a programmer, and which  famous Python packages use it.</p>
+<h4 id="Info"><a href="#Info" class="headerlink" title="Info"></a><strong>Info</strong></h4><p>The code presented in this article was written for Python 3.9 (CPython).</p>
+<h2 id="General-Information¶"><a href="#General-Information¶" class="headerlink" title="General Information¶"></a>General Information<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#general-information" target="_blank" rel="noopener">¶</a></h2><p>Before we jump into possible use cases, let us first find out, what the ellipsis object is. In essence, it is a built-in constant [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:1" target="_blank" rel="noopener">1</a>] like <code>True</code> and <code>False</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">Ellipsis</span></span><br><span class="line"><span class="built_in">Ellipsis</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>...</span><br><span class="line"><span class="built_in">Ellipsis</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>To be more precise, <code>Ellipsis</code> is the built-in constant and <code>...</code> (three dots) is the corresponding literal. You can also find it as a defined token in <em>Lib/token.py</em> [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:2" target="_blank" rel="noopener">2</a>]:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># previous code in token.py</span></span><br><span class="line">ELLIPSIS = <span class="number">52</span></span><br><span class="line"><span class="comment"># subsequent code in token.py</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>The documentation states that the ellipsis object is a “[s]pecial  value used mostly in conjunction with extended slicing syntax for  user-defined container data types.” [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:1" target="_blank" rel="noopener">1</a>] However, I have not identified a slice use case despite the usage in the third-party package <em>NumPy</em> [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:3" target="_blank" rel="noopener">3</a>]. To me, it seems to be a “whatever” literal. With that being said, if you have a certain function or class where you  want to implement a special feature and look for a non-used literal, the ellipsis object may be right for you. You will see that in a <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#the-ellipsis-object-in-the-wild" target="_blank" rel="noopener">later section</a>.</p>
+<h2 id="Type-Annotations¶"><a href="#Type-Annotations¶" class="headerlink" title="Type Annotations¶"></a>Type Annotations<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#type-annotations" target="_blank" rel="noopener">¶</a></h2><p>Without further research, I pretty soon identified a scenario, where I already used the ellipsis object: Type annotations. To illustrate the concept, let us assume we have a function, which takes zero arguments and returns a tuple:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_tuple</span><span class="params">()</span> -&gt; tuple:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>If you want to give the user of the function more information, you could also specify what the tuple contains. For instance, it could return a tuple consisting of two integers:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_tuple</span><span class="params">()</span> -&gt; tuple[int, int]:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<h4 id="Info-1"><a href="#Info-1" class="headerlink" title="Info"></a><strong>Info</strong></h4><p>Using <code>tuple[int, int]</code> as a type annotation is not supported prior to Python 3.9. In older versions of Python, you need to use <code>Tuple</code> from the <code>typing</code> module or import <code>__future__.annotations</code>.</p>
+<p>How would you annotate a tuple of integers, which can have any length greater than zero? Simply use an ellipsis:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_tuple</span><span class="params">()</span> -&gt; tuple[int, ...]:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>But wait, there is more. Suppose you have a function returning a callable. If the signature of the callable, that is being returned, can vary, you can use the ellipsis object to indicate this:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Callable</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_callable</span><span class="params">()</span> -&gt; Callable[..., int]:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>The given code snippet means that a callable with an unknown  signature is returned, but the return type of the callable is specified: It is an integer.</p>
+<p>Great! At this point, we identified the first scenario, where we can utilise the ellipsis object in our Python code. Let’s see how we can benefit from it when implementing classes and functions.</p>
+<h2 id="Drop-in-Replacement-for-the-Pass-Keyword¶"><a href="#Drop-in-Replacement-for-the-Pass-Keyword¶" class="headerlink" title="Drop-in Replacement for the Pass-Keyword¶"></a>Drop-in Replacement for the Pass-Keyword<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#drop-in-replacement-for-the-pass-keyword" target="_blank" rel="noopener">¶</a></h2><p>In the <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#introduction" target="_blank" rel="noopener">introductory section</a>, there was already a hint that the ellipsis object could also be used as a drop-in replacement for the <code>pass</code> keyword. Remember, that the <code>pass</code> keyword is used if you want to define a function, class, for-loop or something similar but do not want to implement it yet. Because the Python syntax requires an indentation after these constructs, the <code>pass</code> keyword is used to satisfy Python on the one hand and you on the other hand as you do not need to implement it yet. Here is an example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>In essence, even the <code>pass</code> keyword is not required. You only need to write down an expression. This could be a number …</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>… or the ellipsis literal:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>Personally, I like to use the <code>pass</code> keyword to indicate that something is implemented exactly the way I want it. An example would be creating a custom exception without adding further details:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomException</span><span class="params">(Exception)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>Python</p>
+<p>On the other hand, using the ellipsis object may indicate that a certain function is not yet fully implemented, but raising a <code>NotImplemented</code> exception seems to be overkill. To summarise: Yes, it <em>can</em> be used as a drop-in replacement for the <code>pass</code> keyword, but you probably <em>should not</em> do it, because there is a reason why everyone uses <code>pass</code>. Using it in articles to indicate further code lines should be fine, though!</p>
+<h2 id="The-Ellipsis-Object-in-the-Wild¶"><a href="#The-Ellipsis-Object-in-the-Wild¶" class="headerlink" title="The Ellipsis Object in the Wild¶"></a>The Ellipsis Object in the Wild<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#the-ellipsis-object-in-the-wild" target="_blank" rel="noopener">¶</a></h2><p>As stated earlier, if you want to implement a certain feature where  you need a non-used literal, you can use the ellipsis object. Typer [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:4" target="_blank" rel="noopener">4</a>] - a package for implementing command-line interfaces - and FastAPI [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:5" target="_blank" rel="noopener">5</a>] (web framework) are prominent examples utilising it. In FastAPI it is used to make parameters required [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:6" target="_blank" rel="noopener">6</a>] and in Typer, it is pretty similar: It indicates that a command-line argument is required [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:7" target="_blank" rel="noopener">7</a>].</p>
+<p>So if you see yourself in the situation that you are developing a new tool or library and need a placeholder literal, remind yourself of the  ellipsis object!</p>
+<h2 id="Summary¶"><a href="#Summary¶" class="headerlink" title="Summary¶"></a>Summary<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#summary" target="_blank" rel="noopener">¶</a></h2><p>Congratulations, you have made it through the article. In this article, you learnt what the ellipsis object is and where you can use it. Possible use cases are type annotations, drop-in replacement for <code>pass</code> or using it for certain features where you need a non-used literal. Furthermore, we had a look at third-party packages utilising the ellipsis object to realise special features.</p>
+<p>I hope you enjoyed reading the article. Make sure to share it with your friends and colleagues. If you have not already, follow me on Twitter, where I am <a href="https://twitter.com/DahlitzF" target="_blank" rel="noopener">@DahlitzF</a> and subscribe to my <a href="https://florian-dahlitz.de/newsletter" target="_blank" rel="noopener">newsletter</a>, so you won’t miss any future articles. Stay curious and keep coding!</p>
+<h2 id="References¶"><a href="#References¶" class="headerlink" title="References¶"></a>References<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#references" target="_blank" rel="noopener">¶</a></h2><hr>
+<ol>
+<li><a href="https://docs.python.org/3/library/constants.html#Ellipsis" target="_blank" rel="noopener">Built-in Constants | Official Python Documentation</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:1" target="_blank" rel="noopener">↩</a><a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref2:1" target="_blank" rel="noopener">↩</a></li>
+<li><a href="https://github.com/python/cpython/blob/3.9/Lib/token.py#L58" target="_blank" rel="noopener">Lib/token.py | Python Source Code</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:2" target="_blank" rel="noopener">↩</a></li>
+<li><a href="https://numpy.org/doc/stable/user/basics.indexing.html#structural-indexing-tools" target="_blank" rel="noopener">Indexing: Structural indexing tools | Official NumPy Documentation</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:3" target="_blank" rel="noopener">↩</a></li>
+<li><a href="https://github.com/tiangolo/typer" target="_blank" rel="noopener">Typer on GitHub</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:4" target="_blank" rel="noopener">↩</a></li>
+<li><a href="https://github.com/tiangolo/fastapi" target="_blank" rel="noopener">FastAPI on GitHub</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:5" target="_blank" rel="noopener">↩</a></li>
+<li><a href="https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#make-it-required" target="_blank" rel="noopener">Query Parameters and String Validations: Make it required</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:6" target="_blank" rel="noopener">↩</a></li>
+<li><a href="https://typer.tiangolo.com/tutorial/arguments/optional/" target="_blank" rel="noopener">Optional CLI Arguments</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:7" target="_blank" rel="noopener">↩</a></li>
+</ol>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/09/06/learn-program-right-way/">
+        <span class="nav-arrow">← </span>
+        
+          什么是学习编程的正确方法
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/09/15/paralellizingcode/">
+        
+          用 Python 实现并行计算
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#What-is-Python’s-Ellipsis-Object"><span class="toc-nav-text">What is Python’s Ellipsis Object?</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Introduction¶"><span class="toc-nav-text">Introduction¶</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Info"><span class="toc-nav-text">Info</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#General-Information¶"><span class="toc-nav-text">General Information¶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Type-Annotations¶"><span class="toc-nav-text">Type Annotations¶</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Info-1"><span class="toc-nav-text">Info</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Drop-in-Replacement-for-the-Pass-Keyword¶"><span class="toc-nav-text">Drop-in Replacement for the Pass-Keyword¶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#The-Ellipsis-Object-in-the-Wild¶"><span class="toc-nav-text">The Ellipsis Object in the Wild¶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Summary¶"><span class="toc-nav-text">Summary¶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#References¶"><span class="toc-nav-text">References¶</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/09/10/python-ellipsis/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
