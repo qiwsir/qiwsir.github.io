@@ -10,7 +10,7 @@
   
   <title>
     
-      python ellipsis | 老齐教室
+      Python 中的省略号 | 老齐教室
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -166,75 +166,48 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <h2>python ellipsis</h2>
+    <h2>Python 中的省略号</h2>
     <p class="post-date">2021-09-10</p>
-    <section class="markdown-content"><h1 id="What-is-Python’s-Ellipsis-Object"><a href="#What-is-Python’s-Ellipsis-Object" class="headerlink" title="What is Python’s Ellipsis Object?"></a>What is Python’s Ellipsis Object?</h1><h2 id="Introduction¶"><a href="#Introduction¶" class="headerlink" title="Introduction¶"></a>Introduction<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#introduction" target="_blank" rel="noopener">¶</a></h2><p>Some time ago, I stumbled across a Python code snippet, which looked like this:</p>
+    <section class="markdown-content"><p>看这样一段代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomException</span><span class="params">(Exception)</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>At first, I thought it would just be a sort of pseudo-code. In Python, you usually use the <code>pass</code> keyword to fill a function (or at least something indented), which is not fully implemented yet. My thoughts were somewhat the following: “Ah someone wants to indicate that more code is following, but the code is truncated here, to just get the idea.” Consequently, using the <code>pass</code> keyword would mean that something is not yet implemented. At this point, I haven’t thought about it much again but used it sometimes on my own to explain a certain concept to colleagues.</p>
-<p>A few weeks later, I stumbled upon it again and this time, it was in a running code example. I got curious and wanted to find out, whether this is really a language feature or just a side effect from something else. It turned out that it was the first time I actively identified Python’s <em>ellipsis object</em>!</p>
-<p>In this article, we will have a closer look at the ellipsis object,  where you can use it in your day to day life as a programmer, and which  famous Python packages use it.</p>
-<h4 id="Info"><a href="#Info" class="headerlink" title="Info"></a><strong>Info</strong></h4><p>The code presented in this article was written for Python 3.9 (CPython).</p>
-<h2 id="General-Information¶"><a href="#General-Information¶" class="headerlink" title="General Information¶"></a>General Information<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#general-information" target="_blank" rel="noopener">¶</a></h2><p>Before we jump into possible use cases, let us first find out, what the ellipsis object is. In essence, it is a built-in constant [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:1" target="_blank" rel="noopener">1</a>] like <code>True</code> and <code>False</code>:</p>
+<p>会不会认为它是一段伪代码？因为在 Python 中，一般会使用关键词 <code>pass</code> 来填充尚未实现的对象。</p>
+<p>然而，上面的代码真的能运行，它就是一段 Python 代码，不是伪代码。</p>
+<p>在 Python 中，省略号是类似于 <code>True</code> 、<code>False</code> 那样的内置常量。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">Ellipsis</span></span><br><span class="line"><span class="built_in">Ellipsis</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>...</span><br><span class="line"><span class="built_in">Ellipsis</span></span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>To be more precise, <code>Ellipsis</code> is the built-in constant and <code>...</code> (three dots) is the corresponding literal. You can also find it as a defined token in <em>Lib/token.py</em> [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:2" target="_blank" rel="noopener">2</a>]:</p>
+<p>准确地说， <code>Ellipsis</code> 是内置常量，<code>…</code> （三个半角的点）是相应的字面量。 你也可以在CPython 中的 <code>Lib/token.py</code> （<a href="https://github.com/python/cpython/blob/3.9/Lib/token.py#L58）中看到它的定义。" target="_blank" rel="noopener">https://github.com/python/cpython/blob/3.9/Lib/token.py#L58）中看到它的定义。</a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># previous code in token.py</span></span><br><span class="line">ELLIPSIS = <span class="number">52</span></span><br><span class="line"><span class="comment"># subsequent code in token.py</span></span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>The documentation states that the ellipsis object is a “[s]pecial  value used mostly in conjunction with extended slicing syntax for  user-defined container data types.” [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:1" target="_blank" rel="noopener">1</a>] However, I have not identified a slice use case despite the usage in the third-party package <em>NumPy</em> [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:3" target="_blank" rel="noopener">3</a>]. To me, it seems to be a “whatever” literal. With that being said, if you have a certain function or class where you  want to implement a special feature and look for a non-used literal, the ellipsis object may be right for you. You will see that in a <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#the-ellipsis-object-in-the-wild" target="_blank" rel="noopener">later section</a>.</p>
-<h2 id="Type-Annotations¶"><a href="#Type-Annotations¶" class="headerlink" title="Type Annotations¶"></a>Type Annotations<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#type-annotations" target="_blank" rel="noopener">¶</a></h2><p>Without further research, I pretty soon identified a scenario, where I already used the ellipsis object: Type annotations. To illustrate the concept, let us assume we have a function, which takes zero arguments and returns a tuple:</p>
+<p>在 Python 的官方文档（<a href="https://docs.python.org/3/library/constants.html#Ellipsis）中显示，省略号是一个特殊值，主要用于字定义的容器数据类型中，与扩展切片语法结合使用。然而，我没有找到一个体现这种说法的案例，包括第三方包" target="_blank" rel="noopener">https://docs.python.org/3/library/constants.html#Ellipsis）中显示，省略号是一个特殊值，主要用于字定义的容器数据类型中，与扩展切片语法结合使用。然而，我没有找到一个体现这种说法的案例，包括第三方包</a> NumPy 中的切片。根据我的理解，它的意思就是“随意”。如果你有一个特定的函数或类，并且想在其中实现一个特殊的特性、查找一个非文字对象，省略号对象可能正合适。</p>
+<p>自己编一个示例，假设有一个函数，它没有参数并返回一个元组：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_tuple</span><span class="params">()</span> -&gt; tuple:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>If you want to give the user of the function more information, you could also specify what the tuple contains. For instance, it could return a tuple consisting of two integers:</p>
+<p>如果想让函数返回更多对象，还可以指定元组包含什么。例如，它可以返回由两个整数组成的一个元组：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_tuple</span><span class="params">()</span> -&gt; tuple[int, int]:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<h4 id="Info-1"><a href="#Info-1" class="headerlink" title="Info"></a><strong>Info</strong></h4><p>Using <code>tuple[int, int]</code> as a type annotation is not supported prior to Python 3.9. In older versions of Python, you need to use <code>Tuple</code> from the <code>typing</code> module or import <code>__future__.annotations</code>.</p>
-<p>How would you annotate a tuple of integers, which can have any length greater than zero? Simply use an ellipsis:</p>
+<p>注意，在 Python 3.9 之前，不支持 <code>tuple[int, int]</code> 形式的类型注释。在较旧版本的 Python 中，需要用 <code>typing</code> 模块中的 <code>Tuple</code> 或导入 <code>__future__.annotations</code> 。</p>
+<p>如果一个整数元组可以是大于零的任意长度，将如何注释这个元组？这时候就可以使用省略号：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_tuple</span><span class="params">()</span> -&gt; tuple[int, ...]:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>But wait, there is more. Suppose you have a function returning a callable. If the signature of the callable, that is being returned, can vary, you can use the ellipsis object to indicate this:</p>
+<p>此外，如果使用 <code>typing</code> 模块中的 <code>Callable</code> ，用以说明返回的是一个可调用的对象，可以通过省略号表示若干个未定的参数列表，如：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Callable</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_callable</span><span class="params">()</span> -&gt; Callable[..., int]:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>The given code snippet means that a callable with an unknown  signature is returned, but the return type of the callable is specified: It is an integer.</p>
-<p>Great! At this point, we identified the first scenario, where we can utilise the ellipsis object in our Python code. Let’s see how we can benefit from it when implementing classes and functions.</p>
-<h2 id="Drop-in-Replacement-for-the-Pass-Keyword¶"><a href="#Drop-in-Replacement-for-the-Pass-Keyword¶" class="headerlink" title="Drop-in Replacement for the Pass-Keyword¶"></a>Drop-in Replacement for the Pass-Keyword<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#drop-in-replacement-for-the-pass-keyword" target="_blank" rel="noopener">¶</a></h2><p>In the <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#introduction" target="_blank" rel="noopener">introductory section</a>, there was already a hint that the ellipsis object could also be used as a drop-in replacement for the <code>pass</code> keyword. Remember, that the <code>pass</code> keyword is used if you want to define a function, class, for-loop or something similar but do not want to implement it yet. Because the Python syntax requires an indentation after these constructs, the <code>pass</code> keyword is used to satisfy Python on the one hand and you on the other hand as you do not need to implement it yet. Here is an example:</p>
+<p>此处的 <code>Callable[..., int]</code> 即表示此函数要返回一个可调用的对象，此对象为 <code>int</code> 类型，但无需指定调用标签。详细内容参阅：<a href="https://docs.python.org/3/library/typing.html" target="_blank" rel="noopener">https://docs.python.org/3/library/typing.html</a> 。</p>
+<p>以上演示了 Python 代码中省略号的第一种应用场景，可以用于类或函数返回值类型标记上。</p>
+<p>下面要演示的是第二种应用场景，可以用作 <code>pass</code> 关键字的临时替身。</p>
+<p>我们可以定义这样一个函数（参阅 <a href="http://www.itdiffer.com" target="_blank" rel="noopener">www.itdiffer.com</a> 中列出的任何一本 Python 基础图书）：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>In essence, even the <code>pass</code> keyword is not required. You only need to write down an expression. This could be a number …</p>
+<p>这里的关键 <code>pass</code> ，其实也可以不用，随便写一个表达式就可以，反正写这个函数的目的并不是真正要使用它，比如用数字 <code>1</code> 替代 <code>pass</code> 。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>… or the ellipsis literal:</p>
+<p>当然也可以用省略号。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_function</span><span class="params">()</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 
-<p>Python</p>
-<p>Personally, I like to use the <code>pass</code> keyword to indicate that something is implemented exactly the way I want it. An example would be creating a custom exception without adding further details:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomException</span><span class="params">(Exception)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<p>Python</p>
-<p>On the other hand, using the ellipsis object may indicate that a certain function is not yet fully implemented, but raising a <code>NotImplemented</code> exception seems to be overkill. To summarise: Yes, it <em>can</em> be used as a drop-in replacement for the <code>pass</code> keyword, but you probably <em>should not</em> do it, because there is a reason why everyone uses <code>pass</code>. Using it in articles to indicate further code lines should be fine, though!</p>
-<h2 id="The-Ellipsis-Object-in-the-Wild¶"><a href="#The-Ellipsis-Object-in-the-Wild¶" class="headerlink" title="The Ellipsis Object in the Wild¶"></a>The Ellipsis Object in the Wild<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#the-ellipsis-object-in-the-wild" target="_blank" rel="noopener">¶</a></h2><p>As stated earlier, if you want to implement a certain feature where  you need a non-used literal, you can use the ellipsis object. Typer [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:4" target="_blank" rel="noopener">4</a>] - a package for implementing command-line interfaces - and FastAPI [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:5" target="_blank" rel="noopener">5</a>] (web framework) are prominent examples utilising it. In FastAPI it is used to make parameters required [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:6" target="_blank" rel="noopener">6</a>] and in Typer, it is pretty similar: It indicates that a command-line argument is required [<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fn:7" target="_blank" rel="noopener">7</a>].</p>
-<p>So if you see yourself in the situation that you are developing a new tool or library and need a placeholder literal, remind yourself of the  ellipsis object!</p>
-<h2 id="Summary¶"><a href="#Summary¶" class="headerlink" title="Summary¶"></a>Summary<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#summary" target="_blank" rel="noopener">¶</a></h2><p>Congratulations, you have made it through the article. In this article, you learnt what the ellipsis object is and where you can use it. Possible use cases are type annotations, drop-in replacement for <code>pass</code> or using it for certain features where you need a non-used literal. Furthermore, we had a look at third-party packages utilising the ellipsis object to realise special features.</p>
-<p>I hope you enjoyed reading the article. Make sure to share it with your friends and colleagues. If you have not already, follow me on Twitter, where I am <a href="https://twitter.com/DahlitzF" target="_blank" rel="noopener">@DahlitzF</a> and subscribe to my <a href="https://florian-dahlitz.de/newsletter" target="_blank" rel="noopener">newsletter</a>, so you won’t miss any future articles. Stay curious and keep coding!</p>
-<h2 id="References¶"><a href="#References¶" class="headerlink" title="References¶"></a>References<a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#references" target="_blank" rel="noopener">¶</a></h2><hr>
-<ol>
-<li><a href="https://docs.python.org/3/library/constants.html#Ellipsis" target="_blank" rel="noopener">Built-in Constants | Official Python Documentation</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:1" target="_blank" rel="noopener">↩</a><a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref2:1" target="_blank" rel="noopener">↩</a></li>
-<li><a href="https://github.com/python/cpython/blob/3.9/Lib/token.py#L58" target="_blank" rel="noopener">Lib/token.py | Python Source Code</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:2" target="_blank" rel="noopener">↩</a></li>
-<li><a href="https://numpy.org/doc/stable/user/basics.indexing.html#structural-indexing-tools" target="_blank" rel="noopener">Indexing: Structural indexing tools | Official NumPy Documentation</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:3" target="_blank" rel="noopener">↩</a></li>
-<li><a href="https://github.com/tiangolo/typer" target="_blank" rel="noopener">Typer on GitHub</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:4" target="_blank" rel="noopener">↩</a></li>
-<li><a href="https://github.com/tiangolo/fastapi" target="_blank" rel="noopener">FastAPI on GitHub</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:5" target="_blank" rel="noopener">↩</a></li>
-<li><a href="https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#make-it-required" target="_blank" rel="noopener">Query Parameters and String Validations: Make it required</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:6" target="_blank" rel="noopener">↩</a></li>
-<li><a href="https://typer.tiangolo.com/tutorial/arguments/optional/" target="_blank" rel="noopener">Optional CLI Arguments</a> <a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#fnref:7" target="_blank" rel="noopener">↩</a></li>
-</ol>
+<p>但是要注意，可能有时候省略号会引发 <code>NotImplemented</code> 异常，这说明它并不适用于所有情况。所以，一般情况下，可以用省略号替代 <code>pass</code> ，但我不推荐这么做，还是最好使用 <code>pass</code> 。</p>
+<p>总结一下，省略号可以用在类型注释、替代 <code>pass</code> 等方面，但是在实际的使用中，也不能滥用。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#introduction" target="_blank" rel="noopener">https://florian-dahlitz.de/articles/what-is-pythons-ellipsis-object#introduction</a></p>
 </section>
     <!-- Tags START -->
     
@@ -302,7 +275,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#What-is-Python’s-Ellipsis-Object"><span class="toc-nav-text">What is Python’s Ellipsis Object?</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Introduction¶"><span class="toc-nav-text">Introduction¶</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Info"><span class="toc-nav-text">Info</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#General-Information¶"><span class="toc-nav-text">General Information¶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Type-Annotations¶"><span class="toc-nav-text">Type Annotations¶</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Info-1"><span class="toc-nav-text">Info</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Drop-in-Replacement-for-the-Pass-Keyword¶"><span class="toc-nav-text">Drop-in Replacement for the Pass-Keyword¶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#The-Ellipsis-Object-in-the-Wild¶"><span class="toc-nav-text">The Ellipsis Object in the Wild¶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Summary¶"><span class="toc-nav-text">Summary¶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#References¶"><span class="toc-nav-text">References¶</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
     
   </div>
 </aside>

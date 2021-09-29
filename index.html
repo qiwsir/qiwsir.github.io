@@ -192,14 +192,18 @@ zlib 是一个 Python  ...
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2021/09/10/python-ellipsis/">python ellipsis</a>
+        <a href="/2021/09/10/python-ellipsis/">Python 中的省略号</a>
       </h2>
       <p class="article-date">September 10, 2021</p>
       
       <div class="article-summary">
         
-          What is Python’s Ellipsis Object?Introduction¶Some time ago, I stumbled across a Python code snippet, which looked like this:
-12class CustomExcept ...
+          看这样一段代码：
+12class CustomException(Exception):    ...
+
+会不会认为它是一段伪代码？因为在 Python 中，一般会使用关键词 pass 来填充尚未实现的对象。
+然而，上面的代码真的能运行，它就是一段 Python 代码，不是伪代码。
+在 Py ...
         
       </div>
       <a class="more" href="/2021/09/10/python-ellipsis/">Read more</a>
