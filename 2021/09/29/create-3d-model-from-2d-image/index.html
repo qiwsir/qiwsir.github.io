@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      根据 2D 图片构建 3D 模型 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>根据 2D 图片构建 3D 模型</h2>
+    <p class="post-date">2021-09-29</p>
+    <section class="markdown-content"><p>近年来，深度学习（Deep Learning，DL）在解决图像分类、目标检测、语义分割等 2D 图像任务方面表现出了卓越的能力。在 3D 图形问题方面，DL 的应用也取得了巨大的进展。在这篇文章中，我们将探讨一个最新尝试：将 DL 应用于单个图像的 3D 建模上，这是 3D 计算机图形学领域最重要和最严峻的挑战之一。</p>
+<h2 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h2><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632907850633-d1.png" alt=""></p>
+<p>一张图片，就是 3D 物体的 2D 平面投影，所以，从高维空间向低维空间转换过程中，必然会丢失一些数据。因此，从单一视图的 2D 图像中，永远不会有足够的数据来构建其 3D 模型。</p>
+<p>所以，要实现从 2D 图像到 3D 模型的创建，必须对原来的 3D 物体本身有<strong>先验知识</strong>。</p>
+<p>在 2D 深度学习中，卷积自动编码器是学习输入图像的压缩表”的非常有效的方法。将此架构扩展为学习紧凑的形状知识是将深度学习应用于 3D 数据的最有前途的方法。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632907914605-d2.png" alt=""></p>
+<h2 id="3D数据表达"><a href="#3D数据表达" class="headerlink" title="3D数据表达"></a>3D数据表达</h2><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632907983869-d3.png" alt=""></p>
+<p>2D 图像在计算机中只有一种通用格式（像素），与之不同的是：3D 数据可以用许多不同的数字格式来表示。这些表示方法各有优缺点，因此数据呈现方式的选择直接影响到可使用的方法。  </p>
+<h3 id="栅格化形式（体积网格，Voxel）：可以直接应用-CNN"><a href="#栅格化形式（体积网格，Voxel）：可以直接应用-CNN" class="headerlink" title="栅格化形式（体积网格，Voxel）：可以直接应用 CNN"></a>栅格化形式（体积网格，Voxel）：可以直接应用 CNN</h3><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632908050371-d4.png" alt=""></p>
+<p><strong>立体像素</strong>的英文 voxel 是 volumetric pixel 的缩写，是空间网格像素到体积网格立体像素的直接扩展。每个立体像素的局部性共同定义了该体积数据的独特结构，因此卷积神经网络（CNN）的局部性假设在体积格式中仍然成立。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632908118714-d5.png" alt=""></p>
+<p>然而，这种表示是稀疏和浪费的。随着分辨率的增加，有用的立体像素的密度会降低。</p>
+<ul>
+<li><strong>优点：</strong>可以直接将 2D 表达中的 CNN 应用到 3D 表达。</li>
+<li><strong>缺点</strong>：表达方式浪费，必须要权衡计算资源。</li>
+</ul>
+<h3 id="几何形式：不能直接应用-CNN"><a href="#几何形式：不能直接应用-CNN" class="headerlink" title="几何形式：不能直接应用 CNN"></a>几何形式：不能直接应用 CNN</h3><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632908190962-d6.png" alt=""></p>
+<p><strong>多边形网格</strong>：是顶点、边和面的集合，可用于定义三维表面。它可以相当紧凑颗粒形式表达中细节。</p>
+<p><strong>点云</strong>：3D 坐标（x、y、z）中的点的集合，这些点共同形成一个类似于 3D 对象形状的云。点的集合越大，得到的细节就越多。不同顺序的相同点集仍然表示相同的 3D 对象。</p>
+<ul>
+<li><p><strong>优点：</strong>紧凑的表现形式，关注 3D 对象的表面细节。</p>
+</li>
+<li><p><strong>缺点：</strong>无法直接应用 CNN。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># point_cloud1 and point_cloud2 represent the same 3D structure</span></span><br><span class="line"><span class="comment"># even though they are represented differently in memory</span></span><br><span class="line">point_cloud1 = [(x1, y1, z1), (x2, y2, z2),..., (xn, yn, zn)]</span><br><span class="line">point_cloud2 = [(x2, y2, z2), (x1, y1, z1),..., (xn, yn, zn)]</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>以下方法参考论文：<a href="https://arxiv.org/abs/1706.07036" target="_blank" rel="noopener">Learning Efficient Point Cloud Generation for Dense 3D Object Reconstruction</a>，论文网址：<a href="https://arxiv.org/abs/1706.07036" target="_blank" rel="noopener">https://arxiv.org/abs/1706.07036</a></p>
+<p>下面的方法结合了点云的优点，但使用传统的 2D 卷积神经网络来学习先验的形状知识。  </p>
+<h3 id="2D-结构生成器"><a href="#2D-结构生成器" class="headerlink" title="2D 结构生成器"></a>2D 结构生成器</h3><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632908284941-d7.png" alt=""></p>
+<p>建立一个标准的 2D CNN 结构生成器，用于学习对象的先验形状知识。“立体像素方法”是不可取的，因为它效率低下，而且不可能用 CNN 直接学习点云。因此，我们将学习从单个图像到一个点云的 2D 投影的映射，并定义为： <code>2D projection == 3D coordinates (x,y,z) + binary mask (m)</code></p>
+<ul>
+<li><p>输入：单个 RGB 图像</p>
+</li>
+<li><p>输出：<strong>预测</strong>视点处的 2D 投影。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#--------- Pytorch pseudo-code for Structure Generator ---------#</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Structure_Generator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="comment"># contains two module in sequence, an encoder and a decoder</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.encoder = Encoder()</span><br><span class="line">        self.decoder = Decoder()    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, RGB_image)</span>:</span></span><br><span class="line">        <span class="comment"># Encoder takes in one RGB image and </span></span><br><span class="line">        <span class="comment"># output an encoded deep shape-embedding</span></span><br><span class="line">        shape_embedding = self.encoder(RGB_image)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Decoder takes the encoded values and output  </span></span><br><span class="line">        <span class="comment"># multiples 2D projection (XYZ + mask)</span></span><br><span class="line">        XYZ, maskLogit = self.decoder(shape_embedding)</span><br><span class="line"> </span><br><span class="line">       <span class="keyword">return</span> XYZ, maskLogit</span><br></pre></td></tr></table></figure>
+
+<h3 id="点云融合"><a href="#点云融合" class="headerlink" title="点云融合"></a>点云融合</h3><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632908403646-d8.png" alt=""></p>
+<p>将预测的 2D 投影融合到 3D 点云数据中。这是可以实现的，因为这些预测的视点是固定的，并且是事先知道的。</p>
+<ul>
+<li>输入：<strong>预测</strong>视点处的 2D 投影</li>
+<li>输出：点云</li>
+</ul>
+<h3 id="伪渲染器"><a href="#伪渲染器" class="headerlink" title="伪渲染器"></a>伪渲染器</h3><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632908503796-d9.png" alt=""></p>
+<p>可以推断，应该有必要将预测的 2D 投影融合的点云中。那么，如果我们从新视点渲染不同的 2D 投影，它也应该类似于真实 3D 模型的投影。 </p>
+<ul>
+<li>输入：点云</li>
+<li>输出：在<strong>新</strong>视点处的有深度的图像</li>
+</ul>
+<h3 id="动态训练"><a href="#动态训练" class="headerlink" title="动态训练"></a>动态训练</h3><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632908558207-d10.png" alt=""></p>
+<p>将上述三部分结合在一起，我们获得了一个端到端的模型，此模型可以用 2D 卷积结构生成器，将单个 2D 图像生成紧凑的点云。</p>
+<p>该模型的巧妙之处在于使 “融合+伪渲染”模块变成完全可微，其几何解释：</p>
+<ul>
+<li>几何代数（详细参考：<a href="https://en.wikipedia.org/wiki/Geometric_algebra）意味着没有可学习的参数，使模型尺寸更小，更易于训练。" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Geometric_algebra）意味着没有可学习的参数，使模型尺寸更小，更易于训练。</a></li>
+<li>微分意味着可以计算反向传播的梯度，从而可以使用 2D 投影的损失来学习生成 3D 点云。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --------- Pytorch pseudo-code for training loop ----------## Create 2D Conv Structure generator</span></span><br><span class="line">model = Structure_Generator()</span><br><span class="line"><span class="comment"># only need to learn the 2D structure optimizer</span></span><br><span class="line">optimizer = optim.SGD(model.parameters())<span class="comment"># 2D projections from predetermined viewpoints</span></span><br><span class="line">XYZ, maskLogit = model(RGB_images)<span class="comment"># fused point cloud</span></span><br><span class="line"><span class="comment">#fuseTrans is predetermined viewpoints info</span></span><br><span class="line">XYZid, ML = fuse3D(XYZ, maskLogit, fuseTrans)<span class="comment"># Render new depth images at novel viewpoints</span></span><br><span class="line"><span class="comment"># renderTrans is novel viewpoints info</span></span><br><span class="line">newDepth, newMaskLogit, collision = render2D(XYZid, ML, renderTrans)<span class="comment"># Compute loss between novel view and ground truth</span></span><br><span class="line">loss_depth = L1Loss()(newDepth, GTDepth)</span><br><span class="line">loss_mask = BCEWithLogitLoss()(newMaskLogit, GTMask)</span><br><span class="line">loss_total = loss_depth + loss_mask<span class="comment"># Back-propagation to update Structure Generator</span></span><br><span class="line">loss_total.backward()</span><br><span class="line">optimizer.step()</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><ul>
+<li>基于真实 3D 模型的深度图像与基于学习点云模型的渲染深度图像的比较。 </li>
+</ul>
+<p><img src="https://miro.medium.com/max/2000/1*7A3jPMWAi8rvgIi8GnpHrA.gif" alt=""></p>
+<ul>
+<li>最终结果：来自单个 RBG 图像→ 3D点云</li>
+</ul>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-9-29/1632908754242-d12.gif" alt=""></p>
+<p>本文的源码、论文和项目地址：</p>
+<ul>
+<li>Pytorch 源码：<a href="https://github.com/lkhphuc/pytorch-3d-point-cloud-generation" target="_blank" rel="noopener">https://github.com/lkhphuc/pytorch-3d-point-cloud-generation</a></li>
+<li>Tensorflow 源码：<a href="https://github.com/chenhsuanlin/3D-point-cloud-generation" target="_blank" rel="noopener">https://github.com/chenhsuanlin/3D-point-cloud-generation</a></li>
+<li>论文：<a href="https://arxiv.org/abs/1706.07036" target="_blank" rel="noopener">https://arxiv.org/abs/1706.07036</a></li>
+<li>项目地址：<a href="https://chenhsuanlin.bitbucket.io/3D-point-cloud-generation/" target="_blank" rel="noopener">https://chenhsuanlin.bitbucket.io/3D-point-cloud-generation/</a></li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://medium.com/vitalify-asia/create-3d-model-from-a-single-2d-image-in-pytorch-917aca00bb07" target="_blank" rel="noopener">https://medium.com/vitalify-asia/create-3d-model-from-a-single-2d-image-in-pytorch-917aca00bb07</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/09/15/compressandarchivefile/">
+        <span class="nav-arrow">← </span>
+        
+          用 Python 压缩文件方法汇总
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#任务"><span class="toc-nav-text">任务</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3D数据表达"><span class="toc-nav-text">3D数据表达</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#栅格化形式（体积网格，Voxel）：可以直接应用-CNN"><span class="toc-nav-text">栅格化形式（体积网格，Voxel）：可以直接应用 CNN</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#几何形式：不能直接应用-CNN"><span class="toc-nav-text">几何形式：不能直接应用 CNN</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法"><span class="toc-nav-text">方法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2D-结构生成器"><span class="toc-nav-text">2D 结构生成器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#点云融合"><span class="toc-nav-text">点云融合</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#伪渲染器"><span class="toc-nav-text">伪渲染器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#动态训练"><span class="toc-nav-text">动态训练</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结果"><span class="toc-nav-text">结果</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/09/29/create-3d-model-from-2d-image/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
