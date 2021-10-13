@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <!-- <h2>Archives</h2>
+  <p class="post-date">文章归档</p> -->
+</div>
+<main class="app-body" id="archives">
+  <div>
+    <h2 style="padding: 20px 0 25px 40px;">文章归档</h2>
+  </div>
+  
+  
+  
+    <section class="time-section">
+  <h1 class="section-year">
+    2021
+  </h1>
+  <div class="section-list">
+    
+    
+      <div class="section-list-item">
+        <a href="/2021/10/08/geometrical-matrices/" class="archive-title">从几何角度理解矩阵</a>
+        <p class="archive-date">10-08</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/09/29/create-3d-model-from-2d-image/" class="archive-title">根据 2D 图片构建 3D 模型</a>
+        <p class="archive-date">09-29</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/09/15/compressandarchivefile/" class="archive-title">用 Python 压缩文件方法汇总</a>
+        <p class="archive-date">09-15</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/09/15/paralellizingcode/" class="archive-title">用 Python 实现并行计算</a>
+        <p class="archive-date">09-15</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/09/10/python-ellipsis/" class="archive-title">Python 中的省略号</a>
+        <p class="archive-date">09-10</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/09/06/learn-program-right-way/" class="archive-title">什么是学习编程的正确方法</a>
+        <p class="archive-date">09-06</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/06/03/recursion/" class="archive-title">Python 中的递归</a>
+        <p class="archive-date">06-03</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/05/06/what-is-debugging/" class="archive-title">调试及其重要性</a>
+        <p class="archive-date">05-06</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/04/29/social-contract/" class="archive-title">开源的社会契约</a>
+        <p class="archive-date">04-29</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/04/23/make-a-python-package/" class="archive-title">创建 Python 包</a>
+        <p class="archive-date">04-23</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/04/19/Python%E8%BF%90%E7%AE%97%E7%AC%A6/" class="archive-title">Python运算符</a>
+        <p class="archive-date">04-19</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/03/24/unit-tests-part-1/" class="archive-title">How to Write Unit Tests in Python</a>
+        <p class="archive-date">03-24</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/03/16/loop-better/" class="archive-title">深入理解循环和迭代</a>
+        <p class="archive-date">03-16</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/03/10/remove-column-from-dataframe/" class="archive-title">从DataFrame中删除列</a>
+        <p class="archive-date">03-10</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/03/08/virtual-environments/" class="archive-title">Python虚拟环境</a>
+        <p class="archive-date">03-08</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/03/03/python-strings-word/" class="archive-title">Python字符串的前世今生</a>
+        <p class="archive-date">03-03</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/03/02/merge-dataframes/" class="archive-title">合并Pandas的DataFrame方法汇总</a>
+        <p class="archive-date">03-02</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/27/upgrade-pip/" class="archive-title">必须升级pip，为什么？！</a>
+        <p class="archive-date">02-27</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/23/golden-age/" class="archive-title">编程的黄金时代结束了吗？</a>
+        <p class="archive-date">02-23</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/18/hash-table-and-dictionary/" class="archive-title">通过散列表深入理解字典</a>
+        <p class="archive-date">02-18</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/18/name-in-python/" class="archive-title">Python中`__name__`有什么用</a>
+        <p class="archive-date">02-18</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/16/speed-up-sklearn/" class="archive-title">如何提速机器学习模型训练</a>
+        <p class="archive-date">02-16</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/14/python-packages/" class="archive-title">Python第三方包的那些事</a>
+        <p class="archive-date">02-14</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/13/cross-entropy/" class="archive-title">交叉熵损失函数</a>
+        <p class="archive-date">02-13</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/12/trig-function/" class="archive-title">三角函数</a>
+        <p class="archive-date">02-12</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/10/function-graphs/" class="archive-title">复合函数及图像变换</a>
+        <p class="archive-date">02-10</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/09/deep-understand-for-loop/" class="archive-title">深入理解for循环</a>
+        <p class="archive-date">02-09</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/08/functiongraphs/" class="archive-title">函数及其图像</a>
+        <p class="archive-date">02-08</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2021/02/06/similarity-md/" class="archive-title">计算相似度</a>
+        <p class="archive-date">02-06</p>
+      </div>
+    
+  </div>
+</section>
+  
+    <section class="time-section">
+  <h1 class="section-year">
+    2020
+  </h1>
+  <div class="section-list">
+    
+    
+      <div class="section-list-item">
+        <a href="/2020/12/12/their-learing/" class="archive-title">他们的学习</a>
+        <p class="archive-date">12-12</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/10/24/python-type-vs-instance/" class="archive-title">比较type和isinstance</a>
+        <p class="archive-date">10-24</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/10/19/python-filter-function/" class="archive-title">如何使用Python的filter函数</a>
+        <p class="archive-date">10-19</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/10/12/python-use-dunder-methods/" class="archive-title">如何实现四元数的运算</a>
+        <p class="archive-date">10-12</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/09/25/neuro-network-bp/" class="archive-title">反向传播算法的工作原理</a>
+        <p class="archive-date">09-25</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/09/22/activative-function/" class="archive-title">激活函数的“3W”</a>
+        <p class="archive-date">09-22</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/09/17/pandas-readhtml/" class="archive-title">不写爬虫，也能读取网页的表格数据</a>
+        <p class="archive-date">09-17</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/09/15/python-magic-method/" class="archive-title">Python中5对必知的魔法方法</a>
+        <p class="archive-date">09-15</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/09/11/data-science-enginerring/" class="archive-title">数据科学的软件工程技巧和最佳实践</a>
+        <p class="archive-date">09-11</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/09/04/read-and-write-file/" class="archive-title">用Python读写文件的方法</a>
+        <p class="archive-date">09-04</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/08/26/svd-recommond-sys/" class="archive-title">初学者指南：利用SVD创建推荐系统</a>
+        <p class="archive-date">08-26</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/08/20/grad-down/" class="archive-title">零基础学习梯度下降算法</a>
+        <p class="archive-date">08-20</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/08/17/convert-dictionary-to-dataframe/" class="archive-title">将Python中的字典数据转化为DataFrame的方法</a>
+        <p class="archive-date">08-17</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/08/14/add-column-pandas/" class="archive-title">根据条件增加DataFrame的列</a>
+        <p class="archive-date">08-14</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/08/12/python-namespace/" class="archive-title">Python中的命名空间和作用域</a>
+        <p class="archive-date">08-12</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/07/21/range-function/" class="archive-title">range函数小应用</a>
+        <p class="archive-date">07-21</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/07/20/what-is-EOF/" class="archive-title">EOF是不是字符</a>
+        <p class="archive-date">07-20</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/07/18/recommender-system-matrix/" class="archive-title">基于矩阵分解原理的推荐系统</a>
+        <p class="archive-date">07-18</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/07/15/nan-vs-2/" class="archive-title">比较NaN和整数</a>
+        <p class="archive-date">07-15</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/07/07/self-learning-path/" class="archive-title">AI工程师的自学之路</a>
+        <p class="archive-date">07-07</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/29/copy-and-view-in-numpy/" class="archive-title">Pandas和Numpy的视图和拷贝</a>
+        <p class="archive-date">06-29</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/24/stock-analysis/" class="archive-title">一个简单的股票数据分析及可视化库</a>
+        <p class="archive-date">06-24</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/23/python-keywords/" class="archive-title">必须要了解的Python关键词</a>
+        <p class="archive-date">06-23</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/18/football-data-analysis/" class="archive-title">分析梅西和罗纳尔多的比赛数据</a>
+        <p class="archive-date">06-18</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/16/python-nonetype/" class="archive-title">理解Python中的NoneType对象</a>
+        <p class="archive-date">06-16</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/15/child-python-five/" class="archive-title">青少年编程：用Python探究数学（5）</a>
+        <p class="archive-date">06-15</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/11/reading-excel-files/" class="archive-title">用Python读取Excel文件指南</a>
+        <p class="archive-date">06-11</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/08/child-python-four/" class="archive-title">青少年编程：用Python探究数学（4）</a>
+        <p class="archive-date">06-08</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/03/dictionary-comprehension/" class="archive-title">如何使用Python中的字典解析</a>
+        <p class="archive-date">06-03</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/06/01/lambda-in-python/" class="archive-title">Python中的4个Lambda函数示例</a>
+        <p class="archive-date">06-01</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/30/child-python-three/" class="archive-title">青少年编程：用Python探究数学（3）</a>
+        <p class="archive-date">05-30</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/27/child-python-two/" class="archive-title">青少年编程：用Python探究数学（2）</a>
+        <p class="archive-date">05-27</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/26/quantum-computing-one/" class="archive-title">什么是量子计算</a>
+        <p class="archive-date">05-26</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/26/built-in-funtions-for-loop/" class="archive-title">用4个简单的函数提升for循环</a>
+        <p class="archive-date">05-26</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/25/child-python-one/" class="archive-title">青少年编程：用Python探究数学（1）</a>
+        <p class="archive-date">05-25</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/22/Variables-and-Assignment/" class="archive-title">初学者专题：变量和赋值</a>
+        <p class="archive-date">05-22</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/21/regular-expression-fifth/" class="archive-title">Python中的正则表达式（五）</a>
+        <p class="archive-date">05-21</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/14/regular-expression-forth/" class="archive-title">Python中的正则表达式（四）</a>
+        <p class="archive-date">05-14</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/12/regular-expression-third/" class="archive-title">Python中的正则表达式（三）</a>
+        <p class="archive-date">05-12</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/09/regular-expression-second/" class="archive-title">Python中的正则表达式（二）</a>
+        <p class="archive-date">05-09</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/08/regular-expression-first/" class="archive-title">Python中的正则表达式（一）</a>
+        <p class="archive-date">05-08</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/04/sql-library-mysql/" class="archive-title">Python中的SQL库：MySQL</a>
+        <p class="archive-date">05-04</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/03/sql-library-sqlite/" class="archive-title">Python中的SQL库：SQLite</a>
+        <p class="archive-date">05-03</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/05/02/web-stack-forth/" class="archive-title">剖析Web技术栈（四）</a>
+        <p class="archive-date">05-02</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/30/learn-python-with-laoqi/" class="archive-title">《跟老齐学Python：轻松入门》勘误和修订</a>
+        <p class="archive-date">04-30</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/30/number-in-python/" class="archive-title">初学者须知：Python里的数</a>
+        <p class="archive-date">04-30</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/29/web-stack-third/" class="archive-title">剖析Web技术栈（三）</a>
+        <p class="archive-date">04-29</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/28/logistic-notebook/" class="archive-title">【logistic回归】笔记</a>
+        <p class="archive-date">04-28</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/28/web-stack-second/" class="archive-title">剖析Web技术栈（二）</a>
+        <p class="archive-date">04-28</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/26/cost-function-notebook/" class="archive-title">cost function 笔记</a>
+        <p class="archive-date">04-26</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/25/about-official-account/" class="archive-title">关于【老齐教室】</a>
+        <p class="archive-date">04-25</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/24/scrape-github-org/" class="archive-title">用Python抓取在Github上的组织名称</a>
+        <p class="archive-date">04-24</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/22/web-stack-first/" class="archive-title">剖析Web技术栈（一）</a>
+        <p class="archive-date">04-22</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/18/regression-regular-notebook/" class="archive-title">“线性回归模型正则化”笔记</a>
+        <p class="archive-date">04-18</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/17/data-science-real/" class="archive-title">数据科学：丰满的理想与骨感的现实</a>
+        <p class="archive-date">04-17</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/14/data-engineer-how-to-do/" class="archive-title">数据工程师的烦恼，就这样一扫而光</a>
+        <p class="archive-date">04-14</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/13/python39-dict-merge/" class="archive-title">Python3.9中合并字典的新方法</a>
+        <p class="archive-date">04-13</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/12/baidu-aistudio-chinese/" class="archive-title">如何在AI Studio数据可视化图像中显示汉字</a>
+        <p class="archive-date">04-12</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/10/reader-hongxianbin/" class="archive-title">《数据准备和特征工程》读后感</a>
+        <p class="archive-date">04-10</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/10/dl-information-theroy/" class="archive-title">用信息论剖析深度学习</a>
+        <p class="archive-date">04-10</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/07/ml-feature-enginning/" class="archive-title">《数据准备和特征工程》勘误与修订</a>
+        <p class="archive-date">04-07</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/05/book-reader-reply/" class="archive-title">读者来信：阅读齐老师图书的一些感想</a>
+        <p class="archive-date">04-05</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/04/ml-data-science-start/" class="archive-title">开启数据科学之旅</a>
+        <p class="archive-date">04-04</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/03/ml-information-theory/" class="archive-title">必须懂：深度学习中的信息论概念</a>
+        <p class="archive-date">04-03</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/04/01/ml-pandas-read-html/" class="archive-title">用Pandas从HTML网页中读取数据</a>
+        <p class="archive-date">04-01</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/31/pandas-huge-data/" class="archive-title">利用Pandas和SQLite提升超大数据的读取速度</a>
+        <p class="archive-date">03-31</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/30/ml-knn/" class="archive-title">写给小白：K近邻算法入门</a>
+        <p class="archive-date">03-30</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/28/python-math-symbole/" class="archive-title">用Python实现各类数学符号运算</a>
+        <p class="archive-date">03-28</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/25/python-underscore/" class="archive-title">初学Python语言者必须理解的下划线</a>
+        <p class="archive-date">03-25</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/23/python-asterisk/" class="archive-title">Python初学者应该了解的星号（*）</a>
+        <p class="archive-date">03-23</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/22/learn-opencv/" class="archive-title">手把手教你使用图像处理利器OpenCV</a>
+        <p class="archive-date">03-22</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/20/lasso-regression/" class="archive-title">写给初学者的LASSO回归</a>
+        <p class="archive-date">03-20</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/17/fibs-seq/" class="archive-title">Python中几种实现斐波那契数列的方法</a>
+        <p class="archive-date">03-17</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/15/jupyter-introduce/" class="archive-title">Jupyter不断演进的三大动力</a>
+        <p class="archive-date">03-15</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/13/fuzzymatcher-and-record-linkage/" class="archive-title">如何合并没有共同标识符的数据集</a>
+        <p class="archive-date">03-13</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/11/old-code/" class="archive-title">如何跳过古董代码的坑</a>
+        <p class="archive-date">03-11</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/06/offical-accounts/" class="archive-title">《老齐教室》目录</a>
+        <p class="archive-date">03-06</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/05/question-and-answer/" class="archive-title">针对各种编程问题，提供最权威回答</a>
+        <p class="archive-date">03-05</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/03/python-walrus-operator/" class="archive-title">Python3.8新语法：海象运算符</a>
+        <p class="archive-date">03-03</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/03/02/django-group-by/" class="archive-title">Django中用SQL实现分组查询</a>
+        <p class="archive-date">03-02</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/26/python-overload-function/" class="archive-title">Python如何实现重载函数</a>
+        <p class="archive-date">02-26</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/25/make-blog-by-django/" class="archive-title">【公开课】用Django快速做博客</a>
+        <p class="archive-date">02-25</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/24/python-thread-four/" class="archive-title">线程：概念和实现（4）</a>
+        <p class="archive-date">02-24</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/22/data-and-feature01-2/" class="archive-title">【公开课】数据准备和特征工程：01-2文件中的数据</a>
+        <p class="archive-date">02-22</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/21/data-and-feature01-1/" class="archive-title">【公开课】数据准备和特征工程：01-1学习准备</a>
+        <p class="archive-date">02-21</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/20/first-python-code/" class="archive-title">【公开课】写下第一行Python代码</a>
+        <p class="archive-date">02-20</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/18/python-thread-three/" class="archive-title">线程：概念和实现（3）</a>
+        <p class="archive-date">02-18</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/18/how-programming-run/" class="archive-title">【公开课】程序是怎么跑起来的</a>
+        <p class="archive-date">02-18</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/16/python-thread-two/" class="archive-title">线程：概念和实现（2）</a>
+        <p class="archive-date">02-16</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/15/crawler-nCon-2019/" class="archive-title">【公开课】用网络爬虫技术获取新冠病毒疫情数据</a>
+        <p class="archive-date">02-15</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/14/python-thread-one/" class="archive-title">线程：概念和应用(1)</a>
+        <p class="archive-date">02-14</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/13/data-and-feature/" class="archive-title">这本书，帮你解决AI项目中最难最烦的工作</a>
+        <p class="archive-date">02-13</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/11/python-tuple/" class="archive-title">全面深入介绍Python中的元组</a>
+        <p class="archive-date">02-11</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/10/offer-for-datascience/" class="archive-title">四种原因，让你没有得到数据科学职位的offer</a>
+        <p class="archive-date">02-10</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/09/python-is-or-not/" class="archive-title">Python中的 `!=`与`is not`不同</a>
+        <p class="archive-date">02-09</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/08/%E7%90%86%E8%A7%A3%E5%BE%AE%E7%A7%AF%E5%88%86/" class="archive-title">理解微积分概念，必不可少</a>
+        <p class="archive-date">02-08</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/05/speed-python/" class="archive-title">让Python程序轻松加速的方法</a>
+        <p class="archive-date">02-05</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/04/quicksort/" class="archive-title">通俗易懂讲算法：快速排序</a>
+        <p class="archive-date">02-04</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/02/01/%E5%B0%8F%E8%8D%B7%E6%89%8D%E9%9C%B2%E5%B0%96%E5%B0%96%E8%A7%92/" class="archive-title">小荷才露尖尖角</a>
+        <p class="archive-date">02-01</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/30/%E7%89%B9%E5%BE%81%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E8%A6%81/" class="archive-title">特征为什么那么重要</a>
+        <p class="archive-date">01-30</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/28/https/" class="archive-title">通俗易懂的HTTPS</a>
+        <p class="archive-date">01-28</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/24/python30%E4%BE%8B/" class="archive-title">python绝技30例</a>
+        <p class="archive-date">01-24</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/22/%E8%AF%BB%E5%86%99%E5%9B%BE%E7%89%87/" class="archive-title">用Python读写海量图片的方法</a>
+        <p class="archive-date">01-22</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6/" class="archive-title">最适合你学习的深度学习框架</a>
+        <p class="archive-date">01-20</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/17/%E8%B7%91%E5%BE%97%E6%9B%B4%E5%BF%AB/" class="archive-title">让Python程序跑得更快</a>
+        <p class="archive-date">01-17</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/16/%E5%A0%86%E6%8E%92%E5%BA%8F/" class="archive-title">Python中的堆排序</a>
+        <p class="archive-date">01-16</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/14/%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E5%8F%98%E9%87%8F/" class="archive-title">数据准备过程中如何创建虚拟变量</a>
+        <p class="archive-date">01-14</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/11/%E5%88%A9%E7%94%A8%E9%A3%9E%E6%A1%A8%E5%AE%9E%E7%8E%B0%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/" class="archive-title">利用飞桨实现数字识别</a>
+        <p class="archive-date">01-11</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/09/Python%E5%85%A8%E6%A0%88%E5%B7%A5%E7%A8%8B%E5%B8%88/" class="archive-title">Python全栈工程师</a>
+        <p class="archive-date">01-09</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/09/%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E9%A2%84%E6%B5%8B%E5%8C%BA%E9%97%B4/" class="archive-title">如何生成机器学习的预测区间</a>
+        <p class="archive-date">01-09</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/09/%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" class="archive-title">书籍介绍</a>
+        <p class="archive-date">01-09</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2020/01/08/hello-world/" class="archive-title">Hello World</a>
+        <p class="archive-date">01-08</p>
+      </div>
+    
+  </div>
+</section>
+  
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/archives/page/15/index.html';
+    //$('#article-banner').geopattern(url);
+    //$('.header').removeClass('fixed-header');
+  })();
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

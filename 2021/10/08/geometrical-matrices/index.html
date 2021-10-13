@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      从几何角度理解矩阵 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>从几何角度理解矩阵</h2>
+    <p class="post-date">2021-10-08</p>
+    <section class="markdown-content"><p>矩阵变换是线性代数中的主要内容，如何理解它？本文以几何角度，理解线性变换中的矩阵，能帮助学习者对其建立直观音箱。</p>
+<p>注：以下讨论中仅限于实数矩阵范围。</p>
+<h2 id="作为线性变换的矩阵"><a href="#作为线性变换的矩阵" class="headerlink" title="作为线性变换的矩阵"></a>作为线性变换的矩阵</h2><p>在线性代数中，线性方程组的形式是：</p>
+<p>$$\pmb{b} = \pmb{Ax}$$</p>
+<p>其中 $\pmb{b}\in\mathbb{R}^m$ ，$\pmb{A}\in\mathbb{R}^{m\times n}$ ，$\pmb{x}\in\mathbb{R}^n$ 。上式表示 $m$ 个线性方程组，$n$ 个未知量，$\pmb{A}$ 是系数矩阵，$\pmb{x}$ 是线性方程组的解。除了这个观点之外，还可以认为矩阵 $\pmb{A}$ 是实现 $\mathbb{R}^n\to\mathbb{R}^m$ 的线性变换 $f$ 。</p>
+<p>我认为，研究矩阵如何实现线性变换，最简单的方式是观察它的列向量，矩阵的列向量表示标准基的 $\mathbb{R}^n\to\mathbb{R}^m$ 的映射。例如，$\mathbb{R}^3$ 中的标准基是：</p>
+<p>$$\pmb{e}_1=\begin{bmatrix}1\0\0\end{bmatrix},\pmb{e}_2=\begin{bmatrix}0\1\0\end{bmatrix},\pmb{e}_3=\begin{bmatrix}0\0\1\end{bmatrix}$$</p>
+<p>根据定义，$\mathbb{R}^3$ 中的每个向量都可以写成标准基的线性组合：</p>
+<p>$$\pmb{x}=\begin{bmatrix}x_1\x_2\x_3\end{bmatrix}=x_1\begin{bmatrix}1\0\0\end{bmatrix}+x_2\begin{bmatrix}0\1\0\end{bmatrix}x_3\begin{bmatrix}0\0\1\end{bmatrix}$$</p>
+<p>现在让我们看看，用矩阵乘以标准基中的一个向量，会发生什么，例如 $\pmb{Ae}_2$ ：</p>
+<p>$$\overbrace{\vphantom{\begin{bmatrix}0\0\0\end{bmatrix}}\left[\begin{array}{c|c|c}1 &amp; {2} &amp; 0 \ -5 &amp; {3} &amp;1\end{array}\right]}^{\pmb{A}} \overbrace{\begin{bmatrix}0 \ 1 \ 0\end{bmatrix}}^{\pmb{e}_2}=\begin{bmatrix}0 + {2} + 0 \ 0 + {3} + 0\end{bmatrix}=\begin{bmatrix}{2} \ {3}\end{bmatrix}$$​​​​​​ </p>
+<p>也就是说，矩阵 $\pmb{A}$ 的第二个列向量告诉我们，它将 $\mathbb{R}^3$ 的第二个基向量映射到 $\mathbb{R}^2$ 。如果将 $\mathbb{R}^3$ 的基向量组成 $3\times3$ 的矩阵，通过矩阵乘法，$\mathbb{R}^3$ 的基向量映射到 $\mathbb{R}^2$ 。</p>
+<p>$$\left[\begin{array}{c|c|c}<br>1 &amp; 2 &amp; 0 \ -5 &amp; 3 &amp; 1<br>\end{array}\right]<br>\left[\begin{array}{c|c|c}<br>{1} &amp; {0} &amp; {0} \<br>{0} &amp; {1} &amp; {0} \<br>{0} &amp; {0} &amp; {1}<br>\end{array}\right]<br>=<br>\left[\begin{array}{c|c|c}<br>{1} &amp; {2} &amp; {0}<br>\<br>{-5} &amp; {3} &amp; {1}<br>\end{array}\right]$$​​​​​​​​​​​​​​​</p>
+<p>以上式子等号右侧的矩阵，每一列就是 $\mathbb{R}^3$ 的基映射到 $\mathbb{R}^2$ 后的基向量，也可以记作 $f(\pmb{e}_1)=\begin{bmatrix}1\-5\end{bmatrix},f(\pmb{e}_2)=\begin{bmatrix}2\3\end{bmatrix},f(\pmb{e}_3)=\begin{bmatrix}0\1\end{bmatrix}$ 。</p>
+<p>假设 $\mathbb{R}^3$ 中的向量 $\pmb{x}=\begin{bmatrix}1.2\1.5\-2\end{bmatrix}$ ，如果计算 $\pmb{Ax}$ ，即表示将向量 $\pmb{x}$ 映射到 $\mathbb{R}^2$ 中，即：</p>
+<p>$$\overbrace{<br>\vphantom{\begin{bmatrix}0\0\0\end{bmatrix}}<br>\left[\begin{array}{c|c|c}<br>1 &amp; 2 &amp; 0 \ -5 &amp; 3 &amp; 1<br>\end{array}\right]}^{\pmb{A}}<br>\overbrace{<br>\vphantom{\begin{bmatrix}0\0\0\end{bmatrix}}<br>\begin{bmatrix}<br>1.2 \ 1.5 \ -2<br>\end{bmatrix}}^{\pmb{x}}<br>=<br>\overbrace{<br>\vphantom{\begin{bmatrix}0\0\0\end{bmatrix}}<br>\begin{bmatrix}<br>4.2 \ -3.5<br>\end{bmatrix}}^{f(\pmb{x})}<br>$$      (1)</p>
+<p>此外，还可以用向量 $\pmb{x}$ 的系数与 $f(\pmb{e}_1),f(\pmb{e}_2),f(\pmb{e}_3)$ 的线性组合，表示映射后的 $\mathbb{R}^2$ 中的向量：</p>
+<p>$$1.2<br>\overbrace{\begin{bmatrix}<br>1 \ -5<br>\end{bmatrix}}^{f(\pmb{e}_1)}<br>+<br>1.5<br>\overbrace{\begin{bmatrix}<br>2 \ 3<br>\end{bmatrix}}^{f(\pmb{e}_2)}<br>-<br>2<br>\overbrace{\begin{bmatrix}<br>0 \ 1<br>\end{bmatrix}}^{f(\pmb{e}_3)}<br>=<br>\begin{bmatrix}<br>1.2 + 3 + 0 \<br>-6 + 4.5 - 2<br>\end{bmatrix}<br>=<br>\overbrace{\begin{bmatrix}<br>4.2 \-3.5<br>\end{bmatrix}}^{f(\pmb{x})}<br>$$    (2)</p>
+<p>比较（1）式和（2）式，很酷！</p>
+<p>上面两个式子可以帮助我们理解矩阵乘法，即将向量映射到转换矩阵 $\pmb{A}$ 的列空间（列向量张成的空间），$f(\pmb{x})$ 恰为矩阵 $\pmb{A}$ 的列向量的线性组合，系数为向量 $\pmb{x}$ 的元素。</p>
+<p>以线性变换或者映射的角度理解矩阵，是线性代数的关键。</p>
+<p>线性变换 $f:\mathbb{R}^n\to\mathbb{R}^m$ 意味着将 $\mathbb{R}^n$ 中的向量 $\pmb{x}$ 映射成为 $\mathbb{R}^m$ 的向量，它是 $\mathbb{R}^m$ 基的线性组合，能表示为矩阵与向量的乘积。</p>
+<p>$$\begin{split}\pmb{x} &amp;= x_1\pmb{e}_1+x_2\pmb{e}_2+\cdots+x_n\pmb{e}_n\f(\pmb{x})&amp;=f(x_1\pmb{e}_1+x_2\pmb{e}_2+\cdots+x_n\pmb{e}_n)\&amp;=f(x_1\pmb{e}_1)+f(x_2\pmb{e}_2)+\cdots+f(x_n\pmb{e}_n)\&amp;=x_1f(\pmb{e}_1)+x_2f(\pmb{e}_2)+\cdots+x_nf(\pmb{e}_n)\&amp;=\begin{bmatrix}f(\pmb{e}_1)&amp;f(\pmb{e}_2)&amp;\cdots&amp;f(\pmb{e}_n)\end{bmatrix}\pmb{x}\end{split}$$</p>
+<h2 id="从几何角度理解"><a href="#从几何角度理解" class="headerlink" title="从几何角度理解"></a>从几何角度理解</h2><p>从几何角度理解矩阵所具有的线性变换特点，能更直观感受到其中的奇妙。以 $2\times2$ 级矩阵为例，它实现了 $\mathbb{R}^2\to\mathbb{R}^2$ 的线性变换，例如用下述的矩阵 $\pmb{A}$ 对向量 $\pmb{x}=\begin{bmatrix}1\2\end{bmatrix}$ 进行变换，即：</p>
+<p>$\pmb{Ax}=\overbrace{\begin{bmatrix}2&amp;-1\0&amp;1\end{bmatrix}}^{\pmb{A}}\overbrace{\begin{bmatrix}1\2\end{bmatrix}}^{\pmb{x}}=\overbrace{\begin{bmatrix}0\2\end{bmatrix}}^{f(\pmb{x})}$</p>
+<p>以图示的方式，如下图所示，A 部分表示向量 $\pmb{x}$ 是 $\mathbb{R}^2$ 的标准正交基的线性组合，B 部分表示经过转换之后的向量 $f(\pmb{x})$ 在以矩阵 $\pmb{A}$ 的列向量为基的 $\mathbb{R}^2$ 中的基向量的线性组合，即 $\pmb{Ax}$ 表示经过线性变换之后，在 $\pmb{A}$ 的列向量张成的向量空间中的向量。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-10-9/1633757560622-transformation.png" alt=""></p>
+<p>注意观察，上图中 A 以方格为单位，B 的平行四边形网格表示了变换后的空间。可以想象，通过矩阵，不仅可以实现对向量的变换，也能够对 $\mathbb{R}^n$ 中所有的 $m\times n$ 矩阵进行变换。</p>
+<h2 id="线性变换的类型"><a href="#线性变换的类型" class="headerlink" title="线性变换的类型"></a>线性变换的类型</h2><p>矩阵能够实现的线性变换包括旋转、反射、伸缩、剪切、投影等。如下图所示，A 部分第一行最左为变换前的 $\mathbb{R}^2$ 空间的图形，向右依次表示：沿 x  轴压缩、旋转；第二行从左向右依次表示：向 $\mathbb{R}$ 的投影、基于 y 轴的反射、剪切。B 部分则表示的是 $\mathbb{R}^2$ 中的非线性变换。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-10-9/1633770290573-types.png" alt=""></p>
+<p>线性函数是 1 次或更少次的多项式，这意味着变量的变化率恒定。因此，不能用线性变换表示的空间的形变，即若 $\mathbb{R}^n$ 中均匀分布的点在 $\mathbb{R}^m$ 中若不均匀了（如上图 B 所示），就不能使用线性变换。</p>
+<p>下面讨论几种特殊矩阵的变换，为了简化问题，仅以 $n\times n$ 矩阵为例。</p>
+<h3 id="对角矩阵"><a href="#对角矩阵" class="headerlink" title="对角矩阵"></a>对角矩阵</h3><p>对角矩阵乘以一个向量，其形式如下：</p>
+<p>$$\begin{bmatrix}<br> &amp; &amp; &amp; &amp; \<br>&amp; \ddots &amp; &amp; &amp; \<br>&amp; &amp; {\alpha_i} &amp; &amp; \<br>&amp; &amp; &amp; \ddots &amp; \<br>&amp; &amp; &amp; &amp; {\alpha_n}<br>\end{bmatrix}<br>\begin{bmatrix}<br>x_1 \ \vdots \ x_i \ \vdots \ x_n<br>\end{bmatrix}<br>=<br>x_1 \begin{bmatrix}<br>{\alpha_1} \ \phantom{\vdots} \ \phantom{\vdots} \ \phantom{\vdots} \ \phantom{\vdots}<br>\end{bmatrix}<br>+<br>\dots<br>+<br>x_i \begin{bmatrix}<br>\phantom{\vdots} \ \phantom{\vdots} \ {\alpha_i} \ \phantom{\vdots} \ \phantom{\vdots}<br>\end{bmatrix}<br>+<br>\dots<br>+<br>x_n \begin{bmatrix}<br>\phantom{\vdots} \ \phantom{\vdots} \ \phantom{\vdots} \ \phantom{\vdots} \ {\alpha_n}<br>\end{bmatrix}$$​​​​​​</p>
+<p>这意味着通过对角矩阵能够指定向量中的某个元素发生特定变换。如下图所示，如果 $\alpha_i\gt1$ ，则向量中对应的第 $i$ 个元素会被拉伸（变大）；如果 $\alpha_i\lt0$ ，则能令第 $i$ 个元素实现反射。通过对角矩阵不能实现剪切变换。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-10-9/1633771575762-diagonal.png" alt=""></p>
+<p>上图中 A 的单位方格表示标准基下的形状；B 旋转 $90°$ ；C 基于 y 轴反射；D 实现了沿横轴方向的拉伸 。</p>
+<p>注意，当 $\forall i, \alpha_i = 1$ ，对角矩阵是单位矩阵，对应着没有变换时的标准基。其行列式为 $1$ ，不会改变向量子空间。</p>
+<h3 id="剪切矩阵"><a href="#剪切矩阵" class="headerlink" title="剪切矩阵"></a>剪切矩阵</h3><p>此类矩阵的命名即源于它的作用效果，在形式上可与对角矩阵进行比较，注意其中的 $\beta$ 。</p>
+<p>$$\begin{bmatrix}<br>\alpha_1 &amp; \dots &amp; {\beta} &amp; &amp; \<br>&amp; \ddots &amp; \vdots &amp; &amp; \<br>&amp; &amp; {\alpha_i} &amp; &amp; \<br>&amp; &amp; &amp; \ddots &amp; \<br>&amp; &amp; &amp; &amp; \alpha_n<br>\end{bmatrix}<br>\begin{bmatrix}<br>x_1 \ \vdots \ x_i \ \vdots \ x_n<br>\end{bmatrix}<br>=<br>x_1 \begin{bmatrix}<br>{\alpha_1} \ \phantom{\vdots} \ \phantom{\vdots} \ \phantom{\vdots} \ \phantom{\vdots}<br>\end{bmatrix}<br>+<br>\dots<br>+<br>x_i \begin{bmatrix}<br>{\beta} \ \phantom{\vdots} \ {\alpha_i} \ \phantom{\vdots} \ \phantom{\vdots}<br>\end{bmatrix}<br>+<br>\dots<br>+<br>x_n \begin{bmatrix}<br>\phantom{\vdots} \ \phantom{\vdots} \ \phantom{\vdots} \ \phantom{\vdots} \ {\alpha_n}<br>\end{bmatrix}$$​​​​</p>
+<p>如果没有 $\beta$ ，则向量中的 $x_1$ 被拉伸为 $\alpha_1$ 倍；当有了 $\beta$ 后，变换后的向量的第一个元素是 $\beta$ 和 $\alpha_1$ 的线性组合。其效果可以用下面的二维图示表示，原来的单位方格在一个维度上实现了剪切。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-10-9/1633773837064-shear.png" alt=""></p>
+<p>前面曾经使用过的矩阵 $\pmb{A}=\begin{bmatrix}2&amp;-1\0&amp;1\end{bmatrix}$ 也是剪切矩阵。</p>
+<h3 id="正交矩阵"><a href="#正交矩阵" class="headerlink" title="正交矩阵"></a>正交矩阵</h3><p>正交矩阵是行向量和列向量正交的方阵，且行向量和列向量都是单位向量。以 $\pmb{a}_i$ 表示矩阵 $\pmb{A}$ 的第 $i$ 列向量。根据正交定义，如果两个向量的点积等于 $0$ ，则这两个向量正交。用几何的方式表示，如下图所示，将一个向量投影到另一个向量方向上，如果两个向量不正交，投影的长度就是两个向量点积的结果（如下图 A 所示），下图中 B 显示两个向量正交，则投影的长度为 $0$ ，即两个向量点积结果为 $0$ 。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-10-9/1633774361022-dotprod.png" alt=""></p>
+<p>即：$\pmb{a}_i^{\rm{T}}\pmb{a}_j=0,i\ne j$ 。又由于是单位向量，$\pmb{a}_i^{\rm{T}}\pmb{a}_i=1$ 。从而对于正交矩阵 $\pmb{A}\in\mathbb{R}^{n\times n}$ ，有：</p>
+<p>$$\pmb{AA}^{\operatorname{T}}=\pmb{A}^{\operatorname{T}}\pmb{A}=\pmb{I}_n$$</p>
+<p>可以把行和列写出来，就更直观了：</p>
+<h1 id="pmb-A-top-pmb-A"><a href="#pmb-A-top-pmb-A" class="headerlink" title="$$\pmb{A}^{\top} \pmb{A}"></a>$$\pmb{A}^{\top} \pmb{A}</h1><p>\left[\begin{array}{c}<br>\pmb{a}_1^{\top}<br>\<br>\hline<br>\pmb{a}_2^{\top}<br>\<br>\hline<br>\vdots<br>\<br>\hline<br>\pmb{a}_n^{\top}<br>\end{array}\right]<br>\left[<br>\begin{array}{c|c|c|c}<br>\pmb{a}_1 &amp; \pmb{a}_2 &amp; \dots &amp; \pmb{a}_n<br>\end{array}<br>\right]<br>=<br>\begin{bmatrix}<br>1 &amp; &amp; &amp; \<br>&amp; 1 &amp; &amp; \<br>&amp; &amp; \ddots &amp; \<br>&amp; &amp; &amp; 1<br>\end{bmatrix}<br>= \pmb{I}_n$$</p>
+<p>从几何角度讲，正交矩阵能够旋转或翻转向量，但不能拉伸或压缩。如果更严谨地研究正交矩阵，需要了解如下几项性质。</p>
+<p><strong>1. 角度不变</strong></p>
+<p>设矩阵 $\pmb{V}$ 的列向量集合是 ${\pmb{v}_1,\pmb{v}_2,\cdots,\pmb{v}_n}$ ，矩阵 $\pmb{A}$ 是单位正交矩阵，线性变换 $\pmb{AV}$ 并不改变列向量两两之间的夹角。</p>
+<p>对于其中的列向量 $\pmb{v}_i$ 和 $\pmb{v}_j$ 其中 $i\ne j$ ，它们的点积是 $\pmb{v}_i\cdot\pmb{v}_j$ 。</p>
+<p>$$\begin{align}<br>\pmb{Av}_i \cdot \pmb{Av}_j<br>&amp;= (\pmb{Av}_i)^{\top} (\pmb{Av}_j)<br>\<br>&amp;= \pmb{v}_i^{\top} \pmb{A}^{\top} A \pmb{v}_j<br>\<br>&amp;= \pmb{v}_i^{\top} \pmb{v}_j<br>\<br>&amp;= \pmb{v}_i \cdot \pmb{v}_j<br>\end{align}$$</p>
+<p>即：原矩阵的列向量之间的夹角经过单位正交矩阵映射之后依然保留。</p>
+<p><strong>2. 长度不变</strong></p>
+<p>针对矩阵 $\pmb{V}$ 的列向量，经单位正交矩阵 $\pmb{A}$ 映射后，列向量的长度不变。</p>
+<p>假设 $\pmb{v}$ 是矩阵 $\pmb{V}$ 的一个列向量，则：</p>
+<p>$$\begin{align}<br>\lVert \pmb{Av} \lVert_2^2<br>&amp;= \pmb{Av} \cdot \pmb{Av}<br>\<br>&amp;= (\pmb{Av})^{\top} (\pmb{Av})<br>\<br>&amp;= \pmb{v}^{\top} \pmb{A}^{\top} \pmb{Av}<br>\<br>&amp;= \pmb{v}^{\top} \pmb{v}<br>\<br>&amp;= \pmb{v} \cdot \pmb{v}<br>\<br>&amp;= \lVert \pmb{v} \rVert_2^2<br>\end{align}$$</p>
+<p>即：原矩阵的列向量的长度经过单位正交矩阵映射之后依然保留。</p>
+<p><strong>3. 面积不变</strong></p>
+<p>单位正交矩阵 $\pmb{A}$ 的行列式：</p>
+<p>$$1 = \det(\pmb{I}_n) = \det(\pmb{A}^{\top} \pmb{A}) = \det(\pmb{A}^{\top}) \det(\pmb{A}) = (\det(\pmb{A}))^2$$</p>
+<p>所以，$\det(\pmb{A})=\pm1$</p>
+<ul>
+<li>当 $\det(\pmb{A})=1$ 时，单位正交矩阵 $\pmb{A}$ 是一个旋转矩阵。</li>
+<li>当 $\det(\pmb{A})=-1$ 时，单位正交矩阵 $\pmb{A}$ 是旋转反射矩阵（rotoreflection），即旋转之后再反射，也称为瑕旋转（improer fotation）。</li>
+</ul>
+<p>于是，如果用 $\pmb{A}$ 对另外的矩阵进行映射，该矩阵的行列式可视为 n 维多面体（如果是 $2\times2$ 矩阵的行列式，则是平面），其多面体的表面积并不会因为映射而改变。</p>
+<h2 id="线性函数"><a href="#线性函数" class="headerlink" title="线性函数"></a>线性函数</h2><p>如果 $f$ 和 $g$ 是线性的，则 $f(g(x))$ 也是线性的。由此可以用矩阵的乘法表示矩阵的变换。由奇异值分解$^{[3]}$ ：</p>
+<p>$$\pmb{A}=\pmb{U\Sigma V}^{\top}$$</p>
+<p>其中 $\pmb{A}\in \mathbb{R}^{m\times n},\pmb{U}\in \mathbb{R}^{m\times m}, \pmb{V}\in \mathbb{R}^{N\times n}$ ，$\pmb{\Sigma}\in \mathbb{R}^{m\times n}$ 是正交对角矩阵。</p>
+<p>可知，任何矩阵变换都可以分解成由单位矩阵和对角矩阵组成的简单矩阵变换。</p>
+<p>下面以实现旋转变换的 $2\times2$ 矩阵 $\pmb{R}$ 为例，对其进行奇异值分解。</p>
+<p>$$\overbrace{\begin{bmatrix}<br>    \cos(\theta) &amp; -\sin(\theta) \<br>    \sin(\theta) &amp; \cos(\theta)<br>\end{bmatrix}}^{\pmb{R}} = \pmb{M}_1\pmb{M}_2 \pmb{M}_3$$</p>
+<p>$$\pmb{M}_1 = \begin{bmatrix}<br>    1 &amp; \alpha \<br>    0 &amp; 1<br>\end{bmatrix}<br>\qquad<br>\pmb{M}_2 = \begin{bmatrix}<br>    1 &amp; 0 \<br>    \beta &amp; 1<br>\end{bmatrix}<br>\qquad<br>\pmb{M}_3 = \begin{bmatrix}<br>    1 &amp; \gamma \<br>    0 &amp; 1<br>\end{bmatrix}$$</p>
+<p>利用三角函数的知识，可知：$\alpha=-\tan(\frac{\theta}{2}), \beta=\sin(\theta), \gamma = -\tan(\frac{\theta}{2})$ 。下图中假设 $\theta=\frac{\pi}{3}$ ，演示了上述三个矩阵分别对最左侧的原始向量所实现的旋转变换。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-10-13/1634087624248-composition.png" alt=""></p>
+<p>附：下面是对上述旋转变换的矩阵 $\mathbb{R}$ 进行奇异值分解后所得矩阵的计算过程。</p>
+<p>根据上述分解形式，首先计算 $\pmb{M}_1\pmb{M}_2$ ：</p>
+<p>$$\overbrace{\begin{bmatrix}<br>    1 &amp; \alpha \<br>    0 &amp; 1<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 \<br>    \beta &amp; 1<br>\end{bmatrix}}^{\pmb{M}_1\pmb{M}_2}<br>=<br>\begin{bmatrix}<br>    1 + \alpha \beta &amp; \alpha \<br>    \beta &amp; 1<br>\end{bmatrix}$$</p>
+<p>再计算 $\pmb{M}_1\pmb{M}_2\pmb{M}_3$ ：</p>
+<p>$$\overbrace{\begin{bmatrix}<br>    1 + \alpha \beta &amp; \alpha \<br>    \beta &amp; 1<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; \gamma \<br>    0 &amp; 1<br>\end{bmatrix}}^{\pmb{M}_1 \pmb{M}_2 \pmb{M}_3}<br>=<br>\begin{bmatrix}<br>    1 + \alpha \beta  &amp; \gamma + \alpha \beta \gamma + \alpha \<br>    \beta &amp; \beta \gamma + 1<br>\end{bmatrix}$$</p>
+<p>根据前述定义的旋转矩阵，得：</p>
+<p>$$\begin{bmatrix}<br>    \cos(\theta) &amp; - \sin(\theta) \<br>    \sin(\theta) &amp; \cos(\theta)<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    1 + \alpha \beta  &amp; \gamma + \alpha \beta \gamma + \alpha \<br>    \beta &amp; \beta \gamma + 1<br>\end{bmatrix}$$</p>
+<p>从而：</p>
+<p>$\beta=\sin(\theta)$</p>
+<p>$$\begin{align}<br>\cos(\theta) &amp;= 1 + \alpha \beta<br>\<br>&amp;= 1 + \alpha \sin(\theta)<br>\<br>\alpha &amp;= \frac{\cos(\theta) - 1}{\sin(\theta)}<br>\<br>&amp;= -\frac{1 - \cos(\theta)}{\sin(\theta)}<br>\<br>&amp;= - \tan\Big(\frac{\theta}{2}\Big)<br>\end{align}$$</p>
+<p>$$\begin{align}<br>\cos(\theta) &amp;= \beta \gamma + 1<br>\<br>&amp;= \sin(\theta) \gamma + 1<br>\<br>\frac{\cos(\theta) - 1}{\sin(\theta)} &amp;= \gamma<br>\<br>\gamma &amp;= - \frac{1 - \cos(\theta)}{\sin(\theta)}<br>\<br>&amp;= - \tan\Big(\frac{\theta}{2}\Big)<br>\end{align}$$</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>本文对线性变换从几何角度给予阐述，有利于更直观地理解线性变换的有关概念。在学习线性代数时，这是一种很重要的学习和思考方法。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]. <a href="http://gregorygundersen.com/blog/2018/10/24/matrices/?&continueFlag=219df8fa5d92e2a41b6fa4af489909e2" target="_blank" rel="noopener">A Geometrical Understanding of Matrices</a></p>
+<p>[2]. <a href="https://zh.wikipedia.org/wiki/%E7%91%95%E6%97%8B%E8%BD%89" target="_blank" rel="noopener">维基百科：瑕旋转</a></p>
+<p>[3]. 齐伟. 机器学习数学基础. 电子工业出版社</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/09/29/create-3d-model-from-2d-image/">
+        <span class="nav-arrow">← </span>
+        
+          根据 2D 图片构建 3D 模型
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#作为线性变换的矩阵"><span class="toc-nav-text">作为线性变换的矩阵</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#从几何角度理解"><span class="toc-nav-text">从几何角度理解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#线性变换的类型"><span class="toc-nav-text">线性变换的类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#对角矩阵"><span class="toc-nav-text">对角矩阵</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#剪切矩阵"><span class="toc-nav-text">剪切矩阵</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#正交矩阵"><span class="toc-nav-text">正交矩阵</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#pmb-A-top-pmb-A"><span class="toc-nav-text">$$\pmb{A}^{\top} \pmb{A}</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#线性函数"><span class="toc-nav-text">线性函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/10/08/geometrical-matrices/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
