@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通过内置对象理解 Python（二） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通过内置对象理解 Python（二）</h2>
+    <p class="post-date">2021-11-03</p>
+    <section class="markdown-content"><h2 id="所有的内置函数"><a href="#所有的内置函数" class="headerlink" title="所有的内置函数"></a>所有的内置函数</h2><p>用 <code>dir()</code> 函数可以查看所有内置函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(dir(__builtins__))</span><br><span class="line">[<span class="string">'ArithmeticError'</span>, <span class="string">'AssertionError'</span>, <span class="string">'AttributeError'</span>, <span class="string">'BaseException'</span>,</span><br><span class="line"> <span class="string">'BlockingIOError'</span>, <span class="string">'BrokenPipeError'</span>, <span class="string">'BufferError'</span>, <span class="string">'BytesWarning'</span>,</span><br><span class="line"> <span class="string">'ChildProcessError'</span>, <span class="string">'ConnectionAbortedError'</span>, <span class="string">'ConnectionError'</span>,</span><br><span class="line"> <span class="string">'ConnectionRefusedError'</span>, <span class="string">'ConnectionResetError'</span>, <span class="string">'DeprecationWarning'</span>,</span><br><span class="line"> <span class="string">'EOFError'</span>, <span class="string">'Ellipsis'</span>, <span class="string">'EnvironmentError'</span>, <span class="string">'Exception'</span>, <span class="string">'False'</span>,</span><br><span class="line"> <span class="string">'FileExistsError'</span>, <span class="string">'FileNotFoundError'</span>, <span class="string">'FloatingPointError'</span>,</span><br><span class="line"> <span class="string">'FutureWarning'</span>, <span class="string">'GeneratorExit'</span>, <span class="string">'IOError'</span>, <span class="string">'ImportError'</span>,</span><br><span class="line"> <span class="string">'ImportWarning'</span>, <span class="string">'IndentationError'</span>, <span class="string">'IndexError'</span>, <span class="string">'InterruptedError'</span>,</span><br><span class="line"> <span class="string">'IsADirectoryError'</span>, <span class="string">'KeyError'</span>, <span class="string">'KeyboardInterrupt'</span>, <span class="string">'LookupError'</span>,</span><br><span class="line"> <span class="string">'MemoryError'</span>, <span class="string">'ModuleNotFoundError'</span>, <span class="string">'NameError'</span>, <span class="string">'None'</span>,</span><br><span class="line"> <span class="string">'NotADirectoryError'</span>, <span class="string">'NotImplemented'</span>, <span class="string">'NotImplementedError'</span>,</span><br><span class="line"> <span class="string">'OSError'</span>, <span class="string">'OverflowError'</span>, <span class="string">'PendingDeprecationWarning'</span>,</span><br><span class="line"> <span class="string">'PermissionError'</span>, <span class="string">'ProcessLookupError'</span>, <span class="string">'RecursionError'</span>,</span><br><span class="line"> <span class="string">'ReferenceError'</span>, <span class="string">'ResourceWarning'</span>, <span class="string">'RuntimeError'</span>, <span class="string">'RuntimeWarning'</span>,</span><br><span class="line"> <span class="string">'StopAsyncIteration'</span>, <span class="string">'StopIteration'</span>, <span class="string">'SyntaxError'</span>, <span class="string">'SyntaxWarning'</span>,</span><br><span class="line"> <span class="string">'SystemError'</span>, <span class="string">'SystemExit'</span>, <span class="string">'TabError'</span>, <span class="string">'TimeoutError'</span>, <span class="string">'True'</span>,</span><br><span class="line"> <span class="string">'TypeError'</span>, <span class="string">'UnboundLocalError'</span>, <span class="string">'UnicodeDecodeError'</span>,</span><br><span class="line"> <span class="string">'UnicodeEncodeError'</span>, <span class="string">'UnicodeError'</span>, <span class="string">'UnicodeTranslateError'</span>,</span><br><span class="line"> <span class="string">'UnicodeWarning'</span>, <span class="string">'UserWarning'</span>, <span class="string">'ValueError'</span>, <span class="string">'Warning'</span>,</span><br><span class="line"> <span class="string">'ZeroDivisionError'</span>, <span class="string">'__build_class__'</span>, <span class="string">'__debug__'</span>, <span class="string">'__doc__'</span>,</span><br><span class="line"> <span class="string">'__import__'</span>, <span class="string">'__loader__'</span>, <span class="string">'__name__'</span>, <span class="string">'__package__'</span>, <span class="string">'__spec__'</span>,</span><br><span class="line"> <span class="string">'abs'</span>, <span class="string">'all'</span>, <span class="string">'any'</span>, <span class="string">'ascii'</span>, <span class="string">'bin'</span>, <span class="string">'bool'</span>, <span class="string">'breakpoint'</span>, <span class="string">'bytearray'</span>,</span><br><span class="line"> <span class="string">'bytes'</span>, <span class="string">'callable'</span>, <span class="string">'chr'</span>, <span class="string">'classmethod'</span>, <span class="string">'compile'</span>, <span class="string">'complex'</span>,</span><br><span class="line"> <span class="string">'copyright'</span>, <span class="string">'credits'</span>, <span class="string">'delattr'</span>, <span class="string">'dict'</span>, <span class="string">'dir'</span>, <span class="string">'divmod'</span>, <span class="string">'enumerate'</span>,</span><br><span class="line"> <span class="string">'eval'</span>, <span class="string">'exec'</span>, <span class="string">'exit'</span>, <span class="string">'filter'</span>, <span class="string">'float'</span>, <span class="string">'format'</span>, <span class="string">'frozenset'</span>,</span><br><span class="line"> <span class="string">'getattr'</span>, <span class="string">'globals'</span>, <span class="string">'hasattr'</span>, <span class="string">'hash'</span>, <span class="string">'help'</span>, <span class="string">'hex'</span>, <span class="string">'id'</span>, <span class="string">'input'</span>,</span><br><span class="line"> <span class="string">'int'</span>, <span class="string">'isinstance'</span>, <span class="string">'issubclass'</span>, <span class="string">'iter'</span>, <span class="string">'len'</span>, <span class="string">'license'</span>, <span class="string">'list'</span>,</span><br><span class="line"> <span class="string">'locals'</span>, <span class="string">'map'</span>, <span class="string">'max'</span>, <span class="string">'memoryview'</span>, <span class="string">'min'</span>, <span class="string">'next'</span>, <span class="string">'object'</span>, <span class="string">'oct'</span>,</span><br><span class="line"> <span class="string">'open'</span>, <span class="string">'ord'</span>, <span class="string">'pow'</span>, <span class="string">'print'</span>, <span class="string">'property'</span>, <span class="string">'quit'</span>, <span class="string">'range'</span>, <span class="string">'repr'</span>,</span><br><span class="line"> <span class="string">'reversed'</span>, <span class="string">'round'</span>, <span class="string">'set'</span>, <span class="string">'setattr'</span>, <span class="string">'slice'</span>, <span class="string">'sorted'</span>,</span><br><span class="line"> <span class="string">'staticmethod'</span>, <span class="string">'str'</span>, <span class="string">'sum'</span>, <span class="string">'super'</span>, <span class="string">'tuple'</span>, <span class="string">'type'</span>, <span class="string">'vars'</span>, <span class="string">'zip'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>内容很多，但别担心，我们会把它们分成不同的组，然后逐一解决。  </p>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><p>Python 有66个内置的异常类（到目前为止），每个类都用于程序中作为解释和捕获代码中的错误和异常的方法。 </p>
+<p>为了解释为什么 Python 中有单独的异常类，我们看一个简单的例子:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch_from_cache</span><span class="params">(key)</span>:</span></span><br><span class="line">    <span class="string">"""Returns a key's value from cached items."""</span></span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'key must not be None'</span>)    </span><br><span class="line">        <span class="keyword">return</span> cached_items[key]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_value</span><span class="params">(key)</span>:</span>    </span><br><span class="line">    <span class="keyword">try</span>:        </span><br><span class="line">        value = fetch_from_cache(key)    </span><br><span class="line">    <span class="keyword">except</span> KeyError:        </span><br><span class="line">        value = fetch_from_api(key)    </span><br><span class="line">    <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
+
+<p>注意看 <code>get_value()</code> 函数，正常情况下，通过 <code>fetch_from_cache()</code> 函数返回缓存中的值，否则执行 <code>fetch_from_api()</code> 函数。</p>
+<p>在这个函数中有三种情况:  </p>
+<ul>
+<li><p>如果 <code>key</code> 不在缓存中，执行 <code>cached_items[key]</code> 将引发 <code>KeyError</code> 异常。此异常会被 <code>except</code> 分支捕获，之后执行此分支下的语句。</p>
+</li>
+<li><p>如果 <code>key</code> 存在于缓存中，将返回相应的值。  </p>
+</li>
+<li><p>还有第三种情况：<code>key</code> 是 <code>None</code> 。在 <code>fetch_from_cache()</code> 函数中将引发 <code>ValueError</code> 异常，用以表示此时传给函数的值不合适。因为 <code>try ... except ...</code> 只捕获 <code>KeyError</code> 异常，<code>ValueError</code> 异常会直接显示给用户。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="literal">None</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>get_value(x)</span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">3</span>, <span class="keyword">in</span> get_value  </span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">3</span>, <span class="keyword">in</span> fetch_from_cacheValueError: key must <span class="keyword">not</span> be <span class="literal">None</span>&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>如果 <code>ValueError</code> 和 <code>KeyError</code> 不是已经定义好的，上面就不能直接使用。</p>
+<p>在内置作用域中，并非所有以大写字母开始的名称都引用了异常类型对象，还有另一种类型的内置对象的名称首字母是大写的：常量。下面就来研究这些。</p>
+<h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p>总共有5个常量：<code>True</code> 、<code>False</code> 、<code>None</code> 、<code>Ellipsis</code> 和 <code>NotImplemented</code> 。  </p>
+<p><code>True</code>、<code>False</code> 和 <code>None</code> 是最明显的常量。 </p>
+<p><code>Ellipsis</code> 是一个有趣的词，它实际上有两种形式：单词 <code>Ellipsis</code> 和符号 <code>…</code> （英文的省略号）。 它的存在主要是为了支持打印注释以及一些其他奇特的切片提供支持。推荐阅读本公众号已经发布的文章<a href="https://mp.weixin.qq.com/s/tdXq4f5RBT8GNn7RF4gBmg" target="_blank" rel="noopener">《Python 中的省略号》</a> 。  </p>
+<p> <code>NotImplemented</code> 是一个更有趣的关键词（在我的书中，已经提到过，<code>True</code> 和 <code>False</code> 分别是 <code>1</code> 和 <code>0</code> ——最新即将出版的《Python 完全自学教程》会有更专门的介绍，请参阅：<a href="http://www.itdiffer.com/self-learning.html" target="_blank" rel="noopener">www.itdiffer.com/self-learning.html</a> ）。当你想告诉 Python 解释器某个类没有定义某个操作符时，就是在这个类的操作符定义中使用 <code>NotImplemented</code> 。  </p>
+<p>Python 中的所有对象都可以自定义所有 Python 操作符，比如 <code>+</code> 、<code>-</code> 、<code>+=</code> 等，在我的每本书中都有相应的案例演示定义方法，比如针对 <code>+</code>  就要重写特殊方法 <code>__add__</code> ，针对 <code>+=</code> 重写特殊方法 <code>__iadd__</code> 等等。  </p>
+<p>看一个简单的例子:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyNumber</span>:</span>    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span>        </span><br><span class="line">        <span class="keyword">return</span> other + <span class="number">28</span></span><br></pre></td></tr></table></figure>
+
+<p>这样就定义了一个对象，当此对象与任何其他数字相加，就相当于其他数字加上 <code>28</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>num = MyNumber()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>num + <span class="number">331</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>num + <span class="number">100128</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的代码示例没有使用 <code>3 + num</code> 的形式，因为它行不通:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">100</span> + numTraceback (most recent call last):  </span><br><span class="line">File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: unsupported operand type(s) <span class="keyword">for</span> +: <span class="string">'int'</span> <span class="keyword">and</span> <span class="string">'MyNumber'</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，通过添加  <code>__radd__</code> 操作符，就可以很容易支持 <code>3 + num</code> 的形式了，因为该操作符添加了对<strong>右加</strong>的支持。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyNumber</span>:</span>    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span>        </span><br><span class="line">        <span class="keyword">return</span> other + <span class="number">28</span>    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__radd__</span><span class="params">(self, other)</span>:</span>        </span><br><span class="line">        <span class="keyword">return</span> other + <span class="number">28</span></span><br></pre></td></tr></table></figure>
+
+<p>另外，有了 <code>__radd__</code> 方法后，这能实现两个 <code>MyNumber</code> 类的的实例相加：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>num = MyNumber()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>num + <span class="number">100128</span>&gt;&gt;&gt; <span class="number">3</span> + num31</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>num + num56</span><br></pre></td></tr></table></figure>
+
+<p>但是假设你只想用这个类支持整数加法，而不支持浮点数加法。此时就要使用 <code>NotImplemented</code> ：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyNumber</span>:</span>    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span>        </span><br><span class="line">        <span class="keyword">if</span> isinstance(other, float):            </span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">NotImplemented</span>        </span><br><span class="line">        <span class="keyword">return</span> other + <span class="number">42</span></span><br></pre></td></tr></table></figure>
+
+<p>从操作符方法中返回 <code>NotImplemented</code> ，就是告诉 Python 解释器当前的操作是不受支持的。然后Python 解释器会将其包装到 <code>TypeError</code> 异常中，并带有一个有意义的说明：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>n + <span class="number">0.12</span>Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: unsupported operand type(s) <span class="keyword">for</span> +: <span class="string">'MyNumber'</span> <span class="keyword">and</span> <span class="string">'float'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n + <span class="number">1052</span></span><br></pre></td></tr></table></figure>
+
+<p>Python 的常数还有一个奇怪的事实，它们是直接在 C 语言的代码中实现的，比如<a href="https://github.com/python/cpython/blob/7e246a3/Include/object.h#L610" target="_blank" rel="noopener">这里</a>。  </p>
+<h2 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h2><p>上面看到的内置对象中，还有另一组看起来很奇怪的名称，如：<code>__spec__</code> 、 <code>__loader__</code> 、<code>__debug__</code> 等。  </p>
+<p>这些实际上不是 <code>builtins</code> 模块所特有的。 这些属性存在于 Python 的每个模块的全局作用域中，它们是模块的属性。包含了导入模块的相关信息。</p>
+<h3 id="name"><a href="#name" class="headerlink" title="__name__"></a><code>__name__</code></h3><p><code>__name__</code>包含了模块的名称。 例如， <code>builtins.__name__</code> 指的是字符串 <code>builtins</code> 。运行一个 Python 文件时，文件也是作为一个模块运行的，并且它的模块名是 <code>__main__</code>。 这应该解释了在Python文件中使用的 <code>if __name__ == &#39;__main__&#39;</code> 是如何起作用的。</p>
+<h3 id="doc"><a href="#doc" class="headerlink" title="__doc__"></a><code>__doc__</code></h3><p><code>__doc__</code>包含模块的文档字符串。 当执行 <code>help(module_name)</code> 时，它会显示模块文档内容。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> time</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(time.__doc__)</span><br><span class="line">This module provides various functions to manipulate time values.There are two standard representations of time.  One <span class="keyword">is</span> the number...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>help(time)</span><br><span class="line">Help on built-<span class="keyword">in</span> module time:</span><br><span class="line">NAME    </span><br><span class="line">time - This module provides various functions to manipulate time values.</span><br><span class="line">DESCRIPTION    </span><br><span class="line">There are two standard representations of time.  One <span class="keyword">is</span> the number...</span><br></pre></td></tr></table></figure>
+
+<h3 id="package"><a href="#package" class="headerlink" title="__package__"></a><code>__package__</code></h3><p><code>__package__</code>表示该模块所属的包。 对于顶级模块，它与 <code>__name__</code> 相同。 对于子模块，它的 <code>__package__</code> 值就是包的 <code>__name__</code> 值。 例如:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>urllib.__package__</span><br><span class="line"><span class="string">'urllib'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>urllib.request.__name__</span><br><span class="line"><span class="string">'urllib.request'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>urllib.request.__package__</span><br><span class="line"><span class="string">'urllib'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="spec"><a href="#spec" class="headerlink" title="__spec__"></a><code>__spec__</code></h3><p><code>__spec__</code> 属性含有详细的模块信息，即元数据，如模块名称、模块类型，以及它的存储路径等。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ tree mytest</span><br><span class="line">mytest</span><br><span class="line">└── a</span><br><span class="line">    └── b.py</span><br><span class="line"></span><br><span class="line"><span class="number">1</span> directory, <span class="number">1</span> file</span><br><span class="line"></span><br><span class="line">$ python -q</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> mytest.a.b</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mytest.__spec__</span><br><span class="line">ModuleSpec(name=<span class="string">'mytest'</span>, loader=&lt;_frozen_importlib_external._NamespaceLoader object at <span class="number">0x7f28c767e5e0</span>&gt;, submodule_search_locations=_NamespacePath([<span class="string">'/tmp/mytest'</span>]))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mytest.a.b.__spec__</span><br><span class="line">ModuleSpec(name=<span class="string">'mytest.a.b'</span>, loader=&lt;_frozen_importlib_external.SourceFileLoader object at <span class="number">0x7f28c767e430</span>&gt;, origin=<span class="string">'/tmp/mytest/a/b.py'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，<code>mytest</code> 是使用 <code>NamespaceLoader</code> 从目录 <code>/tmp/mytest</code> 中找到的，而 <code>mytest.a.b</code> 是使用 <code>SourceFileLoader</code> 从源文件 <code>b.py</code> 中加载的。</p>
+<h3 id="loader"><a href="#loader" class="headerlink" title="__loader__"></a><code>__loader__</code></h3><p>在交互模式中看看 <code>__loader__</code> 是什么：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>__loader__</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">_frozen_importlib</span>.<span class="title">BuiltinImporter</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> <code>__loader__</code> 的作用在于导入模块的时候，被设置为导入对象。这个特定的模块定义在 <code>_frozen_importlib</code> 模块中，用于导入内置模块。  </p>
+<p>更仔细地看一下之前的 <code>mytest.__spec__</code> 输出结果，会发现模块详情的 <code>loader</code> 属性是 <code>Loader</code> 类，而这些类是来自稍有差别的 <code>_frozen_importlib_external</code> 模块。</p>
+<p>因此，你可能会问，这些以 <code>_frozen</code> 命名模块是什么? 顾名思义——它们是“冻结模块”。  </p>
+<p>这两个模块的“真正”源代码实际上在 <code>importlib.machinery</code> 模块中。 这些以 <code>_frozen</code> 命名的对象是这些加载器源代码的冻结版本。 为了创建冻结模块，Python 代码被编译为代码对象，编组到文件中，然后添加到 Python 可执行文件中。  </p>
+<p>Python 冻结了这两个模块，因为它们实现了导入系统的核心，因此，当解释器启动时，它们不能像其他 Python 文件一样被导入。 本质上，它们的存在是为了<em>引导导入系统</em>。  </p>
+<p>有趣的是，在 Python 中还有另一个定义明确的冻结模块，它是： <code>__hello__</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> __hello__</span><br><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+
+<p>这是所有语言中最短的 <code>hello world</code> 代码吗? 亦或向前辈致敬？  </p>
+<p>这个 <code>__hello__</code> 模块最初被添加到 Python 中，是作为对冻结模块的测试，以查看它们是否正常工作。 从那以后，它一直作为“复活节彩蛋”留在Python语言中。</p>
+<h3 id="import"><a href="#import" class="headerlink" title="__import__"></a><code>__import__</code></h3><p><code>__import__</code> 是一个内置函数，它定义了 import 语句在 Python 中的工作方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> random</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>random</span><br><span class="line">&lt;module <span class="string">'random'</span> <span class="keyword">from</span> <span class="string">'/usr/lib/python3.9/random.py'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>__import__(<span class="string">'random'</span>)</span><br><span class="line">&lt;module <span class="string">'random'</span> <span class="keyword">from</span> <span class="string">'/usr/lib/python3.9/random.py'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np = __import__(<span class="string">'numpy'</span>)  <span class="comment"># Same as doing 'import numpy as np'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np</span><br><span class="line">&lt;module <span class="string">'numpy'</span> <span class="keyword">from</span> <span class="string">'/home/tushar/.local/lib/python3.9/site-packages/numpy/__init__.py'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>从本质上讲，每个 import 语句都可以转换为 <code>__import__</code> 函数调用。 在内部，这差不多就是 Python 对导入语句的处理（但在C语言中更直接）。</p>
+<h3 id="debug"><a href="#debug" class="headerlink" title="__debug__"></a><code>__debug__</code></h3><p>在 Python 中，这是一个全局常量，几乎总是被设置为 <code>True</code> 。  </p>
+<p>其含义是 Python 在调试模式下运行。 默认情况下，Python 总是在调试模式下运行。  </p>
+<p>此外，Python 还可以运行在“优化模式”下。要在“优化模式”下运行，可以在启动时增加 <code>-O</code> 参数。这种模式只是阻止断言语句（至少目前如此）。老实说，没什么实际作用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ python</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>__debug__</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">assert</span> <span class="literal">False</span>, <span class="string">'some error'</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">AssertionError: some error</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"></span><br><span class="line">$ python -O</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>__debug__</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">assert</span> <span class="literal">False</span>, <span class="string">'some error'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Didn't raise any error.</span></span><br></pre></td></tr></table></figure>
+
+<p>此外， <code>__debug__</code> 、<code>True</code> 、<code>False</code> 和 <code>None</code> 是 Python 中唯一的<strong>真常量</strong>，即这4个常量是Python中唯一不能用赋值语句重写为新的其他值的全局变量。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span> = <span class="number">42</span></span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">    <span class="literal">True</span> = <span class="number">42</span></span><br><span class="line">    ^</span><br><span class="line">SyntaxError: cannot assign to <span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>__debug__ = <span class="literal">False</span></span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">SyntaxError: cannot assign to __debug__</span><br></pre></td></tr></table></figure>
+
+<h3 id="build-class"><a href="#build-class" class="headerlink" title="__build_class__"></a><code>__build_class__</code></h3><p>这个全局变量是在 Python 3.1 中添加的，有了它以后，就可以在定义类的时候，除了继承，还可以使用用任意位置参数和关键字参数。 这个特性的技术原因比较复杂，而且它涉及到像元类这样的高级主题，此处暂不详解。</p>
+<p>但要知道的是，有了它，在创建类时就可以这样做:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init_subclass__</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line"><span class="meta">... </span>        print(<span class="string">f'Subclass got data: <span class="subst">&#123;kwargs&#125;</span>'</span>)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(C, num=<span class="number">42</span>, data=<span class="string">'xyz'</span>)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line">Subclass got data: &#123;<span class="string">'num'</span>: <span class="number">42</span>, <span class="string">'data'</span>: <span class="string">'xyz'</span>&#125;</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在 Python 3.1 之前，像上面那样，用于创建类 <code>D</code> 的语法只允许传入元类和可供继承的基类。新的语法则允许有可变数量的位置参数和关键字参数。这种变化似乎带来了一点混乱和复杂。</p>
+<p>但是，在调用常规函数的代码中，我们已经用了它。 因此，有人建议 <code>Class X(...)</code> 语法可以用函数调用的方式替代：<code>__build_class__(&#39;X&#39;, ...)</code> 。  </p>
+<h3 id="cached"><a href="#cached" class="headerlink" title="__cached__"></a><code>__cached__</code></h3><p>当导入一个模块时， <code>__cached__</code> 属性存储该模块的已编译的 Python 字节码的缓存文件的路径。  </p>
+<p>你可能对 Python 的“编译”感到奇怪，没错。Python 是编译的。事实上，所有 Python 代码都是编译的，但不是编译为机器代码，而是编译为<strong>字节码</strong>。 为了解释这一点，先解释 Python 如何运行代码。</p>
+<p>以下是 Python 解释器运行代码的步骤:  </p>
+<ul>
+<li>获取源文件，并将其解析成语法树。语法树是代码的一种表示形式，它更容易被程序理解。 它查找并报告代码中的任何语法错误，并确保没有歧义。</li>
+<li>下一步是将语法树编译为<strong>字节码</strong>。 字节码是用于<strong>Python虚拟机的一组微指令</strong>。 这个“虚拟机”是 Python 解释器的逻辑所在。 它本质上是在本地计算机上<strong>模拟</strong>一个非常简单的基于栈的计算机，以便执行 Python 代码。</li>
+<li>然后，Python 源代码以字节码形式在 Python 虚拟机上运行。 字节码指令是简单的指令，比如，从当前栈中推送和取出数据。当这些指令一个接一个地运行时，将执行整个程序。</li>
+</ul>
+<p>在导入模块时，将源码“编译为字节码”要花费一定时间，而后，Python 将字节码存储到 <code>.pyc</code> 文件中，并将其存储在名为 <code>__pycache__</code> 的文件夹中。 然后，所导入的模块的 <code>__cached__</code> 属性值为该 <code>.pyc</code> 文件。  </p>
+<p>当以后再次导入同一个模块时，Python 会检查该模块的 <code>.pyc</code> 版本是否存在，然后直接导入已经编译过的版本，从而节省大量的时间和计算。  </p>
+<p>如果还没有理解，可以在 Python 代码中直接运行或导入 <code>.pyc</code> 文件，就像其他的 <code>.pyc</code> 文件一样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> test</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>test.__cached__</span><br><span class="line"><span class="string">'/usr/lib/python3.9/test/__pycache__/__init__.cpython-39.pyc'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>exit()</span><br><span class="line"></span><br><span class="line">$ cp <span class="string">'/usr/lib/python3.9/test/__pycache__/__init__.cpython-39.pyc'</span> cached_test.pyc</span><br><span class="line">$ python</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> cached_test  <span class="comment"># Runs!</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/10/08/geometrical-matrices/">
+        <span class="nav-arrow">← </span>
+        
+          从几何角度理解矩阵
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/11/03/python-builtins-first/">
+        
+          通过内置对象理解 Python（一）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#所有的内置函数"><span class="toc-nav-text">所有的内置函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#异常"><span class="toc-nav-text">异常</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常量"><span class="toc-nav-text">常量</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#全局变量"><span class="toc-nav-text">全局变量</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#name"><span class="toc-nav-text">__name__</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#doc"><span class="toc-nav-text">__doc__</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#package"><span class="toc-nav-text">__package__</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#spec"><span class="toc-nav-text">__spec__</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#loader"><span class="toc-nav-text">__loader__</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#import"><span class="toc-nav-text">__import__</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#debug"><span class="toc-nav-text">__debug__</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#build-class"><span class="toc-nav-text">__build_class__</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#cached"><span class="toc-nav-text">__cached__</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/11/03/python-builtins-second/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

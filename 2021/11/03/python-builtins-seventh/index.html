@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通过内置对象理解 Python（七） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通过内置对象理解 Python（七）</h2>
+    <p class="post-date">2021-11-03</p>
+    <section class="markdown-content"><h3 id="sorted-and-reversed-用于序列"><a href="#sorted-and-reversed-用于序列" class="headerlink" title="sorted and reversed 用于序列"></a><code>sorted</code> and <code>reversed</code> 用于序列</h3><p>排序和反转数据序列可能是任何编程语言中最常用的算法操作，Python 中的内置函数 <code>sorted</code> 和 <code>reversed</code> 都用于实现这些功能。</p>
+<ul>
+<li><p><code>sorted</code> 函数对输入的数据进行排序，并返回一个排序过的 <code>list</code> 对象。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = (<span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(items)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p>它使用 Tim Peters 发明的的“TimSort”算法，Tim Peters 是最早的 Python 大师之一。  </p>
+<p><code>sorted</code> 还有另外两个参数：<code>reverse</code> 和 <code>key</code> 。当 <code>reverse=True</code> 时，对数据进行倒序排序；<code>key</code> 参数接受一个函数，该函数用于每个元素，根据每个项目的自定义属性对数据进行排序。 来看看下面的代码:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = [</span><br><span class="line"><span class="meta">... </span>  &#123;<span class="string">'value'</span>: <span class="number">3</span>&#125;,</span><br><span class="line"><span class="meta">... </span>  &#123;<span class="string">'value'</span>: <span class="number">1</span>&#125;,</span><br><span class="line"><span class="meta">... </span>  &#123;<span class="string">'value'</span>: <span class="number">2</span>&#125;,</span><br><span class="line"><span class="meta">... </span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(items, key=<span class="keyword">lambda</span> d: d[<span class="string">'value'</span>])</span><br><span class="line">[&#123;<span class="string">'value'</span>: <span class="number">1</span>&#125;, &#123;<span class="string">'value'</span>: <span class="number">2</span>&#125;, &#123;<span class="string">'value'</span>: <span class="number">3</span>&#125;]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>names = [<span class="string">'James'</span>, <span class="string">'Kyle'</span>, <span class="string">'Max'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(names, key=len)  <span class="comment"># Sorts by name length</span></span><br><span class="line">[<span class="string">'Max'</span>, <span class="string">'Kyle'</span>, <span class="string">'James'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>还要注意，虽然 <code>list.sort()</code> 已经是对列表排序的一种方法，但 <code>.sort()</code> 方法只存在于列表中，而 <code>sorted</code> 可以接受任何可迭代对象。  </p>
+</li>
+<li><p><code>reversed</code> 函数接受任何序列类型，并返回一个<strong>生成器</strong>，它将原来对象中的成员顺序反序。  </p>
+<p>返回生成器是很好的，因为这意味着反转某些对象根本不需要额外的内存空间，比如 <code>range</code> 或 <code>list</code> ，它们的反转值可以逐个生成。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = reversed(items)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">&lt;list_reverseiterator object at <span class="number">0x7f1c3ebe07f0</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(x)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(x)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(x)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(x)</span><br><span class="line">StopIteration <span class="comment"># Error: end of generator</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> reversed(items):</span><br><span class="line"><span class="meta">... </span>    print(i)</span><br><span class="line">...</span><br><span class="line"><span class="number">321</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(reversed(items))</span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="map-and-filter"><a href="#map-and-filter" class="headerlink" title="map and filter"></a><code>map</code> and <code>filter</code></h3><p>在 Python 中，所有东西都可能是对象，但这并不一定意味着 Python 代码需要面向对象。 实际上，可以用 Python 编写非常易读的<em>函数</em>代码。</p>
+<p>如果不知道什么是函数式语言或函数式代码，那么这里的概念是：所有的功能都是通过函数提供的。 没有一个正式的类、对象、继承等概念。 本质上，所有程序都只是操作数据片段，其方法是：将它们传递给函数并将修改后的值返回给你。  </p>
+<p>函数式编程中两个非常常见的概念是<strong>map</strong>和<strong>filter</strong>， Python为它们提供了内置函数:  </p>
+<ul>
+<li><p><code>map</code> 是一个“高阶函数”，它是将另一个函数作为参数的一个函数。  例如： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> x * x</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">8</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(map(square, numbers))</span><br><span class="line">[<span class="number">64</span>, <span class="number">16</span>, <span class="number">36</span>, <span class="number">25</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> squared <span class="keyword">in</span> map(square, numbers):</span><br><span class="line"><span class="meta">... </span>    print(squared)</span><br><span class="line">...</span><br><span class="line"><span class="number">64</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="number">36</span></span><br><span class="line"><span class="number">25</span></span><br></pre></td></tr></table></figure>
+
+<p> <code>map</code> 有两个参数：函数和序列，它通过将每个元素作为输入来运行该函数，并将所有输出存储在一个新列表中。   <code>map(square, numbers)</code> 获取每个数字并返回一个平方数列表。  </p>
+<p>注意，我必须使用 <code>list(map(square, numbers))</code>，这是因为 <code>map</code> 本身返回一个生成器。 请求这些值时，它们会被惰性地一次映射一个，例如，如果循环一个 map 对象，它会在序列的每一项上逐个运行映射函数。这意味着 map 不会存储映射值的完整列表，也不会在不需要的时候浪费时间计算额外的值。</p>
+</li>
+<li><p><code>filter</code>  非常类似于 <code>map</code> ，只不过，它不是将每个值映射到一个新值，而是根据<em>条件</em>过滤一系列的值。</p>
+<p>这意味着 <code>filter</code> 的输出将包含与输入相同的项，除了一些项可能被丢弃。例如下面的例子，过滤掉奇数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = [<span class="number">13</span>, <span class="number">10</span>, <span class="number">25</span>, <span class="number">8</span>]  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>evens = list(filter(<span class="keyword">lambda</span> num: num % <span class="number">2</span> == <span class="number">0</span>, items))  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>evens  </span><br><span class="line">[<span class="number">10</span>, <span class="number">8</span>]</span><br></pre></td></tr></table></figure>
+
+<p>一些人可能已经意识到这些函数本质上是在做与列表解析相同的事情，对的!  </p>
+<p>列表解析式基本上能实现以上操作，且可读性更强。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> x * x</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">8</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[square(num) <span class="keyword">for</span> num <span class="keyword">in</span> numbers]</span><br><span class="line">[<span class="number">64</span>, <span class="number">16</span>, <span class="number">36</span>, <span class="number">25</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = [<span class="number">13</span>, <span class="number">10</span>, <span class="number">25</span>, <span class="number">8</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>evens = [num <span class="keyword">for</span> num <span class="keyword">in</span> items <span class="keyword">if</span> num % <span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>evens</span><br><span class="line">[<span class="number">10</span>, <span class="number">8</span>]</span><br></pre></td></tr></table></figure>
+
+<p>至于实际中用什么方式，自己选择。  </p>
+</li>
+</ul>
+<h3 id="len-max-min-and-sum-：计算集中量"><a href="#len-max-min-and-sum-：计算集中量" class="headerlink" title="len, max, min and sum ：计算集中量"></a><code>len</code>, <code>max</code>, <code>min</code> and <code>sum</code> ：计算集中量</h3><p>Python 有几个计算集中量函数，即：将一组值组合成单个结果的函数。这几个函数的应用非常简单，仅举一例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">30</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">40</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(numbers)</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>max(numbers)</span><br><span class="line"><span class="number">40</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>min(numbers)</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum(numbers)</span><br><span class="line"><span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<p>有三个函数可以接受任何容器数据类型，比如集合、字典甚至字符串:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>author = <span class="string">'guidovanrossum'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(author)</span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>max(author)</span><br><span class="line"><span class="string">'v'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>min(author)</span><br><span class="line"><span class="string">'a'</span></span><br></pre></td></tr></table></figure>
+
+<p><code>sum</code> 的参数必须是由数字为成员的容器，这意味着，以下操作是可行的:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sum(<span class="string">b'guidovanrossum'</span>)</span><br><span class="line"><span class="number">1542</span></span><br></pre></td></tr></table></figure>
+
+<p>把问题留给你，来弄清楚这是怎么回事？</p>
+<h3 id="iter-and-next-：迭代"><a href="#iter-and-next-：迭代" class="headerlink" title="iter and next ：迭代"></a><code>iter</code> and <code>next</code> ：迭代</h3><p><code>iter</code> 和 <code>next</code> 定义了 <code>for</code> 循环的工作机制。  </p>
+<p>for 循环看起来像这样: </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> mylist:   </span><br><span class="line">    print(item)</span><br></pre></td></tr></table></figure>
+
+<p>它的内部实际上是这样做工作的：   </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mylist_iterable = iter(mylist)</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:   </span><br><span class="line">    <span class="keyword">try</span>:        </span><br><span class="line">        item = next(mylist_iterable)       </span><br><span class="line">        print(item)    </span><br><span class="line">    <span class="keyword">except</span> StopIteration:      </span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>Python中的 for 循环是一个巧妙伪装的 while 循环。 当遍历列表或任何其他支持迭代的数据类型时，只是意味着它理解 <code>iter</code> 函数，并返回一个“迭代器”对象。 </p>
+<p> Python 中的迭代器对象做两件事:  </p>
+<ul>
+<li><p>每次执行 <code>next</code> 时，都会产生新的值  </p>
+</li>
+<li><p>当迭代器的值用完时，它们会抛出 <code>StopIteration</code> 内置异常。</p>
+<p>这就是 for 循环的工作原理。  </p>
+<p>顺便说一下，生成器也遵循迭代器协议:  </p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gen = (x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(gen)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(gen)</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(gen)</span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(gen)</span><br><span class="line">Error: StopIteration</span><br></pre></td></tr></table></figure>
+
+<h3 id="range-enumerate-and-zip-：简化迭代"><a href="#range-enumerate-and-zip-：简化迭代" class="headerlink" title="range, enumerate and zip ：简化迭代"></a><code>range</code>, <code>enumerate</code> and <code>zip</code> ：简化迭代</h3><p> <code>range</code> 函数最多接受 3 参数，并返回由整数值组成的一个可迭代对象:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">10</span>))</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">3</span>, <span class="number">8</span>))</span><br><span class="line">[<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">10</span>, <span class="number">1</span>, <span class="number">-2</span>))</span><br><span class="line">[<span class="number">10</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>当需要访问列表中元素的索引和值时，<code>enumerate</code> 非常有用。</p>
+<p>不要这样做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>menu = [<span class="string">'eggs'</span>, <span class="string">'spam'</span>, <span class="string">'bacon'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(len(menu)):</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">f'<span class="subst">&#123;i+<span class="number">1</span>&#125;</span>: <span class="subst">&#123;menu[i]&#125;</span>'</span>)</span><br><span class="line">..<span class="number">.1</span>: eggs</span><br><span class="line">   <span class="number">2</span>: spam</span><br><span class="line">   <span class="number">3</span>: bacon</span><br></pre></td></tr></table></figure>
+
+<p>而是可以这样做:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>menu = [<span class="string">'eggs'</span>, <span class="string">'spam'</span>, <span class="string">'bacon'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> index, item <span class="keyword">in</span> enumerate(menu, start=<span class="number">1</span>):</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">f'<span class="subst">&#123;index&#125;</span>: <span class="subst">&#123;item&#125;</span>'</span>)</span><br><span class="line">..<span class="number">.1</span>: eggs</span><br><span class="line">   <span class="number">2</span>: spam</span><br><span class="line">   <span class="number">3</span>: bacon</span><br></pre></td></tr></table></figure>
+
+<p>类似地，<code>zip</code> 用于从多个可迭代对象中获取按索引排列的值。  </p>
+<p>不要这样做： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>students = [<span class="string">'Jared'</span>, <span class="string">'Brock'</span>, <span class="string">'Jack'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>marks = [<span class="number">65</span>, <span class="number">74</span>, <span class="number">81</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(len(students)):</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">f'<span class="subst">&#123;students[i]&#125;</span> got <span class="subst">&#123;marks[i]&#125;</span> marks'</span>)</span><br><span class="line">...Jared got <span class="number">65</span> marks</span><br><span class="line">   Brock got <span class="number">74</span> marks</span><br><span class="line">   Jack got <span class="number">81</span> marks</span><br></pre></td></tr></table></figure>
+
+<p>可以这样做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>students = [<span class="string">'Jared'</span>, <span class="string">'Brock'</span>, <span class="string">'Jack'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>marks = [<span class="number">65</span>, <span class="number">74</span>, <span class="number">81</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> student, mark <span class="keyword">in</span> zip(students, marks):</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">f'<span class="subst">&#123;student&#125;</span> got <span class="subst">&#123;mark&#125;</span> marks'</span>)</span><br><span class="line">...</span><br><span class="line">Jared got <span class="number">65</span> marks</span><br><span class="line">Brock got <span class="number">74</span> marks</span><br><span class="line">Jack got <span class="number">81</span> marks</span><br></pre></td></tr></table></figure>
+
+<p>这两种方法都可以极大地简化迭代代码。 </p>
+<h3 id="slice"><a href="#slice" class="headerlink" title="slice"></a><code>slice</code></h3><p>当对一个 Python 可迭代对象进行切片时，在后台使用的就是 <code>slice</code> 对象。  </p>
+<p>例如，在 <code>my_list[1:3]</code> 中， <code>[1:3]</code> 不是特殊部分，只有 <code>1:3</code> 是。 方括号仍在尝试对列表进行索引!  但是这些方括号里的<code>1:3</code>实际上创建了一个 <code>slice</code> 对象。  </p>
+<p>这就是为什么 <code>my_list[1:3]</code> 实际上等同于 <code>my_list[slice(1, 3)]</code>：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list[<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">[<span class="number">20</span>, <span class="number">30</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list[slice(<span class="number">1</span>, <span class="number">3</span>)]</span><br><span class="line">[<span class="number">20</span>, <span class="number">30</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>nums = list(range(<span class="number">10</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>nums</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>nums[<span class="number">1</span>::<span class="number">2</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = slice(<span class="number">1</span>, <span class="literal">None</span>, <span class="number">2</span>)  <span class="comment"># Equivalent to `[1::2]`</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line">slice(<span class="number">1</span>, <span class="literal">None</span>, <span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>nums[s]</span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="breakpoint：内置调试"><a href="#breakpoint：内置调试" class="headerlink" title="breakpoint：内置调试"></a><code>breakpoint</code>：内置调试</h3><p><code>breakpoint</code> 是一个 Python 3.7 开始才出现的内置函数，从名称上看就知道，它的作用在于“打断点”，是用于调试的简单方式。本质上，它是从 <code>pdb</code> 模块中调用 <code>set_trace()</code> ，<code>pdb</code> 模块是 Python 中内置的调试模块。  </p>
+<p>关于调试的更多更详细信息，请参阅：<a href="http://www.itdiffer.com/self-learning.html" target="_blank" rel="noopener">http://www.itdiffer.com/self-learning.html</a> 中的有关章节内容。</p>
+<h3 id="open-：创建文件"><a href="#open-：创建文件" class="headerlink" title="open ：创建文件"></a><code>open</code> ：创建文件</h3><p><code>open</code> 是用于读写文件的函数。  因为操作简单，此处不再赘述，可以参阅 <a href="http://www.itdiffer.com/self-learning.html" target="_blank" rel="noopener">http://www.itdiffer.com/self-learning.html</a> 中的有关章节。</p>
+<h3 id="repr-：方便开发者"><a href="#repr-：方便开发者" class="headerlink" title="repr ：方便开发者"></a><code>repr</code> ：方便开发者</h3><p><code>repr</code> 用于创建一个对象的有用的字符串表示，希望它能简明地描述对象及其当前状态。 这样做的目的是能够通过查看对象的 <code>repr</code> 来调试简单的问题，而不必在每一步都探查对象属性。</p>
+<p>下面是一个很好的例子:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Vector</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.x = x</span><br><span class="line"><span class="meta">... </span>        self.y = y</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v = Vector(<span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v</span><br><span class="line">&lt;__main__.Vector object at <span class="number">0x7f27dff5a1f0</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The default <code>repr</code> is not helpful at all. You’d have to manually check for its attributes:</p>
+<p>默认的 <code>repr</code> 根本没有帮助。 你必须手动检查它的属性:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(v)</span><br><span class="line">[<span class="string">'__class__'</span>, ... , <span class="string">'x'</span>, <span class="string">'y'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v.x</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v.y</span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，如果在类中实现 <code>__repr__</code>：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Vector</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.x = x</span><br><span class="line"><span class="meta">... </span>        self.y = y</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> <span class="string">f'Vector(x=<span class="subst">&#123;self.x&#125;</span>, y=<span class="subst">&#123;self.y&#125;</span>)'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v = Vector(<span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v</span><br><span class="line">Vector(x=<span class="number">3</span>, y=<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>现在不需要对这个对象所包含的内容感到疑惑。 它就在你面前!  </p>
+<h3 id="help-exit-and-quit-：调用-site-模块的内置函数"><a href="#help-exit-and-quit-：调用-site-模块的内置函数" class="headerlink" title="help, exit and quit ：调用 site 模块的内置函数"></a><code>help</code>, <code>exit</code> and <code>quit</code> ：调用 site 模块的内置函数</h3><p>现在，这些内置函数不是“真正的”内置程序。 也就是说，它们并不是在 <code>builtins</code> 模块中定义的。 它们是在 <code>site</code> 模块中定义的，然后在 <code>site</code> 模块运行时被注入到内置模块中。</p>
+<p><code>site</code> 模块会在启动 Python 时，默认自动运行。 它负责设置一些有用的东西，包括针对 <code>import</code> 语句导入模块的 <code>pip</code> ，以及在交互模式中设置按 tab 键自动提示等。 </p>
+<p>它做的另外一件事是设置了这些有用的“内置函数”： </p>
+<ul>
+<li><p><code>help</code> 查找模块和对象的文档。相当于调用 <code>pydoc.doc()</code>。  </p>
+</li>
+<li><p><code>exit</code> and <code>quit</code> 退出 Python 进程。 相当于调用 <code>sys.exit()</code>。  </p>
+</li>
+</ul>
+<h3 id="copyright-credits-license-：重要文本内容"><a href="#copyright-credits-license-：重要文本内容" class="headerlink" title="copyright, credits, license ：重要文本内容"></a><code>copyright</code>, <code>credits</code>, <code>license</code> ：重要文本内容</h3><p> site 模块还定义了这三个用于显示文本的函数种文本，在交互模式中输入它们会打印出相应的文本，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>license()</span><br><span class="line">A. HISTORY OF THE SOFTWARE</span><br><span class="line">==========================</span><br><span class="line"></span><br><span class="line">Python was created <span class="keyword">in</span> the early <span class="number">1990</span>s by Guido van Rossum at Stichting</span><br><span class="line">Mathematisch Centrum (CWI, see http://www.cwi.nl) <span class="keyword">in</span> the Netherlands</span><br><span class="line"><span class="keyword">as</span> a successor of a language called ABC.  Guido remains Python<span class="string">'s</span></span><br><span class="line"><span class="string">principal author, although it includes many contributions from others.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">In 1995, Guido continued his work on Python at the Corporation for</span></span><br><span class="line"><span class="string">National Research Initiatives (CNRI, see http://www.cnri.reston.va.us)</span></span><br><span class="line"><span class="string">in Reston, Virginia where he released several versions of the</span></span><br><span class="line"><span class="string">software.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">In May 2000, Guido and the Python core development team moved to</span></span><br><span class="line"><span class="string">BeOpen.com to form the BeOpen PythonLabs team.  In October of the same</span></span><br><span class="line"><span class="string">year, the PythonLabs team moved to Digital Creations, which became</span></span><br><span class="line"><span class="string">Zope Corporation.  In 2001, the Python Software Foundation (PSF, see</span></span><br><span class="line"><span class="string">https://www.python.org/psf/) was formed, a non-profit organization</span></span><br><span class="line"><span class="string">created specifically to own Python-related Intellectual Property.</span></span><br><span class="line"><span class="string">Zope Corporation was a sponsoring member of the PSF.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">All Python releases are Open Source (see http://www.opensource.org for</span></span><br><span class="line"><span class="string">the Open Source Definition).  Historically, most, but not all, Python</span></span><br><span class="line"><span class="string">Hit Return for more, or q (and Return) to quit: q</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>本文内容即将结束。了解 Python 基础知识，是学习和使用 Python 语言的关键。本文的内容仅供已经入门的读者进阶参考。可以说，基础知识，并不基础，因为背后的原理，才是 Python 的根本。</p>
+<p><a href="http://www.itdiffer.com" target="_blank" rel="noopener">www.itdiffer.com</a> 网站有很多提升进阶的文章，供读者参考。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://sadh.life/post/builtins/" target="_blank" rel="noopener">https://sadh.life/post/builtins/</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/03/python-builtins-sixth/">
+        <span class="nav-arrow">← </span>
+        
+          通过内置对象理解 Python（六）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#sorted-and-reversed-用于序列"><span class="toc-nav-text">sorted and reversed 用于序列</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#map-and-filter"><span class="toc-nav-text">map and filter</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#len-max-min-and-sum-：计算集中量"><span class="toc-nav-text">len, max, min and sum ：计算集中量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#iter-and-next-：迭代"><span class="toc-nav-text">iter and next ：迭代</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#range-enumerate-and-zip-：简化迭代"><span class="toc-nav-text">range, enumerate and zip ：简化迭代</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#slice"><span class="toc-nav-text">slice</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#breakpoint：内置调试"><span class="toc-nav-text">breakpoint：内置调试</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#open-：创建文件"><span class="toc-nav-text">open ：创建文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#repr-：方便开发者"><span class="toc-nav-text">repr ：方便开发者</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#help-exit-and-quit-：调用-site-模块的内置函数"><span class="toc-nav-text">help, exit and quit ：调用 site 模块的内置函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#copyright-credits-license-：重要文本内容"><span class="toc-nav-text">copyright, credits, license ：重要文本内容</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结束语"><span class="toc-nav-text">结束语</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考文献"><span class="toc-nav-text">参考文献</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/11/03/python-builtins-seventh/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

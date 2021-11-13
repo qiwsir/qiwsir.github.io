@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通过内置对象理解 Python（五） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通过内置对象理解 Python（五）</h2>
+    <p class="post-date">2021-11-03</p>
+    <section class="markdown-content"><h3 id="dir-and-vars-：一切皆字典"><a href="#dir-and-vars-：一切皆字典" class="headerlink" title="dir and vars ：一切皆字典"></a><code>dir</code> and <code>vars</code> ：一切皆字典</h3><p>你有没有想过 Python 是如何存储对象、变量、方法等等的？我们知道所有对象都有自己的属性和方法，但是 Python 到底是如何跟踪它们的呢? </p>
+<p>简单的答案是，所有内容都存储在字典中。 <code>vars</code> 方法揭示了存储在对象和类中的变量。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line"><span class="meta">... </span>    some_constant = <span class="number">42</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.x = x</span><br><span class="line"><span class="meta">... </span>        self.y = y</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">some_method</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = C(x=<span class="number">3</span>, y=<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vars(c)</span><br><span class="line">&#123;<span class="string">'x'</span>: <span class="number">3</span>, <span class="string">'y'</span>: <span class="number">5</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vars(C)</span><br><span class="line">mappingproxy(</span><br><span class="line">  &#123;<span class="string">'__module__'</span>: <span class="string">'__main__'</span>, <span class="string">'some_constant'</span>: <span class="number">42</span>,</span><br><span class="line">  <span class="string">'__init__'</span>: &lt;function C.__init__ at <span class="number">0x7fd27fc66d30</span>&gt;,</span><br><span class="line">  <span class="string">'some_method'</span>: &lt;function C.some_method at <span class="number">0x7fd27f350ca0</span>&gt;,</span><br><span class="line">  <span class="string">'__dict__'</span>: &lt;attribute <span class="string">'__dict__'</span> of <span class="string">'C'</span> objects&gt;,</span><br><span class="line">  <span class="string">'__weakref__'</span>: &lt;attribute <span class="string">'__weakref__'</span> of <span class="string">'C'</span> objects&gt;,</span><br><span class="line">  <span class="string">'__doc__'</span>: <span class="literal">None</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，与对象 <code>c</code> 的属性 <code>x</code> 和 <code>y</code> 存储在它自己的字典中，而方法（ <code>some_function</code> 和 <code>__init__</code>）实际上作为函数存储在类的字典中。这是有道理的，因为函数本身的代码并不会因为每个实例对象而改变，只有传给它的变量会改变。  </p>
+<p>这可以通过 <code>c.method(x)</code> 与 <code>C.method(c, x)</code> 相同的事实来证明:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">function</span><span class="params">(self, x)</span>:</span></span><br><span class="line"><span class="meta">... </span>        print(<span class="string">f'self=<span class="subst">&#123;self&#125;</span>, x=<span class="subst">&#123;x&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = C()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>C.function(c, <span class="number">5</span>)</span><br><span class="line">self=&lt;__main__.C object at <span class="number">0x7f90762461f0</span>&gt;, x=<span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c.function(<span class="number">5</span>)</span><br><span class="line">self=&lt;__main__.C object at <span class="number">0x7f90762461f0</span>&gt;, x=<span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>它表明定义在类中的方法实际上只是一个函数，而 <code>self</code> 只是作为第一个参数所引用的实例对象。 语法形式 <code>c.method(x)</code> 可以视为 <code>C.method(c, x)</code> 的一种更简洁的方式。   </p>
+<p>现在有一个稍微不同的问题。 如果 <code>vars</code> 显示了类中的所有方法，那么为什么这种做法有效呢?  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">function</span><span class="params">(self, x)</span>:</span> <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vars(C)</span><br><span class="line">mappingproxy(&#123;</span><br><span class="line">  <span class="string">'__module__'</span>: <span class="string">'__main__'</span>,</span><br><span class="line">  <span class="string">'function'</span>: &lt;function C.function at <span class="number">0x7f607ddedb80</span>&gt;,</span><br><span class="line">  <span class="string">'__dict__'</span>: &lt;attribute <span class="string">'__dict__'</span> of <span class="string">'C'</span> objects&gt;,</span><br><span class="line">  <span class="string">'__weakref__'</span>: &lt;attribute <span class="string">'__weakref__'</span> of <span class="string">'C'</span> objects&gt;,</span><br><span class="line">  <span class="string">'__doc__'</span>: <span class="literal">None</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = C()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vars(c)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c.__class__</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">__main__</span>.<span class="title">C</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面所使用的 <code>__class__</code> 属性，并没有在类  <code>C</code> 中定义，那么它是从哪里来的?  </p>
+<p>如果你想知道对象上哪些属性可以被访问，你可以使用 <code>dir</code> 函数查看：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(c)</span><br><span class="line">[<span class="string">'__class__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dict__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>,<span class="string">'__format__'</span>, <span class="string">'__ge__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>, <span class="string">'__init__'</span>,<span class="string">'__init_subclass__'</span>, <span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__module__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>,<span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>, <span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,<span class="string">'__subclasshook__'</span>, <span class="string">'__weakref__'</span>, <span class="string">'function'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>那么其余的属性从何而来呢? 相关的来龙去脉稍微复杂一些，简单地说：来自于继承。  </p>
+<p>Python中的所有对象默认继承 <code>object</code> 类，实际上， <code>__class__</code> 是在 <code>object</code> 中定义的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'__class__'</span> <span class="keyword">in</span> vars(object)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vars(object).keys()</span><br><span class="line">dict_keys([<span class="string">'__repr__'</span>, <span class="string">'__hash__'</span>, <span class="string">'__str__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__setattr__'</span>,<span class="string">'__delattr__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__le__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__ge__'</span>,<span class="string">'__init__'</span>, <span class="string">'__new__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__reduce__'</span>, <span class="string">'__subclasshook__'</span>,<span class="string">'__init_subclass__'</span>, <span class="string">'__format__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__class__'</span>, <span class="string">'__doc__'</span>])</span><br></pre></td></tr></table></figure>
+
+<p>这里的输出与在 <code>dir(c)</code> 的输出中看到的内容相同。 </p>
+<p>关于继承，前面曾经提到过“方法解析顺序”（MRO），下面就再对其进行深入研究。以如下代码为例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.x = <span class="string">'x'</span></span><br><span class="line"><span class="meta">... </span>        self.y = <span class="string">'y'</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.z = <span class="string">'z'</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = A()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = B()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>B.mro()</span><br><span class="line">[&lt;class '__main__.B'&gt;, &lt;class '__main__.A'&gt;, &lt;class 'object'&gt;]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(b)</span><br><span class="line">[<span class="string">'__class__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dict__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>,</span><br><span class="line"><span class="string">'__format__'</span>, <span class="string">'__ge__'</span>, <span class="string">'__getattribute__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>, <span class="string">'__init__'</span>,</span><br><span class="line"><span class="string">'__init_subclass__'</span>, <span class="string">'__le__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__module__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>,</span><br><span class="line"><span class="string">'__reduce__'</span>, <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>, <span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>,</span><br><span class="line"><span class="string">'__subclasshook__'</span>, <span class="string">'__weakref__'</span>, <span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>set(dir(b)) - set(dir(a))  <span class="comment"># all values in dir(b) that are not in dir(a)</span></span><br><span class="line">&#123;<span class="string">'z'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vars(b).keys()</span><br><span class="line">dict_keys([<span class="string">'z'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>set(dir(a)) - set(dir(object))</span><br><span class="line">&#123;<span class="string">'x'</span>, <span class="string">'y'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vars(a).keys()</span><br><span class="line">dict_keys([<span class="string">'x'</span>, <span class="string">'y'</span>])</span><br></pre></td></tr></table></figure>
+
+<p>从上面可以看出来，实例对象 <code>b</code> 比 <code>a</code> 要多一个属性 <code>z</code> ，当调用此属性时，就是按照该 MRO 顺序在继承的类中查询。</p>
+<hr>
+<p><strong>补充知识：</strong>slots 是什么</p>
+<p>先看 Python 的一个奇怪而有趣的行为：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = object()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.foo = <span class="number">5</span></span><br><span class="line">AttributeError: <span class="string">'object'</span> object has no attribute <span class="string">'foo'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = C()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c.foo = <span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># works?</span></span><br></pre></td></tr></table></figure>
+
+<p>因此，出于某种原因，不能给 <code>object</code> 的实例增加任意属性，但是，却可以给自定义的类任意增加实例属性。为什么会这样呢？不是所有的类都继承了 <code>object</code> 吗？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = list()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.foo = <span class="number">5</span></span><br><span class="line">AttributeError: <span class="string">'list'</span> object has no attribute <span class="string">'foo'</span></span><br></pre></td></tr></table></figure>
+
+<p>上面用内置对象也不行。为什么？</p>
+<p>这就是 <code>__slots__</code> 的用处。首先，也可以定义一个类，不能添加实例属性，像 <code>list</code> 和 <code>object</code> 那样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line"><span class="meta">... </span>    __slots__ = ()</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = C()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c.foo = <span class="number">5</span></span><br><span class="line">AttributeError: <span class="string">'C'</span> object has no attribute <span class="string">'foo'</span></span><br></pre></td></tr></table></figure>
+
+<p>下面的解释比较长，读者选择阅读：</p>
+<p>Python 实际上有两种在对象中存储数据的方式：一种是字典（大多数情况如此），另外一种是 C 语言中的结构体（Struct），从本质上看，结构体可以认为是是来自 Python 的元组。字典占用的内存会更多，因为它可以随意扩展，并且依赖额外的内存空间来保证快速访问数据，这就是字典的本质。 另外，结构体的大小是固定的，不能扩展，它占用尽可能少的内存，因为它将这些值一个接一个地打包，不会浪费任何空间。  </p>
+<p>Python中存储数据的这两种方式由两个对象属性 <code>__dict__</code> 和<code>__slots__</code>反映出来。 通常，所有实例属性都存储在 <code>__dict__</code> 字典中，除非你定义了<code>__slots__</code> 属性，在这种情况下，对象只能有固定数量的预定义属性。  </p>
+<p>I can understand if this is getting too confusing. Let me just show an example:</p>
+<p>为了理解上面所言，举个例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">NormalClass</span>:</span></span><br><span class="line"><span class="meta">... </span>    classvar = <span class="string">'foo'</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.x = <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>        self.y = <span class="number">2</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n = NormalClass()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n.__dict__</span><br><span class="line">&#123;<span class="string">'x'</span>: <span class="number">1</span>, <span class="string">'y'</span>: <span class="number">2</span>&#125;  <span class="comment"># Note that `classvar` variable isn't here.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>              <span class="comment"># That is stored in `NormalClass.__dict__`</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">SlottedClass</span>:</span></span><br><span class="line"><span class="meta">... </span>    __slots__ = (<span class="string">'x'</span>, <span class="string">'y'</span>)</span><br><span class="line"><span class="meta">... </span>    classvar = <span class="string">'foo'</span>  <span class="comment"># This is fine.</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.x = <span class="number">1</span></span><br><span class="line"><span class="meta">... </span>        self.y = <span class="number">2</span></span><br><span class="line"><span class="meta">... </span>        <span class="comment"># Trying to create `self.z` here will cause the same</span></span><br><span class="line"><span class="meta">... </span>        <span class="comment"># `AttributeError` as before.</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n = SlottedClass()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.__dict__</span><br><span class="line">AttributeError: <span class="string">'SlottedClass'</span> object has no attribute <span class="string">'__dict__'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.__slots__</span><br><span class="line">(<span class="string">'x'</span>, <span class="string">'y'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>So creating slots prevents a <code>__dict__</code> from existing, which means no dictionary to add new attributes into, and it also means saved memory. That’s basically it.</p>
+<p>因此，创建 <code>__slots</code> 可以防止 避免 <code>__dict__</code> 的存在，这意味着没有字典可供添加新属性，也意味着节省内存。 基本上是这样。 </p>
+<p>（补充知识结束）</p>
+<hr>
+<h3 id="hasattr-getattr-setattr-and-delattr-：属性助手"><a href="#hasattr-getattr-setattr-and-delattr-：属性助手" class="headerlink" title="hasattr, getattr, setattr and delattr ：属性助手"></a><code>hasattr</code>, <code>getattr</code>, <code>setattr</code> and <code>delattr</code> ：属性助手</h3><p> 我们知道，在字典中，可以通过键访问键值对的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary = &#123;<span class="string">'property'</span>: <span class="number">42</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary[<span class="string">'property'</span>]</span><br><span class="line"><span class="number">42</span></span><br></pre></td></tr></table></figure>
+
+<p>而在对象上，它是通过“ <code>.</code> ”操作符访问到属性的值：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line"><span class="meta">... </span>    prop = <span class="number">42</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>C.prop</span><br><span class="line"><span class="number">42</span></span><br></pre></td></tr></table></figure>
+
+<p>你甚至可以设置和删除对象的属性:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>C.prop = <span class="number">84</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>C.prop</span><br><span class="line"><span class="number">84</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> C.prop</span><br></pre></td></tr></table></figure>
+
+<p>将字典的键值对和对象及其属性比较，两者具有很高的相似性，但字典要灵活得多，例如，可以检查字典中是否存在一个键（对应于对象的属性）:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'prop'</span> <span class="keyword">in</span> d</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d[<span class="string">'prop'</span>] = <span class="string">'exists'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'prop'</span> <span class="keyword">in</span> d</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>对于实例的属性而言，类似的操作可以通过 <code>try ... except</code> 语句完成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">X</span>:</span></span><br><span class="line"><span class="meta">... </span>   <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = X()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">try</span>:</span><br><span class="line"><span class="meta">... </span>    print(x.prop)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">except</span> AttributeError:</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">"prop doesn't exist."</span>)</span><br><span class="line">prop doesn<span class="string">'t exist.</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，这并不是常用的，更提倡使用 <code>hasattr</code> 函数判断对象是否含有某个属性。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">X</span>:</span></span><br><span class="line"><span class="meta">... </span>   <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = X()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hasattr(x, <span class="string">'prop'</span>)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.prop = <span class="string">'exists'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hasattr(x, <span class="string">'prop'</span>)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>下面的操作，很显然不成立： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">X</span>:</span></span><br><span class="line"><span class="meta">... </span>    value = <span class="number">42</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = X()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>attr_name = <span class="string">'value'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr_name</span><br><span class="line">AttributeError: <span class="string">'X'</span> object has no attribute <span class="string">'attr_name'</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，如果想让它成为现实，可以这么做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">X</span>:</span></span><br><span class="line"><span class="meta">... </span>    value = <span class="number">42</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = X()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getattr(x, <span class="string">'value'</span>)</span><br><span class="line"><span class="number">42</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>attr_name = <span class="string">'value'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getattr(x, attr_name)</span><br><span class="line"><span class="number">42</span>  <span class="comment"># It works!</span></span><br></pre></td></tr></table></figure>
+
+<p>这里使用了 <code>getattr</code> 函数，它能接受一个字符串为属性，并设置属性值。</p>
+<p><code>setattr</code> 和 <code>delattr</code> 也都有类似的功能：它们接受字符串的属性名称，并相应地设置或删除属性值。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">X</span>:</span></span><br><span class="line"><span class="meta">... </span>    value = <span class="number">42</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = X()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>setattr(x, <span class="string">'value'</span>, <span class="number">84</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.value</span><br><span class="line"><span class="number">84</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>delattr(x, <span class="string">'value'</span>)  <span class="comment"># deletes the attribute completety</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hasattr(x, <span class="string">'value'</span>)</span><br><span class="line"><span class="literal">False</span>  <span class="comment"># `value` no longer exists on the object.</span></span><br></pre></td></tr></table></figure>
+
+<p>下面试着用其中的一个函数来构建一些有意义的东西:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">api</span>:</span></span><br><span class="line">    <span class="string">"""A dummy API."""</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send</span><span class="params">(item)</span>:</span></span><br><span class="line">        print(<span class="string">f'Uploaded <span class="subst">&#123;item!r&#125;</span>!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">upload_data</span><span class="params">(item)</span>:</span></span><br><span class="line">    <span class="string">"""Uploads the provided value to our database."""</span></span><br><span class="line">    <span class="keyword">if</span> hasattr(item, <span class="string">'get_value'</span>):</span><br><span class="line">        data = item.get_value()</span><br><span class="line">        api.send(data)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        api.send(item)</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>upload_data</code> 函数检查实参是否有 <code>get_value</code> 方法，如果有，则通过此方法读取数据。符合此类要求的对象（作为实参）是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> json</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">DataCollector</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.items = []</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">add_item</span><span class="params">(self, item)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.items.append(item)</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">get_value</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> json.dumps(self.items)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>upload_data(<span class="string">'some text'</span>)</span><br><span class="line">Uploaded <span class="string">'some text'</span>!</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>collector = DataCollector()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>collector.add_item(<span class="number">42</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>collector.add_item(<span class="number">1000</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>upload_data(collector)</span><br><span class="line">Uploaded <span class="string">'[42, 1000]'</span>!</span><br></pre></td></tr></table></figure>
+
+<h3 id="super-：用于继承"><a href="#super-：用于继承" class="headerlink" title="super ：用于继承"></a><code>super</code> ：用于继承</h3><p><code>super</code> 是 Python 引用父类的方式，例如，为了使用父类的方法而使用 <code>super</code> 。  </p>
+<p>以下面的类为例，它的作用是实现两项相加。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">perform</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.x + self.y</span><br></pre></td></tr></table></figure>
+
+<p>这个类的应用非常简单：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = Sum(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.perform()</span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>现在又创建了类 <code>DoubleSum</code> ，并且这个类继承了 <code>Sum</code> 类。在 <code>DoubleSum</code> 类中，有与父类相同的方法 <code>perform</code> ，但是它的返回值是两项和的 2 倍。这时候如果不断算写重复代码，而是依然要首先调用父类中的 <code>perform</code> 方法计算两项和，就可以用 <code>super</code> 方法实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubleSum</span><span class="params">(Sum)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">perform</span><span class="params">(self)</span>:</span></span><br><span class="line">        parent_sum = super().perform()</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * parent_sum</span><br></pre></td></tr></table></figure>
+
+<p>这样做，不需要重复已经定义过的东西，比如 <code>__init__</code> 方法，也不用重复写求和逻辑，只需要在继承父类的基础上调用父类方法即可。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = DoubleSum(<span class="number">3</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d.perform()</span><br><span class="line"><span class="number">16</span></span><br></pre></td></tr></table></figure>
+
+<p><code>super</code> 函数也不只用在类中，其他地方也可以使用，比如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(int)</span><br><span class="line">&lt;super: &lt;class 'int'&gt;, NULL&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(int, int)</span><br><span class="line">&lt;super: &lt;class 'int'&gt;, &lt;int object&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(int, bool)</span><br><span class="line">&lt;super: &lt;class 'int'&gt;, &lt;bool object&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>但说实话，我不明白这些有什么用。 如果你知道，请在评论中告诉我，感谢。</p>
+<h3 id="property-classmethod-and-staticmethod-：方法的装饰器"><a href="#property-classmethod-and-staticmethod-：方法的装饰器" class="headerlink" title="property, classmethod and staticmethod ：方法的装饰器"></a><code>property</code>, <code>classmethod</code> and <code>staticmethod</code> ：方法的装饰器</h3><p>这三个是对类中方法的三个装饰器：</p>
+<ul>
+<li><p><code>property</code>:</p>
+<p>当你想要在类中对属性通过 <code>getter</code>  或 <code>setter</code> 进行读写时，就要使用装饰器 <code>@property</code> 。在此情形下，可以通过 <code>getter</code> 或 <code>setter</code> 对读写过程给予干涉。</p>
+<p>通过 <code>property</code> 装饰器，将属性转换为一组方法来实现的：一个方法在访问属性时运行，另一个方法尝试更改属性值时运行。  </p>
+<p>看一个例子，我们试图确保一个学生的 <code>marks</code> 属性总是被设置为正数，因为学习成绩不能是负数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._marks = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">marks</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._marks</span><br><span class="line"></span><br><span class="line"><span class="meta">    @marks.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">marks</span><span class="params">(self, new_value)</span>:</span></span><br><span class="line">        <span class="comment"># Doing validation</span></span><br><span class="line">        <span class="keyword">if</span> new_value &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'marks cannot be negative'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># before actually setting the value.</span></span><br><span class="line">        self._marks = new_value</span><br></pre></td></tr></table></figure>
+
+<p>运行这段代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>student = Student()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student.marks</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student.marks = <span class="number">85</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student.marks</span><br><span class="line"><span class="number">85</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>student.marks = <span class="number">-10</span></span><br><span class="line">ValueError: marks cannot be negative</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>classmethod</code>:</p>
+<p>装饰器 <code>@classmethod</code> 用在方法上，使其成为类方法。这样一来，它就获得对类对象的引用，而不是对实例 (<code>self</code>)的引用。  </p>
+<p>比如，在类里面创建一个返回类名称的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line"><span class="meta">... </span>    @classmethod</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">class_name</span><span class="params">(cls)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> cls.__name__</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = C()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.class_name</span><br><span class="line"><span class="string">'C'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>staticmethod</code>: </p>
+<p>装饰器 <code>@staticmethod</code> 用于将方法转换为静态方法：相当于位于类中的函数，独立于任何类或对象属性。 使用 <code>@staticmethod</code> 后的方法就不必在参数列表中的第一个位置使用 <code>self</code> 参数。  </p>
+<p> We could make one that does some data validation for example:</p>
+<p>下面的应用中是利用 <code>@staticmethod</code> 进行数据验证：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">API</span>:</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_valid_title</span><span class="params">(title_text)</span>:</span></span><br><span class="line">        <span class="string">"""Checks whether the string can be used as a blog title."""</span></span><br><span class="line">        <span class="keyword">return</span> title_text.istitle() <span class="keyword">and</span> len(title_text) &lt; <span class="number">60</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>这些内置函数是使用一个非常高级的主题 <strong>descriptors</strong>（描述符）创建的。 坦率地说，描述符是一个非常高级的话题，如果在这里试图涵盖它，没有任何用处，因为它只是和已告知的内容有所关联。 </p>
+<h3 id="list-tuple-dict-set-and-frozenset-：容器"><a href="#list-tuple-dict-set-and-frozenset-：容器" class="headerlink" title="list, tuple, dict, set and frozenset ：容器"></a><code>list</code>, <code>tuple</code>, <code>dict</code>, <code>set</code> and <code>frozenset</code> ：容器</h3><p>Python 中的“容器”指的是一类数据结构，在这类数据结构中可以保存任意数量的成员。 </p>
+<p>Python 有5种基本容器类型:  </p>
+<ul>
+<li><p><code>list</code> ：有序的索引容器。每个元素都有一个特定的索引。列表是可变的，即：可以在任何时候添加或删除成员。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>]  <span class="comment"># Creates a list with 3 items</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list[<span class="number">0</span>]              <span class="comment"># Indexes start with zero</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list[<span class="number">1</span>]              <span class="comment"># Indexes increase one by one</span></span><br><span class="line"><span class="number">20</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list.append(<span class="number">40</span>)      <span class="comment"># Mutable: can add values</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list</span><br><span class="line">[<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list[<span class="number">0</span>] = <span class="number">50</span>         <span class="comment"># Can also reassign indexes</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_list</span><br><span class="line">[<span class="number">50</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>tuple</code> ：像列表一样有序和，但有一个关键区别: 它们是不可变的，这意味着一旦创建了元组对象，就不能添加或删除其中的成员。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>some_tuple = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>some_tuple[<span class="number">0</span>]              <span class="comment"># Indexable</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>some_tuple.append(<span class="number">4</span>)       <span class="comment"># But NOT mutable</span></span><br><span class="line">AttributeError: ...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>some_tuple[<span class="number">0</span>] = <span class="number">5</span>          <span class="comment"># Cannot reassign an index as well</span></span><br><span class="line">TypeError: ...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>dict</code>：以键值对为成员。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>flower_colors = &#123;<span class="string">'roses'</span>: <span class="string">'red'</span>, <span class="string">'violets'</span>: <span class="string">'blue'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>flower_colors[<span class="string">'violets'</span>]               <span class="comment"># Use keys to access value</span></span><br><span class="line"><span class="string">'blue'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>flower_colors[<span class="string">'violets'</span>] = <span class="string">'purple'</span>    <span class="comment"># Mutable</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>flower_colors</span><br><span class="line">&#123;<span class="string">'roses'</span>: <span class="string">'red'</span>, <span class="string">'violets'</span>: <span class="string">'purple'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>flower_colors[<span class="string">'daffodil'</span>] = <span class="string">'yellow'</span>   <span class="comment"># Can also add new values</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>flower_colors</span><br><span class="line">&#123;<span class="string">'roses'</span>: <span class="string">'red'</span>, <span class="string">'violets'</span>: <span class="string">'purple'</span>, <span class="string">'daffodil'</span>: <span class="string">'yellow'</span>&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>set</code> ：是由无序的、唯一的成员组成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>forest = [<span class="string">'cedar'</span>, <span class="string">'bamboo'</span>, <span class="string">'cedar'</span>, <span class="string">'cedar'</span>, <span class="string">'cedar'</span>, <span class="string">'oak'</span>, <span class="string">'bamboo'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree_types = set(forest)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree_types</span><br><span class="line">&#123;<span class="string">'bamboo'</span>, <span class="string">'oak'</span>, <span class="string">'cedar'</span>&#125;      <span class="comment"># Only unique items</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'oak'</span> <span class="keyword">in</span> tree_types</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree_types.remove(<span class="string">'oak'</span>)    <span class="comment"># Sets are also mutable</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree_types</span><br><span class="line">&#123;<span class="string">'bamboo'</span>, <span class="string">'cedar'</span>&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>frozenset</code> 与集合相同，但它是不可变的。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>forest = [<span class="string">'cedar'</span>, <span class="string">'bamboo'</span>, <span class="string">'cedar'</span>, <span class="string">'cedar'</span>, <span class="string">'cedar'</span>, <span class="string">'oak'</span>, <span class="string">'bamboo'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree_types = frozenset(forest)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree_types</span><br><span class="line">frozenset(&#123;<span class="string">'bamboo'</span>, <span class="string">'oak'</span>, <span class="string">'cedar'</span>&#125;)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'cedar'</span> <span class="keyword">in</span> tree_types</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree_types.add(<span class="string">'mahogany'</span>)           <span class="comment"># CANNOT modify</span></span><br><span class="line">AttributeError: ...</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>内置的 <code>list</code> 、<code>tuple</code> 和 <code>dict</code> 也可以用来创建这些数据结构的空实例:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = list()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">[]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y = dict()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>y</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/03/python-builtins-forth/">
+        <span class="nav-arrow">← </span>
+        
+          通过内置对象理解 Python（四）
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/11/03/python-builtins-sixth/">
+        
+          通过内置对象理解 Python（六）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#dir-and-vars-：一切皆字典"><span class="toc-nav-text">dir and vars ：一切皆字典</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#hasattr-getattr-setattr-and-delattr-：属性助手"><span class="toc-nav-text">hasattr, getattr, setattr and delattr ：属性助手</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#super-：用于继承"><span class="toc-nav-text">super ：用于继承</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#property-classmethod-and-staticmethod-：方法的装饰器"><span class="toc-nav-text">property, classmethod and staticmethod ：方法的装饰器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#list-tuple-dict-set-and-frozenset-：容器"><span class="toc-nav-text">list, tuple, dict, set and frozenset ：容器</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/11/03/python-builtins-fifth/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

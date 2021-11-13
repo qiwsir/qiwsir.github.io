@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通过内置对象理解 Python（六） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通过内置对象理解 Python（六）</h2>
+    <p class="post-date">2021-11-03</p>
+    <section class="markdown-content"><h3 id="bytearray-and-memoryview-字节接口"><a href="#bytearray-and-memoryview-字节接口" class="headerlink" title="bytearray and memoryview: 字节接口"></a><code>bytearray</code> and <code>memoryview</code>: 字节接口</h3><p><code>bytearray</code> 与 <code>bytes</code> 类似，它的意义体现在：  </p>
+<ul>
+<li><p><code>bytearray</code> 在一些低级操作中，比如有关字节和位运算，使用 <code>bytearray</code> 对于改变单个字节会更有效。例如下面的魔幻操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">upper</span><span class="params">(s)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> <span class="string">''</span>.join(chr(ord(c) &amp; <span class="number">223</span>) <span class="keyword">for</span> c <span class="keyword">in</span> s)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">toggle</span><span class="params">(s)</span>:</span> <span class="keyword">return</span> <span class="string">''</span>.join(chr(ord(c) ^ <span class="number">32</span>) <span class="keyword">for</span> c <span class="keyword">in</span> s)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">lower</span><span class="params">(s)</span>:</span> <span class="keyword">return</span> <span class="string">''</span>.join(chr(ord(c) | <span class="number">32</span>) <span class="keyword">for</span> c <span class="keyword">in</span> s)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>upper(<span class="string">"Lao Qi"</span>)</span><br><span class="line"><span class="string">'LAO\x00QI'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>toggle(<span class="string">"Lao Qi"</span>)</span><br><span class="line"><span class="string">'lAO\x00qI'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lower(<span class="string">"Lao Qi"</span>)</span><br><span class="line"><span class="string">'lao qi'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字节的大小是固定的，而字符串则由于编码规则，其长度会有所不同，比如按照常用的 unicode 编码标准 <code>utf-8</code> 进行编码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="string">'I♥🐍'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(x)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.encode()</span><br><span class="line"><span class="string">b'I\xe2\x99\xa5\xf0\x9f\x90\x8d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(x.encode())</span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="number">2</span>]</span><br><span class="line"><span class="string">'🐍'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="number">2</span>].encode()</span><br><span class="line"><span class="string">b'\xf0\x9f\x90\x8d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(x[<span class="number">2</span>].encode())</span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>变量 <code>x</code> 引用的字符串 <code>I♥🐍</code> 由三个字符构成，实际上共计 8 个字节，而表情符号 <code>🐍</code> 有4个字节长。按照下面的演示，如果读取表情符的每个单独的字节，它的“值”总是在 0 到 255 之间:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="number">2</span>]</span><br><span class="line"><span class="string">'🐍'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = x[<span class="number">2</span>].encode()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">b'\xf0\x9f\x90\x8d'</span>  <span class="comment"># 4 bytes</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[:<span class="number">1</span>]</span><br><span class="line"><span class="string">b'\xf0'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">1</span>:<span class="number">2</span>]</span><br><span class="line"><span class="string">b'\x9f'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">2</span>:<span class="number">3</span>]</span><br><span class="line"><span class="string">b'\x90'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">3</span>:<span class="number">4</span>]</span><br><span class="line"><span class="string">b'\x8d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">0</span>]  <span class="comment"># indexing a bytes object gives an integer</span></span><br><span class="line"><span class="number">240</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">3</span>]</span><br><span class="line"><span class="number">141</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>下面来看一些针对字节的位操作的例子:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">alternate_case</span><span class="params">(string)</span>:</span></span><br><span class="line">    <span class="string">"""Turns a string into alternating uppercase and lowercase characters."""</span></span><br><span class="line">    array = bytearray(string.encode())</span><br><span class="line">    <span class="keyword">for</span> index, byte <span class="keyword">in</span> enumerate(array):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ((<span class="number">65</span> &lt;= byte &lt;= <span class="number">90</span>) <span class="keyword">or</span> (<span class="number">97</span> &lt;= byte &lt;= <span class="number">126</span>)):</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> index % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">            array[index] = byte | <span class="number">32</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            array[index] = byte &amp; ~<span class="number">32</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> array.decode()</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>alternate_case(<span class="string">'Hello WORLD?'</span>)</span><br><span class="line"><span class="string">'hElLo wOrLd?'</span></span><br></pre></td></tr></table></figure>
+
+<p>这不是一个很好的示例，因此不用耗费精力解释它，但它确实有效，而且，相比于为每个字符的更改创建一个新的 <code>bytes</code> 对象，它更有效。  </p>
+<p>另外一个内置函数 <code>memoryview</code> 与 <code>bytearray</code> 很类似，但它可以引用一个对象或一个切片，而不是为自己创建一个新的副本，允许你传一个对内存中“字节段”的引用，并在原地编辑它:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>array = bytearray(range(<span class="number">256</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>array</span><br><span class="line">bytearray(<span class="string">b'\x00\x01\x02\x03\x04\x05\x06\x07\x08...</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; len(array)</span></span><br><span class="line"><span class="string">256</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; array_slice = array[65:91]  # Bytes 65 to 90 are uppercase english characters</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; array_slice</span></span><br><span class="line"><span class="string">bytearray(b'</span>ABCDEFGHIJKLMNOPQRSTUVWXYZ<span class="string">')</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; view = memoryview(array)[65:91]  # Does the same thing,</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; view</span></span><br><span class="line"><span class="string">&lt;memory at 0x7f438cefe040&gt;  # but doesn'</span>t generate a new new bytearray by default</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bytearray(view)</span><br><span class="line">bytearray(<span class="string">b'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span>)  <span class="comment"># It can still be converted, though.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>view[<span class="number">0</span>]  <span class="comment"># 'A'</span></span><br><span class="line"><span class="number">65</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>view[<span class="number">0</span>] += <span class="number">32</span>  <span class="comment"># Turns it lowercase</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bytearray(view)</span><br><span class="line">bytearray(<span class="string">b'aBCDEFGHIJKLMNOPQRSTUVWXYZ'</span>)  <span class="comment"># 'A' is now lowercase.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bytearray(view[<span class="number">10</span>:<span class="number">15</span>])</span><br><span class="line">bytearray(<span class="string">b'KLMNO'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>view[<span class="number">10</span>:<span class="number">15</span>] = bytearray(view[<span class="number">10</span>:<span class="number">15</span>]).lower()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bytearray(view)</span><br><span class="line">bytearray(<span class="string">b'aBCDEFGHIJklmnoPQRSTUVWXYZ'</span>)  <span class="comment"># Modified 'KLMNO' in-place.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="bin-hex-oct-ord-chr-and-ascii-：实现最基本转换"><a href="#bin-hex-oct-ord-chr-and-ascii-：实现最基本转换" class="headerlink" title="bin, hex, oct, ord, chr and ascii ：实现最基本转换"></a><code>bin</code>, <code>hex</code>, <code>oct</code>, <code>ord</code>, <code>chr</code> and <code>ascii</code> ：实现最基本转换</h3><p><code>bin</code> 、<code>hex</code> 和 <code>oct</code> 三个内置函数实现了最基本的数制转换：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">42</span>)</span><br><span class="line"><span class="string">'0b101010'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(<span class="number">42</span>)</span><br><span class="line"><span class="string">'0x2a'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>oct(<span class="number">42</span>)</span><br><span class="line"><span class="string">'0o52'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0b101010</span></span><br><span class="line"><span class="number">42</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0x2a</span></span><br><span class="line"><span class="number">42</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0o52</span></span><br><span class="line"><span class="number">42</span></span><br></pre></td></tr></table></figure>
+
+<p>轻松地实现了二进制、八进制和十六进制与十进制整数之间的转换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(<span class="number">0x20</span>)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">int</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(<span class="number">0b101010</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">int</span>'&gt;</span></span><br><span class="line">&gt;&gt;&gt; 0o100 == 64</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>虽然十进制容易理解，但在有的时候，用其他进制，也是有必要的，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>bytes([<span class="number">255</span>, <span class="number">254</span>])</span><br><span class="line"><span class="string">b'\xff\xfe'</span>              <span class="comment"># Not very easy to comprehend</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># This can be written as:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bytes([<span class="number">0xff</span>, <span class="number">0xfe</span>])</span><br><span class="line"><span class="string">b'\xff\xfe'</span>              <span class="comment"># An exact one-to-one translation</span></span><br></pre></td></tr></table></figure>
+
+<p>下面的示例中，则将文件的打开模式 <code>mode</code> 的值用八进制实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> os</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.open(<span class="string">'file.txt'</span>, os.O_RDWR, mode=<span class="number">384</span>)    <span class="comment"># ??? what's 384</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># This can be written as:</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.open(<span class="string">'file.txt'</span>, os.O_RDWR, mode=<span class="number">0o600</span>)  <span class="comment"># mode is 600 -&gt; read-write</span></span><br></pre></td></tr></table></figure>
+
+<p>请注意，<code>bin</code> 仅用于创建一个 Python 整数的二进制数时，如果想要的是二进制字符串，最好使用 Python 的字符串格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">f'<span class="subst">&#123;<span class="number">42</span>:b&#125;</span>'</span></span><br><span class="line"><span class="number">101010</span></span><br></pre></td></tr></table></figure>
+
+<p>内置函数 <code>ord</code> 和 <code>chr</code> 用于实现 ASCII 和 unicode 字符及其字符编码间的转换：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>ord(<span class="string">'x'</span>)</span><br><span class="line"><span class="number">120</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chr(<span class="number">120</span>)</span><br><span class="line"><span class="string">'x'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ord(<span class="string">'🐍'</span>)</span><br><span class="line"><span class="number">128013</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(ord(<span class="string">'🐍'</span>))</span><br><span class="line"><span class="string">'0x1f40d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chr(<span class="number">0x1f40d</span>)</span><br><span class="line"><span class="string">'🐍'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'\U0001f40d'</span>  <span class="comment"># The same value, as a unicode escape inside a string</span></span><br><span class="line"><span class="string">'🐍'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="format：文本格式"><a href="#format：文本格式" class="headerlink" title="format：文本格式"></a><code>format</code>：文本格式</h3><p>内置函数 <code>format(string, spec)</code> 是 <code>string.format(spec)</code> 的另一种方式。可以用它实现字符串的转换，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>format(<span class="number">42</span>, <span class="string">'c'</span>)             <span class="comment"># int to ascii</span></span><br><span class="line"><span class="string">'*'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>format(<span class="number">604</span>, <span class="string">'f'</span>)            <span class="comment"># int to float</span></span><br><span class="line"><span class="string">'604.000000'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>format(<span class="number">357</span>/<span class="number">18</span>, <span class="string">'.2f'</span>)       <span class="comment"># specify decimal precision</span></span><br><span class="line"><span class="string">'19.83'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>format(<span class="number">604</span>, <span class="string">'x'</span>)            <span class="comment"># int to hex</span></span><br><span class="line"><span class="string">'25c'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>format(<span class="number">604</span>, <span class="string">'b'</span>)            <span class="comment"># int to binary</span></span><br><span class="line"><span class="string">'1001011100'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>format(<span class="number">604</span>, <span class="string">'0&gt;16b'</span>)        <span class="comment"># binary with zero-padding</span></span><br><span class="line"><span class="string">'0000001001011100'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>format(<span class="string">'Python!'</span>, <span class="string">'🐍^15'</span>)  <span class="comment"># centered aligned text</span></span><br><span class="line"><span class="string">'🐍🐍🐍🐍Python!🐍🐍🐍🐍'</span></span><br></pre></td></tr></table></figure>
+
+<p>在《Python 大学使用教程》 一书中对字符串的格式化输出有详细介绍，并且在另外一本即将出版的书稿中，专门介绍了格式化输出，请参阅：【<a href="https://mp.weixin.qq.com/s/KQP5OY9Eoa2vBStPRF6UTA" target="_blank" rel="noopener">字符串格式化输出</a>】，或者访问：<a href="http://www.itdiffer.com/self-learning.html" target="_blank" rel="noopener">http://www.itdiffer.com/self-learning.html</a> 查阅。</p>
+<h3 id="any-和-all"><a href="#any-和-all" class="headerlink" title="any 和 all"></a><code>any</code> 和 <code>all</code></h3><p>这是两个非常 Pythonic 的函数，恰当使用，能让代码更短，可读性更强，体现了 Python 的精髓。例如：</p>
+<p>假设编写一个验证请求是否合规的 API，接受来自请求的 JSON 数据，判断该数据中是否含有 <code>id</code> 字段，并且该字段的长度必须是 <code>20</code> ，一种常见的写法是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">validate_responses</span><span class="params">(responses)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> response <span class="keyword">in</span> responses:</span><br><span class="line">        <span class="comment"># Make sure that `id` exists</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'id'</span> <span class="keyword">not</span> <span class="keyword">in</span> response:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="comment"># Make sure it is a string</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(response[<span class="string">'id'</span>], str):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="comment"># Make sure it is 20 characters</span></span><br><span class="line">        <span class="keyword">if</span> len(response[<span class="string">'id'</span>]) != <span class="number">20</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># If everything was True so far for every</span></span><br><span class="line">    <span class="comment"># response, then we can return True.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>用 <code>all</code> 函数优化之后为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">validate_responses</span><span class="params">(responses)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> all(</span><br><span class="line">        <span class="string">'id'</span> <span class="keyword">in</span> response</span><br><span class="line">        <span class="keyword">and</span> isinstance(response[<span class="string">'id'</span>], str)</span><br><span class="line">        <span class="keyword">and</span> len(response[<span class="string">'id'</span>]) == <span class="number">20</span></span><br><span class="line">        <span class="keyword">for</span> response <span class="keyword">in</span> responses</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<p><code>all</code> 的参数是布尔值组成的迭代器，若迭代器中有一个 <code>False</code> 值，函数 <code>all</code> 的返回即为 <code>False</code> 。否则返回 <code>True</code> 。  </p>
+<p>再看一个判断回文的示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">contains_palindrome</span><span class="params">(words)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">        <span class="keyword">if</span> word == <span class="string">''</span>.join(reversed(word)):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Found no palindromes in the end</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>与之相对的是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">contains_palindrome</span><span class="params">(words)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> any(word == <span class="string">''</span>.join(reversed(word)) <span class="keyword">for</span> word <span class="keyword">in</span> words)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>补充知识：</strong> <code>any</code> 和 <code>all</code> 内部的列表解析</p>
+<p>我们可以把使用 <code>any</code> 或 <code>all</code> 的代码写成列表解析式:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>any([num == <span class="number">0</span> <span class="keyword">for</span> num <span class="keyword">in</span> nums])</span><br></pre></td></tr></table></figure>
+
+<p>而不是生成器表达式:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>any(num == <span class="number">0</span> <span class="keyword">for</span> num <span class="keyword">in</span> nums)</span><br></pre></td></tr></table></figure>
+
+<p>用列表解析和生成器，两者有较大的区别：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>any(num == <span class="number">10</span> <span class="keyword">for</span> num <span class="keyword">in</span> range(<span class="number">100</span>_000_000))</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>any([num == <span class="number">10</span> <span class="keyword">for</span> num <span class="keyword">in</span> range(<span class="number">100</span>_000_000)])</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>使用列表解析的第二行代码不仅会在列表中毫无理由地存储1亿个值，然后再运行 <code>any</code> ，而且在我的机器上也需要10秒以上的时间。 同时，因为第一行代码是一个生成器表达式，它会逐个生成从 0 到 10 的数字，并将它们传给 <code>any</code> ，一旦计数达到 10，<code>any</code> 就会中断迭代并几乎立即返回 <code>True</code> 。这也意味着，在这种情况下，它的运行速度实际上快了一千万倍。</p>
+<p>所以，要使用生成器。</p>
+<blockquote>
+<p>关于生成器的更多知识，请查阅《Python 大学实用教程》（电子工业出版社）</p>
+</blockquote>
+<p>（补充知识完毕）</p>
+<hr>
+<h3 id="abs-divmod-pow-and-round-：数学基础"><a href="#abs-divmod-pow-and-round-：数学基础" class="headerlink" title="abs, divmod, pow and round ：数学基础"></a><code>abs</code>, <code>divmod</code>, <code>pow</code> and <code>round</code> ：数学基础</h3><p>这四个数学函数在编程中非常常见，它们被直接放在随时可用的内置函数中，而不是放在 <code>math</code> 模块中。 </p>
+<p>它们非常简单:  </p>
+<ul>
+<li><p><code>abs</code> 返回一个数字的绝对值，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">42</span>)</span><br><span class="line"><span class="number">42</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-3.14</span>)</span><br><span class="line"><span class="number">3.14</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">3</span><span class="number">-4j</span>)</span><br><span class="line"><span class="number">5.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>divmod</code> 返回除法运算后的商和余数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>divmod(<span class="number">7</span>, <span class="number">2</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quotient, remainder = divmod(<span class="number">5327</span>, <span class="number">100</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quotient</span><br><span class="line"><span class="number">53</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>remainder</span><br><span class="line"><span class="number">27</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>pow</code> 返回一个值的指数运算结果：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pow(<span class="number">100</span>, <span class="number">3</span>)</span><br><span class="line"><span class="number">1000000</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pow(<span class="number">2</span>, <span class="number">10</span>)</span><br><span class="line"><span class="number">1024</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>round</code> 按照四舍五入原则返回数字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> math</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>math.pi</span><br><span class="line"><span class="number">3.141592653589793</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>round(math.pi)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>round(math.pi, <span class="number">4</span>)</span><br><span class="line"><span class="number">3.1416</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>round(<span class="number">1728</span>, <span class="number">-2</span>)</span><br><span class="line"><span class="number">1700</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="isinstance-and-issubclass-：类型检查"><a href="#isinstance-and-issubclass-：类型检查" class="headerlink" title="isinstance and issubclass ：类型检查"></a><code>isinstance</code> and <code>issubclass</code> ：类型检查</h3><p><code>type</code> 内置函数可以用于对象的类型检查，就像这样:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_stuff</span><span class="params">(stuff)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> type(stuff) <span class="keyword">is</span> list:</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> stuff:</span><br><span class="line">            print(item)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(stuff)</span><br></pre></td></tr></table></figure>
+
+<p>这个函数中检验参数对象是否是 <code>list</code> 类型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print_stuff(<span class="string">'foo'</span>)</span><br><span class="line">foo</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print_stuff(<span class="number">123</span>)</span><br><span class="line"><span class="number">123</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print_stuff([<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>])</span><br><span class="line">spam</span><br><span class="line">eggs</span><br><span class="line">steak</span><br></pre></td></tr></table></figure>
+
+<p>目前看起来，它能运行，但是，实际上存在一些问题。 这里有一个例子: </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">MyList</span><span class="params">(list)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = MyList([<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>items</span><br><span class="line">[<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print_stuff(items)</span><br><span class="line">[<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>当然，<code>items</code> 仍然是一个列表，但是 <code>print_stuff</code> 函数不再识别它了。 原因很简单，因为 <code>type(items)</code> 的返回值是 <code>MyList</code> ，不是 <code>list</code> 。</p>
+<p>也可以说，函数 <code>type</code> 没有考虑继承问题，如果改用 <code>isinstance</code> ，它不仅检查一个对象是否是一个类的实例，它还检查该对象是否是一个子类的实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">MyList</span><span class="params">(list)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = [<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(items) <span class="keyword">is</span> list</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(items, list)</span><br><span class="line"><span class="literal">True</span>   <span class="comment"># Both of these do the same thing</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = MyList([<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(items) <span class="keyword">is</span> list</span><br><span class="line"><span class="literal">False</span>  <span class="comment"># And while `type` doesn't work,</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(items, list)</span><br><span class="line"><span class="literal">True</span>   <span class="comment"># `isinstance` works with subclasses too.</span></span><br></pre></td></tr></table></figure>
+
+<p>类似地， <code>issubclass</code> 检查一个类是否是另一个类的子类。 <code>isinstance</code> 的第一个参数是一个对象，但 <code>issubclass</code> 的第一个参数是另一个类:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(MyList, list)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>所以，应该将 <code>print_stuff</code> 函数中的 <code>type</code> 替换为 <code>isinstance</code> ，优化之后，继续测试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = (<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print_stuff(items)</span><br><span class="line">(<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果传入的实参不是列表，则不能输出实参对象类型。对此的一种解决方法就是通过多分支的 <code>if</code> 语句实现。如果只是内置对象还好办一些，尽管如此，分支太多，代码也是丑陋的。</p>
+<p>为此，Python 中有一个含有各种内置类型的“类”，可以用它们来测试类的某些“行为”，而不是测试类本身。在我们的例子中，行为是作为其他对象的容器，称之为 <code>Container</code>：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Container</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>items = (<span class="string">'spam'</span>, <span class="string">'eggs'</span>, <span class="string">'steak'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(items, tuple)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(items, list)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(items, Container)</span><br><span class="line"><span class="literal">True</span>  <span class="comment"># This works!</span></span><br></pre></td></tr></table></figure>
+
+<p>每个容器对象类型都会在 <code>Container</code> 基类的检查中返回 <code>True</code> ， <code>issubclass</code> 也行之有效:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Container</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(list, Container)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(tuple, Container)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(set, Container)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>issubclass(dict, Container)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>把它添加到代码中，就变成:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Container</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_stuff</span><span class="params">(stuff)</span>:</span>    </span><br><span class="line">    <span class="keyword">if</span> isinstance(stuff, Container):     </span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> stuff:           </span><br><span class="line">            print(item)    </span><br><span class="line">    <span class="keyword">else</span>:       </span><br><span class="line">        print(stuff)</span><br></pre></td></tr></table></figure>
+
+<p>最后要特别声明：在实际的编程中，不提倡对参数类型进行检查。具体原因，请参阅《Python 大学实用教程》（电子工业出版社）中对“多态”的讲解内容。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/03/python-builtins-fifth/">
+        <span class="nav-arrow">← </span>
+        
+          通过内置对象理解 Python（五）
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/11/03/python-builtins-seventh/">
+        
+          通过内置对象理解 Python（七）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#bytearray-and-memoryview-字节接口"><span class="toc-nav-text">bytearray and memoryview: 字节接口</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#bin-hex-oct-ord-chr-and-ascii-：实现最基本转换"><span class="toc-nav-text">bin, hex, oct, ord, chr and ascii ：实现最基本转换</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#format：文本格式"><span class="toc-nav-text">format：文本格式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#any-和-all"><span class="toc-nav-text">any 和 all</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#abs-divmod-pow-and-round-：数学基础"><span class="toc-nav-text">abs, divmod, pow and round ：数学基础</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#isinstance-and-issubclass-：类型检查"><span class="toc-nav-text">isinstance and issubclass ：类型检查</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/11/03/python-builtins-sixth/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

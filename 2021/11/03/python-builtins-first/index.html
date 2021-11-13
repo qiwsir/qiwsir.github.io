@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通过内置对象理解 Python（一） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通过内置对象理解 Python（一）</h2>
+    <p class="post-date">2021-11-03</p>
+    <section class="markdown-content"><p><img src="https://gitee.com/qiwsir/images/raw/master/2021-10-21/1634807667342-builtins.jpg" alt=""></p>
+<p>如果你已经对 Python 有了初步的了解，比如阅读过《Python 大学使用教程》或者《跟老齐学 Python：轻松入门》，亦或者学习过老齐在 CSDN 等平台上发布的在线课程（参考：<a href="http://www.itdiffer.com），再阅读本文，会帮助你更深刻立即" target="_blank" rel="noopener">www.itdiffer.com），再阅读本文，会帮助你更深刻立即</a> Python 语言的特点，掌握 Python 语言的使用方法。</p>
+<h2 id="了解内置对象"><a href="#了解内置对象" class="headerlink" title="了解内置对象"></a>了解内置对象</h2><p>Python 的内置对象是指 <code>builtins</code> 模块中所有的内容。 </p>
+<p>为了更好地理解这一点，需要了解一下 <strong>L.E.G.B.</strong> 规则。   </p>
+<p> <strong>L.E.G.B.</strong> 规则定义了在Python中查找的变量所在的作用域顺序 ，分别是：</p>
+<ul>
+<li><strong>L</strong>ocal scope（局部作用域，或本地作用域）</li>
+<li><strong>E</strong>nclosing (or nonlocal) scope（闭包作用域，或非局部作用域）</li>
+<li><strong>G</strong>lobal scope（全局作用域）</li>
+<li><strong>B</strong>uiltin scope（内置作用域）</li>
+</ul>
+<p><strong>注：</strong>有关作用域的详细解释，请参阅 <a href="http://www.itdiffer.com" target="_blank" rel="noopener">www.itdiffer.com</a> 中的有关文章</p>
+<h3 id="局部作用域"><a href="#局部作用域" class="headerlink" title="局部作用域"></a>局部作用域</h3><p>创建了函数或类之后，每次调用它们，在其中便创建了局部作用域。例如：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">11</span></span><br><span class="line">print(x)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_function</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">22</span></span><br><span class="line">    print(x)</span><br><span class="line"></span><br><span class="line">some_function()</span><br><span class="line"></span><br><span class="line">print(x)</span><br></pre></td></tr></table></figure>
+
+<p>运行这段代码会输出以下内容:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">11</span><br><span class="line">22</span><br><span class="line">11</span><br></pre></td></tr></table></figure>
+
+<p>下面分析执行过程：在 <code>some_function()</code> 函数中中定义了一个新变量 <code>x = 22</code> ，它位于函索所定义的局部命名空间**中。之后，只要在函数内使用 <code>x</code> ，它指的就是在局部作用域内的那个 <code>x</code> 。若访问 <code>some_function()</code> 函数之外的 <code>x</code> 时，则指的是在 <code>x = 11</code> 中定义的那个<code>x</code> 。 </p>
+<h3 id="闭包作用域"><a href="#闭包作用域" class="headerlink" title="闭包作用域"></a>闭包作用域</h3><p> 闭包作用域是嵌套函数中出现的作用域，还是用一个例子来解释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">11</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer_function</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">22</span></span><br><span class="line">    y = <span class="number">789</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_function</span><span class="params">()</span>:</span></span><br><span class="line">        x = <span class="number">33</span></span><br><span class="line">        print(<span class="string">'Inner x:'</span>, x)</span><br><span class="line">        print(<span class="string">'Enclosing y:'</span>, y)</span><br><span class="line"></span><br><span class="line">    inner_function()</span><br><span class="line">    print(<span class="string">'Outer x:'</span>, x)</span><br><span class="line"></span><br><span class="line">outer_function()</span><br><span class="line">print(<span class="string">'Global x:'</span>, x)</span><br></pre></td></tr></table></figure>
+
+<p>它的输出是:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Inner x: 33</span><br><span class="line">Enclosing y: 789</span><br><span class="line">Outer x: 22</span><br><span class="line">Global x: 11</span><br></pre></td></tr></table></figure>
+
+<p>它本质含义是，每个函数或类创建自己的本地作用域，与外部环境分离。如果在本地作用域中访问外部变量，是可行的；但是在本地作用域中创建的任何变量都不会影响外部的作用域。所以在内部函数中重新赋值 <code>x = 33</code> 并不影响外部所定义的 <code>x</code> 的值。</p>
+<p>但是，如果我想影响外部作用域，怎么办？</p>
+<p>为此，可以在使用关键词 <code>nonlocal</code> ，让它来告诉解释器：你不是要在局部作用域中定义一个新变量，而是要修改闭包作用域（外围作用域）中的变量。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer_function</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">11</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_function</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> x</span><br><span class="line">        x = <span class="number">22</span></span><br><span class="line">        print(<span class="string">'Inner x:'</span>, x)</span><br><span class="line"></span><br><span class="line">    inner_function()</span><br><span class="line">    print(<span class="string">'Outer x:'</span>, x)</span><br></pre></td></tr></table></figure>
+
+<p>打印结果如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Inner x: 22</span><br><span class="line">Outer x: 22</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h3><p>全局作用域指定义模块中的顶级变量、函数和类的作用域。  </p>
+<p>“模块”是任何可以运行或导入的 Python 文件或包。 例如： <code>time</code> 是标准库中的一个模块（用 <code>import time</code> 导入），而 <code>time.sleep()</code> 是定义在 <code>time</code> 模块的全局作用域中的函数。  </p>
+<p>Python 中的每个模块都有一些预定义的全局变量，例如 <code>__name__</code> 和 <code>__doc__</code>，它们分别引用模块的名称和模块的文档字符串。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(__name__)</span><br><span class="line">__main__</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(__doc__)</span><br><span class="line"><span class="literal">None</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> time</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.__name__</span><br><span class="line"><span class="string">'time'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.__doc__</span><br><span class="line"><span class="string">'This module provides various functions to manipulate time values.'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="内置作用域"><a href="#内置作用域" class="headerlink" title="内置作用域"></a>内置作用域</h3><p>现在我们进入本文的主题——内置作用域。</p>
+<p>关于 Python 的内置作用域，以下两个方面需要了解：</p>
+<ul>
+<li>它是定义 Python 所有顶级函数（或内置函数）的作用域，比如 <code>len</code> 、<code>range</code> 和 <code>print</code> 。 </li>
+<li>当一个变量在局部、闭包或全局作用域中找不到时，Python 会在内置作用域中寻找它。  </li>
+</ul>
+<p>可以导入 <code>builtins</code> 模块，并查看该作用域中的所有对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> builtins</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(builtins)</span><br><span class="line"><span class="comment"># 显示内容从略</span></span><br></pre></td></tr></table></figure>
+
+<p>由于某些未知原因，Python 在全局命名空间中默认将内置模块显示为 <code>__builtins__</code> 。 所以也可以直接访问 <code>__builtins__</code> ，而不需要导入任何东西。 注意， <code>__builtins__</code> 是用 CPython 实现的，其他 Python 实现可能没有它。<code>import builtins</code> 是访问内置模块的最正确的方式。  </p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/03/python-builtins-second/">
+        <span class="nav-arrow">← </span>
+        
+          通过内置对象理解 Python（二）
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/11/03/python-builtins-third/">
+        
+          通过内置对象理解 Python（三）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#了解内置对象"><span class="toc-nav-text">了解内置对象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#局部作用域"><span class="toc-nav-text">局部作用域</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#闭包作用域"><span class="toc-nav-text">闭包作用域</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#全局作用域"><span class="toc-nav-text">全局作用域</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#内置作用域"><span class="toc-nav-text">内置作用域</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/11/03/python-builtins-first/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

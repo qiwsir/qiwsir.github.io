@@ -161,6 +161,120 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2021/11/03/python-builtins-seventh/">通过内置对象理解 Python（七）</a>
+      </h2>
+      <p class="article-date">November 3, 2021</p>
+      
+      <div class="article-summary">
+        
+          sorted and reversed 用于序列排序和反转数据序列可能是任何编程语言中最常用的算法操作，Python 中的内置函数 sorted 和 reversed 都用于实现这些功能。
+
+sorted 函数对输入的数据进行排序，并返回一个排序过的 list 对象。  
+123&gt;&g ...
+        
+      </div>
+      <a class="more" href="/2021/11/03/python-builtins-seventh/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/11/03/python-builtins-sixth/">通过内置对象理解 Python（六）</a>
+      </h2>
+      <p class="article-date">November 3, 2021</p>
+      
+      <div class="article-summary">
+        
+          bytearray and memoryview: 字节接口bytearray 与 bytes 类似，它的意义体现在：  
+
+bytearray 在一些低级操作中，比如有关字节和位运算，使用 bytearray 对于改变单个字节会更有效。例如下面的魔幻操作：
+1234567891011121 ...
+        
+      </div>
+      <a class="more" href="/2021/11/03/python-builtins-sixth/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/11/03/python-builtins-fifth/">通过内置对象理解 Python（五）</a>
+      </h2>
+      <p class="article-date">November 3, 2021</p>
+      
+      <div class="article-summary">
+        
+          dir and vars ：一切皆字典你有没有想过 Python 是如何存储对象、变量、方法等等的？我们知道所有对象都有自己的属性和方法，但是 Python 到底是如何跟踪它们的呢? 
+简单的答案是，所有内容都存储在字典中。 vars 方法揭示了存储在对象和类中的变量。  
+12345678 ...
+        
+      </div>
+      <a class="more" href="/2021/11/03/python-builtins-fifth/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/11/03/python-builtins-forth/">通过内置对象理解 Python（四）</a>
+      </h2>
+      <p class="article-date">November 3, 2021</p>
+      
+      <div class="article-summary">
+        
+          str, bytes, int, bool, float and complex：五个基本类型Python有6个基本的数据类型（分明是5个，随后会解释）。 其中4个是数字，另外2个基于文本。
+先看基于文本的数据类型，因为简单。  
+str 是 Python 中最常见的数据类型之一，使用 in ...
+        
+      </div>
+      <a class="more" href="/2021/11/03/python-builtins-forth/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/11/03/python-builtins-third/">通过内置对象理解 Python（三）</a>
+      </h2>
+      <p class="article-date">November 3, 2021</p>
+      
+      <div class="article-summary">
+        
+          逐一探讨所有的内置函数在上一节的基础上，下面从一些最有趣的内容开始，这些内容构建了 Python 作为一种语言的基础，逐一对内置函数进行探讨。 
+compile, exec 和 eval 的工作原理以下面的代码为例:  
+12x = [1, 2]print(x)
+
+可以将此代码保存到一个文件 ...
+        
+      </div>
+      <a class="more" href="/2021/11/03/python-builtins-third/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/11/03/python-builtins-first/">通过内置对象理解 Python（一）</a>
+      </h2>
+      <p class="article-date">November 3, 2021</p>
+      
+      <div class="article-summary">
+        
+          
+如果你已经对 Python 有了初步的了解，比如阅读过《Python 大学使用教程》或者《跟老齐学 Python：轻松入门》，亦或者学习过老齐在 CSDN 等平台上发布的在线课程（参考：www.itdiffer.com），再阅读本文，会帮助你更深刻立即 Python 语言的特点，掌握 Py ...
+        
+      </div>
+      <a class="more" href="/2021/11/03/python-builtins-first/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2021/11/03/python-builtins-second/">通过内置对象理解 Python（二）</a>
+      </h2>
+      <p class="article-date">November 3, 2021</p>
+      
+      <div class="article-summary">
+        
+          所有的内置函数用 dir() 函数可以查看所有内置函数：
+1234567891011121314151617181920212223242526272829303132&gt;&gt;&gt; print(dir(__builtins__))['ArithmeticError', 'Asse ...
+        
+      </div>
+      <a class="more" href="/2021/11/03/python-builtins-second/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2021/10/08/geometrical-matrices/">从几何角度理解矩阵</a>
       </h2>
       <p class="article-date">October 8, 2021</p>
@@ -206,122 +320,6 @@ zlib 是一个 Python  ...
         
       </div>
       <a class="more" href="/2021/09/15/compressandarchivefile/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/09/15/paralellizingcode/">用 Python 实现并行计算</a>
-      </h2>
-      <p class="article-date">September 15, 2021</p>
-      
-      <div class="article-summary">
-        
-          注：不少学过点编程语言的人，都会抱怨 Python 语言的程序执行速度慢，因此对学习和使用此语言嗤之以鼻。暂且不论程序的执行速度是否是开发者追求的唯一目标（有意对此进行争论的，请参阅人民邮电出版社出版的《编程的原则》一书），单就提升 Python 计算速度而言，并行计算是一个重要的选项。本文 ...
-        
-      </div>
-      <a class="more" href="/2021/09/15/paralellizingcode/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/09/10/python-ellipsis/">Python 中的省略号</a>
-      </h2>
-      <p class="article-date">September 10, 2021</p>
-      
-      <div class="article-summary">
-        
-          看这样一段代码：
-12class CustomException(Exception):    ...
-
-会不会认为它是一段伪代码？因为在 Python 中，一般会使用关键词 pass 来填充尚未实现的对象。
-然而，上面的代码真的能运行，它就是一段 Python 代码，不是伪代码。
-在 Py ...
-        
-      </div>
-      <a class="more" href="/2021/09/10/python-ellipsis/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/09/06/learn-program-right-way/">什么是学习编程的正确方法</a>
-      </h2>
-      <p class="article-date">September 6, 2021</p>
-      
-      <div class="article-summary">
-        
-          对程序员、开发人员和数据科学家的高度需求吸引了许多人加入 IT 领域。通常，初学者总要试图在学习过程中找到捷径，以便更快地谋得一份工作。
-速成式学习不一定是好事。不少人，为了缩短学习过程，或者出于畏惧心理，可能跳过某些重要内容。
-
-“我发现：新手程序员犯的最大错误是专注于学习语法，而不是学习 ...
-        
-      </div>
-      <a class="more" href="/2021/09/06/learn-program-right-way/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/06/03/recursion/">Python 中的递归</a>
-      </h2>
-      <p class="article-date">June 3, 2021</p>
-      
-      <div class="article-summary">
-        
-          什么是递归递归（recursion）这个单词来自拉丁语中的 recurre，意思是：匆匆而归、返回、还原或重现。以下是网络上对递归的一些定义：
-
-Dictionary.com：表示返回的行为或过程。
-
-Wiktionary ：在对象内部定义使用该对象（通常是函数）的操作。
-
-The Free ...
-        
-      </div>
-      <a class="more" href="/2021/06/03/recursion/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/05/06/what-is-debugging/">调试及其重要性</a>
-      </h2>
-      <p class="article-date">May 6, 2021</p>
-      
-      <div class="article-summary">
-        
-          软件在发布之前，应该没有错误，这样才能让用户满意。为了达到这个目的，在开发过程中，调试（debugging）是必不可少的——注意，调试不是测试，两者是有区别的。
-什么是调试？软件程序在开发过程中要经历大量的测试、更新、故障排除和维护，程序中有错误和缺陷，是正常现象，关键在于如何改正这些错误和 ...
-        
-      </div>
-      <a class="more" href="/2021/05/06/what-is-debugging/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/04/29/social-contract/">开源的社会契约</a>
-      </h2>
-      <p class="article-date">April 29, 2021</p>
-      
-      <div class="article-summary">
-        
-          开源的社会契约开源软件，因为其免费而受到欢迎。但是，对开源代码的维护者而言，时常会受到来自使用者的伤害，比如有人超越授权范围使用开源代码，设置有人对开源代码维护者实施某种程度上的语言暴力等。有一点特别要明确：开源代码的维护者在开源代码方面完全不欠任何人的，而且对待他们不友好就是不道德。
-为此 ...
-        
-      </div>
-      <a class="more" href="/2021/04/29/social-contract/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2021/04/23/make-a-python-package/">创建 Python 包</a>
-      </h2>
-      <p class="article-date">April 23, 2021</p>
-      
-      <div class="article-summary">
-        
-          如果你和我一样，希望将编写的 Python 实用程序与同事共享，最好的方法是制作一个软件包：它很容易安装，而且不需要复制粘贴。
-不过，如果对其中的方法不熟悉，可能会感到头痛。下面就分几步介绍创建 Python 包的方法，供大家参考。
-基本结构创建一个名为podsearch的目录，进入这个目录 ...
-        
-      </div>
-      <a class="more" href="/2021/04/23/make-a-python-package/">Read more</a>
     </article>
   
 

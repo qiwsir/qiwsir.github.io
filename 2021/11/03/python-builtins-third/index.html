@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      通过内置对象理解 Python（三） | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>通过内置对象理解 Python（三）</h2>
+    <p class="post-date">2021-11-03</p>
+    <section class="markdown-content"><h2 id="逐一探讨所有的内置函数"><a href="#逐一探讨所有的内置函数" class="headerlink" title="逐一探讨所有的内置函数"></a>逐一探讨所有的内置函数</h2><p>在上一节的基础上，下面从一些最有趣的内容开始，这些内容构建了 Python 作为一种语言的基础，逐一对内置函数进行探讨。 </p>
+<h3 id="compile-exec-和-eval-的工作原理"><a href="#compile-exec-和-eval-的工作原理" class="headerlink" title="compile, exec 和 eval 的工作原理"></a><code>compile</code>, <code>exec</code> 和 <code>eval</code> 的工作原理</h3><p>以下面的代码为例:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">print(x)</span><br></pre></td></tr></table></figure>
+
+<p>可以将此代码保存到一个文件中并运行，或者在 Python 交互模式中键入它。在这两种情况下，得到的输出结果都将是 <code>[1, 2]</code>。  </p>
+<p>第三中情况，可以将程序以字符串形式传给 Python 的内置函数 <code>exec()</code>：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>code = <span class="string">'''</span></span><br><span class="line"><span class="string"><span class="meta">... </span>x = [1, 2]</span></span><br><span class="line"><span class="string"><span class="meta">... </span>print(x)</span></span><br><span class="line"><span class="string"><span class="meta">... </span>'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>exec(code)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>exec()</code> （函数名称是 execute 的缩写）以字符串形式接收一些 Python 代码，并将其作为 Python 代码运行。 默认情况下，<code>exec()</code>  将和其余代码在相同的作用域中运行。这意味着，它可以读取和操作变量，就像 Python 文件中的任何其他代码片段一样。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>exec(<span class="string">'print(x)'</span>)</span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p><code>exec()</code> 允许在执行真正的动态代码。 例如，可以从互联网上下载一个 Python 文件，将其内容传给 <code>exec()</code> ，它会运行该文件中的程序（但请千万不要这么做） 。</p>
+<p>在大多数情况下，编写代码时并不真的需要 <code>exec()</code> 。 它用于实现一些真正的动态行为（如在运行时创建动态类，就像 <code>collections.namedtuple</code> 所作的那样，或修改正在从 Python 文件读取的代码（如在 <a href="https://github.com/tusharsadhwani/zxpy/blob/3e4eb5e344601cc5a1b4e4f9f72ac3f30111cc93/zx.py#L304" target="_blank" rel="noopener">zxpy</a>中）。不过，这里不重点讨论这个，下面要探讨的是 <code>exec()</code> 的执行过程。</p>
+<p><code>exec()</code> 不仅可以接收字符串并将其作为代码运行，还可以接收<strong>代码对象</strong>，即 Python 程序编译后的“字节码”版本的程序。它们不仅包含从 Python 代码中生成的精确指令，还存储了代码中使用的变量和常量等。 </p>
+<p>代码对象是从 ASTs（abstract syntax trees，抽象语法树）生成的，ASTs 本身是由运行在代码串上的解析器生成的。  </p>
+<p>下面，通过例子来了解其内涵。 首先，导入 <code>ast</code> 模块，用于生成一个 AST。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> ast</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>code = <span class="string">'''</span></span><br><span class="line"><span class="string"><span class="meta">... </span>x = [1, 2]</span></span><br><span class="line"><span class="string"><span class="meta">... </span>print(x)</span></span><br><span class="line"><span class="string"><span class="meta">... </span>'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree = ast.parse(code)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(ast.dump(tree, indent=<span class="number">2</span>))</span><br><span class="line">Module(</span><br><span class="line">  body=[</span><br><span class="line">    Assign(</span><br><span class="line">      targets=[</span><br><span class="line">        Name(id=<span class="string">'x'</span>, ctx=Store())],</span><br><span class="line">      value=List(</span><br><span class="line">        elts=[</span><br><span class="line">          Constant(value=<span class="number">1</span>),</span><br><span class="line">          Constant(value=<span class="number">2</span>)],</span><br><span class="line">        ctx=Load())),</span><br><span class="line">    Expr(</span><br><span class="line">      value=Call(</span><br><span class="line">        func=Name(id=<span class="string">'print'</span>, ctx=Load()),</span><br><span class="line">        args=[</span><br><span class="line">          Name(id=<span class="string">'x'</span>, ctx=Load())],</span><br><span class="line">        keywords=[]))],</span><br><span class="line">  type_ignores=[])</span><br></pre></td></tr></table></figure>
+
+<p>看着有点难，接下来抽丝剥茧。</p>
+<p>可以将 <code>AST</code> 视为一个 Python 模块。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(ast.dump(tree, indent=<span class="number">2</span>))</span><br><span class="line">Module(</span><br><span class="line">  body=[</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>该模块的 body 部分含有两个子模块（两个语句）：  </p>
+<ul>
+<li><p>第一个是 <code>Assign</code> 语句 …</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Assign(    </span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+
+<p>赋值给 <code>x</code> …</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">targets=[</span><br><span class="line">  Name(id=<span class="string">'x'</span>, ctx=Store())],</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>包含两个常量 <code>1</code> 和 <code>2</code> 的列表 <code>List</code> 的值。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  value=List(</span><br><span class="line">    elts=[</span><br><span class="line">      Constant(value=<span class="number">1</span>),</span><br><span class="line">      Constant(value=<span class="number">2</span>)],</span><br><span class="line">    ctx=Load())),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第二个是 <code>Expr</code> 语句，在本例中是调用一个函数 …  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Expr(</span><br><span class="line">  value=Call(</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>它的函数名称为 <code>print</code> ，参数值为 <code>x</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func=Name(id=<span class="string">'print'</span>, ctx=Load()),</span><br><span class="line">  args=[</span><br><span class="line">    Name(id=<span class="string">'x'</span>, ctx=Load())],</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>所以 <code>Assign</code> 部分描述的是 <code>x = [1, 2]</code> ，而 <code>Expr</code> 描述的是 <code>print(x)</code> 。 现在看起来没那么难，对吧?  </p>
+<hr>
+<p><strong>补充知识：</strong> Tokenizer</p>
+<p>实际上，在将代码解析为 AST 之前，还需要执行名为 <strong>Lexing</strong> 的一个步骤。</p>
+<p>它指的是根据 Python 语法将源代码转换为 token。从下面的内容中可以看到 Python 如何将源码 token 化。这里使用了 <code>tokenize</code> 模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat code.py</span></span><br><span class="line">x = [1, 2]</span><br><span class="line">print(x)</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> py -m tokenize code.py</span></span><br><span class="line">0,0-0,0:            ENCODING       'utf-8'</span><br><span class="line">1,0-1,1:            NAME           'x'</span><br><span class="line">1,2-1,3:            OP             '='</span><br><span class="line">1,4-1,5:            OP             '['</span><br><span class="line">1,5-1,6:            NUMBER         '1'</span><br><span class="line">1,6-1,7:            OP             ','</span><br><span class="line">1,8-1,9:            NUMBER         '2'</span><br><span class="line">1,9-1,10:           OP             ']'</span><br><span class="line">1,10-1,11:          NEWLINE        '</span><br><span class="line">'</span><br><span class="line">2,0-2,5:            NAME           'print'</span><br><span class="line">2,5-2,6:            OP             '('</span><br><span class="line">2,6-2,7:            NAME           'x'</span><br><span class="line">2,7-2,8:            OP             ')'</span><br><span class="line">2,8-2,9:            NEWLINE        '</span><br><span class="line">'</span><br><span class="line">3,0-3,0:            ENDMARKER      ''</span><br></pre></td></tr></table></figure>
+
+<p>所谓 token 化，就是将源码转换为最基本的标记符（token），比如变量名、括号、字符串和数字。 它还跟踪每个 token 的行号和位置，这有助于指向错误信息的确切位置。  </p>
+<p>这个“ token 流”就被解析为 AST 的内容。  </p>
+<p>（补充知识完毕）</p>
+<hr>
+<p>现在有了一个 AST 对象，接下来使用内置的编译器将它编译成代码对象，并且用 <code>exec()</code> 函数执行代码对象，其效果就如同之前的运行结果一样:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> ast&gt;&gt;&gt; code = <span class="string">'''... x = [1, 2]... print(x)... '''</span>&gt;&gt;&gt; tree = ast.parse(code)&gt;&gt;&gt; code_obj = compile(tree, <span class="string">'myfile.py'</span>, <span class="string">'exec'</span>)&gt;&gt;&gt; exec(code_obj)[<span class="number">1</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>但是现在，可以看看代码对象是什么样子的，先看它的一些属性:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> ast</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>code = <span class="string">'''</span></span><br><span class="line"><span class="string"><span class="meta">... </span>x = [1, 2]</span></span><br><span class="line"><span class="string"><span class="meta">... </span>print(x)</span></span><br><span class="line"><span class="string"><span class="meta">... </span>'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tree = ast.parse(code)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>code_obj = compile(tree, <span class="string">'myfile.py'</span>, <span class="string">'exec'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>exec(code_obj)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可以看到代码中使用的变量 <code>x</code> 和 <code>print</code> ，以及常数 <code>1</code> 和 <code>2</code> 。此外，关于源码文件的更多信息都可以在代码对象中找到。 它包含了直接在 Python 虚拟机中运行所需的所有信息，以便生成输出。  </p>
+<p>如果你想深入了解字节码的含义，下面关于 <code>dis</code> 模块的补充知识可以参考。</p>
+<hr>
+<p><strong>补充知识：</strong>：<code>dis</code> 模块</p>
+<p>Python 中的 <code>dis</code> 模块可以把字节码以人类能理解的方式可视化地表达出来，以帮助弄清 Python 在幕后做什么。 它接收字节码、常量和变量信息，并产生如下结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> dis</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dis.dis(<span class="string">'''</span></span><br><span class="line"><span class="string"><span class="meta">... </span>x = [1, 2]</span></span><br><span class="line"><span class="string"><span class="meta">... </span>print(x)</span></span><br><span class="line"><span class="string"><span class="meta">... </span>'''</span>)</span><br><span class="line">  <span class="number">1</span>           <span class="number">0</span> LOAD_CONST               <span class="number">0</span> (<span class="number">1</span>)</span><br><span class="line">              <span class="number">2</span> LOAD_CONST               <span class="number">1</span> (<span class="number">2</span>)</span><br><span class="line">              <span class="number">4</span> BUILD_LIST               <span class="number">2</span></span><br><span class="line">              <span class="number">6</span> STORE_NAME               <span class="number">0</span> (x)</span><br><span class="line"></span><br><span class="line">  <span class="number">2</span>           <span class="number">8</span> LOAD_NAME                <span class="number">1</span> (<span class="keyword">print</span>)</span><br><span class="line">             <span class="number">10</span> LOAD_NAME                <span class="number">0</span> (x)</span><br><span class="line">             <span class="number">12</span> CALL_FUNCTION            <span class="number">1</span></span><br><span class="line">             <span class="number">14</span> POP_TOP</span><br><span class="line">             <span class="number">16</span> LOAD_CONST               <span class="number">2</span> (<span class="literal">None</span>)</span><br><span class="line">             <span class="number">18</span> RETURN_VALUE</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这表明:  </p>
+<ul>
+<li>第1行创建了4个字节码，将两个常数 <code>1</code> 和 <code>2</code> 加到栈上，并从栈最上面的 <code>2</code> 构建一个列表，将其存储到变量 <code>x</code> 中。  </li>
+<li>第2行创建了6个字节码，它将 <code>print</code> 和 <code>x</code> 加到栈上，并以栈最上面的 <code>1</code> 为参数调用函数（意思是，将参数 <code>x</code>  传给 <code>print()</code> 函数并执行此函数）。 然后通过执行 <code>POP_TOP</code> 删除函数的返回值，因为我们没有应用或存储 <code>print(x)</code> 的返回值。最后的两行从文件执行的末尾返回 <code>None</code> ，这不起任何作用。</li>
+</ul>
+<p>第1行中的 <code>LOADC_ONST</code> 称为一个<strong>操作码</strong>（opcode），观察操作码左半边的数字，相邻的两个数字之间差距为2，这是因为把对象存储为操作码时，每个字节码的字长是 2。由此也可知，上述示例中的字符串长度为20个字节常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>code_obj = compile(<span class="string">'''</span></span><br><span class="line"><span class="string"><span class="meta">... </span>x = [1, 2]</span></span><br><span class="line"><span class="string"><span class="meta">... </span>print(x)</span></span><br><span class="line"><span class="string"><span class="meta">... </span>'''</span>, <span class="string">'test'</span>, <span class="string">'exec'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>code_obj.co_code</span><br><span class="line"><span class="string">b'd\x00d\x01g\x02Z\x00e\x01e\x00\x83\x01\x01\x00d\x02S\x00'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(code_obj.co_code)</span><br><span class="line"><span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<p>可以确认生成的字节码正好是20字节。</p>
+<p>（补充知识完毕）</p>
+<hr>
+<p>函数 <code>eval()</code> 非常类似于 <code>exec()</code> ，只是它只接受表达式作为参数，不能像 <code>exec()</code> 那样以一条或者一组语句为参数。而且，与 <code>exec()</code>  的另一个不同之处是，它返回参数中表达式的结果。  </p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>result = eval(<span class="string">'1 + 1'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>result</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>You can also go the long, detailed route with <code>eval</code>, you just need to tell <code>ast.parse</code> and <code>compile</code> that you’re expecting to evaluate this code for its value, instead of running it like a Python file.</p>
+<p>函数对象 <code>eval</code> 可以应用于很多地方，比如在 <code>ast.parse</code> 和 <code>compile</code> 中，如果要执行表达式，但不是类似 Python 文件那样，可以用下面的方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr = ast.parse(<span class="string">'1 + 1'</span>, mode=<span class="string">'eval'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>code_obj = compile(expr, <span class="string">'&lt;code&gt;'</span>, <span class="string">'eval'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>eval(code_obj)</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="globals-和-locals-：包含所有"><a href="#globals-和-locals-：包含所有" class="headerlink" title="globals 和 locals ：包含所有"></a><code>globals</code> 和 <code>locals</code> ：包含所有</h3><p>虽然生成的代码对象和定义的常量有类似的存储逻辑，但变量的值没有存储，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">double</span><span class="params">(number)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> number * <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>这个函数将存储常量 <code>2</code> 以及变量名 <code>number</code>，但显然它不能包含 <code>number</code> 的实际值，因为只有在函数实际运行时才会给该参数赋值。  </p>
+<p>那么，这是为什么呢? 答案是 Python 将所有东西都存储在与每个局部作用域关联的字典中。 这意味着每段代码都有自己定义的“局部作用域”，“局部作用域”在代码中使用 <code>locals()</code> 访问，它包含对应局部作用域的变量名和值。  </p>
+<p>让我们来看看实际情况:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>value = <span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">double</span><span class="params">(number)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> number * <span class="number">2</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>double(value)</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>locals()</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>, <span class="string">'__doc__'</span>: <span class="literal">None</span>, <span class="string">'__package__'</span>: <span class="literal">None</span>,</span><br><span class="line">'__loader__': &lt;class '_frozen_importlib.BuiltinImporter'&gt;, '__spec__': None,</span><br><span class="line"><span class="string">'__annotations__'</span>: &#123;&#125;, <span class="string">'__builtins__'</span>: &lt;module <span class="string">'builtins'</span> (built-<span class="keyword">in</span>)&gt;,</span><br><span class="line"><span class="string">'value'</span>: <span class="number">5</span>, <span class="string">'double'</span>: &lt;function double at <span class="number">0x7f971d292af0</span>&gt;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看最后一行：不仅 <code>value</code> 存储在 <code>locals()</code> 返回的字典中，函数 <code>double()</code> 本身也存储在那里！这就是 Python 存储数据的方式。  </p>
+<p><code>globals()</code> 也与此类似，只不过它是指向全局作用域。所以像这样的代码:  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">magic_number = <span class="number">42</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">10</span></span><br><span class="line">    y = <span class="number">20</span></span><br><span class="line">    print(locals())</span><br><span class="line">    print(globals())</span><br></pre></td></tr></table></figure>
+
+<p><code>locals()</code> 只包含 <code>x</code> 和 <code>y</code> ，而 <code>globals()</code> 则包含 <code>magic_number</code> 和 <code>function</code> 本身。  </p>
+<h3 id="input-和-print：基本功能"><a href="#input-和-print：基本功能" class="headerlink" title="input 和 print：基本功能"></a><code>input</code> 和 <code>print</code>：基本功能</h3><p><code>input</code> 和 <code>print</code> 可能是 Python 中用得最广泛的两个函数，很多学习者初学之时，经常用它们，看起来很简单，比如 <code>input</code> 接收一行文本，<code>print</code> 把文本打印出来，就这么简单。 对吧?  </p>
+<p>实际上，可能比你知道得更复杂。</p>
+<p>下面是 <code>print()</code> 函数的完整格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(*values, sep=<span class="string">' '</span>, end=<span class="string">'\n'</span>, file=sys.stdout, flush=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数 <code>*values</code> 意味着可以提供任意数量的位置参数，<code>print</code> 都能正确地打印出它们，默认情况所打印的位置参数引用对象之间用空格分隔。  </p>
+<p>如果想让分隔符有所不同，例如，想把每个项目打印在不同的行上，可以相应地设置 <code>sep</code> 的值，比如为 <code>\n</code> ：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, sep=<span class="string">'\n'</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, sep=<span class="string">'\n\n'</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="number">4</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>还有 <code>end</code> 参数，通过它可以修改行末的设置，默认是行末端为 <code>\n</code> ，即换行，如果不换行，可以修改为 <code>end=&#39;&#39;</code> ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line"><span class="meta">... </span>    print(i)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line"><span class="meta">... </span>    print(i, end=<span class="string">''</span>)</span><br><span class="line"><span class="number">0123456789</span></span><br></pre></td></tr></table></figure>
+
+<p>再看 <code>print</code> 另外两个参数：<code>file</code> 和 <code>flush</code> 。<code>file</code> 指将打印的内容输出到指定“文件”，默认值是 <code>sys.stdout</code> ，即打印到标准输出文件，也就是打印到控制台，  如下，也可以设置为一个具体的文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'myfile.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:   </span><br><span class="line">    print(<span class="string">'Hello!'</span>, file=f)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>补充知识：</strong>使用上下文管理器</p>
+<p>在函数 <code>print()</code> 中，默认情况下 <code>file=sys.stdout</code> ，则会将所要打印的内容输出到控制台，如果将 <code>sys.stdout</code> 引用一个文件，则会将打印的内容输出到该文件中。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'a regular print statement'</span>)</span><br><span class="line">a regular <span class="keyword">print</span> statement</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>file = open(<span class="string">'myfile.txt'</span>, <span class="string">'w'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.stdout = file</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'this will write to the file'</span>)  <span class="comment"># 写入到 myfile.txt</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>file.close()</span><br></pre></td></tr></table></figure>
+
+<p>但是，如果这样做了，就无法再回到控制台，除非关闭当前交互模式，重新进入。如果关闭文件，也会遇到问题。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'a regular print statement'</span>)</span><br><span class="line">a regular <span class="keyword">print</span> statement</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>file = open(<span class="string">'myfile.txt'</span>, <span class="string">'w'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.stdout = file</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>file.close()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'this will write to the file'</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">2</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">ValueError: I/O operation on closed file.</span><br></pre></td></tr></table></figure>
+
+<p>为了避免此问题，可以使用<strong>上下文管理器</strong>做装饰器，以确保在完成任务后还原 <code>sys.stdout</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"></span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_writer</span><span class="params">(file_path)</span>:</span></span><br><span class="line">    original_stdout = sys.stdout</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> open(file_path, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        sys.stdout = f</span><br><span class="line">        <span class="keyword">yield</span>  <span class="comment"># this is where everything inside the `with` statement happens</span></span><br><span class="line">        sys.stdout = original_stdout</span><br></pre></td></tr></table></figure>
+
+<p>可以这样使用它:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> print_writer(<span class="string">'myfile.txt'</span>):</span><br><span class="line">    print(<span class="string">'Printing straight to the file!'</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        print(i)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'and regular print still works!'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>打印到文件或 IO 对象是一个常见的用例，<code>contextlib</code> 有一个函数 <code>redirect_stdout</code> ：  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> redirect_stdout</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'this.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> file:</span><br><span class="line">    <span class="keyword">with</span> redirect_stdout(file):</span><br><span class="line">        <span class="keyword">import</span> this</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'this.txt'</span>) <span class="keyword">as</span> file:</span><br><span class="line">    print(file.read())</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output:</span></span><br><span class="line"><span class="comment"># The Zen of Python, by Tim Peters</span></span><br><span class="line"><span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<p>（补充知识完毕）</p>
+<hr>
+<p>参数 <code>flush=False</code> 用于标记 <code>print()</code> 的文本内容发送到控制台/文件，而不是将其放入缓存。 这通常没什么区别，但如果在控制台打印一个非常长的字符串，可能要将它设置为 <code>True</code> ，以避免在向用户显示输出时出现延迟。 </p>
+<p>而对于 <code>input()</code> 函数，就没什么秘密而言了，它只是接受一个字符串作为提示符显示。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/03/python-builtins-first/">
+        <span class="nav-arrow">← </span>
+        
+          通过内置对象理解 Python（一）
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2021/11/03/python-builtins-forth/">
+        
+          通过内置对象理解 Python（四）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#逐一探讨所有的内置函数"><span class="toc-nav-text">逐一探讨所有的内置函数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#compile-exec-和-eval-的工作原理"><span class="toc-nav-text">compile, exec 和 eval 的工作原理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#globals-和-locals-：包含所有"><span class="toc-nav-text">globals 和 locals ：包含所有</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#input-和-print：基本功能"><span class="toc-nav-text">input 和 print：基本功能</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/11/03/python-builtins-third/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
