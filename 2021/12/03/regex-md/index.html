@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      正则表达式 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>正则表达式</h2>
+    <p class="post-date">2021-12-03</p>
+    <section class="markdown-content"><h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式（简称为“regex”），允许用户使用他们能想到的、几乎任何类型的规则来搜索字符串 。例如，查找字符串中的所有大写字母，或查找文档中的电话号码。</p>
+<p>正则表达式因其看似奇怪的语法而臭名昭著。这种奇怪的语法是其灵活性的副产品。正则表达式必须能够过滤掉可以想象的任何字符串模式，这就是为什么它们具有复杂的字符串模式的格式。</p>
+<p>我们使用 Python 内置的 <code>re</code> 库来处理正则表达式。若要了解更多信息，请参见官方文档的有关内容。</p>
+<h3 id="搜索基本模式"><a href="#搜索基本模式" class="headerlink" title="搜索基本模式"></a>搜索基本模式</h3><p>假设有以下字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">text = <span class="string">"The agent's phone number is 408-555-1234. Call soon!"</span></span><br></pre></td></tr></table></figure>
+
+<p>如果搜索字符串 <code>&#39;phone&#39;</code> 是否在上述文本中，快速的方法是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'phone'</span> <span class="keyword">in</span> text</span><br></pre></td></tr></table></figure>
+
+<p>它将返回 <code>True</code> ，因为 <code>text</code> 中有这个字符串。</p>
+<p>上面的操作，如果用正则表达式来实现，则为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">pattern = <span class="string">'phone'</span></span><br><span class="line">re.search(pattern,text)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;_sre.SRE_Match object; span=(<span class="number">12</span>, <span class="number">17</span>), match=<span class="string">'phone'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这个结果表示 <code>&#39;phone&#39;</code> 与变量 <code>text</code> 的字符串匹配，并且与之对应的是该字符串的索引 <code>12</code> 到到 <code>17</code> 间的成员。</p>
+<p>再比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pattern = <span class="string">"NOT IN TEXT"</span></span><br><span class="line">re.search(pattern,text)</span><br></pre></td></tr></table></figure>
+
+<p>不会返回任何内容，因为找不到匹配项。</p>
+<p>由此可知，<code>re.search()</code> 的作用是扫描文本，然后返回匹配对象。如果没有找到该模式，则返回<code>None</code> 。</p>
+<p>对于返回的匹配对象（Match object），如果用变量 <code>match</code> 引用，则 <code>match.span()</code> 返回含有匹配对象的索引范围，<code>match.start()</code> 返回开始索引，<code>match.end()</code> 返回结束索引。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>match = re.search(pattern, text)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>match</span><br><span class="line">&lt;re.Match object; span=(<span class="number">12</span>, <span class="number">17</span>), match=<span class="string">'phone'</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>match.span()</span><br><span class="line">(<span class="number">12</span>, <span class="number">17</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>match.start()</span><br><span class="line"><span class="number">12</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>match.end()</span><br><span class="line"><span class="number">17</span></span><br></pre></td></tr></table></figure>
+
+<p>如果在被搜索的文本中，有多个匹配对象，结果如何？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>text = <span class="string">"my phone is a new phone"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>match = re.search(<span class="string">"phone"</span>,text)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>match</span><br><span class="line">&lt;re.Match object; span=(<span class="number">3</span>, <span class="number">8</span>), match=<span class="string">'phone'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里只返回了第一个符合条件的匹配项。</p>
+<p>为了将所有匹配项都得到，可以使用 <code>.findall()</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>matches = re.findall(<span class="string">"phone"</span>,text)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>matches</span><br><span class="line">[<span class="string">'phone'</span>, <span class="string">'phone'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果想要与之匹配的实际文本，可以使用 <code>.group()</code> 方法。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>match.group()</span><br><span class="line"><span class="string">'phone'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="复杂模式"><a href="#复杂模式" class="headerlink" title="复杂模式"></a>复杂模式</h3><p>前面用简单的正则表达式演示了 <code>re</code> 中有关函数的基本使用，下面研究如何编写复杂的正则表达式。</p>
+<p>在正则表达式中，数字或单个字符串等可以用不同的编码来表示，用这些编码可以构建一个“模式字符串”（pattern string）。请注意，在模式字符串中会大量使用反斜杠 <code>\</code> 。因此，在 Python 中，常常用原始字符串的形式定义模式字符串，样式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">r'mypattern'</span></span><br></pre></td></tr></table></figure>
+
+<p>在原始字符串中，模式字符串中的 <code>\</code> 就不再具有转义符的含义了。</p>
+<p>下面的表格中可以找到所有可能的标识符：</p>
+<p>表1</p>
+<table>
+<thead>
+<tr>
+<th align="left">符号</th>
+<th align="left">含义</th>
+<th align="left">举例</th>
+<th align="left">实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">\d</td>
+<td align="left">数字</td>
+<td align="left">file_\d\d</td>
+<td align="left">file_25</td>
+</tr>
+<tr>
+<td align="left">\w</td>
+<td align="left">字母数字</td>
+<td align="left">\w-\w\w\w</td>
+<td align="left">A-b_1</td>
+</tr>
+<tr>
+<td align="left">\s</td>
+<td align="left">空白</td>
+<td align="left">a\sb\sc</td>
+<td align="left">a b c</td>
+</tr>
+<tr>
+<td align="left">\D</td>
+<td align="left">一个非数字</td>
+<td align="left">\D\D\D</td>
+<td align="left">ABC</td>
+</tr>
+<tr>
+<td align="left">\W</td>
+<td align="left">非字母数字</td>
+<td align="left">\W\W\W\W\W</td>
+<td align="left">*-+=)</td>
+</tr>
+<tr>
+<td align="left">\S</td>
+<td align="left">非空格</td>
+<td align="left">\S\S\S\S</td>
+<td align="left">Yoyo</td>
+</tr>
+</tbody></table>
+<p>不用特别记忆，用到时来查找即可。</p>
+<p>请看下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>text = <span class="string">"My telephone number is 408-555-1234"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone = re.search(<span class="string">r'\d\d\d-\d\d\d-\d\d\d\d'</span>,text)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone.group()</span><br><span class="line"><span class="string">'408-555-1234'</span></span><br></pre></td></tr></table></figure>
+
+<p>注意重复的 <code>\d</code> 。这有点麻烦，特别是如果要寻找很长的数字串，就得使用量词。</p>
+<p>表2</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">描述</th>
+<th align="left">示例模式代码</th>
+<th align="left">示例匹配</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">+</td>
+<td align="left">出现一次或一次以上</td>
+<td align="left">Version \w-\w+</td>
+<td align="left">Version A-b1_1</td>
+</tr>
+<tr>
+<td align="left">{3}</td>
+<td align="left">正好出现3次</td>
+<td align="left">\D{3}</td>
+<td align="left">abc</td>
+</tr>
+<tr>
+<td align="left">{2,4}</td>
+<td align="left">出现2到4次</td>
+<td align="left">\d{2,4}</td>
+<td align="left">123</td>
+</tr>
+<tr>
+<td align="left">{3,}</td>
+<td align="left">出现3次或3次以上</td>
+<td align="left">\w{3,}</td>
+<td align="left">anycharacters</td>
+</tr>
+<tr>
+<td align="left">*</td>
+<td align="left">出现零次或多次</td>
+<td align="left">A*B*C*</td>
+<td align="left">AAACC</td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="left">一次或零次</td>
+<td align="left">plurals？</td>
+<td align="left">plurals</td>
+</tr>
+</tbody></table>
+<p>用量词修改前面的正则表达式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone = re.search(<span class="string">r'\d&#123;3&#125;-\d&#123;3&#125;-\d&#123;4&#125;'</span>,text)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone.group()</span><br><span class="line"><span class="string">'408-555-1234'</span></span><br></pre></td></tr></table></figure>
+
+<p>结果没变，但是它看起来很简单，可以很容易地用于复杂的和大型的图案。</p>
+<h4 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h4><p>继续以上面的电话号码为例，是由三个数字一组组成的，如果要每三个数字作为一个单位来搜索，则需要在正则表达式中分组，分组方法就是使用 <code>()</code> 实现，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone = re.search(<span class="string">r'(\d&#123;3&#125;)-(\d&#123;3&#125;)-(\d&#123;4&#125;)'</span>,text)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone.group()</span><br><span class="line"><span class="string">'408-555-1234'</span></span><br></pre></td></tr></table></figure>
+
+<p>注意上面正则表达式的写法，当执行 <code>phone.group()</code> ，返回的是所有匹配结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone.group(<span class="number">1</span>)</span><br><span class="line"><span class="string">'408'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone.group(<span class="number">2</span>)</span><br><span class="line"><span class="string">'555'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone.group(<span class="number">3</span>)</span><br><span class="line"><span class="string">'1234'</span></span><br></pre></td></tr></table></figure>
+
+<p>当其中的参数依次为 <code>1</code> 、<code>2</code> 、<code>3</code> 时，返回对应分组的匹配结果。但是，注意，如果参数是 <code>0</code> ，则返回全部。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>phone.group(<span class="number">0</span>)</span><br><span class="line"><span class="string">'408-555-1234'</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="或运算"><a href="#或运算" class="headerlink" title="或运算"></a>或运算</h4><p>正则表达式中使用使用管道操作符实现或运算，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.search(<span class="string">r"man|woman"</span>,<span class="string">"This man was here."</span>)</span><br><span class="line">&lt;re.Match object; span=(<span class="number">5</span>, <span class="number">8</span>), match=<span class="string">'man'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>对比：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.search(<span class="string">r"man|woman"</span>,<span class="string">"This woman was here."</span>)</span><br><span class="line">&lt;re.Match object; span=(<span class="number">5</span>, <span class="number">10</span>), match=<span class="string">'woman'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h4><p>正在表达式中的通配符用“<code>.</code>”表示，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">r".at"</span>,<span class="string">"The cat in the hat sat here."</span>)</span><br><span class="line">[<span class="string">'cat'</span>, <span class="string">'hat'</span>, <span class="string">'sat'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果只需要匹配前三个字母，则：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">r"...at"</span>,<span class="string">"The bat went splat"</span>)</span><br><span class="line">[<span class="string">'e bat'</span>, <span class="string">'splat'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>注意观察上面的结果，因为空格也是字符，并且 <code>r&#39;...at&#39;</code> 匹配的规则是在 <code>&#39;at&#39;</code> 前面有三个字符。</p>
+<p>如果要匹配所有以 <code>&#39;at&#39;</code> 结尾的单词，怎么办？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一个或多个非空格之后是 'at'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">r'\S+at'</span>,<span class="string">"The bat went splat"</span>)</span><br><span class="line">[<span class="string">'bat'</span>, <span class="string">'splat'</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="起止符"><a href="#起止符" class="headerlink" title="起止符"></a>起止符</h4><p>在正则表达式中，使用 <code>^</code> 在字符串的开头查找某字符，使用 <code>$</code> 在字符串的尾部查找某字符，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查找尾部的整数字符</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">r'\d$'</span>,<span class="string">'This ends with a number 2'</span>)</span><br><span class="line">[<span class="string">'2'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找开头的整数字符</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">r'^\d'</span>,<span class="string">'1 is the loneliest number.'</span>)</span><br><span class="line">[<span class="string">'1'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码将 <code>[&#39;2&#39;]</code> 、<code>[&#39;1&#39;]</code> 作为字符串的结束字符和开始字符返回。</p>
+<p>请注意，这适用于整个字符串，而不是单个单词。</p>
+<h4 id="从字符串中删除指定字符"><a href="#从字符串中删除指定字符" class="headerlink" title="从字符串中删除指定字符"></a>从字符串中删除指定字符</h4><p>要从字符串中删除指定类型的字符，可以将 <code>^</code> 符号与一组括号 <code>[]</code> 结合使用。括号内的任何内容都被筛选去掉。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>phrase = <span class="string">"there are 3 numbers 34 inside 5 this sentence."</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">r'[^\d]'</span>,phrase)</span><br><span class="line">[<span class="string">'t'</span>, <span class="string">'h'</span>, <span class="string">'e'</span>, <span class="string">'r'</span>, <span class="string">'e'</span>, <span class="string">' '</span>, <span class="string">'a'</span>, <span class="string">'r'</span>, <span class="string">'e'</span>, <span class="string">' '</span>, <span class="string">' '</span>, <span class="string">'n'</span>, <span class="string">'u'</span>, <span class="string">'m'</span>, <span class="string">'b'</span>, <span class="string">'e'</span>, <span class="string">'r'</span>, <span class="string">'s'</span>, <span class="string">' '</span>, <span class="string">' '</span>, <span class="string">'i'</span>, <span class="string">'n'</span>, <span class="string">'s'</span>, <span class="string">'i'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">' '</span>, <span class="string">' '</span>, <span class="string">'t'</span>, <span class="string">'h'</span>, <span class="string">'i'</span>, <span class="string">'s'</span>, <span class="string">' '</span>, <span class="string">'s'</span>, <span class="string">'e'</span>, <span class="string">'n'</span>, <span class="string">'t'</span>, <span class="string">'e'</span>, <span class="string">'n'</span>, <span class="string">'c'</span>, <span class="string">'e'</span>, <span class="string">'.'</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除标点符号"><a href="#删除标点符号" class="headerlink" title="删除标点符号"></a>删除标点符号</h4><p>使用与上面类似的方法，可以删除字符串中的标点符号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; test_phrase &#x3D; &#39;This is a string! But it has punctuation. How can we remove it?&#39;</span><br><span class="line">&gt;&gt;&gt; re.findall(&#39;[^!.? ]+&#39;,test_phrase)</span><br><span class="line">[&#39;This&#39;, &#39;is&#39;, &#39;a&#39;, &#39;string&#39;, &#39;But&#39;, &#39;it&#39;, &#39;has&#39;, &#39;punctuation&#39;, &#39;How&#39;, &#39;can&#39;, &#39;we&#39;, &#39;remove&#39;, &#39;it&#39;]</span><br></pre></td></tr></table></figure>
+
+<h4 id="分组的括号"><a href="#分组的括号" class="headerlink" title="分组的括号"></a>分组的括号</h4><p>使用 <code>[ ]</code> 也能够实现分组选择，比如下面的字符串中，找出含有连字符的单词。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>text = <span class="string">'Only find the hypen-words in this sentence. But you do not know how long-ish they are'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">r'[\w]+-[\w]+'</span>,text)</span><br><span class="line">[<span class="string">'hypen-words'</span>, <span class="string">'long-ish'</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="用于多个选项的括号"><a href="#用于多个选项的括号" class="headerlink" title="用于多个选项的括号"></a>用于多个选项的括号</h4><p>如果有多个匹配选项，可以使用括号列出这些选项。例如，从下面的字符串中宣传以 <code>cat</code> 开头，并且以 <code>fish</code> 或 <code>nap</code> 或 <code>claw</code> 结尾的单词。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>text = <span class="string">'Hello, would you like some catfish?'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.search(<span class="string">r'cat(fish|nap|claw)'</span>,text)</span><br><span class="line">&lt;re.Match object; span=(<span class="number">27</span>, <span class="number">34</span>), match=<span class="string">'catfish'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>正则表达式不论的软件开发、WEB编程、还是机器学习的数据清洗中，都有很多用途。不过它的内容庞杂，需要耐心地、认真地研究细节。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li>齐伟. Python 大学实用教程. 电子工业出版社</li>
+<li><a href="https://towardsdatascience.com/manipulate-pdf-files-extract-information-with-pypdf2-and-regular-expression-39ff697db0ca" target="_blank" rel="noopener">https://towardsdatascience.com/manipulate-pdf-files-extract-information-with-pypdf2-and-regular-expression-39ff697db0ca</a></li>
+</ol>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/11/14/Manipulate-pdf/">
+        <span class="nav-arrow">← </span>
+        
+          用 Python 编辑 PDF 文件
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#正则表达式"><span class="toc-nav-text">正则表达式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#搜索基本模式"><span class="toc-nav-text">搜索基本模式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#复杂模式"><span class="toc-nav-text">复杂模式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#分组"><span class="toc-nav-text">分组</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#或运算"><span class="toc-nav-text">或运算</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#通配符"><span class="toc-nav-text">通配符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#起止符"><span class="toc-nav-text">起止符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#从字符串中删除指定字符"><span class="toc-nav-text">从字符串中删除指定字符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#删除标点符号"><span class="toc-nav-text">删除标点符号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#分组的括号"><span class="toc-nav-text">分组的括号</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#用于多个选项的括号"><span class="toc-nav-text">用于多个选项的括号</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-text">参考资料</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/12/03/regex-md/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
