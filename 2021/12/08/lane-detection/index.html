@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      自动驾驶中的车道识别 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>自动驾驶中的车道识别</h2>
+    <p class="post-date">2021-12-08</p>
+    <section class="markdown-content"><p>车道识别，是自动驾驶中必不可少的，且实现方法也不止一种。</p>
+<h2 id="车道的基本概念"><a href="#车道的基本概念" class="headerlink" title="车道的基本概念"></a>车道的基本概念</h2><p>“车道”，其相关解释在维基百科或者百度百科上都有，不过，正如我们日常所言，都是用来专指“机动车道”。所以，“车道识别”、“自动驾驶”等术语，也是针对机动车而言。</p>
+<blockquote>
+<p>自行车的“自动驾驶”也值得探索。</p>
+<p>其实已经有了，比如：<a href="https://www.designboom.com/technology/self-driving-bicycle-huawei-engineers-operate-unmanned-06-14-2021/" target="_blank" rel="noopener">https://www.designboom.com/technology/self-driving-bicycle-huawei-engineers-operate-unmanned-06-14-2021/</a></p>
+</blockquote>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>如同前面视频演示的实时车道识别，可以用多种方法实现。比如可以用基于学习的方法，也就是训练一个深度学习模型。</p>
+<p>本文不用这种方法，本文要介绍一种更简单的方法：用 OpenCV 实现车道识别。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-8/1638930067979-lane.png" alt=""></p>
+<p>如上图所示，车道识别的重要任务就是要识别出车道两边的分道线，这是问题的关键。</p>
+<p>那么，怎么识别这些车道的分道线呢？</p>
+<p>从机动车的角度开出去，所看到的场景范围中，除了分道线之外，还有许多其他物体，比如车辆、路边障碍物、路灯等。通过前面的视频以及生活尝试，都容易知道，场景中的每一帧都在变化。这就是现实生活中的驾驶情况——有点复杂。</p>
+<p>所以，要解决车道识别问题，首先要找到一种方法，能忽略场景中不应该看到的物体——只看到分道线。即如下图所示，除了分道线，别的物体都没有了。随着机动车的行驶，分道线只呈现在这个场景中。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-8/1638953096079-lane_5.png" alt=""></p>
+<p>在接下来的内容中，会演示如何从视频中选择指定的区域，顺带介绍必要的图像预处理技巧。</p>
+<h2 id="图像掩膜"><a href="#图像掩膜" class="headerlink" title="图像掩膜"></a>图像掩膜</h2><p><strong>图像掩模（image mask）</strong>：用选定的图像、图形或物体，对待处理的图像（局部或全部）进行遮挡来控制图像处理的区域或处理过程。在图像处理中，对图像掩膜会有多种要求。</p>
+<p>图像掩膜的本质就是 Numpy 的数组，如下图所示，改变图中选定区域的像素值，比如都改为 0 ，就实现了图中所示的遮罩效果。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-8/1638953757595-mask.png" alt=""></p>
+<p>这是一种非常简单而有效的移除不想看到的物体的方法。</p>
+<h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>首先是要将图片转化为“黑白”，即设置一个转化的阈值，这样就能得到如下图中右侧的效果。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-9/1639012386675-lane_6.webp" alt=""></p>
+<p>接下来要解决的问题就是如何让机器“看到”分道线。通常使用霍夫变换（Hough Transformation），这是一种特征提取的技术，其数学原理请参阅：<a href="http://math.itdiffer.com" target="_blank" rel="noopener">http://math.itdiffer.com</a> 中的有关内容。</p>
+<h2 id="用-OpenCV-实现车道识别"><a href="#用-OpenCV-实现车道识别" class="headerlink" title="用 OpenCV 实现车道识别"></a>用 OpenCV 实现车道识别</h2><p>下面就开始编写实现车道识别的代码。建议使用谷歌的 Colab 或者百度的 AiStudio 执行代码，因为在本地跑的话，对计算能力要求有点高。本文代码就发布到了 AiStudio 上，并且相关视频也可以在该项目中下载，地址是：<a href="https://aistudio.baidu.com/aistudio/projectdetail/3215224?contributionType=1。" target="_blank" rel="noopener">https://aistudio.baidu.com/aistudio/projectdetail/3215224?contributionType=1。</a></p>
+<p>先引入下列各模块和库，如果本地没有安装，请自行安装。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm_notebook</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+
+<p>然后读入视频。此视频文件已经放到本项目中，可以自行下载。</p>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>加载视频文件，并从视频中抽取若干帧作为后续应用的图片。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将视频按照指定的帧率，将帧转化为图片</span></span><br><span class="line">image_path = <span class="string">'frames'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_frame</span><span class="params">(video, image_path, frame_rate=<span class="number">0.5</span>)</span>:</span></span><br><span class="line">    vidcap = cv2.VideoCapture(video)</span><br><span class="line">    sec = <span class="number">0</span></span><br><span class="line">    count = <span class="number">1</span></span><br><span class="line">    image_lst = []</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        vidcap.set(cv2.CAP_PROP_POS_MSEC, sec*<span class="number">1000</span>)</span><br><span class="line">        has_frames, image = vidcap.read()</span><br><span class="line">        <span class="keyword">if</span> has_frames:</span><br><span class="line">            image_name = <span class="string">f"imge<span class="subst">&#123;count&#125;</span>.jpg"</span></span><br><span class="line">            cv2.imwrite(<span class="string">f"<span class="subst">&#123;image_path&#125;</span>/<span class="subst">&#123;image_name&#125;</span>"</span>, image)</span><br><span class="line">            image_lst.append(image_name)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        sec += frame_rate</span><br><span class="line">        sec = round(sec, <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> image_lst</span><br><span class="line"></span><br><span class="line">images = get_frame(<span class="string">"road.mp4"</span>, <span class="string">'frames'</span>, frame_rate=<span class="number">5</span>)   <span class="comment"># 此处每隔5秒取一帧，在真实的业务中，时间较长。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">len(images)    <span class="comment"># 共计得到了167张图片</span></span><br></pre></td></tr></table></figure>
+
+<p>特别注意，上面设置的 <code>frame_rate=5</code> 显然比较粗糙，这是为了演示而设置的。</p>
+<p>下面显示其中一张图片。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">image_path = <span class="string">'frames/'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示其中一张图片</span></span><br><span class="line">idx = <span class="number">2</span>    <span class="comment"># 指定一个索引</span></span><br><span class="line">image_example = image_path + os.listdir(<span class="string">"frames"</span>)[idx]</span><br><span class="line">img = cv2.imread(image_example) </span><br><span class="line"><span class="comment"># 显示图片</span></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line">plt.imshow(img, cmap= <span class="string">"gray"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-9/1639027991087-lane_7.png" alt=""></p>
+<h3 id="创建掩膜"><a href="#创建掩膜" class="headerlink" title="创建掩膜"></a>创建掩膜</h3><p>显然，我们感兴趣的区域是一个多边形范围，其他区域都是应该被遮罩起来的。 因此，首先要指定多边形的坐标，然后通过它创建掩膜。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 0 数组</span></span><br><span class="line">stencil = np.zeros_like(img[:,:,<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 确定多边形的坐标</span></span><br><span class="line">polygon = np.array([[<span class="number">80</span>,<span class="number">370</span>], [<span class="number">300</span>,<span class="number">250</span>], [<span class="number">450</span>,<span class="number">250</span>], [<span class="number">580</span>,<span class="number">370</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用 1 填充多边形</span></span><br><span class="line">cv2.fillConvexPoly(stencil, polygon, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示多边形效果</span></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line">plt.imshow(stencil, cmap= <span class="string">"gray"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-9/1639028889975-polygon.png" alt=""></p>
+<p>将多边形作为掩膜，用到其中一帧图片上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mask_img = cv2.bitwise_and(img[:,:,<span class="number">0</span>], </span><br><span class="line">                      img[:,:,<span class="number">0</span>], </span><br><span class="line">                      mask=stencil)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示效果</span></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line">plt.imshow(mask_img, cmap= <span class="string">"gray"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-8/1638953096079-lane_5.png" alt=""></p>
+<h3 id="图片预处理"><a href="#图片预处理" class="headerlink" title="图片预处理"></a>图片预处理</h3><p>为了识别视频中每帧图片中的车道，必须对所有图片进行预处理，主要是前面提过的两个方面：阈值和霍夫变换</p>
+<ol>
+<li>阈值</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ret, thresh = cv2.threshold(img, <span class="number">130</span>, <span class="number">145</span>, cv2.THRESH_BINARY)</span><br><span class="line"></span><br><span class="line"><span class="comment"># plot image</span></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line">plt.imshow(thresh, cmap= <span class="string">"gray"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-10/1639115520636-threshold.png" alt=""></p>
+<ol start="2">
+<li>霍夫变换</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">lines = cv2.HoughLinesP(thresh, <span class="number">1</span>, np.pi/<span class="number">180</span>, <span class="number">30</span>, maxLineGap=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝帧图片</span></span><br><span class="line">dmy = img[:,:,<span class="number">0</span>].copy()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制霍夫线</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">    x1, y1, x2, y2 = line[<span class="number">0</span>]</span><br><span class="line">    cv2.line(dmy, (x1, y1), (x2, y2), (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 画图显示</span></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line">plt.imshow(dmy, cmap= <span class="string">"gray"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-10/1639115716135-hough.png" alt=""></p>
+<p>现在，将上面的操作用在每一帧上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">cnt = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> image <span class="keyword">in</span> images:</span><br><span class="line">    print(image)</span><br><span class="line">    img = cv2.imread(<span class="string">f'frames/<span class="subst">&#123;image&#125;</span>'</span>) </span><br><span class="line">    <span class="comment"># 对帧掩膜</span></span><br><span class="line">    masked = cv2.bitwise_and(img[:,:,<span class="number">0</span>], img[:,:,<span class="number">0</span>], mask=stencil)</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 阈值</span></span><br><span class="line">    ret, thresh = cv2.threshold(masked, <span class="number">130</span>, <span class="number">145</span>, cv2.THRESH_BINARY)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 霍夫变换</span></span><br><span class="line">    lines = cv2.HoughLinesP(thresh, <span class="number">1</span>, np.pi/<span class="number">180</span>, <span class="number">30</span>, maxLineGap=<span class="number">200</span>)</span><br><span class="line">    dmy = img[:,:,<span class="number">0</span>].copy()</span><br><span class="line">  </span><br><span class="line">   <span class="comment"># 识别到的线</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">            x1, y1, x2, y2 = line[<span class="number">0</span>]</span><br><span class="line">            cv2.line(dmy, (x1, y1), (x2, y2), (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">3</span>)</span><br><span class="line">  </span><br><span class="line">        cv2.imwrite(<span class="string">'detected/'</span>+str(cnt)+<span class="string">'.png'</span>,dmy)</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">except</span> TypeError: </span><br><span class="line">        cv2.imwrite(<span class="string">'detected/'</span>+str(cnt)+<span class="string">'.png'</span>,img)</span><br><span class="line"></span><br><span class="line">    cnt+= <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="用于视频"><a href="#用于视频" class="headerlink" title="用于视频"></a>用于视频</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输入路径</span></span><br><span class="line">pathIn= <span class="string">'detected/'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出视频</span></span><br><span class="line">pathOut = <span class="string">'roads_v2.mp4'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设定每秒的帧数</span></span><br><span class="line">fps = <span class="number">30.0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> os.path <span class="keyword">import</span> isfile, join</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取文件</span></span><br><span class="line">files = [f <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(pathIn) <span class="keyword">if</span> isfile(join(pathIn, f))]</span><br><span class="line">files.sort(key=<span class="keyword">lambda</span> f: int(re.sub(<span class="string">'\D'</span>, <span class="string">''</span>, f)))</span><br></pre></td></tr></table></figure>
+
+<p>将所有检测到车道的帧保存到列表中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">frame_list = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(files)):</span><br><span class="line">    filename=pathIn + files[i]</span><br><span class="line">    <span class="comment">#reading each files</span></span><br><span class="line">    img = cv2.imread(filename)</span><br><span class="line">    height, width, layers = img.shape</span><br><span class="line">    size = (width,height)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#inserting the frames into an image array</span></span><br><span class="line">    frame_list.append(img)</span><br></pre></td></tr></table></figure>
+
+<p>最后，将所有的帧合并为视频。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># write the video</span></span><br><span class="line">out = cv2.VideoWriter(pathOut,cv2.VideoWriter_fourcc(*<span class="string">'DIVX'</span>), </span><br><span class="line">                      fps, size)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(frame_list)):</span><br><span class="line">    <span class="comment"># writing to a image array</span></span><br><span class="line">    out.write(frame_list[i])</span><br><span class="line"></span><br><span class="line">out.release()</span><br></pre></td></tr></table></figure>
+
+<p>齐活儿。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/12/03/regex-md/">
+        <span class="nav-arrow">← </span>
+        
+          正则表达式
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#车道的基本概念"><span class="toc-nav-text">车道的基本概念</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#问题描述"><span class="toc-nav-text">问题描述</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#图像掩膜"><span class="toc-nav-text">图像掩膜</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本思路"><span class="toc-nav-text">基本思路</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#用-OpenCV-实现车道识别"><span class="toc-nav-text">用 OpenCV 实现车道识别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#准备"><span class="toc-nav-text">准备</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#创建掩膜"><span class="toc-nav-text">创建掩膜</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#图片预处理"><span class="toc-nav-text">图片预处理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#用于视频"><span class="toc-nav-text">用于视频</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/12/08/lane-detection/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
