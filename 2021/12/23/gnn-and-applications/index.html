@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      gnn-and-applications | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>gnn-and-applications</h2>
+    <p class="post-date">2021-12-23</p>
+    <section class="markdown-content"><hr>
+<p>title:图神经网络及其应用概述<br>date:2021-12-23 08:43:36<br>tags:GNN,图神经网络,图深度学习</p>
+<hr>
+<p>神经网络已经成功地应用在模式识别、数据挖掘等领域，不论目标检测、机器翻译、语音合成，都用 CNN、RNN 或自动编码机实现了端到端的应用。</p>
+<p>深度学习适合于挖掘欧几里得空间数据的隐藏模式，比如图像、文本、视频等。但是，如果 面对非欧几里得空间的数据，典型的就是图（graph）所表示的复杂关系以及对象之间的互动，深度学习还使用吗？</p>
+<p>传统的深度学习模型不适用于图数据，但是，人们发明了<strong>图神经网络</strong>（Graph Neural Networks，GNN）。</p>
+<h2 id="什么是图"><a href="#什么是图" class="headerlink" title="什么是图"></a>什么是图</h2><p>图（Graph）是 GNN 的重要基础，在《机器学习数学基础》的 2.7 节专门介绍了用矩阵表示图的方法，本微信公众号有内容选读，请读者参阅：<a href="https://mp.weixin.qq.com/s/u2Tj8RWRhrXk31FdRu5kZg" target="_blank" rel="noopener">邻接矩阵</a>，更多内容，请参阅《机器学习数学基础》（电子工业出版社）</p>
+<p>计算机科学中的图是一种数据结构，即<strong>图数据</strong>，它由节点（nodes，或 vertices）和边（edges）构成。</p>
+<p>通常用符号 $G$ 表示图数据，并定义为 $G=(V,E)$ ，其中 $V$ 表示节点集合、$E$ 表示连接节点的边的集合。图可以划分为有向图和无向图两类。</p>
+<p>在现实生活中，图的最典型案例就是社交媒体，如下图所示。每个用户都可以视为节点，用户之间的关系作为边。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640222650312-social-media-graph.jpg" alt=""></p>
+<p>在数学上，用邻接矩阵表示图，如果有 $n$ 个节点，则邻接矩阵 $\pmb{A}$ 是 $n\times n$ 的矩阵（详见：<a href="https://mp.weixin.qq.com/s/u2Tj8RWRhrXk31FdRu5kZg" target="_blank" rel="noopener">邻接矩阵</a>，登录 <a href="http://math.itdiffer.com" target="_blank" rel="noopener">http://math.itdiffer.com</a> 查阅更多内容）。如果一个节点有多个特征，则又构建一个 $n\times f$ 的节点特征矩阵 $\pmb{X}$ ，其中 $f$ 是每个节点的特征个数。</p>
+<h3 id="分析图的难点"><a href="#分析图的难点" class="headerlink" title="分析图的难点"></a>分析图的难点</h3><p>图数据的复杂性对传统的机器学习是一项挑战。传统的机器学习或深度学习工具，比较适用于简单类型数据，比图像，它的结构是不变的，我们可以将其认为是固定的网格图；文本则为序列，可视为线性图。而对于更一般的图，也更复杂，每个节点会有不同数量的边，亦即有不同的节点与其相邻。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640224356632-graph-neural-network.jpg" alt=""></p>
+<h2 id="图神经网络"><a href="#图神经网络" class="headerlink" title="图神经网络"></a>图神经网络</h2><p>图神经网络（GNN）是一类深度学习方法，它在图数据上表现优异，能够实现对节点、边或图的预测。</p>
+<p>通过 GNN 能够实现传统的卷积（CNN）所做不了的业务。</p>
+<h3 id="CNN-对图数据无可奈何"><a href="#CNN-对图数据无可奈何" class="headerlink" title="CNN 对图数据无可奈何"></a>CNN 对图数据无可奈何</h3><p>如你所知，CNN 擅长于处理图像，如图像归类、图像识别、目标检测等，因此它在计算机视觉上用途广泛。这也是 CNN 流行的原因。</p>
+<p>CNN 背后的核心概念是卷积和池化层，通过一组内核形式的感受野来识别空间局部特征。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640224946136-Convolutional.jpg" alt=""></p>
+<p>卷积如何对规则网格的图像进行运算？在二维图像上滑动卷积算子窗口，该滑动窗口对应某个函数，通过此函数将窗口内的节点映射到一个数字上，并且通过很多层，最终得到了局部特征。</p>
+<p>卷积算子将中心节点及其相邻节点的信息聚合起来，产生了一个新的值。由于网格图像的结构相同，在二维图像上任何部分都适用于此原则，因此卷积算子窗口能在图像上“滑动”。</p>
+<p>但是，图数据则不然。图数据没有固定的节点排列顺序，每个节点的邻居数量也是可以变化的。因此，上面所描述的卷积算子就不能自由地“滑动”以聚合信息了。</p>
+<h2 id="图深度学习基础"><a href="#图深度学习基础" class="headerlink" title="图深度学习基础"></a>图深度学习基础</h2><p>图论中有节点嵌入的概念，即将节点映射到一个 $d$ 维的嵌入空间（是一个低维空间，不是图的实际维度）。</p>
+<p>设 $\pmb{u}$ 和 $\pmb{v}$ 是图的两个节点，$\pmb{x_u}$ 和 $\pmb{x_v}$ 分别是两个节点相应的特征向量。</p>
+<p>假设定义了两个编码器函数 $Enc(\pmb{u})$ 和 $Enc(\pmb{v})$ ，分别将两个节点的特征向量转化为 $\pmb{z_u}$ 和 $\pmb{z_v}$ 。</p>
+<p>注意，这里使用欧几里得空间距离近似地判断两个向量的相似度。</p>
+<p>上述过程如下图所示：</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640226747306-similarity-function.jpg" alt=""></p>
+<p>将图中的节点映射到低维嵌入空间，其目标是得到与原数据中相似关系等价的节点，即映射之后节点间的相对相似性不变。</p>
+<p><strong>现在要解决的问题是如何构建编码器函数。</strong></p>
+<p>如下图所示，在计算图（computational graph，关于“计算图”的更多内容，请参阅：<a href="http://math.itdiffer.com" target="_blank" rel="noopener">http://math.itdiffer.com</a> 有关章节）中，对于红色的节点 $i$ ，可以观察到与它直接相邻的节点，以及它的邻居的邻居。通过计算图，可以看到所有可能的连接。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640238293580-Neighborhood-exploration.jpg" alt=""></p>
+<p>通过计算图，不仅可以把握图的结构，同时也能提取特征信息。之后就可以进行聚合，这是神经网络的基本操作。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640243024621-Neural-networks-1.jpg" alt=""></p>
+<p>上图中的灰色正方形表示神经网络，通过它聚合后，数据的阶不变（order-invariant），因为所使用的函数是实现求和、平均、最值等运算的排列不变函数（permutation-invariant functions），即输入的顺序改变不会影响输出的值。</p>
+<p>首先看看 GNN 的前向传播算法，它实现了神经网络中数据从输入到输出的过程。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640243141648-Many-Layers-1.jpg" alt=""></p>
+<p>每个节点有一个特征向量，如 $\pmb{X_A}$ 是节点 $\pmb{A}$ 的特征向量。对 GNN 而言，其输入就是这些特征向量（如上图中的 $\pmb{X_A}$ 和 $\pmb{X_C}$ ），经过正方形表示的神经网络 Layer-1 层，完成一次聚合，将输出结果输入到下一层。</p>
+<p>注意，输入的节点以其特征为代表，例如节点 C，在输入层中，显示的是其特征。后续各层亦如此。</p>
+<p>在上述计算图中，前向传播过程可以设计为一下三步：</p>
+<ol>
+<li><p>激活输入层：</p>
+<p>$$\pmb{h}_v^0=\pmb{X}_v(feature\quad vector)$$</p>
+</li>
+<li><p>网络中的其他层：</p>
+<p>$$\pmb{h}_v^k=\pmb{\sigma}\left(\pmb{W}_k\sum\frac{h_u^{k-1}}{|N(\pmb{v})|}+\pmb{B}_k\pmb{h}_v^{k-1}\right),其中k=1,2,\cdots,k-1$$</p>
+<p>上式的组成部分含义如下：</p>
+<ul>
+<li>第一项 $\pmb{W}_k\sum\frac{h_u^{k-1}}{|N(\pmb{v})|}$ 表示对所有节点求平均；</li>
+<li>第二项 $\pmb{B}_k\pmb{h}_v^{k-1}$ 中的 $\pmb{B}_k$ 表示偏置；</li>
+<li>函数 $\pmb{\sigma}$ 是一个非线性激活函数，以上两项的和作为其参数。</li>
+</ul>
+</li>
+<li><p>输出层（最后的层）</p>
+<p>$$\pmb{z}_v=\pmb{h}_v^k$$</p>
+<p>表示 k 层之后的输出。</p>
+</li>
+</ol>
+<p>当然，在训练模型之前，还要定义损失函数。</p>
+<p>模型的训练，可以用有监督和无监督两类：</p>
+<ul>
+<li>有监督训练：比如节点分类，区分正常或异常节点等，适用于有监督的任务。</li>
+<li>无监督训练：只用到图的结构。无监督损失函数可以是基于图中节点近似度的损失，也可以是随机游走。</li>
+</ul>
+<p>以上，简要了解了节点嵌入的基本思想，接下里要重点讨论图卷积网络（Graph Convolutional Network，GCN）</p>
+<p>回顾一下，在本节中，我们描述了通过聚合邻域信息来生成节点嵌入的基本思想。</p>
+<h2 id="图卷积网络"><a href="#图卷积网络" class="headerlink" title="图卷积网络"></a>图卷积网络</h2><p>GCN 最早是由 Bruna 在其论文“Spectral Networks and Deep Locally  Connected Networks on Graphs”中作为针对图数据的神经网络方法而提出。</p>
+<p>最简单的 GCN 有以下组成：</p>
+<ul>
+<li>图卷积</li>
+<li>线性层</li>
+<li>非线性激活</li>
+</ul>
+<p>一般按顺序执行，最终组成一个神经网络层。对于一个完整的 GCN，可以由一个或多个层组成。</p>
+<p>在 Python 中，可以用 PyTorch 很容易构建 GCN。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GCN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *sizes)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.layers = nn.ModuleList([</span><br><span class="line">            nn.Linear(x, y) <span class="keyword">for</span> x, y <span class="keyword">in</span> zip(sizes[:<span class="number">-1</span>], sizes[<span class="number">1</span>:])</span><br><span class="line">        ])</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, vertices, edges)</span>:</span></span><br><span class="line">        <span class="comment"># ----- 构建邻接矩阵 -----</span></span><br><span class="line">        <span class="comment"># 从自我连接开始</span></span><br><span class="line">        adj = torch.eye(len(vertices))</span><br><span class="line">        <span class="comment"># 边包含连接的定点: [vertex_0, vertex_1] </span></span><br><span class="line">        adj[edges[:, <span class="number">0</span>], edges[:, <span class="number">1</span>]] = <span class="number">1</span> </span><br><span class="line">        adj[edges[:, <span class="number">1</span>], edges[:, <span class="number">0</span>]] = <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ----- 前向数据传递 -----</span></span><br><span class="line">        <span class="keyword">for</span> layer <span class="keyword">in</span> self.layers:</span><br><span class="line">            vertices = torch.sigmoid(layer(adj @ vertices))</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> vertices</span><br></pre></td></tr></table></figure>
+
+<h3 id="GraphSAGE"><a href="#GraphSAGE" class="headerlink" title="GraphSAGE"></a>GraphSAGE</h3><p>Hamilton 提出的 GraphSAGE (Hamilton et al, NIPS 2017) 是动态图的典型代表。利用它，不需要预训练，就可以预测一个新嵌入的点。为此，GraphSAGE 采用了归纳学习。它根据节点的特征和邻域学习聚合函数，这些函数可以诱导新的节点嵌入。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640243277445-GraphSAGE-1.jpg" alt=""></p>
+<p>注意与之前的区别，这里不再是求和后就将此前项丢掉，而是使用通用的聚合函数。之前，使用的是均值聚合函数 ${\rm{AGG}}=\sum_{\pmb{u}\in N(\pmb{v})}\frac{\pmb{h}_u^{k-1}}{|N(\pmb{v})|}$ ——只是从邻居那里获取消息并将它们相加，然后根据邻居的数量对其进行归一化。 现在，采用池化方法，或者可以用像 LSTM 这样的深度神经网络。</p>
+<p><img src="https://gitee.com/qiwsir/images/raw/master/2021-12-23/1640243344395-Neighbor-Aggregation-1.jpg" alt=""></p>
+<h2 id="GNN-应用"><a href="#GNN-应用" class="headerlink" title="GNN 应用"></a>GNN 应用</h2><p>任何地方都可以看到图结构数据。下面列出几项 GNN 的应用场景：</p>
+<ol>
+<li>节点分类：此类任务的目标是通过邻居的标签确定节点标签。一般这类问题通过半监督学习实现（半监督学习，即只有一部分数据被标注）。</li>
+<li>图分类：即将整个图划分为不同类别，如图像分类，但是目标变为图域。图分类的应用范围很广，从在生物信息学中确定蛋白质是否是酶，到在 NLP 或社交网络分析中对文档进行分类。</li>
+<li>图可视化：是数学和计算机科学的一个研究领域，是几何图论和信息可视化的交叉。其核心是图数据的可视化表示，揭示数据中可能存在的结构和异常，并帮助用户通过可视化方式理解图数据。</li>
+<li>连接预测：算法已经理解了图中两个实体的关系，基于此预测与其他实体之间的关系，特别是在社交媒体中，预测用户之间的关系，从而推荐有关信息。</li>
+<li>图聚类：指的是对图数据进行聚类。一种是对图中的节点聚类；另外一种是将图视为一个对象，对其聚类。</li>
+</ol>
+<h2 id="GNN-应用领域列表"><a href="#GNN-应用领域列表" class="headerlink" title="GNN 应用领域列表"></a>GNN 应用领域列表</h2><p>此表来自参考资料 [1] ，本文不再翻译，仅供参考。</p>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>Deep Learning</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Text classification</td>
+<td>Graph convolutional network/ graph attention network</td>
+<td>A classic application of GNNs in NLP is Text Classification. GNNs utilize the inter-relations of  documents or words to infer document labels. GCN and GAT models are  applied to solve this task. They convert text to graph-of-words, and  then use graph convolution operations to convolve the word graph. They  show through experiments that the graph-of-words representation of texts has the advantage of capturing non-consecutive and long-distance  semantics</td>
+</tr>
+<tr>
+<td>Neural machine translation</td>
+<td>Graph convolutional network/ gated graph neural network</td>
+<td>The neural machine  translation (NMT) is considered a sequence-to-sequence task. One of  GNN’s common applications is to incorporate semantic information into  the NMT task. To do this, we utilize the Syntactic GCN on syntax-aware  NMT tasks. We can also use the GGNN in NMT. It converts the syntactic  dependency graph into a new structure by turning the edges into  additional nodes and thus edges labels can be represented as embeddings</td>
+</tr>
+<tr>
+<td>Relation extraction</td>
+<td>Graph LSTM/ graph convolutional network</td>
+<td>Relation Extraction is the  task of extracting semantic relations from the text, which usually occur between two or more entities. Traditional systems treat this task as a  pipeline of two separated tasks, i.e., named entity recognition (NER)  and relation extraction, but new studies show that end-to-end modeling  of entity and relation is important for high performance since relations interact closely with entity information</td>
+</tr>
+<tr>
+<td>Image classification</td>
+<td>Graph convolutional network/ gated graph neural network</td>
+<td>Image classification is a  basic computer vision task. Most of the models provide attractive  results when given a huge training set of labeled classes. The focus now is towards getting these models to perform well on zero-shot and  few-shot learning tasks. For that, GNN appears quite appealing.  Knowledge graphs can provide the necessary information to guide the ZSL  (Zero-shot learning) task</td>
+</tr>
+<tr>
+<td>Object detection<br>Interaction detection<br/>Region classification<br/>Semantic segmentation</td>
+<td>Graph attention network<br/>Graph neural network<br/>Graph CNN<br/>Graph LSTM/ gated graph neural network/ graph CNN/ graph neural network</td>
+<td>There are other applications  of computer vision tasks like object detection, interaction detection,  and region classification. In object detection, GNNs are used to  calculate RoI features; in interaction detection, GNN is message-passing tools between humans and objects; in region classification, GNNs  perform reasoning on graphs that connect regions and classes</td>
+</tr>
+<tr>
+<td>Physics</td>
+<td>Graph neural network/ graph networks</td>
+<td>Modeling real-world physical systems is one of the most basic aspects of understanding human intelligence. By representing objects as nodes and  relations as edges, we can perform GNN-based reasoning about objects,  relations, and physics in an effective way. Interaction networks can be  trained to reason about the interactions of objects in a complex  physical system. It can make predictions and inferences about various  system properties in domains such as collision dynamics</td>
+</tr>
+<tr>
+<td>Molecular fingerprints</td>
+<td>Graph convolutional network</td>
+<td>Molecular fingerprints are feature vectors that represent molecules. ML  models predict the properties of a new molecule by learning from example molecules that use fixed-length fingerprints as inputs. GNNs can  replace the traditional means that give a fixed encoding of the molecule to allow the generation of differentiable fingerprints adapted to the  task for which they are required</td>
+</tr>
+<tr>
+<td>Protein interface prediction</td>
+<td>Graph convolutional network</td>
+<td>This is a challenging problem with important applications in drug  discovery. The proposed GCN-based method respectively learns ligand and  receptor protein residue representation and merges them for pairwise  classification. At a molecular level, the edges can be the bonds between atoms in a molecule or interactions between amino-acid residues in a  protein. On a large scale, graphs can represent interactions between  more complex structures such as proteins, mRNA, or metabolites</td>
+</tr>
+<tr>
+<td>Combinatorial optimization</td>
+<td>Graph convolutional network/ graph neural network/ graph attention network</td>
+<td>Combinatorial optimization (CO) is a topic that consists of finding an  optimal object from a finite set of objects. It is the base of many  important applications in finance, logistics, energy, science, and  hardware design. Most CO problems are formulated with graphs. In a  recent work by DeepMind and Google, graph nets are used for two key  subtasks involved in the MILP solver: joint variable assignment and  bounding the objective value. Their neural network approach is faster  than existing solvers on big datasets</td>
+</tr>
+<tr>
+<td>Graph generation</td>
+<td>Graph convolutional network/ graph neural network/ LSTM /RNN/ relational-GCN</td>
+<td>Generative models for real-world graphs have drawn significant attention for their important applications including modeling social  interactions, discovering new chemical structures, and constructing  knowledge graphs. The GNN based model learns node embeddings for each  graph independently and matches them using attention mechanisms. This  method offers good performance compared to standard relaxation-based  techniques</td>
+</tr>
+</tbody></table>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最近几年，图神经网络发展迅速，成为了解决实际问题的强有力的工具。值得拥有。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://neptune.ai/blog/graph-neural-network-and-some-of-gnn-applications" target="_blank" rel="noopener">https://neptune.ai/blog/graph-neural-network-and-some-of-gnn-applications</a></li>
+<li>齐伟.机器学习数学基础[M].北京:电子工业出版社（本书于2022年初出版，有关内容请参阅：<a href="http://math.itdiffer.com）" target="_blank" rel="noopener">http://math.itdiffer.com）</a></li>
+</ol>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/12/08/lane-detection/">
+        <span class="nav-arrow">← </span>
+        
+          自动驾驶中的车道识别
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是图"><span class="toc-nav-text">什么是图</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分析图的难点"><span class="toc-nav-text">分析图的难点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#图神经网络"><span class="toc-nav-text">图神经网络</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#CNN-对图数据无可奈何"><span class="toc-nav-text">CNN 对图数据无可奈何</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#图深度学习基础"><span class="toc-nav-text">图深度学习基础</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#图卷积网络"><span class="toc-nav-text">图卷积网络</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#GraphSAGE"><span class="toc-nav-text">GraphSAGE</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#GNN-应用"><span class="toc-nav-text">GNN 应用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#GNN-应用领域列表"><span class="toc-nav-text">GNN 应用领域列表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-text">参考资料</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2021/12/23/gnn-and-applications/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
