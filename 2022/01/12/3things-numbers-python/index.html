@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="专注于编程技术和数据科学、人工智能">
+  <meta name="keyword" content="人工智能, 数据科学, Python, 编程, 程序员, 开发者, web, 网站, 语言, 程序, UI, 美工, 设计师">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Python 中有关数字必知的三件事 | 老齐教室
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>老齐教室</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">书籍</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/courses/" class="item-link">课程</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">类目</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/resources/" class="item-link">资源</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">书籍</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/courses/" class="menu-link">课程</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">类目</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/resources/" class="menu-link">资源</a>
+            
+
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  
+  <!-- <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div> -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <h2>Python 中有关数字必知的三件事</h2>
+    <p class="post-date">2022-01-12</p>
+    <section class="markdown-content"><p>如果用 Python 写过代码，肯定遇到了数字，比如整数作为列表的索引，用浮点数表示当前财富的数量，等等。</p>
+<p>但是，Python 中关于数字的知识远多于这些。</p>
+<h2 id="1-数字有方法"><a href="#1-数字有方法" class="headerlink" title="1. 数字有方法"></a>1. 数字有方法</h2><p>Python 中万物皆对象，正如在很多教材中都会看到的那样，几乎是作为第一个对象讲授的字符串对象 <code>str</code> ，一定查看过它的方法，比如将所有字母变为小写的 <code>.lower()</code> 方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"HELLO"</span>.lower()</span><br><span class="line"><span class="string">'hello'</span></span><br></pre></td></tr></table></figure>
+
+<p>毋庸置疑，数字也是 Python对象，那么它们必然也有自己的方法，比如可以用 <code>.to_bytes()</code> 方法将整数转化为字节字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>n = <span class="number">255</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n.to_bytes(length=<span class="number">2</span>, byteorder=<span class="string">"big"</span>)</span><br><span class="line"><span class="string">b'\x00\xff'</span></span><br></pre></td></tr></table></figure>
+
+<p>其中参数 <code>length</code> 用来指定字节长度，参数 <code>byteorder</code> 定义自己的顺序，在上面的示例中，<code>byteorder=&quot;big&quot;</code> 则在返回的字节字符串中，重要的字节排在前面，反之，则可以 <code>byteorder=&quot;little&quot;</code> 。</p>
+<p><code>255</code> 是 8 位整数中最大的，所以，也可以将 <code>length</code> 设置为 <code>1</code> ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>n.to_bytes(length=<span class="number">1</span>, byteorder=<span class="string">"big"</span>)</span><br><span class="line"><span class="string">b'\xff'</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，如果对于 <code>256</code> ，也使用 <code>length=1</code> ，就会出现 <code>OverflowError</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>n = <span class="number">256</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n.to_bytes(length=<span class="number">1</span>, byteorder=<span class="string">"big"</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">OverflowError: int too big to convert</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用 <code>int</code> 的类方法 <code>.from_bytes()</code> 将字节字符串转化为整数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>int.from_bytes(<span class="string">b'\x06\xc1'</span>, byteorder=<span class="string">"big"</span>)</span><br><span class="line"><span class="number">1729</span></span><br></pre></td></tr></table></figure>
+
+<p>除了整数，浮点数也有方法，例如最常用的 <code>.is_integer()</code> ，用于判断浮点数是否有非零的小数部分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>n = <span class="number">2.0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n.is_integer()</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n = <span class="number">3.14</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>n.is_integer()</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一个有趣的浮点数方法 <code>.as_integer_ratio()</code> ，它返回一个元组，其中包括浮点数所对应的分数的分子和分母，或者你可以理解为，用这个方法把浮点数转化为了分数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>m = <span class="number">2.5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.as_integer_ratio()</span><br><span class="line">(<span class="number">5</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当然，由于二进制转化的时候有误差（详见《Python大学实用教程》中的解释），也会出现下面的结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>m = <span class="number">0.1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.as_integer_ratio()</span><br><span class="line">(<span class="number">3602879701896397</span>, <span class="number">36028797018963968</span>)</span><br></pre></td></tr></table></figure>
+
+<p>特别要注意，上面在使用整数对象的方法时，都是使用了变量引用该整数对象，如果这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">255.</span>to_bytes(length=<span class="number">1</span>, byteorder=<span class="string">"big"</span>)</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">    <span class="number">255.</span>to_bytes(length=<span class="number">1</span>, byteorder=<span class="string">"big"</span>)</span><br><span class="line">        ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+
+<p>解决方法是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">255</span>).to_bytes(length=<span class="number">1</span>, byteorder=<span class="string">"big"</span>)</span><br><span class="line"><span class="string">b'\xff'</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，对于浮点数，则又不同：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3.14</span>.is_integer()</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">3.14</span>).is_integer()</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>注意区分。</p>
+<h2 id="2-数字有层级"><a href="#2-数字有层级" class="headerlink" title="2. 数字有层级"></a>2. 数字有层级</h2><p>数学上的数字都有曾经，比如所有的自然数都是整数，所有的整数都是有理数，所有的有理数都是实数，所有的实数都是复数。</p>
+<p>Python 中的数字，也有类似的金字塔结构。</p>
+<h3 id="层级继承"><a href="#层级继承" class="headerlink" title="层级继承"></a>层级继承</h3><p>Python 中的所有数字，都是 <code>Number</code> 类的实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> numbers <span class="keyword">import</span> Number</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1992</span>, Number)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">7.28</span>, Number)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1j</span>, Number)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>如果只关心某个对象是否是数字，而不在乎它是哪类数值，就可以使用 <code>isinstance(value, Number)</code> 进行检验。</p>
+<p>在 <code>numbers</code> 模块中，有四个类：<code>Complex</code>、<code>Real</code>、<code>Rational</code>、<code>Tntegral</code> ，它们分别对应 Python 内置对象中的相应类型：</p>
+<ul>
+<li><code>Complex</code> 类用于表示复数。内置对象的 <code>Complex</code> 类型：<code>complex</code> </li>
+<li><code>Real</code> 类用于表示实数。内置对象的 <code>Real</code> 类型：<code>float</code></li>
+<li><code>Rotional</code> 类用于表示有理数。内置对象的 <code>Roational</code> 类型：<code>Fraction</code></li>
+<li><code>Integral</code> 类用于表示整数。内置独享的 <code>Integral</code> 类型：<code>int</code> 和 <code>bool</code></li>
+</ul>
+<p>没错，<code>bool</code> 的值也是数字。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numbers</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复数继承自 Complex</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1j</span>, numbers.Complex)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复数不是 Real</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1j</span>, numbers.Real)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 浮点数是 Real</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">3.14</span>, numbers.Real)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 浮点数不是 Rational</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">3.14</span>, numbers.Rational)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分数是 Rational</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> fractions <span class="keyword">import</span> Fraction</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Fraction(<span class="number">1</span>, <span class="number">2</span>), numbers.Rational)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分数不是 Integral</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Fraction(<span class="number">1</span>, <span class="number">2</span>), numbers.Integral)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 整数是 Integral</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">1729</span>, numbers.Integral)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 布尔值是 Integral</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="literal">True</span>, numbers.Integral)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span> == <span class="number">1</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">False</span> == <span class="number">0</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="小数不在其列"><a href="#小数不在其列" class="headerlink" title="小数不在其列"></a>小数不在其列</h3><p>在上面所说的 Python 中四种数字层级：<code>Complex</code>、<code>Real</code>、<code>Rational</code>、<code>Tntegral</code> ，其中不包含 <code>Decimal</code> 类型，它比较特殊，算是第五级。</p>
+<p>数学上，小数是实数，但是在 Python 中，不要认为 <code>Decimal</code> 类型的数是 <code>Real</code> 类型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> decimal <span class="keyword">import</span> Decimal</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numbers</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Decimal(<span class="string">"3.14159"</span>), numbers.Real)</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>实际上，<code>Decimal</code> 类型的对象，仅继承了 <code>Number</code> 类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Decimal(<span class="string">"3.14159"</span>), numbers.Complex)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Decimal(<span class="string">"3.14159"</span>), numbers.Rational)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Decimal(<span class="string">"3.14159"</span>), numbers.Integral)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(Decimal(<span class="string">"3.14159"</span>), numbers.Number)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="奇怪的浮点数"><a href="#奇怪的浮点数" class="headerlink" title="奇怪的浮点数"></a>奇怪的浮点数</h3><p>浮点数是 <code>Real</code> 类型，并表示实数，但是，由于内存限制，浮点数只是实数的近似值，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; 0.1 + 0.1 + 0.1 &#x3D;&#x3D; 0.3</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+
+<p>此外，在 Python 中，<code>float(&quot;inf&quot;)</code> 和 <code>float(&quot;nan&quot;)</code> 也都是比较特殊的浮点数对象——不是数字的数。</p>
+<h2 id="3-数字可扩展"><a href="#3-数字可扩展" class="headerlink" title="3. 数字可扩展"></a>3. 数字可扩展</h2><p>利用 Python 中关于数字的类型，比如 <code>numbers</code> 中的类型，可以定义其他有特殊属性和方法的数字对象。</p>
+<p>例如，下面所定义的 <code>ExtendedInteger</code> 类，就代表了形如 $a+b\sqrt{p}$ 的数字对象，其中 $a$ 和 $b$ 是整数，$p$ 不强制，默认为 $2$ 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numbers</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExtendedInteger</span><span class="params">(numbers.Real)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, a, b, p = <span class="number">2</span>)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        self.a = a</span><br><span class="line">        self.b = b</span><br><span class="line">        self.p = p</span><br><span class="line">        self._val = a + (b * math.sqrt(p))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"<span class="subst">&#123;self.__class__.__name__&#125;</span>(<span class="subst">&#123;self.a&#125;</span>, <span class="subst">&#123;self.b&#125;</span>, <span class="subst">&#123;self.p&#125;</span>)"</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"<span class="subst">&#123;self.a&#125;</span> + <span class="subst">&#123;self.b&#125;</span>√<span class="subst">&#123;self.p&#125;</span>"</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__trunc__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> int(self._val)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__float__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> float(self._val)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__hash__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> hash(float(self._val))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__floor__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> math.floot(self._val)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__ceil__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> math.ceil(self._val)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__round__</span><span class="params">(self, ndigits=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> round(self._val, ndigits=ndigits)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__abs__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> abs(self._val)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__floordiv__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._val // other</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__rfloordiv__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> other // self._val</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__truediv__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._val / other</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__rtruediv__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> other / self._val</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__mod__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._val % other</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__rmod__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> other % self._val</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._val &lt; other</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__le__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._val &lt;= other</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__eq__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> float(self) == float(other)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__neg__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> ExtendedInteger(-self.a, -self.b, self.p)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__pos__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> ExtendedInteger(+self.a, +self.b, self.p)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__add__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(other, ExtendedInteger):</span><br><span class="line">            <span class="comment"># If both instances have the same p value,</span></span><br><span class="line">            <span class="comment"># return a new ExtendedInteger instance</span></span><br><span class="line">            <span class="keyword">if</span> self.p == other.p:</span><br><span class="line">                new_a = self.a + other.a</span><br><span class="line">                new_b = self.b + other.b</span><br><span class="line">                <span class="keyword">return</span> ExtendedInteger(new_a, new_b, self.p)</span><br><span class="line">            <span class="comment"># Otherwise return a float</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> self._val + other._val</span><br><span class="line">        <span class="comment"># If other is integral, add other to self's a value</span></span><br><span class="line">        <span class="keyword">elif</span> isinstance(other, numbers.Integral):</span><br><span class="line">            new_a = self.a + other</span><br><span class="line">            <span class="keyword">return</span> ExtendedInteger(new_a, self.b, self.p)</span><br><span class="line">        <span class="comment"># If other is real, return a float</span></span><br><span class="line">        <span class="keyword">elif</span> isinstance(other, numbers.Real):</span><br><span class="line">            <span class="keyword">return</span> self._val + other._val</span><br><span class="line">        <span class="comment"># If other is of unknown type, let other determine</span></span><br><span class="line">        <span class="comment"># what to do</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">NotImplemented</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__radd__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="comment"># Addition is commutative so defer to __add__</span></span><br><span class="line">        <span class="keyword">return</span> self.__add__(other)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__mul__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(other, ExtendedInteger):</span><br><span class="line">            <span class="comment"># If both instances have the same p value,</span></span><br><span class="line">            <span class="comment"># return a new ExtendedInteger instance</span></span><br><span class="line">            <span class="keyword">if</span> self.p == other.p:</span><br><span class="line">                new_a = (self.a * other.a) + (self.b * other.b * self.p)</span><br><span class="line">                new_b = (self.a * other.b) + (self.b * other.a)</span><br><span class="line">                <span class="keyword">return</span> ExtendedInteger(new_a, new_b, self.p)</span><br><span class="line">            <span class="comment"># Otherwise, return a float</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> self._val * other._val</span><br><span class="line">        <span class="comment"># If other is integral, multiply self's a and b by other</span></span><br><span class="line">        <span class="keyword">elif</span> isinstance(other, numbers.Integral):</span><br><span class="line">            new_a = self.a * other</span><br><span class="line">            new_b = self.b * other</span><br><span class="line">            <span class="keyword">return</span> ExtendedInteger(new_a, new_b, self.p)</span><br><span class="line">        <span class="comment"># If other is real, return a float</span></span><br><span class="line">        <span class="keyword">elif</span> isinstance(other, numbers.Real):</span><br><span class="line">            <span class="keyword">return</span> self._val * other</span><br><span class="line">        <span class="comment"># If other is of unknown type, let other determine</span></span><br><span class="line">        <span class="comment"># what to do</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">NotImplemented</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__rmul__</span><span class="params">(self, other)</span>:</span></span><br><span class="line">        <span class="comment"># Multiplication is commutative so defer to __mul__</span></span><br><span class="line">        <span class="keyword">return</span> self.__mul__(other)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__pow__</span><span class="params">(self, exponent)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._val ** exponent</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__rpow__</span><span class="params">(self, base)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> base ** self._val</span><br></pre></td></tr></table></figure>
+
+<p>上面所定义的数字类型，可以这样使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = ExtendedInteger(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = ExtendedInteger(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">ExtendedInteger(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Check that a is a Number</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(a, numbers.Number)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># Check that a is Real</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(a, numbers.Real)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a)</span><br><span class="line"><span class="number">1</span> + <span class="number">2</span>√<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a * b</span><br><span class="line">ExtendedInteger(<span class="number">14</span>, <span class="number">7</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(a * b)</span><br><span class="line"><span class="number">14</span> + <span class="number">7</span>√<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>float(a)</span><br><span class="line"><span class="number">3.8284271247461903</span></span><br></pre></td></tr></table></figure>
+
+<p>Python 中的继承功能，让我们能灵活地定义各种对象。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>由上面所述，可知 Python 中的数字还是可以深入研究一番的。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]. David Amos, <a href="https://davidamos.dev/three-things-you-might-not-know-about-numbers-in-python/" target="_blank" rel="noopener">3 Things You Might Not Know About Numbers in Python</a></p>
+<p>[2]. 齐伟，<a href="http://www.itdiffer.com/python_course.html" target="_blank" rel="noopener">Python大学实用教程</a>，北京：电子工业出版社</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2021/12/23/gnn-and-applications/">
+        <span class="nav-arrow">← </span>
+        
+          图神经网络及其应用概述
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    <!--% if (theme.qrcode) { %-->
+      <div class="qrcode">
+        <!--canvas id="share-qrcode"></!--canvas-->
+        <img src="https://public-tuchuang.oss-cn-hangzhou.aliyuncs.com/WechatIMG6_20200109154827.jpeg" width=400>
+        <p class="notice">关注微信公众号，读文章、听课程，提升技能</p>
+      </div>
+    <!--% } %-->
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-数字有方法"><span class="toc-nav-text">1. 数字有方法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-数字有层级"><span class="toc-nav-text">2. 数字有层级</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#层级继承"><span class="toc-nav-text">层级继承</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#小数不在其列"><span class="toc-nav-text">小数不在其列</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#奇怪的浮点数"><span class="toc-nav-text">奇怪的浮点数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-数字可扩展"><span class="toc-nav-text">3. 数字可扩展</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结论"><span class="toc-nav-text">结论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-text">参考资料</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://qiwsir.github.io/2022/01/12/3things-numbers-python/';
+    var banner = ''
+    /*if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }*/
+    //$('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by 老齐教室 | <a href='http://www.beian.miit.gov.cn' target="_blank" rel="noopener">苏ICP备13034293号-2 </a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
